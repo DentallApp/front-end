@@ -1,0 +1,44 @@
+.container_service {
+    width: 100%;
+    padding: 20px;
+}
+
+.section_title {
+    color: #023e8a;
+    text-align: center;
+    font-style: italic;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.container {
+    width: 100%;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+}
+
+.container p {
+    text-align: justify;
+    padding: 40px;
+}
+
+.container img {
+    width: 35%;
+}
+
+@media screen and (max-width: 768px) {
+    .container {
+        grid-template-columns: 100%;
+        flex-wrap: wrap;
+    }
+
+    .container p {
+        padding: 10px;
+    }
+
+    .container img {
+        width: 100%;
+    }
+}

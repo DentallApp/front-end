@@ -1,0 +1,22 @@
+.title-section {
+  color: #023e8a;
+  margin-top: 100px;
+  text-align: center;
+  font-style: italic;
+  font-weight: bold;
+  position: relative;
+}
+
+.underline {
+  height: 04px;
+  width: 4rem;
+  background-color: #F76C2F;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+@media screen and (max-width: 1024px) {
+  .title-section {
+      margin-top: 40px;
+  }
+}

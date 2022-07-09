@@ -1,0 +1,51 @@
+.service_card {
+    font-size: 1.5rem;
+    border-radius: 10px;
+    background-color: #4cc9f0;
+}
+
+.service_card:hover {
+    opacity: 0.8;
+}
+
+.service_card .link {
+    text-decoration: none;
+}
+
+.service_image {
+    border-radius: 10px;
+    background-color: azure;
+    max-width: 100%;
+    height: auto;
+    opacity: 1 !important;
+    zoom: 1;
+}
+
+.service_name {
+    width: 100%;
+    height: auto;
+    text-align: center;
+    color: #fff;
+    padding-bottom: 10px;
+    padding-top: 5px;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+@media (max-width: 560px) {
+
+    .service_card {
+        width: 100%;
+        font-size: 1.5rem;
+    }
+
+    .service_image {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .service_name {
+        padding-top: 10px;
+        padding-bottom: 15px;
+    }
+}

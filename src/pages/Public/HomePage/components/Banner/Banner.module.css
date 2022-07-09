@@ -1,0 +1,129 @@
+.container_baner_diagonal {
+    position: relative;
+    width: 100%;
+    min-height: 200px;
+    max-height: 500px;  
+    background: #023e8a;
+    background-image: linear-gradient(to right, #4facfe 0%, #00f2fe 100%);
+
+    display: flex;
+    justify-content: space-between;
+}
+
+.container_baner_diagonal::before {
+    position: absolute;
+    width: 100%;
+    min-height: 100%;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    content: "";
+    background: inherit;
+    transform-origin: top left;
+    transform: skewY(4deg);
+}
+
+.container_baner_text {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transform: skewY(0deg);
+}
+
+.container_baner_text h1 {
+    text-align: center;
+    color: #FFFFFF;
+    font-size: 3.5rem;
+    font-style: bold;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+}
+
+.container_baner_text h5 {
+    text-align: center;
+    color: #FFFFFF;
+    font-size: 1rem;
+    font-weight: 400;
+}
+
+.button_explore {
+    color: #000000 !important;
+    background-color: #FFFFFF !important;
+    border-radius: 30px !important;
+    border-color: transparent !important;
+}
+
+.container_image_baner {
+    position: relative;
+    width: 50%;
+    display: flex;
+    align-items: center;
+    transform: skewY(4deg);
+}
+
+.baner_image {
+    width: 100%;
+}
+
+/* Media query para responsive */
+@media  screen and (max-width: 1000px) {
+    .container_baner_text h1  {
+        font-size: 2.5rem;
+    }
+
+    .button_explore {
+        font-size: 1rem !important;
+    }
+}
+
+@media  screen and (max-width: 768px) {
+
+    .container_baner_text h1  {
+        font-size: 1.5rem;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+
+    .container_baner_text h5  {
+        font-size: .8rem;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+
+    .button_explore {
+        font-size: .8rem !important;
+    }
+}
+
+@media  screen and (max-width: 540px) {
+    
+    .container_baner_text h1  {
+        font-size: 1.2rem;
+    }
+
+    .container_baner_text h5  {
+        font-size: .7rem;
+    }
+
+    .button_explore {
+        font-size: .8rem !important;
+    }
+}
+
+@media  screen and (max-width: 425px) {
+    
+    .container_baner_text h1  {
+        font-size: 1.1rem;
+    }
+
+    .container_baner_text h5  {
+        font-size: .5rem;
+    }
+
+    .button_explore {
+        font-size: .5rem !important;
+    }
+}

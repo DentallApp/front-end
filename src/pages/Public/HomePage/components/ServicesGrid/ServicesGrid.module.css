@@ -1,0 +1,22 @@
+.services_list {
+    list-style-type: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 330px);
+    gap: 40px;
+    padding: 20px;
+    justify-content: center;
+}
+
+@media (max-width: 768px) {
+    .services_list {
+        grid-template-columns: repeat(2, 1fr);
+        padding: 40px;
+    }
+}
+
+@media (max-width: 560px) {
+    .services_list {
+        grid-template-columns: 100%;
+        padding: 40px;
+    }
+}

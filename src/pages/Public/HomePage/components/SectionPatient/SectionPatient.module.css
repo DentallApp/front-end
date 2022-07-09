@@ -1,0 +1,45 @@
+.container_section_patient {
+    width: 100%;  
+    font-family: 'Luxurious Roman', cursive;
+    font-family: 'Vollkorn', serif;
+}
+
+.section_title {
+    color: #023e8a;
+    text-align: center;
+    font-style: italic;
+    font-weight: bold;
+}
+
+.container_card {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 330px);
+    gap: 40px;
+    padding: 20px;
+    justify-content: center;
+}
+
+.card_service_patient {
+    background-color: #FFFFFF;
+    border: 1px solid #eee;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    margin-bottom: 10px;
+    text-align: center;
+    border-radius: 6px;
+    box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.4);
+}
+
+.icon {
+    text-align: center;
+    font-size: 2rem;
+}
+
+@media (max-width: 320px) {
+    .container_card {
+        grid-template-columns: 90%;
+    }
+}

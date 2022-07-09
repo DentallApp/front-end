@@ -1,0 +1,46 @@
+.navigation {
+    font-size: 1rem;
+}
+
+.button_appoinment {
+    color: #000000 !important;
+    background: #80ed99 !important;
+    border-radius: 30px !important;
+    border-color: transparent !important;
+}
+
+.button_navigation_action {
+    color: #FFFFFF;  
+    background: rgba(75,73,172,255) !important;
+    margin-left: 10px;
+    border-radius: 30px !important;
+    border-color: transparent !important;
+}
+
+.button_appoinment:active, .button_navigation_action:active {
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+}
+
+@media screen and (max-width: 991px) {
+    .button_appoinment {
+        margin-bottom: 5px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .button_navigation_action {
+        margin-top: 5px;
+        margin-right: 10px;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .navigation, .button_appoinment, .button_navigation_action {
+        font-size: .8rem !important;
+    }
+
+    .button_navigation_action {
+        padding: 5px 10px;
+    }
+}

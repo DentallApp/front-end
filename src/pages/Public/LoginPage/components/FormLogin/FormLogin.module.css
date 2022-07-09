@@ -1,0 +1,76 @@
+.container_form {
+    width: 100%;
+    padding: 20px;
+}
+
+.container_form h2 {
+    text-align: center;
+    font-weight: 700;
+}
+
+.input_group_text {
+    background-color: transparent !important;
+    border-right-style: none !important;
+    border-radius: 30px 30px 30px 30px;
+}
+
+.form_control {
+    border-left-style: none !important;
+    border-radius: 0px 30px 30px 30px;
+}
+
+.label_input {
+    font-style: italic;
+    font-weight: bold;
+}
+
+.forgot_password, .text {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.forgot_password, .register {
+    color: #00bbf9;
+}
+
+.register {
+    text-decoration: none;
+}
+
+.container_button {
+    width: 100%;
+    padding-right: var(--bs-gutter-x,.75rem);
+    padding-left: var(--bs-gutter-x,.75rem);
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.container_button Button{
+    width: 100%;
+    border-radius: 30px !important;
+    box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.4);
+    border-style: none;
+}
+
+.container_button Button:active {
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+}
+
+.button_sign_in {
+    background-color: rgba(75,73,172,255) !important;
+}
+
+.button_back {
+    background-color: transparent !important;
+    color: #000 !important;
+}
+
+@media screen and (max-width: 425px) {
+    
+    .container_button {
+        flex-direction: column;
+    }
+}
