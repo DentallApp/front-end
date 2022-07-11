@@ -1,13 +1,14 @@
 import { Outlet } from 'react-router-dom';
 import { Header, Footer } from '../../../components';
+import GeneralTreamentsProvider from '../../../context/GeneralTreamentsProvider';
 
 const WithNav = () => {
     return (
-        <div>
+        <GeneralTreamentsProvider>
             <Header />
                 <Outlet />
             <Footer />
-        </div>
+        </GeneralTreamentsProvider>
     );
 }
 
