@@ -26,7 +26,7 @@ const SectionPatient = () => {
                     <FaDonate className={styles.icon}/>
                     <h5>Cotizar servicios</h5>
                     <br></br>
-                    <p>Cotize para armar su presupuesto en base a los precios de cada especialidad</p>
+                    <p>Cotize los precios de los tratamientos dentales disponibles</p>
                 </div>
             </div>
         </div>
