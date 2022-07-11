@@ -1,14 +1,17 @@
+import { useContext } from 'react';
 import{ Navbar, Nav, Container, NavDropdown, Form, Button } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaCalendarAlt } from 'react-icons/fa'
 import { logo } from '../../img';
-import services from '../../data/services.js';
+import GeneralTreamentsContext from '../../context/GeneralTreamentsContext';
 import styles from './Header.module.css';
 
 const Header = () => {
 
     const navigate = useNavigate();
-
+    const { getGeneralTreatmentAll } = useContext(GeneralTreamentsContext);
+    let generalTreatments = getGeneralTreatmentAll();
+    
     return (
         <Navbar sticky="top" className={styles.navigation} bg="light" collapseOnSelect expand="lg" variant="light">
             <Container >
@@ -36,8 +39,8 @@ const Header = () => {
                         onClick={() => {window.scrollTo({ top: 0, behavior: 'smooth' })} }>
                             Nosotros
                         </Nav.Link>
-                        <NavDropdown title="Especialidades" id="collasible-nav-dropdown">
-                            {services.map(service => (
+                        <NavDropdown title="Servicios dentales" id="collasible-nav-dropdown">
+                            {generalTreatments != null && generalTreatments.map(service => (
                                 <NavDropdown.Item 
                                     key={service.id} 
                                     as={Link} 
