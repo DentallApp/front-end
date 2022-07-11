@@ -6,7 +6,7 @@
 body {
   margin: 0;
   height: 100vh;
-  background-color: rgba(245,247,255,255) !important;
+  /*background-color: rgba(245,247,255,255) !important;*/
   font-family: 'Nunito', sans-serif !important;
 }
 

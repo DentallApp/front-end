@@ -1,9 +1,9 @@
 footer {
-    background-color: #011c39;
-
+    /*background-color: #011c39;*/
+    background-color: #f0ffff;
     bottom: 0px;
     width: 100%;
-    color: #fff;
+    color: #011c39;
 }
 
 .main_content {
@@ -56,6 +56,18 @@ footer {
   
 .center .content .phone {
     margin: 15px 0;
+}
+
+.container_social .icon{
+    font-size: 2rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    color: #011c39;
+}
+
+.container a {
+    text-decoration: none;
+    color: none;
 }
 
 .footer_bottom {

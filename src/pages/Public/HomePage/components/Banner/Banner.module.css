@@ -1,11 +1,12 @@
+
 .container_baner_diagonal {
     position: relative;
     width: 100%;
     min-height: 200px;
     max-height: 500px;  
-    background: #023e8a;
-    background-image: linear-gradient(to right, #4facfe 0%, #00f2fe 100%);
-
+    /*background: #023e8a;
+    background-image: linear-gradient(to right, #4facfe 0%, #00f2fe 100%);*/
+    background-color: #f0ffff;
     display: flex;
     justify-content: space-between;
 }
@@ -35,7 +36,7 @@
 
 .container_baner_text h1 {
     text-align: center;
-    color: #FFFFFF;
+    color: #000;
     font-size: 3.5rem;
     font-style: bold;
     font-weight: 700;
@@ -44,14 +45,14 @@
 
 .container_baner_text h5 {
     text-align: center;
-    color: #FFFFFF;
+    color: #000;
     font-size: 1rem;
     font-weight: 400;
 }
 
 .button_explore {
-    color: #000000 !important;
-    background-color: #FFFFFF !important;
+    color: #fff !important;
+    background-color: #002855 !important;
     border-radius: 30px !important;
     border-color: transparent !important;
 }

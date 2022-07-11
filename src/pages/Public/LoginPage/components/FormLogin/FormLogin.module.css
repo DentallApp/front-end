@@ -68,7 +68,7 @@
     color: #000 !important;
 }
 
-@media screen and (max-width: 425px) {
+@media screen and (max-width: 580px) {
     
     .container_button {
         flex-direction: column;
