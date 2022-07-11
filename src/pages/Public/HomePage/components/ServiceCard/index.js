@@ -1,17 +1,18 @@
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import Card from 'react-bootstrap/Card'
+import{ Button } from 'react-bootstrap';
 import styles from './ServiceCard.module.css';
 
 const ServiceCard = ({service}) => {
+    const navigate = useNavigate();
     return (
-        <li className={styles.service_card}>
-            <Link 
-            className={styles.link} 
-            to={`/servicio/${service.id}`} 
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-                <img className={styles.service_image} src={service.img} alt={service.name} />
-                <div className={styles.service_name}>{service.name}</div>
-            </Link>
-        </li>
+        <Card className={styles.card_wrapper} style={{ width: '18rem' }}>
+            <Card.Img variant="top" src={require(`../../../../../img/${service.imageUrl}`)} alt={service.name} className={styles.image} />
+            <Card.Body className={styles.card_body}>
+                <h5>{service.name}</h5>
+                <Button className={styles.button_detail} onClick={() => navigate(`/servicio/${service.id}`)}>Ver detalle</Button>
+            </Card.Body>
+        </Card>
     );
 }
 
