@@ -1,4 +1,4 @@
-import { FaPhoneSquareAlt, FaMapMarkerAlt, FaEnvelope } from 'react-icons/fa';
+import { FaPhoneSquareAlt, FaEnvelope, FaFacebook,FaInstagramSquare } from 'react-icons/fa';
 import { logo } from '../../img';
 import styles from './Footer.module.css';
 
@@ -15,30 +15,26 @@ const Footer = () => {
             <div className={`${styles.center} ${styles.box}`}>
               <h2 className={styles.section_title}>Contáctanos</h2>
               <div className={styles.content}>
-                <div className={styles.place}>
-                  <span><FaMapMarkerAlt /></span>
-                  <p className={styles.text}>Mapasingue oeste Av4ta entre calle 4ta, y, Guayaquil 090101</p>
-                </div>
                 <div className={styles.phone}>
-                  <span><FaPhoneSquareAlt /></span>
+                  <FaPhoneSquareAlt className={styles.icon} />
                   <span className={styles.text}> 0980852228</span>
                 </div>
                 <div className={styles.email}>
-                  <span><FaEnvelope /></span>
-                  <span className={styles.text}>algo@mail.com</span>
+                  <FaEnvelope className={styles.icon}/>
+                  <span className={styles.text}>jloorbowen@gmail.com</span>
                 </div>
               </div>
             </div>
 
             <div className={`${styles.right} ${styles.box}`}>
-              <h2>Horarios</h2>
-              <div className={styles.content}>
-                <h5>Lunes - Viernes</h5>
-                <p>09:00 - 17:00</p>
-                <br></br>
-
-                <h5>Sábado</h5>
-                <p>09:00 - 14:00</p>
+              <h2>Redes Sociales</h2>
+              <div className={styles.container_social}>
+                <a href='https://www.facebook.com/worlddentalco' rel='noreferrer' target='_blank'> 
+                  <FaFacebook className={styles.icon} />
+                </a>
+                <a href='https://www.instagram.com/worlddentalco/' rel='noreferrer' target='_blank'>
+                  <FaInstagramSquare className={styles.icon} />
+                </a>
               </div>
             </div>
           </div>
