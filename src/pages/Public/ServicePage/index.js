@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import services from '../../../data/services';
+import Spinner from 'react-bootstrap/Spinner'
+import { getGeneralTreatmentXId } from '../../../services/generalTreatments';
 import styles from './ServicePage.module.css';
 
 const ServicePage = () => {
@@ -9,23 +10,29 @@ const ServicePage = () => {
     const [ service, setService ] = useState(null);
     
     useEffect(() => {
-        const result = services.filter(service => service.id === parseInt(serviceId));
-        setService(result);
+        getGeneralTreatmentXId(serviceId).then((response) => {
+            setService(response.data.data);
+        })
     }, [serviceId]);
 
     return (
         <section className={styles.container_service}>
             {service != null ? (
                 <>
-                    <h2 className={styles.section_title}>{service[0].name}</h2>
+                    <h2 className={styles.section_title}>{service.name}</h2>
                     <div className="mx-auto underline"></div>
                     <div className={styles.container}>
-                        <p>{service[0].description}</p>
-                        <img src={service[0].img} alt={`Imagen de ${service[0].name}`} />
+                        <p>{service.description}</p>
+                        <img src={require(`../../../img/${service.imageUrl}`)} alt={`Imagen de ${service.name}`} />
                     </div>
                 </>
             ) 
-            : (<p>Loading</p>)}
+            : (
+                <div className={`${styles.container_spinner}`}>
+                    <Spinner size="lg" className={styles.spinner} animation="border" variant="info" />
+                    <p className={styles.text_loading}>Cargando...</p>
+                </div>
+            )}
         </section>
     );
 }
