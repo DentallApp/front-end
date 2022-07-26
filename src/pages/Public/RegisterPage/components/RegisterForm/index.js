@@ -18,7 +18,7 @@ import styles from '../../../LoginPage/components/FormLogin/FormLogin.module.css
 const RegistrationForm = () => {
 
     const navigate = useNavigate();
-    const { register, handleSubmit, formState: {errors} } = useForm();
+    const { register, handleSubmit, reset, formState: {errors} } = useForm();
     const [genders, setGenders] = useState(null);
     const [alert, setAlert] = useState(null);
 
@@ -38,10 +38,10 @@ const RegistrationForm = () => {
         data.lastNames = capitalizeFirstLetter(sanitizedLastName);
         data.genderId = parseInt(data.genderId)
 
-        console.log(data);
         const result = await registerBasicUser(data);
         setAlert(result);
-        console.log(result);
+
+        if(result.success === true) reset();
     }
 
     return(
