@@ -13,7 +13,7 @@ const Header = () => {
     let generalTreatments = getGeneralTreatmentAll();
     
     return (
-        <Navbar sticky="top" className={styles.navigation} bg="light" collapseOnSelect expand="lg" variant="light">
+        <Navbar sticky='top' className={styles.navigation} bg="light" collapseOnSelect expand="lg" variant="light">
             <Container >
                 <Navbar.Brand as={Link} to="/" onClick={() => {window.scrollTo({ top: 0, behavior: 'smooth' })} }>
                     <img

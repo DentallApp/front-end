@@ -26,9 +26,9 @@ const Footer = () => {
               </div>
             </div>
 
-            <div className={`${styles.right} ${styles.box}`}>
-              <h2>Redes Sociales</h2>
-              <div className={styles.container_social}>
+            <div className={`${styles.box}`}>
+              <h2 className={styles.section_title}>Redes Sociales</h2>
+              <div className={`${styles.content} ${styles.container_social}`}>
                 <a href='https://www.facebook.com/worlddentalco' rel='noreferrer' target='_blank'> 
                   <FaFacebook className={styles.icon} />
                 </a>
