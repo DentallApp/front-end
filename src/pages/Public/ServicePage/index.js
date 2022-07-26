@@ -1,18 +1,18 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import Spinner from 'react-bootstrap/Spinner'
-import { getGeneralTreatmentXId } from '../../../services/generalTreatments';
+import Spinner from 'react-bootstrap/Spinner';
+import { getGeneralTreatmentXId } from '../../../services/GeneralTreatments';
 import styles from './ServicePage.module.css';
 
 const ServicePage = () => {
 
     const { serviceId } = useParams();
     const [ service, setService ] = useState(null);
-    
+
     useEffect(() => {
         getGeneralTreatmentXId(serviceId).then((response) => {
             setService(response.data.data);
-        })
+        });
     }, [serviceId]);
 
     return (

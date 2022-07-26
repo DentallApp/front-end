@@ -1,15 +1,18 @@
 import { Outlet } from 'react-router-dom';
 import { Header, Footer } from '../../../components';
 import GeneralTreamentsProvider from '../../../context/GeneralTreamentsProvider';
+import styles from './PublicPage.module.css';
 
-const WithNav = () => {
+const PublicPage = () => {
     return (
-        <GeneralTreamentsProvider>
-            <Header />
-                <Outlet />
-            <Footer />
-        </GeneralTreamentsProvider>
+        <div className={styles.wrapper}>
+            <GeneralTreamentsProvider>
+                <Header />
+                    <Outlet />
+                <Footer />
+            </GeneralTreamentsProvider>
+        </div>
     );
 }
 
-export default WithNav;
+export default PublicPage;

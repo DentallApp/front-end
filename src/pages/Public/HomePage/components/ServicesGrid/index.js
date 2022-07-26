@@ -1,5 +1,6 @@
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Carousel from 'react-elastic-carousel';
+import Spinner from 'react-bootstrap/Spinner';
 import GeneralTreamentsContext from '../../../../../context/GeneralTreamentsContext';
 import ServiceCard from '../ServiceCard';
 import styles from './ServicesGrid.module.css';
@@ -15,7 +16,12 @@ const ServicesGrid = () => {
     ];
 
     const { getGeneralTreatmentAll } = useContext(GeneralTreamentsContext);
-    let generalTreatments = getGeneralTreatmentAll();
+    const [generalTreatments, setGeneralTreatments] = useState(null);
+
+    useEffect(() => {
+        const result = getGeneralTreatmentAll();
+        setGeneralTreatments(result);
+    }, [getGeneralTreatmentAll]);
   
     return (
         <>
@@ -26,7 +32,12 @@ const ServicesGrid = () => {
                     ))}
                 </Carousel>
             ):
-                <div>Cargando</div>
+            (
+                <div className={`${styles.container_spinner}`}>
+                    <Spinner size="lg" className={styles.spinner} animation="border" variant="info" />
+                    <p className={styles.text_loading}>Cargando...</p>
+                </div>
+            )
             }
         </>
     );

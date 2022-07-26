@@ -1,0 +1,147 @@
+/* Conatiner del Sidebar */
+.sidebar {
+    flex: 1;
+    border-right: 0.5px solid rgb(230, 227, 227);
+    background-color: #FFFFFF;
+    position: fixed;
+    height: 100%;
+    width: 280px;
+    overflow-y: auto;
+    z-index: 9;
+}
+
+/* Parte superior del Sidebar */
+.sidebar .top {
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sidebar hr {
+    height: 0;
+    border: 3px solid rgba(75,73,172,255);;
+}
+
+/* Parte de las opciones para el Sidebar*/
+.center {
+    padding-left: 10px;
+}
+
+.center ul {
+    list-style: none;
+    margin: 10px;
+    padding: 0;
+}
+
+.center .navlink, .center .navlink_active {
+    position: relative !important;
+    display: flex !important;
+    align-items: center !important;
+    width: 100% !important;
+    height: 60px !important;
+    padding: 5px !important;
+    border-radius: 10px !important;
+    cursor: pointer !important;
+    text-decoration: none !important;
+    
+}
+
+.center .navlink {
+    color: #000 !important;
+}
+
+.center .navlink_active {
+    background-color: rgba(75,73,172,255) !important;
+    color: #fff !important;
+}
+
+.navlink_active .icon {
+    margin-left: 5px;
+    margin-right: 10px;
+    font-size: 18px;
+    color: #fff;
+}
+
+.navlink {
+    position: relative !important;
+    display: flex !important;
+    align-items: center !important;
+    width: 100% !important;
+    height: 60px !important;
+    padding: 5px !important;
+    border-radius: 10px !important;
+    cursor: pointer !important;
+    text-decoration: none !important;
+    color: #000 !important;
+}
+
+.navlink .icon {
+    margin-left: 5px !important;
+    margin-right: 10px !important;
+    font-size: 18px !important;
+    color: rgba(75,73,172,255) !important;
+}
+
+.navlink .iconRight {
+    margin-left: 50px !important;
+}
+
+.navlink:hover {
+    background-color: rgba(75,73,172,255) !important;
+    color: #fff !important;
+    margin-top: 5px !important;
+    margin-bottom: 5px !important;
+}
+
+.navlink:hover .icon {
+    color: #fff !important;
+}
+
+/* Submenu de las opciones del Sidebar */
+.center .submenu {
+    margin-left: 30px;
+}
+
+.container_submenu {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Estilos para motores Webkit y blink (Chrome, Safari, Opera... ) para Scroll del Sidebar*/
+.sidebar::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 0;
+}
+
+.sidebar::-webkit-scrollbar-button:increment,.sidebar::-webkit-scrollbar-button {
+    display: none;
+} 
+
+.sidebar::-webkit-scrollbar:horizontal {
+    height: 10px;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background-color: rgba(75,73,172,255);
+    border-radius: 20px;
+    border: 2px solid #f1f2f3;
+}
+
+.sidebar::-webkit-scrollbar-track {
+    border-radius: 10px;  
+}
+
+@media screen and (max-width: 768px) {
+    .sidebar {
+        z-index: 9;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .sidebar {
+        width: 220px;
+    }
+}

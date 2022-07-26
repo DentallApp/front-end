@@ -1,0 +1,14 @@
+.contain {
+    position: absolute;
+    width: calc(100% - 280px);
+    height: 100%; 
+    left: 280px; 
+    transition: 0.5s;
+}
+
+@media screen and (max-width: 769px) {
+    .contain {
+        width: 100%;
+        left: 0;
+    }
+}

@@ -1,13 +1,13 @@
+import { FormResetPassword } from './components';
+import styles from '../LoginPage/LoginPage.module.css'; 
 import { dentalBanner } from '../../../img';
-import { RegisterForm } from './components';
-import styles from './RegisterPage.module.css';
 
-const RegistrationPage = () => {
+const ResetPasswordPage = () => {
     return (
         <div className={styles.wrapper}>
             <div className={styles.wrapper_content}>
-                <div className={styles.container} >
-                    <RegisterForm />
+                <div  className={styles.container} >
+                    <FormResetPassword />
                     <img className={styles.image_container} src={dentalBanner} alt="logo" />
                 </div>
             </div>
@@ -15,4 +15,4 @@ const RegistrationPage = () => {
     );
 }
 
-export default RegistrationPage;
+export default ResetPasswordPage;

@@ -1,12 +1,32 @@
 .container_error {
-    height: 100%;
+    width: 100%;
+    height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    background-color: #002855;
 }
 
 .container_error h2 {
     font-weight: bold;
     text-align: center;
+    color: #fff;
+}
+
+.container_error .button_back {
+    color: #000 !important;
+    font-weight: bold !important;
+    background-color: #fff!important;
+    border-radius: 30px !important;
+    border-color: transparent !important;
+}
+
+.container_error .button_back:active {
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+}
+
+.container_error .icon {
+    font-size: 2rem;
 }

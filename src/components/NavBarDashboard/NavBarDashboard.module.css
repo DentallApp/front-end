@@ -1,0 +1,51 @@
+header {
+    width: 100%;
+}
+
+.navbar {
+    width: 100%;
+    height: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10px;
+    background-color: #fff;
+    box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.4);
+}
+
+.toggle {
+    width: 40px;
+    height: 40px;
+    background-color: rgba(75,73,172,255);;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5em;
+    cursor: pointer;
+}
+
+.toggle .icon {
+    color: #fff;
+}
+
+.user {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 20px;
+    cursor: pointer;
+}
+
+.user img {
+    width: 100%;
+    height: 100%;
+}
+
+@media screen and (min-width: 769px) {
+    .navbar {
+        justify-content: flex-end;
+    }
+}
