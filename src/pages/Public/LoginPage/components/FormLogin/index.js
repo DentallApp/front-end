@@ -26,7 +26,7 @@ const FormLogin = () => {
         setError(result);
 
         if(result.success === true) { 
-            navigate("/inicio", {replace: true});
+            navigate("/inicio");
         }    
     }
 
