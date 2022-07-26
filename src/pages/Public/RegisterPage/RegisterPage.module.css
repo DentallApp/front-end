@@ -1,5 +1,10 @@
 .wrapper {
     width: 100%;
+    height: 100vh;
+}
+
+.wrapper_content {
+    width: 100%;
     height: 100%;
     display: flex;
     justify-content: center;
@@ -25,6 +30,18 @@
     box-sizing: border-box;
 }
 
+@media (orientation: landscape) and (max-width: 999px) {
+    .wrapper_content {
+        height: auto;
+    }
+}
+
+@media (orientation: landscape) and (min-height: 1000px) {
+    .wrapper_content {
+        height: 100%;
+    }
+}
+
 @media screen and (max-width: 1000px) {
     
     .image_container {
@@ -34,7 +51,7 @@
 
 @media screen and (max-width: 767px) {
 
-    .wrapper {
+    .wrapper_content {
         height: auto;
     }
     
@@ -45,7 +62,7 @@
 
 @media screen and (max-width: 550px) {
 
-    .wrapper {
+    .wrapper_content {
         display: block;
     }
     

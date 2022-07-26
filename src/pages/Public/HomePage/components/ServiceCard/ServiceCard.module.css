@@ -12,6 +12,11 @@
 .card_body {
     background-color: rgba(0,87,184,255) !important;
     text-align: center;
+    height: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .card_body h5 {

@@ -1,5 +1,4 @@
 footer {
-    /*background-color: #011c39;*/
     background-color: #f0ffff;
     bottom: 0px;
     width: 100%;
@@ -29,15 +28,6 @@ footer {
     position: relative;
 }
  
-.box .content:after {
-    position: absolute;
-    content: '';
-    height: 2px;
-    width: 35%;
-    background: #f12020;
-    top: -10px;
-}
-
 .left {
     max-width: 400px;
 }

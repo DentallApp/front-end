@@ -37,7 +37,8 @@
 }
 
 .spinner {
-    font-size: 5rem;
+    width: 10rem!important;
+    height: 10rem!important;
 }
 
 .text_loading {

@@ -8,6 +8,12 @@
     font-weight: 700;
 }
 
+.container_form_center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
 .input_group_text {
     background-color: transparent !important;
     border-right-style: none !important;
@@ -17,6 +23,22 @@
 .form_control {
     border-left-style: none !important;
     border-radius: 0px 30px 30px 30px;
+}
+
+.form_control_password {
+    border-right-style: none !important;
+}
+
+.button_visible {
+    background-color: transparent !important;
+    color: #000 !important;
+    border-left-style: none !important;
+    border-radius: 0px 30px 30px 30px;
+    border-color: #ced4da;
+}
+
+.button_visible:hover {
+    border-color: #ced4da;
 }
 
 .label_input {
@@ -66,6 +88,11 @@
 .button_back {
     background-color: transparent !important;
     color: #000 !important;
+}
+
+.error_message {
+    color: #ec5990;
+    font-size: 12px;
 }
 
 @media screen and (max-width: 580px) {
