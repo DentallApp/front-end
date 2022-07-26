@@ -1,4 +1,4 @@
-import api from './api';
+import api from './Api';
 
 export const getGeneralTreatment = async () => {
     let result = await api.get('/general-treatment');
