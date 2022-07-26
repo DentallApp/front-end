@@ -5,6 +5,7 @@ import SideBarContext from '../../context/SideBarContext';
 import styles from './NavBarDashboard.module.css';
 import { ImMenu } from "react-icons/im";
 import { user } from '../../img';
+import { logout } from '../../services/AuthService';
 
 const NavBarDashboard = () => {
 
@@ -21,8 +22,13 @@ const NavBarDashboard = () => {
                 <div className={styles.user}>
                     <img src={user} alt="avatar"/>
                     <NavDropdown title="" id="collasible-nav-dropdown">
-                        <NavDropdown.Item as={Link} to="/usuario/configuracion">Configurar</NavDropdown.Item>
-                        <NavDropdown.Item as={Link} to="/login">Salir</NavDropdown.Item>
+                        <NavDropdown.Item as={Link} to="/configuracion">Configurar</NavDropdown.Item>
+                        <NavDropdown.Item 
+                        as={Link} to="/login" onClick={() => {
+                        handleSidebar();
+                        logout();
+                        window.scrollTo({ top: 0, behavior: 'smooth' })
+                        }}>Salir</NavDropdown.Item>
                     </NavDropdown> 
                 </div>
             </nav>
