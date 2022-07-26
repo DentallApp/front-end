@@ -2,9 +2,8 @@ import api from './Api';
 import { setLocalUser } from './UserService';
 
 export const emailVerification = (token) => {
-    return api.get('/email-verification', { params: { token: token } })
+    return api.post('/email-verification', { token })
             .then(res => {
-                console.log("Test: " + res.data);
                 if(res.data.success) 
                     setLocalUser({...res.data.data});
                 return {
