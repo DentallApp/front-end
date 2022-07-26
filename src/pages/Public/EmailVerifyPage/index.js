@@ -11,24 +11,33 @@ const EmailVerifyPage = () => {
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
     const [validUrl, setValidUrl] = useState(false);
-    const [counter, setCounter] = useState(0);
+    const [counter, setCounter] = useState(0); // Colocar en entorno de desarrollo
     const [result, setResult] = useState(null);
     
     const token = searchParams.get("token");
 
     useEffect(() => {
         emailVerification(token).then(res => {
+
+            // Colocar el if si está en entorno de desarrollo para 
+            // evitar el error al dar el doble renderizado por parte
+            // de StrictMode
             if(counter !== 2 && res.success === true) {
-                setValidUrl(true)
-                
+                setValidUrl(true);
             }
+            // Colocar en entorno de producción
+            // setValidUrl(true); 
             setResult(res);
         })
         .catch(err => {
+            // Colocar el if si está en entorno de desarrollo para 
+            // evitar el error al dar el doble renderizado por parte
+            // de StrictMode
             if(counter !== 2){
                 setValidUrl(false);
-                
             }
+            // Colocar en entorno de producción
+            // setValidUrl(false); 
             setResult(err);    
         })
         setCounter(prev => prev + 1);
