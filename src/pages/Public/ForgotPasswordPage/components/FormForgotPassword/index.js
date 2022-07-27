@@ -1,28 +1,42 @@
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Form, Button, InputGroup } from 'react-bootstrap';
 import { FaArrowCircleLeft } from 'react-icons/fa';
 import { BsFillEnvelopeFill } from "react-icons/bs";
 import { useForm } from 'react-hook-form';
 import { formatEmail } from '../../../../../utils/formatUtils';
+import { sendUserEmail } from '../../../../../services/PasswordResetService';
+import { AlertMessage } from '../../../../../components';
 import styles from '../../../LoginPage/components/FormLogin/FormLogin.module.css';
 
 const FormForgotPassword = () => {
     const navigate = useNavigate();
-    const { register, handleSubmit, formState: {errors} } = useForm({
+    const [alert, setAlert] = useState(null);
+    const { register, handleSubmit, reset, formState: {errors} } = useForm({
         defaultValues: {
-            email: ""
+            email: "",
         }
     });
 
-    const login = (data) => {
-        console.log(data);
-        console.log(data.email);
+    const sendData = async(data) => {
+
+        const result = await sendUserEmail(data.email);
+        setAlert(result);
+        console.log(true);
+        reset();
     }
 
     return (
-        <Form className={`${styles.container_form} ${styles.container_form_center}`} onSubmit={handleSubmit(login)}>
+        <Form className={`${styles.container_form} ${styles.container_form_center}`} onSubmit={handleSubmit(sendData)}>
             <h2>Recuperar contraseña</h2>
             <div className="underline mx-auto"></div>
+            { 
+                alert && 
+                <AlertMessage 
+                type={ alert.success === false ? 'danger' : 'success' }
+                message={ alert.success === false ? alert.message : 'Revise su correo para restablecer la contraseña' }
+                setError= { setAlert }  /> 
+            }
             <Form.Group className="mb-3" controlId="formBasicEmail">
                 <Form.Label className={styles.label_input}>Correo</Form.Label>
                 <InputGroup className="mb-3">
