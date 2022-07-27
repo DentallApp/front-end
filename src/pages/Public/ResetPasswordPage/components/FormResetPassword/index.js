@@ -1,40 +1,62 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Form, Button, InputGroup } from 'react-bootstrap';
 import { FaArrowCircleLeft } from 'react-icons/fa';
 import { BsFillKeyFill } from "react-icons/bs";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 import { useForm } from 'react-hook-form';
 import { formatPassword } from '../../../../../utils/formatUtils';
+import { resetPassword } from '../../../../../services/PasswordResetService';
+import { AlertMessage } from '../../../../../components';
 import styles from '../../../LoginPage/components/FormLogin/FormLogin.module.css';
 
 const FormResetPassword = () => {
     // Estado para el botón de mostrar contraseña
     const [passwordShow, setPasswordShow] = useState(false);
     // Estado para el botón de mostrar confirmar contraseña 
-    const [confirmPasswordShow, setConfirmPasswordShow] = useState(false); 
-    const { register, handleSubmit, setError, formState: {errors} } = useForm();
+    const [confirmPasswordShow, setConfirmPasswordShow] = useState(false);
+
+    const [alert, setAlert] = useState(null);
+    const [isValid, setIsValid] = useState(false);
+    const [searchParams] = useSearchParams();
+    const { register, handleSubmit, setError, reset, formState: {errors} } = useForm();
     const navigate = useNavigate();
 
-    const changePassword = (data) => {
-        const result = verifyPassword(data.password, data.confirmPassword);
+    const changePassword = async(data) => {
+        const verification = verifyPassword(data.newPassword, data.confirmPassword);
         
-        if(!result) {
+        if(!verification) {
             // Se crea un nuevo error en react hook form
             setError("confirmPassword", {
                 type: 'custom',
                 message: "Las contraseñas deben de ser iguales"
             });
+            return;
         }
+
+        const token = searchParams.get("token");
+        const result = await resetPassword(data.newPassword, token);
+        setAlert(result);
+        console.log(typeof result.success);
+        
+
+        if(result.success === true) {reset(); setIsValid(result.success);}
     }
 
     // Función que se encarga de verificar si las contraseñas ingresadas son iguales
-    const verifyPassword = (password, confirmPassword) => password === confirmPassword ? true : false;
+    const verifyPassword = (newPassword, confirmPassword) => newPassword === confirmPassword ? true : false;
     
     return (
         <Form className={`${styles.container_form} ${styles.container_form_center}`} onSubmit={handleSubmit(changePassword)}>
             <h2>Resetear contraseña</h2>
             <div className="underline mx-auto"></div>
+            { 
+                alert && 
+                <AlertMessage 
+                type={ alert.success === false ? 'danger' : 'success' }
+                message={ alert.message }
+                setError= { setAlert }  /> 
+            }
             <Form.Group className="mb-3" controlId="formBasicPassword">
                 <Form.Label className={styles.label_input}>Contraseña</Form.Label>
                 <InputGroup className="mb-3">
@@ -42,7 +64,7 @@ const FormResetPassword = () => {
                     <Form.Control 
                     className={`${styles.form_control} ${styles.form_control_password}`} 
                     type={passwordShow ? "text" : "password"} 
-                    {...register("password", { 
+                    {...register("newPassword", { 
                         required: "Contraseña es requerida",
                         pattern: {
                             value: formatPassword,
@@ -60,7 +82,7 @@ const FormResetPassword = () => {
                         {passwordShow ? <MdVisibilityOff /> : <MdVisibility />}
                     </Button>   
                 </InputGroup>
-                { errors.password && <p className={styles.error_message}>{ errors.password.message }</p> } 
+                { errors.newPassword && <p className={styles.error_message}>{ errors.newPassword.message }</p> } 
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="formConfirmPassword">
@@ -84,11 +106,16 @@ const FormResetPassword = () => {
             </Form.Group>
             
             <div className={styles.container_button}>
-                <Button className={styles.button_sign_in} type="submit">
+                <Button className={styles.button_sign_in} type="submit" 
+                disabled={isValid === false ? false : true }>
                     Confirmar
                 </Button>
-                <Button className={styles.button_back} type="button" onClick={() => navigate("/")}>
-                    <FaArrowCircleLeft /> Cancelar
+                <Button className={styles.button_back} type="button" 
+                onClick={() => {
+                    if(isValid === true) navigate('/login')
+                    else navigate("/")
+                }}>
+                    <FaArrowCircleLeft /> {isValid === true ? 'Ir al login' : 'Cancelar' }
                 </Button>
             </div>
             <hr style={{"marginTop": "30px"}}/>
