@@ -13,8 +13,8 @@ export const emailVerification = (token) => {
             })
             .catch(err => {
                 return {
-                    success: err.response.success,
-                    message: err.response.message
+                    success: err.response.data.success,
+                    message: err.response.data.message
                 }
             });
 }
