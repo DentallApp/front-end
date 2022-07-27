@@ -52,7 +52,8 @@ const RegistrationForm = () => {
                 alert && 
                 <AlertMessage 
                 type={ alert.success === false ? 'danger' : 'success' }
-                message={ alert.message }
+                message={ alert.success === false ? alert.message : 
+                'Usuario registrado exitosamente. Acabamos de enviarte un correo para validar tu cuenta' }
                 setError= { setAlert }  /> 
             }
             <Container>
