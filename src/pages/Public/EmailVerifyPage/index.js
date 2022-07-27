@@ -17,8 +17,8 @@ const EmailVerifyPage = () => {
     const token = searchParams.get("token");
 
     useEffect(() => {
+        
         emailVerification(token).then(res => {
-
             // Colocar el if si está en entorno de desarrollo para 
             // evitar el error al dar el doble renderizado por parte
             // de StrictMode
@@ -42,7 +42,7 @@ const EmailVerifyPage = () => {
         })
         setCounter(prev => prev + 1);
     }, []);
-        
+
     return (
         <>
             {
@@ -59,7 +59,7 @@ const EmailVerifyPage = () => {
                                 <IoArrowBackCircle className={styles.icon} /> Ingresar
                             </Button>
                         </section>
-                    ):( validUrl===false && result.success === undefined &&
+                    ):( validUrl===false && result.success === false &&
                         <Navigate to="/*" />
                 )):
                 (
