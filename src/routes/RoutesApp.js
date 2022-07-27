@@ -33,7 +33,7 @@ const RoutesApp = () => {
                     <Route path="/registro" element={<RegisterPage />}/>
                     <Route path="/recuperar-contrasena" element={<ForgotPasswordPage />} />
                     <Route path="/verificacion-correo" element={<EmailVerifyPage />} />
-                    <Route path="/resetear-contrasena/:token" element={<ResetPasswordPage />} />
+                    <Route path="/resetear-contrasena" element={<ResetPasswordPage />} />
                 </Route>
 
                 {/* Rutas privadas para Usuario básico */}
