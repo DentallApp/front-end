@@ -19,7 +19,6 @@ export const registerBasicUser = (data) => {
     })
     .then(res => {
         if(res.data.success === true) {
-            console.log(res.data);
             return {
                 success: res.data.success,
                 message: res.data.message
@@ -27,7 +26,6 @@ export const registerBasicUser = (data) => {
         }
     })
     .catch(err => {
-        console.log(err);
         return {
             success: err.response.data.success,
             message: err.response.data.message
