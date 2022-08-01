@@ -4,13 +4,14 @@ import { AiFillHome } from "react-icons/ai";
 import { MdManageAccounts} from "react-icons/md";
 import { ImExit } from "react-icons/im";
 import BasicUserOptions from './BasicUserOptions';
-import { logo } from '../../img';
+import { logo, user } from '../../img';
 import { logout } from '../../services/AuthService';
 import { getLocalUser } from '../../services/UserService';
 import ROLES from '../../constants/Roles';
 import styles from './SideBar.module.css';
 import DentistOptions from './DentistOptions';
 import SideBarContext from '../../context/SideBarContext';
+import CommonOptions from './CommonOptions';
 
 const SideBar = () => {
 
@@ -41,8 +42,9 @@ const SideBar = () => {
                     <hr />
                     <div className={styles.center}>
                         <ul>
-                            <NavLink className={({ isActive }) => isActive ? styles.navlink_active : styles.navlink } 
-                            to="inicio"
+                            <NavLink 
+                            className={({ isActive }) => isActive ? styles.navlink_active : styles.navlink } 
+                            to={userData.roles.includes(ROLES.BASIC_USER) ? '/inicio' : `/inicio-${userData.roles[0].toLowerCase()}`}
                             onClick={() => {window.scrollTo({ top: 0, behavior: 'smooth' })} }> 
                                 <AiFillHome className={styles.icon} /> 
                                 Inicio
@@ -51,6 +53,8 @@ const SideBar = () => {
                             { userData ? (userData.roles.includes(ROLES.BASIC_USER) &&  <BasicUserOptions />) : null }
     
                             { userData ? (userData.roles.includes(ROLES.DENTIST) && <DentistOptions />) : null }
+
+                            { userData && <CommonOptions /> }
                         
                             <NavLink className={({ isActive }) => isActive ? styles.navlink_active : styles.navlink } 
                             to="configuracion"
