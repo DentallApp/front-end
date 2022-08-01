@@ -12,11 +12,13 @@ import {
     ResetPasswordPage
 } from '../pages/Public';
 
-import { Dashboard, NotFoundPage, UnauthorizedPage } from '../pages/common';
+import { Dashboard, NotFoundPage, SessionExpiredPage, UnauthorizedPage } from '../pages/common';
 import { AppointmentPage, DependentPage, HomePatientPage } from '../pages/Patient';
 import { AppointmentCalendarPage } from '../pages/Dentist';
+import { UserManagementPage } from '../pages/common';
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
+import { HomeSuperAdminPage } from '../pages/SuperAdmin';
 
 const RoutesApp = () => {
     return (
@@ -45,7 +47,7 @@ const RoutesApp = () => {
                     </Route>
                 </Route>
 
-                {/* Rutas privadas para Usuario básico */}
+                {/* Rutas privadas para el odontólogo */}
                 <Route element={<PrivateRoute role={ROLES.DENTIST} />}>
                     <Route element={<Dashboard />}>
                         <Route path="/inicio" element={<HomePatientPage />}/>
@@ -53,7 +55,24 @@ const RoutesApp = () => {
                     </Route>
                 </Route>
 
+                {/* Rutas privadas para el administrador */}
+                <Route element={<PrivateRoute role={ROLES.ADMIN} />}>
+                    <Route element={<Dashboard />}>
+                        <Route path={`/inicio-${ROLES.ADMIN.toLowerCase()}`} element={<HomePatientPage />}/>
+                        <Route path="/gestion-usuarios" element={<UserManagementPage />} />
+                    </Route>
+                </Route>
+                
+                {/* Rutas privadas para el administrador */}
+                <Route element={<PrivateRoute role={ROLES.SUPERADMIN} />}>
+                    <Route element={<Dashboard />}>
+                        <Route path={`/inicio-${ROLES.SUPERADMIN.toLowerCase()}`} element={<HomeSuperAdminPage />}/>
+                        <Route path={`/gestion-usuarios/${ROLES.SUPERADMIN}`} element={<UserManagementPage />} />
+                    </Route>
+                </Route>
+
                 <Route path="/no-autorizado" element={<UnauthorizedPage />}/>
+                <Route path="/sesion-expirada" element={<SessionExpiredPage />}/>
                 <Route path="*" element={<NotFoundPage />} />
             </Routes>
         </Router>
