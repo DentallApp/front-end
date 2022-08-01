@@ -8,6 +8,8 @@ import { useForm } from 'react-hook-form';
 import { AlertMessage } from '../../../../../components';
 import { formatEmail, formatPassword } from '../../../../../utils/formatUtils';
 import { login } from '../../../../../services/AuthService';
+import { getLocalUser } from '../../../../../services/UserService';
+import ROLES from '../../../../../constants/Roles';
 import styles from './FormLogin.module.css'; 
 
 const FormLogin = () => {
@@ -25,8 +27,13 @@ const FormLogin = () => {
         const result = await login(data);
         setError(result);
 
-        if(result.success === true) { 
-            navigate("/inicio");
+        if(result.success === true) {
+            const user = getLocalUser();
+            
+            if(user.roles.includes(ROLES.BASIC_USER))
+                navigate("/inicio");
+            else if(user.roles.includes(ROLES.SUPERADMIN))
+                navigate(`/inicio-${ROLES.SUPERADMIN.toLowerCase()}`)
         }    
     }
 
