@@ -20,8 +20,7 @@ const NavBarDashboard = () => {
                     </div>
                 ) }
                 <div className={styles.user}>
-                    <img src={user} alt="avatar"/>
-                    <NavDropdown title="" id="collasible-nav-dropdown">
+                    <NavDropdown title={<img src={user} alt="avatar"/>} id="collasible-nav-dropdown">
                         <NavDropdown.Item as={Link} to="/configuracion">Configurar</NavDropdown.Item>
                         <NavDropdown.Item 
                         as={Link} to="/login" onClick={() => {

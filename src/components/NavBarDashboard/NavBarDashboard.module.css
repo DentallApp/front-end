@@ -16,7 +16,8 @@ header {
 .toggle {
     width: 40px;
     height: 40px;
-    background-color: rgba(75,73,172,255);;
+    /*background-color: rgba(75,73,172,255);*/
+    background-color: #002855;
     border-radius: 50%;
     display: flex;
     justify-content: center;
@@ -30,8 +31,8 @@ header {
 }
 
 .user {
-    width: 40px;
-    height: 40px;
+    width: 65px;
+    height: 65px;
     display: flex;
     align-items: center;
     justify-content: center;
