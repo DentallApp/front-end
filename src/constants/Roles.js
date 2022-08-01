@@ -1,9 +1,9 @@
 const ROLES = {
     BASIC_USER: "Usuario basico",
     SECRETARY: "Secretaria",
-    DENTIST: "Odontólogo",
+    DENTIST: "Odontologo",
     ADMIN: "Administrador",
-    SUPERADMIN: "Superadmin"
+    SUPERADMIN: "Superadministrador"
 }
 
 export default ROLES;
