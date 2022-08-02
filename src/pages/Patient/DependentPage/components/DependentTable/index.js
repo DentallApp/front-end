@@ -125,6 +125,7 @@ const DependentTable = (
             pagination
             highlightOnHover={true}
             wrap={true}
+            noDataComponent="No existen dependientes registrados"
             fixedHeader
             fixedHeaderScrollHeight="600px"
             paginationComponentOptions={paginationOptions}
