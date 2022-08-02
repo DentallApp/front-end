@@ -14,6 +14,11 @@ import styles from './FormModal.module.css';
 
 const FormModal = ({show, handleClose, dependentSelect = null, saveDependent}) => {
 
+    const [genders, setGenders] = useState(null); // Estado para los géneros
+    const [kinship, setKinship] = useState(null); // Estado para el parentesco
+    const [type, setType] = useState('create'); // Estado para tipo de modal
+    const onlyWidth = useWindowWidth(); // Se obtiene ancho y altura de pantalla para colocar el modal
+
     const { register, handleSubmit, reset, setValue, watch,  formState: {errors} } = useForm({
         defaultValues: {
             dependentId: `${ dependentSelect !== null ? dependentSelect.dependentId : ""}`,
@@ -27,11 +32,8 @@ const FormModal = ({show, handleClose, dependentSelect = null, saveDependent}) =
             kinshipId: `${ dependentSelect !== null ? dependentSelect.kinshipId : ""}`,
         }
     });
+
     const selectValue = watch("kinshipId");
-    const [genders, setGenders] = useState(null); // Estado para los géneros
-    const [kinship, setKinship] = useState(null); // Estado para el parentesco
-    const [type, setType] = useState('create'); // Estado para tipo de modal
-    const onlyWidth = useWindowWidth(); // Se obtiene ancho y altura de pantalla para colocar el modal
 
     useEffect(() => {
         getGenders()
@@ -42,14 +44,18 @@ const FormModal = ({show, handleClose, dependentSelect = null, saveDependent}) =
             .then(response => setKinship(response.data))
             .catch(error => console.log(error));
 
-        if(dependentSelect !== null) {
-            setValue("kinshipId", dependentSelect.kinshipId, true);
             register("kinshipId", {
                 required: "Parentesco requerido"
             })
-            setType('edit');
-        }
+            if(dependentSelect !== null) {
+                setValue("kinshipId", dependentSelect.kinshipId, true);
+                setType('edit');
+             }
     }, []);
+
+    useEffect(() => {
+        if(kinship !== null && selectValue === '') setValue("kinshipId", kinship[0].id,true);
+    }, [kinship]);
 
     const handleChange = (e) => {
         setValue("kinshipId", e.target.value, true);
@@ -67,7 +73,9 @@ const FormModal = ({show, handleClose, dependentSelect = null, saveDependent}) =
                 <Modal.Title>{ dependentSelect === null ? 'Crear Dependiente' : 'Editar información' }</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <Form className={styles.container_form} onSubmit={handleSubmit((data) => saveDependent(data, reset, type))}>
+                <Form 
+                className={styles.container_form} 
+                onSubmit={handleSubmit((data) => saveDependent(data, reset, type))}>
                     <h2>Registro</h2>
                     <div className="underline mx-auto"></div>
                     <p className={styles.text_information}>Los campos con el símbolo * son obligatorios</p>
