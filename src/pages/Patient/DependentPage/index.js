@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Button } from 'react-bootstrap';
 import { IoAddCircle } from "react-icons/io5";
-import { AlertMessage } from '../../../components';
+import { AlertMessage, ModalLoading } from '../../../components';
 import { DependentTable, FilterComponent, FormModal, EliminationModal } from './components';
 import { trimSpaces, capitalizeFirstLetter } from '../../../utils/stringUtils';
 import { getDependents, createDependent, updateDependent, deleteDependent } from '../../../services/DependentService';
@@ -24,7 +24,11 @@ const DependentPage = () => {
     // Estado para el modal de eliminación de dependientes 
     const [typeModal, setTypeModal] = useState('form');
 
+    // Estado para el mensaje de alerta
     const [alert, setAlert] = useState(null);
+
+    // Estado para el modal de carga 
+    const [isLoading, setIsLoading] = useState(null);
 
     useEffect(() => {
         getDependents()
@@ -32,8 +36,7 @@ const DependentPage = () => {
             setDataDependents(res.data);
             setFilterDependents(res.data)
         })
-        .catch(err => console.log(err));
-        //setFilterDependents(dependents)
+        .catch(err => err);
     }, [isChange]);
      
     useEffect(() => {
@@ -76,7 +79,7 @@ const DependentPage = () => {
     }
     const handleShow = () => setShow(true);
 
-    // Función guardar datos de nuevo dependiente
+    // Función guardar y actualizar datos de los dependientes
     const saveDependent = async (data, reset, type) => {
         // Se elimina espacios innecesarios
         const sanitizedName = trimSpaces(data.names);
@@ -88,32 +91,37 @@ const DependentPage = () => {
         data.genderId = parseInt(data.genderId);
         data.kinshipId = parseInt(data.kinshipId);
 
+        setIsLoading({success: undefined});
+
         if(type === 'create') {
             const result = await createDependent(data);
             if(result.success && result.success === true) setIsChange(!isChange);
-            
+
+            setIsLoading({success: result.success});
             setAlert(result);
         }    
         else {
             data.dependentId = dependentSelect.dependentId;
-            const result = await updateDependent(data);
 
-            if(result.success && result.success === true) {
-                setIsChange(!isChange);
-            }
-            handleClose();
+            const result = await updateDependent(data);
+            if(result.success && result.success === true) setIsChange(!isChange);
+            
+            setIsLoading({success: result.success});
             setAlert(result);
         }
+
+        handleClose();
         reset();
         setDependentSelect(null);
     }
 
     const eliminateDependent = async(data) => {
+        setIsLoading({success: undefined});
         const result = await deleteDependent(data);
         
-        if(result.success && result.success === true) {
-            setIsChange(!isChange);
-        }
+        if(result.success && result.success === true) setIsChange(!isChange);
+        
+        setIsLoading({success: result.success});
         handleClose();
         setAlert(result);
         setDependentSelect(null);
@@ -121,7 +129,8 @@ const DependentPage = () => {
 
     return (
         <>
-            { 
+            { isLoading ? (isLoading.success === undefined ? <ModalLoading show={true} /> : "") : ""}
+            { /* Ventana modal para el registro, actualización y eliminación de dependiente  */
                 show === true ? (
                     typeModal === 'form' ? (
                         <FormModal 
@@ -142,10 +151,9 @@ const DependentPage = () => {
                          />
                     )
                 ):<></>
-                
             }
             <h1 className={styles.page_title}>Gestión de Dependientes</h1>
-            { 
+            { /* Mensaje de alerta para mostrar información al usuario */
                 alert && 
                 <div className={styles.container_alert}>
                     <AlertMessage 
@@ -172,14 +180,14 @@ const DependentPage = () => {
             </div>
             {
                 filterDependents ? (
-                <DependentTable 
-                styles="margin-bottom: 40px;" 
-                dependents={filterDependents} 
-                paginationResetDefaultPage={resetPaginationToggle}
-                handleShow={handleShow}
-                setTypeModal={setTypeModal}
-                setDependentSelect={setDependentSelect} />) 
-                : 
+                    <DependentTable 
+                        styles="margin-bottom: 40px;" 
+                        dependents={filterDependents} 
+                        paginationResetDefaultPage={resetPaginationToggle}
+                        handleShow={handleShow}
+                        setTypeModal={setTypeModal}
+                        setDependentSelect={setDependentSelect} />
+                ): 
                 (<p>Cargando...</p>)
             }
         </>

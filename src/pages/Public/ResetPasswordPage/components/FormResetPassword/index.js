@@ -7,7 +7,7 @@ import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 import { useForm } from 'react-hook-form';
 import { formatPassword } from '../../../../../utils/formatUtils';
 import { resetPassword } from '../../../../../services/PasswordResetService';
-import { AlertMessage } from '../../../../../components';
+import { AlertMessage, ModalLoading } from '../../../../../components';
 import styles from '../../../LoginPage/components/FormLogin/FormLogin.module.css';
 
 const FormResetPassword = () => {
@@ -21,8 +21,10 @@ const FormResetPassword = () => {
     const [searchParams] = useSearchParams();
     const { register, handleSubmit, setError, reset, formState: {errors} } = useForm();
     const navigate = useNavigate();
+    const [isLoading, setIsLoading] = useState(null);
 
     const changePassword = async(data) => {
+        
         const verification = verifyPassword(data.newPassword, data.confirmPassword);
         
         if(!verification) {
@@ -33,12 +35,11 @@ const FormResetPassword = () => {
             });
             return;
         }
-
+        setIsLoading({success: undefined});
         const token = searchParams.get("token");
         const result = await resetPassword(data.newPassword, token);
         setAlert(result);
-        console.log(typeof result.success);
-        
+        setIsLoading({success: result.success});
 
         if(result.success === true) {reset(); setIsValid(result.success);}
     }
@@ -47,80 +48,83 @@ const FormResetPassword = () => {
     const verifyPassword = (newPassword, confirmPassword) => newPassword === confirmPassword ? true : false;
     
     return (
-        <Form className={`${styles.container_form} ${styles.container_form_center}`} onSubmit={handleSubmit(changePassword)}>
-            <h2>Resetear contraseña</h2>
-            <div className="underline mx-auto"></div>
-            { 
-                alert && 
-                <AlertMessage 
-                type={ alert.success === false ? 'danger' : 'success' }
-                message={ alert.message }
-                setError= { setAlert }  /> 
-            }
-            <Form.Group className="mb-3" controlId="formBasicPassword">
-                <Form.Label className={styles.label_input}>Contraseña</Form.Label>
-                <InputGroup className="mb-3">
-                    <InputGroup.Text className={styles.input_group_text}><BsFillKeyFill /></InputGroup.Text>
-                    <Form.Control 
-                    className={`${styles.form_control} ${styles.form_control_password}`} 
-                    type={passwordShow ? "text" : "password"} 
-                    {...register("newPassword", { 
-                        required: "Contraseña es requerida",
-                        pattern: {
-                            value: formatPassword,
-                            message: "La contraseña contiene caracteres no permitidos"
-                        },
-                        minLength: {
-                            value: 5,
-                            message: "La contraseña debe de tener mínimo 5 carácteres"
-                        }
-                    })}
-                    placeholder="Ingrese contraseña" />
-                    <Button 
-                    className={styles.button_visible}
-                    onClick={() => setPasswordShow(!passwordShow)}>
-                        {passwordShow ? <MdVisibilityOff /> : <MdVisibility />}
-                    </Button>   
-                </InputGroup>
-                { errors.newPassword && <p className={styles.error_message}>{ errors.newPassword.message }</p> } 
-            </Form.Group>
+        <>
+            { isLoading ? (isLoading.success === undefined ? <ModalLoading show={true} /> : "") : ""}
+            <Form className={`${styles.container_form} ${styles.container_form_center}`} onSubmit={handleSubmit(changePassword)}>
+                <h2>Resetear contraseña</h2>
+                <div className="underline mx-auto"></div>
+                { 
+                    alert && 
+                    <AlertMessage 
+                    type={ alert.success === false ? 'danger' : 'success' }
+                    message={ alert.message }
+                    setError= { setAlert }  /> 
+                }
+                <Form.Group className="mb-3" controlId="formBasicPassword">
+                    <Form.Label className={styles.label_input}>Contraseña</Form.Label>
+                    <InputGroup className="mb-3">
+                        <InputGroup.Text className={styles.input_group_text}><BsFillKeyFill /></InputGroup.Text>
+                        <Form.Control 
+                        className={`${styles.form_control} ${styles.form_control_password}`} 
+                        type={passwordShow ? "text" : "password"} 
+                        {...register("newPassword", { 
+                            required: "Contraseña es requerida",
+                            pattern: {
+                                value: formatPassword,
+                                message: "La contraseña contiene caracteres no permitidos"
+                            },
+                            minLength: {
+                                value: 5,
+                                message: "La contraseña debe de tener mínimo 5 carácteres"
+                            }
+                        })}
+                        placeholder="Ingrese contraseña" />
+                        <Button 
+                        className={styles.button_visible}
+                        onClick={() => setPasswordShow(!passwordShow)}>
+                            {passwordShow ? <MdVisibilityOff /> : <MdVisibility />}
+                        </Button>   
+                    </InputGroup>
+                    { errors.newPassword && <p className={styles.error_message}>{ errors.newPassword.message }</p> } 
+                </Form.Group>
 
-            <Form.Group className="mb-3" controlId="formConfirmPassword">
-                <Form.Label className={styles.label_input}>Confirmar contraseña</Form.Label>
-                <InputGroup className="mb-3">
-                    <InputGroup.Text className={styles.input_group_text}><BsFillKeyFill /></InputGroup.Text>
-                    <Form.Control 
-                    className={`${styles.form_control} ${styles.form_control_password}`} 
-                    type={confirmPasswordShow ? "text" : "password"} 
-                    {...register("confirmPassword", { 
-                        required: "Contraseña es requerida",
-                    })}
-                    placeholder="Ingrese contraseña" />
-                    <Button 
-                    className={styles.button_visible}
-                    onClick={() => setConfirmPasswordShow(!confirmPasswordShow)}>
-                        {confirmPasswordShow ? <MdVisibilityOff /> : <MdVisibility />}
-                    </Button>   
-                </InputGroup>
-                { errors.confirmPassword && <p className={styles.error_message}>{ errors.confirmPassword.message }</p> } 
-            </Form.Group>
-            
-            <div className={styles.container_button}>
-                <Button className={styles.button_sign_in} type="submit" 
-                disabled={isValid === false ? false : true }>
-                    Confirmar
-                </Button>
-                <Button className={styles.button_back} type="button" 
-                onClick={() => {
-                    if(isValid === true) navigate('/login')
-                    else navigate("/")
-                }}>
-                    <FaArrowCircleLeft /> {isValid === true ? 'Ir al login' : 'Cancelar' }
-                </Button>
-            </div>
-            <hr style={{"marginTop": "30px"}}/>
-            
-        </Form>
+                <Form.Group className="mb-3" controlId="formConfirmPassword">
+                    <Form.Label className={styles.label_input}>Confirmar contraseña</Form.Label>
+                    <InputGroup className="mb-3">
+                        <InputGroup.Text className={styles.input_group_text}><BsFillKeyFill /></InputGroup.Text>
+                        <Form.Control 
+                        className={`${styles.form_control} ${styles.form_control_password}`} 
+                        type={confirmPasswordShow ? "text" : "password"} 
+                        {...register("confirmPassword", { 
+                            required: "Contraseña es requerida",
+                        })}
+                        placeholder="Ingrese contraseña" />
+                        <Button 
+                        className={styles.button_visible}
+                        onClick={() => setConfirmPasswordShow(!confirmPasswordShow)}>
+                            {confirmPasswordShow ? <MdVisibilityOff /> : <MdVisibility />}
+                        </Button>   
+                    </InputGroup>
+                    { errors.confirmPassword && <p className={styles.error_message}>{ errors.confirmPassword.message }</p> } 
+                </Form.Group>
+                
+                <div className={styles.container_button}>
+                    <Button className={styles.button_sign_in} type="submit" 
+                    disabled={isValid === false ? false : true }>
+                        Confirmar
+                    </Button>
+                    <Button className={styles.button_back} type="button" 
+                    onClick={() => {
+                        if(isValid === true) navigate('/login')
+                        else navigate("/")
+                    }}>
+                        <FaArrowCircleLeft /> {isValid === true ? 'Ir al login' : 'Cancelar' }
+                    </Button>
+                </div>
+                <hr style={{"marginTop": "30px"}}/>
+                
+            </Form>
+        </>
     );
 }
 

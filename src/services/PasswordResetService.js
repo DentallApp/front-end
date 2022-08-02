@@ -5,7 +5,7 @@ export const sendUserEmail =(email) => {
     .then(res => {
                 if(res.data.success === true) {
                     return {
-                        sucess: res.data.success,
+                        success: res.data.success,
                         message: res.data.message
                     }
                 } 
