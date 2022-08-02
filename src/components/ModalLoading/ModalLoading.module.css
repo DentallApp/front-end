@@ -1,0 +1,20 @@
+.modal_info {
+    background-color: #002855;
+    color: #FFFFFF;
+}
+
+.container_spinner {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.spinner {
+    width: 10rem!important;
+    height: 10rem!important;
+}
+
+.text_loading {
+    font-size: 2rem;
+}

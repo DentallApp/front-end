@@ -3,3 +3,4 @@ export { default as Footer } from './Footer';
 export { default as SideBar } from './SideBar';
 export { default as AlertMessage } from './AlertMessage';
 export { default as NavBarDashboard } from './NavBarDashboard';
+export { default as ModalLoading } from './ModalLoading';
