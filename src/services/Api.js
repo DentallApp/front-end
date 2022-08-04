@@ -4,7 +4,6 @@ import {
   getLocalRefreshToken, 
   updateLocalAccessToken, 
   updateLocalRefreshToken,
-  removeLocalUser 
 } from './UserService';
 
 const apiPublicRoutes = [
@@ -26,7 +25,6 @@ const instance = axios.create({
         "Content-Type": "application/json",
     },
 });
-
 
 // Se congigura los interceptors
 instance.interceptors.request.use(
