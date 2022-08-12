@@ -1,0 +1,67 @@
+.container_modal {
+    max-width: 600px;
+}
+
+.container_form {
+    width: 100%;
+    padding: 20px;
+}
+
+.container_form h2 {
+    text-align: center;
+    font-weight: 700;
+}
+
+.container_header {
+    background-color: #002855 !important;
+    color: #FFF !important;
+}
+
+.container_header Button {
+    background: transparent url('../../../../../img/cancel.png') center/1.5em auto no-repeat !important;
+}
+
+.container_form .text_information {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #999;
+}
+
+.label_input {
+    font-style: italic;
+    font-weight: bold;
+}
+
+.form_control_password {
+    border-right-style: none !important;
+}
+
+.button_visible {
+    background-color: transparent !important;
+    color: #000 !important;
+    border-left-style: none !important;
+    border-color: #ced4da;
+}
+
+.button_visible:hover {
+    border-color: #ced4da;
+}
+
+.error_message {
+    color: #ec5990;
+    font-size: 12px;
+}
+
+@media screen and (max-width: 580px) {
+    
+    .container_form {
+        padding: 5px;
+    }
+}
+
+@media screen and (max-width: 768px) and (orientation: landscape) {
+    .container_modal {
+        max-width: 100%;
+    }
+}
