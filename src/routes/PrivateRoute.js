@@ -17,7 +17,7 @@ const PrivateRoute = ({ role }) => {
             {
                 user ? (
                     user.accessToken ? (
-                        user.roles.includes(role) ? (
+                        user.roles.some(r => role.includes(r)) ? (
                             <Outlet />
                         )
                         : (
