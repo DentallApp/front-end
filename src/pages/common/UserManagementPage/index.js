@@ -6,7 +6,6 @@ import { getLocalUser } from '../../../services/UserService';
 const UserManagementPage = () => {
 
     const user = getLocalUser();
-    console.log(user);
 
     return (
         <>
