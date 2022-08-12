@@ -8,8 +8,6 @@ import { useForm } from 'react-hook-form';
 import { AlertMessage, ModalLoading } from '../../../../../components';
 import { formatEmail, formatPassword } from '../../../../../utils/formatUtils';
 import { login } from '../../../../../services/AuthService';
-import { getLocalUser } from '../../../../../services/UserService';
-import ROLES from '../../../../../constants/Roles';
 import styles from './FormLogin.module.css'; 
 
 const FormLogin = () => {
@@ -30,14 +28,8 @@ const FormLogin = () => {
         setError(result);
         setIsLoading({success: result.success});
 
-        if(result.success === true) {
-            const user = getLocalUser();
-            
-            if(user.roles.includes(ROLES.BASIC_USER))
-                navigate("/inicio");
-            else if(user.roles.includes(ROLES.SUPERADMIN))
-                navigate(`/inicio-${ROLES.SUPERADMIN.toLowerCase()}`)
-        }    
+        if(result.success === true) navigate("/inicio");
+        
     }
 
     return (
@@ -68,7 +60,7 @@ const FormLogin = () => {
                         })}
                         placeholder="Ingrese correo electrónico" />   
                     </InputGroup>
-                    { errors.email && <p className={styles.error_message}>{ errors.email.message }</p> } 
+                    { errors.userName && <p className={styles.error_message}>{ errors.userName.message }</p> } 
                 </Form.Group>
                 
                 <Form.Group className="mb-3" controlId="formBasicPassword">
