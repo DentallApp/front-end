@@ -4,3 +4,4 @@ export { default as SideBar } from './SideBar';
 export { default as AlertMessage } from './AlertMessage';
 export { default as NavBarDashboard } from './NavBarDashboard';
 export { default as ModalLoading } from './ModalLoading';
+export { default as FilterComponent } from './FilterComponent';
