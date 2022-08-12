@@ -1,15 +1,16 @@
 import { useContext, useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { AiFillHome } from "react-icons/ai";
-import { MdManageAccounts} from "react-icons/md";
+import { MdPassword } from "react-icons/md";
 import { ImExit } from "react-icons/im";
 import BasicUserOptions from './BasicUserOptions';
-import { logo, user } from '../../img';
+import { logo } from '../../img';
 import { logout } from '../../services/AuthService';
 import { getLocalUser } from '../../services/UserService';
 import ROLES from '../../constants/Roles';
 import styles from './SideBar.module.css';
 import DentistOptions from './DentistOptions';
+//import SecretaryOptions from './SecretaryOptions';
 import SideBarContext from '../../context/SideBarContext';
 import CommonOptions from './CommonOptions';
 
@@ -44,7 +45,7 @@ const SideBar = () => {
                         <ul>
                             <NavLink 
                             className={({ isActive }) => isActive ? styles.navlink_active : styles.navlink } 
-                            to={userData.roles.includes(ROLES.BASIC_USER) ? '/inicio' : `/inicio-${userData.roles[0].toLowerCase()}`}
+                            to={'/inicio'}
                             onClick={() => {window.scrollTo({ top: 0, behavior: 'smooth' })} }> 
                                 <AiFillHome className={styles.icon} /> 
                                 Inicio
@@ -54,14 +55,17 @@ const SideBar = () => {
     
                             { userData ? (userData.roles.includes(ROLES.DENTIST) && <DentistOptions />) : null }
 
+                            { /*userData ? (userData.roles.includes(ROLES.SECRETARY) && <SecretaryOptions />) : null */}
+
                             { userData && <CommonOptions /> }
-                        
+
                             <NavLink className={({ isActive }) => isActive ? styles.navlink_active : styles.navlink } 
-                            to="configuracion"
+                            to="cambio-contrasena"
                             onClick={() => {window.scrollTo({ top: 0, behavior: 'smooth' })} }>
-                                <MdManageAccounts className={styles.icon} /> 
-                                Editar perfil
+                                <MdPassword className={styles.icon} /> 
+                                Cambiar contraseña
                             </NavLink>
+                        
                             <NavLink className={({ isActive }) => isActive ? styles.navlink_active : styles.navlink } 
                             to="/login"
                             onClick={() => {
