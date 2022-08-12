@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import { Button } from 'react-bootstrap';
+import { Button, Spinner } from 'react-bootstrap';
 import { IoAddCircle } from "react-icons/io5";
-import { AlertMessage, ModalLoading } from '../../../components';
-import { DependentTable, FilterComponent, FormModal, EliminationModal } from './components';
+import { AlertMessage, ModalLoading, FilterComponent } from '../../../components';
+import { DependentTable, FormModal, EliminationModal } from './components';
 import { trimSpaces, capitalizeFirstLetter } from '../../../utils/stringUtils';
 import { getDependents, createDependent, updateDependent, deleteDependent } from '../../../services/DependentService';
 import styles from './DependentPage.module.css';
@@ -36,7 +36,7 @@ const DependentPage = () => {
             setDataDependents(res.data);
             setFilterDependents(res.data)
         })
-        .catch(err => err);
+        .catch(err => console.log('Error: ' + err));
     }, [isChange]);
      
     useEffect(() => {
@@ -47,11 +47,10 @@ const DependentPage = () => {
 
 
     const filterData = () => {
-        const data = filterDependents.filter(dependent => 
-            dependent.dependentId.toString().includes(filterText.toLocaleLowerCase()) === true || 
+        const data = dataDependents.filter(dependent => 
+            dependent.document.toString().includes(filterText.toLocaleLowerCase()) === true || 
                 dependent.names.toString().toLocaleLowerCase().includes(filterText.toLocaleLowerCase()) === true ||
-                dependent.lastNames.toString().toLocaleLowerCase().includes(filterText.toLocaleLowerCase()) === true ||
-                dependent.cellPhone.toString().includes(filterText.toLocaleLowerCase()) === true
+                dependent.lastNames.toString().toLocaleLowerCase().includes(filterText.toLocaleLowerCase()) === true 
         );
         setFilterDependents(data);
     }
@@ -102,8 +101,8 @@ const DependentPage = () => {
         }    
         else {
             data.dependentId = dependentSelect.dependentId;
-
             const result = await updateDependent(data);
+
             if(result.success && result.success === true) setIsChange(!isChange);
             
             setIsLoading({success: result.success});
@@ -176,6 +175,7 @@ const DependentPage = () => {
                 onClear={handleClear} 
                 filterText={filterText}
                 setFilterText={setFilterText}
+                inputText="Ingrese nombre o cedula a buscar"
                 className={styles.filter} />
             </div>
             {
@@ -188,7 +188,12 @@ const DependentPage = () => {
                         setTypeModal={setTypeModal}
                         setDependentSelect={setDependentSelect} />
                 ): 
-                (<p>Cargando...</p>)
+                (
+                    <div className={`${styles.container_spinner}`}>
+                        <Spinner size="lg" className={styles.spinner} animation="border" variant="info" />
+                        <p className={styles.text_loading}>Cargando...</p>
+                    </div>
+                )
             }
         </>
     );

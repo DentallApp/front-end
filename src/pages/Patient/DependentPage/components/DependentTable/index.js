@@ -56,12 +56,6 @@ const DependentTable = (
             width: "auto"
         },
         {
-            name: <div className={styles.container_table_header}><h6>Celular</h6></div>,
-            selector: row => row.cellPhone,
-            sortable: true,
-            minWidth: "auto"
-        },
-        {
             name: <div className={styles.container_table_header}><h6>Correo</h6></div>,
             selector: row => row.email,
             sortable: true,
