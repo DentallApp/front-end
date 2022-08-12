@@ -3,26 +3,26 @@ import { NavLink } from 'react-router-dom';
 import { AiOutlineCaretDown,AiOutlineCaretUp } from "react-icons/ai";
 import { IoCalendarNumber } from "react-icons/io5";
 import { BsPersonPlusFill, BsPersonBadgeFill } from "react-icons/bs";
-import { MdFavorite } from "react-icons/md";
+import { MdFavorite, MdManageAccounts } from "react-icons/md";
 import { FaThList } from "react-icons/fa";
 import { HiCurrencyDollar } from "react-icons/hi";
 import styles from './SideBar.module.css';
 
 const BasicUserOptions = () => {
-
+    // window.scrollTo(0, document.body.scrollHeight)
     const [submenuShow, setSubmenuShow] = useState(false);
 
     return(
         <>
             <NavLink className={({ isActive }) => isActive ? styles.navlink_active : styles.navlink } 
-            to="agendamiento" 
-            onClick={() => window.scrollTo(0, document.body.scrollHeight) }>
+            to="agendamiento/chatbot" 
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth'}) }>
                 <IoCalendarNumber className={styles.icon} /> 
                 Agendar cita
             </NavLink>
             <NavLink className={({ isActive }) => isActive ? styles.navlink_active : styles.navlink } 
             to="lista-citas"
-            onClick={() => {window.scrollTo({ top: 0, behavior: 'smooth' })} }>
+            onClick={() => {window.scrollTo({ top: 0, behavior: 'smooth'})} }>
                 <FaThList className={styles.icon} /> 
                 Historial de citas
             </NavLink>
@@ -67,6 +67,13 @@ const BasicUserOptions = () => {
             onClick={() => {window.scrollTo({ top: 0, behavior: 'smooth' })} }>
                 <HiCurrencyDollar className={styles.icon} /> 
                 Cotizar
+            </NavLink>
+
+            <NavLink className={({ isActive }) => isActive ? styles.navlink_active : styles.navlink } 
+            to="configuracion"
+            onClick={() => {window.scrollTo({ top: 0, behavior: 'smooth' })} }>
+                <MdManageAccounts className={styles.icon} /> 
+                Editar perfil
             </NavLink>
         </>
     );
