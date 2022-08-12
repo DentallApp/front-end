@@ -1,0 +1,28 @@
+.container_modal {
+    max-width: 600px;
+}
+
+h2 {
+    text-align: center;
+    font-weight: 700;
+}
+
+.container_header {
+    background-color: #002855 !important;
+    color: #FFF !important;
+}
+
+.container_header Button {
+    background: transparent url('../../../../../img/cancel.png') center/1.5em auto no-repeat !important;
+}
+
+.text_information {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #999;
+}
+
+.filter{
+    margin-bottom: 20px;
+}
