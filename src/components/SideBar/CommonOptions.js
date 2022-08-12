@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { IoCalendarNumber } from "react-icons/io5";
+import { FaUsers } from "react-icons/fa";
 import ROLES from '../../constants/Roles';
 import { getLocalUser } from '../../services/UserService';
 import styles from './SideBar.module.css';
@@ -13,9 +13,9 @@ const CommonOptions = () => {
             { 
                 (user.roles.includes(ROLES.ADMIN) || user.roles.includes(ROLES.SUPERADMIN)) &&  
                 <NavLink className={({ isActive }) => isActive ? styles.navlink_active : styles.navlink } 
-                to={`gestion-usuarios/${user.roles[0].toLowerCase()}`} 
-                onClick={() => {} }>
-                    <IoCalendarNumber className={styles.icon} /> 
+                to={'gestion-usuarios'} 
+                onClick={() => {window.scrollTo({ top: 0, behavior: 'smooth' })} }>
+                    <FaUsers className={styles.icon} /> 
                     Usuarios
                 </NavLink>
             }
