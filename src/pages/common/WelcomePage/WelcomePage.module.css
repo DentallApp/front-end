@@ -1,0 +1,22 @@
+.container_page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.page_title {
+    margin-top: 10px;
+    text-align: center;
+    font-weight: bold;
+    font-style: italic;
+    color: #002855;
+}
+
+.fullname_user {
+    text-align: center;
+}
+
+.gif {
+    max-width: 100%;
+}
