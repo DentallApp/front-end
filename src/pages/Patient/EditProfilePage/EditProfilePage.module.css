@@ -1,0 +1,15 @@
+.wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.page_title {
+    margin-top: 10px;
+    text-align: center;
+    font-weight: bold;
+    font-style: italic;
+    color: #002855;
+}
