@@ -39,7 +39,7 @@ const RegistrationForm = () => {
         // Se convierte a mayúscula la primer letra de cada palabra
         data.names = capitalizeFirstLetter(sanitizedName);
         data.lastNames = capitalizeFirstLetter(sanitizedLastName);
-        data.genderId = parseInt(data.genderId)
+        data.genderId = parseInt(data.genderId);
 
         const result = await registerBasicUser(data);
         setAlert(result);
