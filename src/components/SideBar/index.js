@@ -1,7 +1,7 @@
 import { useContext, useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { AiFillHome } from "react-icons/ai";
-import { MdPassword } from "react-icons/md";
+import { MdPassword, MdManageAccounts  } from "react-icons/md";
 import { ImExit } from "react-icons/im";
 import BasicUserOptions from './BasicUserOptions';
 import { logo } from '../../img';
@@ -11,6 +11,7 @@ import ROLES from '../../constants/Roles';
 import styles from './SideBar.module.css';
 import DentistOptions from './DentistOptions';
 //import SecretaryOptions from './SecretaryOptions';
+import SuperadminOptions from './SuperadminOptions';
 import SideBarContext from '../../context/SideBarContext';
 import CommonOptions from './CommonOptions';
 
@@ -57,6 +58,8 @@ const SideBar = () => {
 
                             { /*userData ? (userData.roles.includes(ROLES.SECRETARY) && <SecretaryOptions />) : null */}
 
+                            { userData ? (userData.roles.includes(ROLES.SUPERADMIN) && <SuperadminOptions />) : null }
+
                             { userData && <CommonOptions /> }
 
                             <NavLink className={({ isActive }) => isActive ? styles.navlink_active : styles.navlink } 
@@ -64,6 +67,13 @@ const SideBar = () => {
                             onClick={() => {window.scrollTo({ top: 0, behavior: 'smooth' })} }>
                                 <MdPassword className={styles.icon} /> 
                                 Cambiar contraseña
+                            </NavLink>
+
+                            <NavLink className={({ isActive }) => isActive ? styles.navlink_active : styles.navlink } 
+                            to="configuracion"
+                            onClick={() => {window.scrollTo({ top: 0, behavior: 'smooth' })} }>
+                                <MdManageAccounts className={styles.icon} /> 
+                                Editar perfil
                             </NavLink>
                         
                             <NavLink className={({ isActive }) => isActive ? styles.navlink_active : styles.navlink } 
