@@ -19,12 +19,14 @@ import {
     SessionExpiredPage, 
     UnauthorizedPage, 
     ChangePasswordPage,
-    UserManagementPage } from '../pages/common';
-import { AppointmentChatbotPage, DependentPage, QuotationPage, EditProfilePage } from '../pages/Patient';
+    UserManagementPage,
+    EditProfilePage } from '../pages/common';
+import { AppointmentChatbotPage, DependentPage, QuotationPage } from '../pages/Patient';
 import { AppointmentCalendarPage } from '../pages/Dentist';
 //import { AppointmentPage } from '../pages/Secretary';
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
+import { GeneralServicePage } from '../pages/SuperAdmin';
 //import { HomeSuperAdminPage } from '../pages/SuperAdmin';
 
 const RoutesApp = () => {
@@ -51,7 +53,6 @@ const RoutesApp = () => {
                         <Route path="/agendamiento/chatbot" element={<AppointmentChatbotPage />}/>
                         <Route path="/gestion-dependientes" element={<DependentPage />}/>
                         <Route path={'/cotizacion'} element={<QuotationPage />} />
-                        <Route path={'/configuracion'} element={<EditProfilePage />} />
                     </Route>
                 </Route>
 
@@ -69,6 +70,13 @@ const RoutesApp = () => {
                     </Route>
                 </Route>*/}
                 
+                {/* Rutas privadas para el superadministrador */}
+                {<Route element={<PrivateRoute role={[ROLES.SUPERADMIN]} />}>
+                    <Route element={<Dashboard />}>
+                        <Route path="/gestion-servicio" element={<GeneralServicePage />} />
+                    </Route>
+                </Route>}
+
                 {/* Rutas privadas para los roles de Administrador y Superadministrador */}
                 <Route element={<PrivateRoute 
                 role={[ROLES.ADMIN, ROLES.SUPERADMIN]} />}>
@@ -83,6 +91,7 @@ const RoutesApp = () => {
                     <Route element={<Dashboard />}>
                         <Route path={`/inicio`} element={<WelcomePage />}/>
                         <Route path={'/cambio-contrasena'} element={<ChangePasswordPage />} />
+                        <Route path={'/configuracion'} element={<EditProfilePage />} />
                     </Route>
                 </Route>
 
