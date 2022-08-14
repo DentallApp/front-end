@@ -4,7 +4,6 @@ import{ NavDropdown } from 'react-bootstrap';
 import { ImMenu } from "react-icons/im";
 import SideBarContext from '../../context/SideBarContext';
 import { getLocalUser } from '../../services/UserService';
-import ROLES from '../../constants/Roles';
 import { logout } from '../../services/AuthService';
 import { user } from '../../img';
 import styles from './NavBarDashboard.module.css';
@@ -23,13 +22,11 @@ const NavBarDashboard = () => {
                 ) }
                 <div className={styles.user}>
                     <NavDropdown title={<img src={user} alt="avatar"/>} id="collasible-nav-dropdown">
-                        { userData.roles.includes(ROLES.BASIC_USER) && (
-                            <NavDropdown.Item 
+                        <NavDropdown.Item 
                             as={Link} 
                             to="/configuracion" onClick={() => handleSidebar()}>
                                 Configurar
                             </NavDropdown.Item>
-                        ) }
                         <NavDropdown.Item 
                         as={Link} to="/login" onClick={() => {
                         handleSidebar();

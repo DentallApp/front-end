@@ -68,13 +68,6 @@ const BasicUserOptions = () => {
                 <HiCurrencyDollar className={styles.icon} /> 
                 Cotizar
             </NavLink>
-
-            <NavLink className={({ isActive }) => isActive ? styles.navlink_active : styles.navlink } 
-            to="configuracion"
-            onClick={() => {window.scrollTo({ top: 0, behavior: 'smooth' })} }>
-                <MdManageAccounts className={styles.icon} /> 
-                Editar perfil
-            </NavLink>
         </>
     );
 }
