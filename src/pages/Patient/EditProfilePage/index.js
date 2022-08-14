@@ -12,8 +12,9 @@ const EditProfilePage = () => {
     return (
         <>
             { isLoading ? (isLoading.success === undefined ? <ModalLoading show={true} /> : "") : ""}
-             <div className={styles.wrapper}>
+            <div className={styles.wrapper}>
                 <h1 className={styles.page_title}>Editar Perfil</h1>
+                <p className={styles.text_information}>Los campos con el símbolo * son obligatorios</p>
                 { 
                     alert && 
                     <AlertMessage 

@@ -68,9 +68,17 @@ const FormProfile = ({user, setIsLoading, setAlert}) => {
         if(result.success === true) {
             user.names = data.names;
             user.lastNames = data.lastNames;
+            user.fullName = data.names + ' ' + data.lastNames;
             user.cellPhone = data.cellPhone;
             user.dateBirth = data.dateBirth;
             user.genderId = data.genderId;
+
+            genders.forEach(gender => {
+                if(gender.id === user.genderId) {
+                    user.genderName = gender.name;
+                    return;
+                }
+            });
 
             setLocalUser(user);
             setProfile(data);
@@ -84,7 +92,7 @@ const FormProfile = ({user, setIsLoading, setAlert}) => {
                     <Row>
                         <Col xs={12} md>
                             <Form.Group className="mb-3" controlId="formBasicName">
-                                <Form.Label className={styles.label_input}>Nombre</Form.Label>
+                                <Form.Label className={styles.label_input}>* Nombre</Form.Label>
                                 <Form.Control 
                                 placeholder="Ingrese nombre"
                                 {...register("names", {
@@ -104,7 +112,7 @@ const FormProfile = ({user, setIsLoading, setAlert}) => {
 
                         <Col xs={12} md>
                             <Form.Group className="mb-3" controlId="formBasicLastName">
-                                <Form.Label className={styles.label_input}>Apellidos</Form.Label>
+                                <Form.Label className={styles.label_input}>* Apellidos</Form.Label>
                                 <Form.Control 
                                 type="text" 
                                 placeholder="Ingrese apellidos"
@@ -124,7 +132,7 @@ const FormProfile = ({user, setIsLoading, setAlert}) => {
                     <Row>
                         <Col xs={12} md>
                             <Form.Group className="mb-3" controlId="formBasicPhone">
-                                <Form.Label className={styles.label_input}>Teléfono</Form.Label>
+                                <Form.Label className={styles.label_input}>* Teléfono</Form.Label>
                                 <Form.Control 
                                 type="number" 
                                 placeholder="Ingrese número de celular"
@@ -149,7 +157,7 @@ const FormProfile = ({user, setIsLoading, setAlert}) => {
 
                         <Col xs={12} md>
                             <Form.Group className="mb-3" controlId="formBasicId">
-                                <Form.Label className={styles.label_input}>Cedula</Form.Label>
+                                <Form.Label className={styles.label_input}>* Cedula</Form.Label>
                                 <Form.Control 
                                 type="number"
                                 disabled 
@@ -163,7 +171,7 @@ const FormProfile = ({user, setIsLoading, setAlert}) => {
                     <Row>
                         <Col xs={12} md>
                             <Form.Group className="mb-3" controlId="formBasicEmail">
-                                <Form.Label className={styles.label_input}>Correo</Form.Label>
+                                <Form.Label className={styles.label_input}>* Correo</Form.Label>
                                 <Form.Control 
                                 type="email" 
                                 placeholder="Ingrese correo electrónico"
@@ -175,7 +183,7 @@ const FormProfile = ({user, setIsLoading, setAlert}) => {
 
                         <Col xs={12} md>
                             <Form.Group className="mb-3" controlId="formBasicDate">
-                                <Form.Label className={styles.label_input}>Fecha de nacimiento</Form.Label>
+                                <Form.Label className={styles.label_input}>* Fecha de nacimiento</Form.Label>
                                 <Form.Control 
                                 type="date"
                                 {...register("dateBirth", {
@@ -189,7 +197,7 @@ const FormProfile = ({user, setIsLoading, setAlert}) => {
                     <Row>
                         <Col xs={12} md>
                             <Form.Group className="mb-3" controlId="formBasicGender">
-                                <Form.Label className={styles.label_input}>Género</Form.Label>
+                                <Form.Label className={styles.label_input}>* Género</Form.Label>
                                 { genders && (
                                     genders.map(gender => (
                                         <Form.Check
