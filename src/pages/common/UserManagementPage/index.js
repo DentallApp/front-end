@@ -20,11 +20,11 @@ const UserManagementPage = () => {
     const [isChange, setIsChange] = useState(false);
     const [filterUsers, setFilterUsers] = useState([]);
 
-    // Estado para el modal de creación y actualización de información de dependientes
+    // Estado para el modal de creación y actualización de información de usuarios
     const [show, setShow] = useState(false);
     const [rowSelect, setRowSelect] = useState(null);
 
-    // Estado para el modal de eliminación de dependientes 
+    // Estado para el modal de eliminación de usuarios 
     const [typeModal, setTypeModal] = useState('form');
 
     // Estado para el mensaje de alerta
@@ -38,7 +38,7 @@ const UserManagementPage = () => {
             setDataUsers(res.data);
             setFilterUsers(res.data);
         })
-        .catch(err => console.log(err));
+        .catch(err => console.log('Algo ocurrio: ' + err));
     }, [isChange]);
      
     useEffect(() => {

@@ -65,10 +65,12 @@ const FormModal = ({show, handleClose, userSelect = null, saveUser}) => {
             setValue("roleId", userSelect.roles.map(role => role.id ), true);
             setType('edit');
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
         if(office !== null && selectValue === '') setValue("officeId", office[0].id, true);
+         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [office]);
 
     const handleChange = (e) => setValue("officeId", e.target.value, true);
