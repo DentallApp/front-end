@@ -73,7 +73,7 @@ const QuotationPage = () => {
                 null
             }
             <h1 className={styles.page_title}>Cotizaciones</h1>
-            <p className={styles.text_information}>De clic en el botón añadir para agregar los tratamientos a su cotización</p>
+            <p className={styles.text_information}>Atención: Los tratamientos que se muestran a elegir son indicados por el odontólogo en la consulta</p>
             <div className={styles.container_header}>
                 <Button 
                 className={styles.button_add} 
