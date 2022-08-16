@@ -1,2 +1,1 @@
-export { default as UserManagementPage } from './UserManagementPage';
-export { default as HomeSuperAdminPage } from './HomeSuperAdminPage';
+export { default as GeneralServicePage } from './GeneralServicePage';
