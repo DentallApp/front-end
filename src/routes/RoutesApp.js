@@ -26,8 +26,7 @@ import { AppointmentCalendarPage } from '../pages/Dentist';
 //import { AppointmentPage } from '../pages/Secretary';
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
-import { GeneralServicePage } from '../pages/SuperAdmin';
-//import { HomeSuperAdminPage } from '../pages/SuperAdmin';
+import { GeneralServicePage, TreatmentPage } from '../pages/SuperAdmin';
 
 const RoutesApp = () => {
     return (
@@ -74,6 +73,7 @@ const RoutesApp = () => {
                 {<Route element={<PrivateRoute role={[ROLES.SUPERADMIN]} />}>
                     <Route element={<Dashboard />}>
                         <Route path="/gestion-servicio" element={<GeneralServicePage />} />
+                        <Route path="/gestion-tratamientos" element={<TreatmentPage />} />
                     </Route>
                 </Route>}
 
@@ -91,7 +91,7 @@ const RoutesApp = () => {
                     <Route element={<Dashboard />}>
                         <Route path={`/inicio`} element={<WelcomePage />}/>
                         <Route path={'/cambio-contrasena'} element={<ChangePasswordPage />} />
-                        <Route path={'/configuracion'} element={<EditProfilePage />} />
+                        <Route path={'/perfil'} element={<EditProfilePage />} />
                     </Route>
                 </Route>
 
