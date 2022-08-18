@@ -16,6 +16,9 @@ export const login = ({ userName, password }) => {
         };
     })
     .catch(err => {
+        
+        if(err.response.status === 0) return {status: err.response.status,}
+
         return {
             status: err.response.status,
             success: err.response.data.success,

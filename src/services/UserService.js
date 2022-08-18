@@ -50,6 +50,8 @@ export const registerBasicUser = (data) => {
         }
     })
     .catch(err => {
+        if(err.response.status === 0) return {status: err.response.status,}
+        
         return {
             status: err.response.status,
             success: err.response.data.success,
@@ -76,6 +78,8 @@ export const updateProfileUser = (data) => {
         }
     })
     .catch(err => {
+        if(err.response.status === 0) return {status: err.response.status,}
+
         return {
             status: err.response.status,
             success: err.response.data.success,
@@ -99,6 +103,8 @@ export const updatePassword = ({ oldPassword, newPassword }) => {
         }
     })
     .catch(err => {
+        if(err.response.status === 0) return {status: err.response.status,}
+
         return {
             status: err.response.status,
             success: err.response.data.success,

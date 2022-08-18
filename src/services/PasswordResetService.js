@@ -12,6 +12,8 @@ export const sendUserEmail =(email) => {
                 } 
             })
     .catch(err => {
+        if(err.response.status === 0) return {status: err.response.status,}
+        
         return {
             status: err.response.status,
             success: err.response.data.success,
@@ -30,6 +32,8 @@ export const resetPassword = (newPassword, token) => {
                 }
             })
             .catch(err => {
+                if(err.response.status === 0) return {status: err.response.status,}
+
                 return {
                     status: err.response.status,
                     success: err.response.data.success,

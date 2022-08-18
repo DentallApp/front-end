@@ -29,6 +29,8 @@ export const createEmployee = (data) => {
         }
     })
     .catch(err => {
+        if(err.response.status === 0) return {status: err.response.status,}
+        
         return {
             status: err.response.status,
             success: err.response.data.success,
@@ -61,6 +63,8 @@ export const updateEmployee = (data) => {
         }
     })
     .catch(err => {
+        if(err.response.status === 0) return {status: err.response.status,}
+
         return {
             status: err.response.status,
             success: err.response.data.success,
@@ -81,6 +85,8 @@ export const deleteEmployee = (id) => {
         }
     })
     .catch(err => {
+        if(err.response.status === 0) return {status: err.response.status,}
+
         return {
             status: err.response.status,
             success: err.response.data.success,
@@ -109,6 +115,8 @@ export const updateProfileEmployee = (data) => {
         }
     })
     .catch(err => {
+        if(err.response.status === 0) return {status: err.response.status,}
+
         return {
             status: err.response.status,
             success: err.response.data.success,

@@ -24,6 +24,8 @@ export const createTreatment = (data) => {
         }
     })
     .catch(err => {
+        if(err.response.status === 0) return {status: err.response.status,}
+
         return {
             status: err.response.status,
             success: err.response.data.success,
@@ -43,6 +45,8 @@ export const updateTreatment = (data, id) => {
         }
     })
     .catch(err => {
+        if(err.response.status === 0) return {status: err.response.status,}
+
         return {
             status: err.response.status,
             success: err.response.data.success,
@@ -62,6 +66,8 @@ export const deleteTreatment = (id) => {
         }
     })
     .catch(err => {
+        if(err.response.status === 0) return {status: err.response.status,}
+        
         return {
             status: err.response.status,
             success: err.response.data.success,
