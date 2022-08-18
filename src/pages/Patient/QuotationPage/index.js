@@ -3,27 +3,8 @@ import { Button } from 'react-bootstrap';
 import { IoAddCircle } from "react-icons/io5";
 import { FaDownload } from "react-icons/fa";
 import { SelectedTreamentsTable, TreatmentsModal } from './components';
+import data from './data';
 import styles from './QuotationPage.module.css';
-
-const data = [
-    {id: 1, name: 'Tratamiento 1', price: 20},
-    {id: 2, name: 'Tratamiento 2', price: 40},
-    {id: 3, name: 'Tratamiento 3', price: 10},
-    {id: 4, name: 'Tratamiento 4', price: 15},
-    {id: 5, name: 'Tratamiento 5', price: 17},
-    {id: 6, name: 'Tratamiento 6', price: 20},
-    {id: 7, name: 'Tratamiento 7', price: 10},
-    {id: 8, name: 'Tratamiento 8', price: 5},
-    {id: 9, name: 'Tratamiento 9', price: 10},
-    {id: 10, name: 'Tratamiento 10', price: 25},
-    {id: 11, name: 'Tratamiento 11', price: 45},
-    {id: 12, name: 'Tratamiento 12', price: 56},
-    {id: 13, name: 'Tratamiento 13', price: 80},
-    {id: 14, name: 'Tratamiento 14', price: 100},
-    {id: 15, name: 'Tratamiento 15', price: 75},
-    {id: 16, name: 'Tratamiento 16', price: 55},
-    {id: 17, name: 'Tratamiento 17', price: 33},
-]
 
 const QuotationPage = () => {
 
