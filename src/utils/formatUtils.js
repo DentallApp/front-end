@@ -7,3 +7,5 @@ export const formatEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*
 export const formatPassword = /[A-Za-zÁÉÍÓÚáéíóú0-9\-\_\@\#\$\%\?\[\]\+\.]+$/;
 //eslint-disable-next-line
 export const formatPhone = /^[09]{2}[0-9]+$/;
+
+export const formatPrice = /^\d+(?:\.\d{1,2})?$/;
