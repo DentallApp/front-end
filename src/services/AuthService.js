@@ -10,13 +10,14 @@ export const login = ({ userName, password }) => {
         if(res.data.success) 
             setLocalUser({...res.data.data});
         return {
+            status: res.status,
             success: res.data.success,
             message: res.data.message
         };
     })
     .catch(err => {
-        console.log(err);
         return {
+            status: err.response.status,
             success: err.response.data.success,
             message: err.response.data.message
         };

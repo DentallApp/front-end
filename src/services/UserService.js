@@ -43,6 +43,7 @@ export const registerBasicUser = (data) => {
     .then(res => {
         if(res.data.success === true) {
             return {
+                status: res.status,
                 success: res.data.success,
                 message: res.data.message
             };
@@ -50,6 +51,7 @@ export const registerBasicUser = (data) => {
     })
     .catch(err => {
         return {
+            status: err.response.status,
             success: err.response.data.success,
             message: err.response.data.message
         };
@@ -67,6 +69,7 @@ export const updateProfileUser = (data) => {
     .then(res => {
         if(res.data.success === true) {
             return {
+                status: res.status,
                 success: res.data.success,
                 message: res.data.message
             }
@@ -74,6 +77,7 @@ export const updateProfileUser = (data) => {
     })
     .catch(err => {
         return {
+            status: err.response.status,
             success: err.response.data.success,
             message: err.response.data.message
         }
@@ -88,6 +92,7 @@ export const updatePassword = ({ oldPassword, newPassword }) => {
     .then(res => {
         if(res.data.success === true) {
             return {
+                status: res.status,
                 success: res.data.success,
                 message: res.data.message
             }
@@ -95,6 +100,7 @@ export const updatePassword = ({ oldPassword, newPassword }) => {
     })
     .catch(err => {
         return {
+            status: err.response.status,
             success: err.response.data.success,
             message: err.response.data.message
         }

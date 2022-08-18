@@ -18,14 +18,17 @@ export const createTreatment = (data) => {
     return api.post('/general-treatment', data, { headers: {"Content-Type": "multipart/form-data"} })
     .then(res => {
         return {
+            status: res.status,
             success: res.data.success,
             message: res.data.message
         }
     })
     .catch(err => {
         return {
+            status: err.response.status,
             success: err.response.data.success,
-            message: err.response.data.message
+            message: err.response.data.message,
+            errors: err.response.data.errors
         }
     })
 }
@@ -34,14 +37,17 @@ export const updateTreatment = (data, id) => {
     return api.put(`/general-treatment/${id}`, data)
     .then(res => {
         return {
+            status: res.status,
             success: res.data.success,
             message: res.data.message
         }
     })
     .catch(err => {
         return {
+            status: err.response.status,
             success: err.response.data.success,
-            message: err.response.data.message
+            message: err.response.data.message,
+            errors: err.response.data.errors
         }
     })
 }
@@ -50,12 +56,14 @@ export const deleteTreatment = (id) => {
     return api.delete(`/general-treatment/${id}`)
     .then(res => {
         return {
+            status: res.status,
             success: res.data.success,
             message: res.data.message
         }
     })
     .catch(err => {
         return {
+            status: err.response.status,
             success: err.response.data.success,
             message: err.response.data.message
         }

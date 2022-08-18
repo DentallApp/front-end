@@ -22,6 +22,7 @@ export const createEmployee = (data) => {
     .then(res => {
         if(res.data.success === true) {
             return {
+                status: res.status,
                 success: res.data.success,
                 message: res.data.message
             }
@@ -29,6 +30,7 @@ export const createEmployee = (data) => {
     })
     .catch(err => {
         return {
+            status: err.response.status,
             success: err.response.data.success,
             message: err.response.data.message
         };
@@ -52,6 +54,7 @@ export const updateEmployee = (data) => {
     .then(res => {
         if(res.data.success === true) {
             return {
+                status: res.status,
                 success: res.data.success,
                 message: res.data.message
             }
@@ -59,6 +62,7 @@ export const updateEmployee = (data) => {
     })
     .catch(err => {
         return {
+            status: err.response.status,
             success: err.response.data.success,
             message: err.response.data.message
         };
@@ -70,6 +74,7 @@ export const deleteEmployee = (id) => {
     .then(res => {
         if(res.data.success === true) {
             return {
+                status: res.status,
                 success: res.data.success,
                 message: res.data.message
             }
@@ -77,6 +82,7 @@ export const deleteEmployee = (id) => {
     })
     .catch(err => {
         return {
+            status: err.response.status,
             success: err.response.data.success,
             message: err.response.data.message
         };
@@ -96,6 +102,7 @@ export const updateProfileEmployee = (data) => {
     .then(res => {
         if(res.data.success === true) {
             return {
+                status: res.status,
                 success: res.data.success,
                 message: res.data.message
             }
@@ -103,6 +110,7 @@ export const updateProfileEmployee = (data) => {
     })
     .catch(err => {
         return {
+            status: err.response.status,
             success: err.response.data.success,
             message: err.response.data.message
         };
