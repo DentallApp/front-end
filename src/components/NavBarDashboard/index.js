@@ -24,8 +24,8 @@ const NavBarDashboard = () => {
                     <NavDropdown title={<img src={user} alt="avatar"/>} id="collasible-nav-dropdown">
                         <NavDropdown.Item 
                             as={Link} 
-                            to="/configuracion" onClick={() => handleSidebar()}>
-                                Configurar
+                            to="/perfil" onClick={() => handleSidebar()}>
+                                Perfil
                             </NavDropdown.Item>
                         <NavDropdown.Item 
                         as={Link} to="/login" onClick={() => {

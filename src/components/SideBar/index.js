@@ -70,7 +70,7 @@ const SideBar = () => {
                             </NavLink>
 
                             <NavLink className={({ isActive }) => isActive ? styles.navlink_active : styles.navlink } 
-                            to="configuracion"
+                            to="perfil"
                             onClick={() => {window.scrollTo({ top: 0, behavior: 'smooth' })} }>
                                 <MdManageAccounts className={styles.icon} /> 
                                 Editar perfil
