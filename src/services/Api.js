@@ -13,7 +13,6 @@ const apiPublicRoutes = [
     "/password-reset/send",
     "/email-verification",
     "/gender",
-    "/general-treatment",
     "/general-treatment/:id"
 ];
 
@@ -34,10 +33,11 @@ instance.interceptors.request.use(
         if(token) {
             config.headers.Authorization = `Bearer ${token}`;
         }
+        console.log('Request: ', config);
         return config;
     },
     (err) => {
-      console.log(err);
+        console.log(err);
         return Promise.reject(err);
     }
 );
@@ -49,13 +49,12 @@ instance.interceptors.response.use(
     },
     async (err) => {
       const originalConfig = err.config;
-      console.log(originalConfig);
       if (apiPublicRoutes.includes(originalConfig.url) === false && err.response) {
         
         // Access Token was expired
         if (err.response.status === 401 && !originalConfig._retry) {
           originalConfig._retry = true;
-  
+          console.log('Original config inicio: ' + originalConfig);
           try {
             const rs = await instance.post("/token/refresh", {
                 accessToken: getLocalAccessToken(),
@@ -65,9 +64,13 @@ instance.interceptors.response.use(
             const { accessToken, refreshToken } = rs.data.data;
             updateLocalAccessToken(accessToken);
             updateLocalRefreshToken(refreshToken);
-  
+            /*err.config.headers[
+              "Authorization"
+            ] = `Bearer ${accessToken}`;*/
+            console.log('Original config fin: ' + originalConfig);
             return instance(originalConfig);
           } catch (_error) {
+            console.log('Interceptor response error: ' + _error)
             return Promise.reject(_error);
           }
         }
