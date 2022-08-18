@@ -8,7 +8,7 @@ const EliminationModal = ({show, handleClose, userSelect, eliminateUser}) => {
         onHide={handleClose} 
         dialogClassName={styles.container_modal}>
             <Modal.Header className={styles.container_header} closeButton>
-                <Modal.Title>Eliminar dependiente</Modal.Title>
+                <Modal.Title>Eliminar usuario</Modal.Title>
             </Modal.Header>
              <Modal.Body>
                 ¿Estás seguro que quieres eliminar a:<br /> 

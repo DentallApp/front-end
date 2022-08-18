@@ -42,6 +42,13 @@ const FormResetPassword = () => {
         setIsLoading({success: result.success});
 
         if(result.success === true) {reset(); setIsValid(result.success);}
+        
+        if(result.success === undefined && (result.status === 0 || result.status === 400 || 
+            result.status === 404 || result.response.status === 405 ||
+            result.status === 500)) {
+            setAlert({success: false, message: 'Error inesperado. Refresque la página o intente más tarde'});
+            setIsLoading({success: false});
+        }
     }
 
     // Función que se encarga de verificar si las contraseñas ingresadas son iguales

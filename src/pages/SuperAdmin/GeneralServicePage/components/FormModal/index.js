@@ -34,18 +34,19 @@ const FormModal = ({show, handleClose, serviceSelect = null, saveService}) => {
     }, []);
 
     const changeImage = (e) => {
+        setImage(URL.createObjectURL(e.target.files[0]));
+
         if(e.target.files[0].type === FORMAT_IMAGE.PNG || e.target.files[0].type === FORMAT_IMAGE.JPG || 
             e.target.files[0].type === FORMAT_IMAGE.JPEG) {
-                setImage(URL.createObjectURL(e.target.files[0]));
                 setValue("imageUrl", e.target.files, true);
         }
         else {
+            type !== 'edit' ? setValue("imageUrl", null, true) : setValue("imageUrl", e.target.files, true);
             setError("imageUrl", {
                 type: 'custom',
                 message: "Formato de imagen no válido. Se acepta .png, .jpg, .jpeg"
-            })
+            });
         }
-        
     }
 
     return (
@@ -62,7 +63,7 @@ const FormModal = ({show, handleClose, serviceSelect = null, saveService}) => {
             <Modal.Body>
                 <Form 
                 className={styles.container_form} 
-                onSubmit={handleSubmit((data) => saveService(data, reset, type))}>
+                onSubmit={handleSubmit((data) => saveService(data, reset, type, setError))}>
                     <h2>Registro</h2>
                     <div className="underline mx-auto"></div>
                     <p className={styles.text_information}>Los campos con el símbolo * son obligatorios</p>
@@ -124,6 +125,7 @@ const FormModal = ({show, handleClose, serviceSelect = null, saveService}) => {
                                     </Form.Label>
                                     <Form.Control 
                                     type="file"
+                                    accept="image/png,image/jpg,image/jpeg"
                                     onChange={changeImage}
                                     placeholder="Ingrese imagen del servicio"
                                      /> 

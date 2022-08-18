@@ -8,6 +8,8 @@ import { HoursToMinutes } from '../../../utils/timeUtils';
 import styles from './GeneralServicePage.module.css';
 
 const GeneralServicePage = () => {
+
+    const [errorLoading, setErrorLoading] = useState({success: false, message: ''});
     
     // Estados para el filtro
     const [filterText, setFilterText] = useState('');
@@ -36,7 +38,14 @@ const GeneralServicePage = () => {
             setDataServices(res.data);
             setFilterServices(res.data);
         })
-        .catch(err => console.log('Algo ocurrio: ' + err));
+        .catch(err => {
+            if((err.response.status === 0 && err.response.data === undefined) || 
+                (err.response.data.success === undefined && (err.response.status === 400 
+                || err.response.status === 405 ||
+                err.status === 500))) {
+                setErrorLoading({success: true, message: 'Error inesperado. Refresque la página o intente más tarde'});
+            }
+        });
     }, [isChange]);
 
     useEffect(() => {
@@ -79,7 +88,7 @@ const GeneralServicePage = () => {
     const handleShow = () => setShow(true);
 
     // Función guardar y actualizar datos de los servicios
-    const saveService = async (data, reset, type) => {
+    const saveService = async (data, reset, type, setError) => {
         // Se elimina espacios innecesarios
         const sanitizedName = data.name.trim();
         const sanitizedDescription = data.description.trim();
@@ -92,25 +101,41 @@ const GeneralServicePage = () => {
         let form = new FormData();
         form.append('Name', data.name);
         form.append('Description', data.description);
-        form.append('Image', data.imageUrl[0] === undefined ? null : data.imageUrl[0]);
+        form.append('Image', data.imageUrl ? (data.imageUrl[0] === undefined ? null : data.imageUrl[0]) : null);
         form.append('Duration', data.duration);
-        
+
+        let result = null;
         setIsLoading({success: undefined});
 
         if(type === 'create') {
-            const result = await createTreatment(form);
+            result = await createTreatment(form);
             if(result.success && result.success === true) setIsChange(!isChange);
             
             setIsLoading({success: result.success});
             setAlert(result);
         }    
         else {
-            
-            const result = await updateTreatment(form, data.id);
+            result = await updateTreatment(form, data.id);
             if(result.success && result.success === true) setIsChange(!isChange);
             
             setIsLoading({success: result.success});
             setAlert(result);
+        }
+
+        if(result.success === false && result.errors !== null) {
+            setError("imageUrl", {
+                type: 'custom2',
+                message: result.errors.Image[0]
+            });
+            setAlert(null);
+            return;
+        }
+
+        if(result.success === undefined && (result.status === 0 || result.status === 400 || 
+            result.status === 404 || result.status === 405 ||
+            result.status === 500)) {
+            setAlert({success: false, message: 'Error inesperado. Refresque la página o intente más tarde'});
+            setIsLoading({success: false});
         }
 
         handleClose();
@@ -125,8 +150,16 @@ const GeneralServicePage = () => {
         if(result.success && result.success === true) setIsChange(!isChange);
         
         setIsLoading({success: result.success});
-        handleClose();
         setAlert(result);
+
+        if(result.success === undefined && (result.status === 0 || result.status === 400 || 
+            result.status === 404 || result.status === 405 ||
+            result.status === 500)) {
+            setAlert({success: false, message: 'Error inesperado. Refresque la página o intente más tarde'});
+            setIsLoading({success: false});
+        }
+
+        handleClose();
         setRowSelect(null);
     }
 
@@ -174,31 +207,39 @@ const GeneralServicePage = () => {
                 }}> 
                     <IoAddCircle className={styles.icon} /> Nuevo
                 </Button>
-                <FilterComponent 
-                onFilter={handleChange} 
-                onClear={handleClear} 
-                filterText={filterText}
-                setFilterText={setFilterText}
-                inputText="Ingrese servicio a buscar"
-                className={styles.filter} />
+                {errorLoading.success === false && (
+                    <FilterComponent 
+                    onFilter={handleChange} 
+                    onClear={handleClear} 
+                    filterText={filterText}
+                    setFilterText={setFilterText}
+                    inputText="Ingrese servicio a buscar"
+                    className={styles.filter} />
+                )}
             </div>
 
             {
-                filterServices ? (
-                    <GeneralServiceTable 
-                        styles="margin-bottom: 40px;" 
-                        services={filterServices} 
-                        paginationResetDefaultPage={resetPaginationToggle}
-                        handleShow={handleShow}
-                        setTypeModal={setTypeModal}
-                        setServiceSelect={setRowSelect} />
-                ): 
-                (
-                    <div className={`${styles.container_spinner}`}>
-                        <Spinner size="lg" className={styles.spinner} animation="border" variant="info" />
-                        <p className={styles.text_loading}>Cargando...</p>
-                    </div>
-                )
+                errorLoading.success === false ? (
+                    filterServices ? (
+                        <GeneralServiceTable 
+                            styles="margin-bottom: 40px;" 
+                            services={filterServices} 
+                            paginationResetDefaultPage={resetPaginationToggle}
+                            handleShow={handleShow}
+                            setTypeModal={setTypeModal}
+                            setServiceSelect={setRowSelect} />
+                    ): 
+                    (
+                        <div className={`${styles.container_spinner}`}>
+                            <Spinner size="lg" className={styles.spinner} animation="border" variant="info" />
+                            <p className={styles.text_loading}>Cargando...</p>
+                        </div>
+                    )
+                ):(
+                    <h4 className={styles.text_error}>
+                        {errorLoading.message}
+                    </h4>
+                )    
             }
         </>
     );

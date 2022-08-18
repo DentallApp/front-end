@@ -8,6 +8,9 @@ import { getDependents, createDependent, updateDependent, deleteDependent } from
 import styles from './DependentPage.module.css';
 
 const DependentPage = () => {
+
+    const [errorLoading, setErrorLoading] = useState({success: false, message: ''});
+
     // Estados para el filtro
     const [filterText, setFilterText] = useState('');
     const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
@@ -36,13 +39,21 @@ const DependentPage = () => {
             setDataDependents(res.data);
             setFilterDependents(res.data)
         })
-        .catch(err => console.log('Error: ' + err));
+        .catch(err => {
+            if((err.response.status === 0 && err.response.data === undefined) || 
+                (err.response.data.success === undefined && (err.response.status === 400 
+                || err.response.status === 405 ||
+                err.status === 500))) {
+                setErrorLoading({success: true, message: 'Error inesperado. Refresque la página o intente más tarde'});
+            }
+        });
     }, [isChange]);
      
     useEffect(() => {
-        if(filterDependents.length > 0 && filterText !== '') filterData();
+        if(filterDependents?.length > 0 && filterText !== '') filterData();
         
         if(filterDependents?.length <= 0 || filterText === '') setFilterDependents(dataDependents);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [filterText]);
 
 
@@ -91,9 +102,10 @@ const DependentPage = () => {
         data.kinshipId = parseInt(data.kinshipId);
 
         setIsLoading({success: undefined});
+        let result = null;
 
         if(type === 'create') {
-            const result = await createDependent(data);
+            result = await createDependent(data);
             if(result.success && result.success === true) setIsChange(!isChange);
 
             setIsLoading({success: result.success});
@@ -101,12 +113,19 @@ const DependentPage = () => {
         }    
         else {
             data.dependentId = dependentSelect.dependentId;
-            const result = await updateDependent(data);
+            result = await updateDependent(data);
 
             if(result.success && result.success === true) setIsChange(!isChange);
             
             setIsLoading({success: result.success});
             setAlert(result);
+        }
+
+        if(result.success === undefined && (result.status === 0 || result.status === 400 || 
+            result.status === 404 || result.status === 405 ||
+            result.status === 500)) {
+            setAlert({success: false, message: 'Error inesperado. Refresque la página o intente más tarde'});
+            setIsLoading({success: false});
         }
 
         handleClose();
@@ -118,11 +137,19 @@ const DependentPage = () => {
         setIsLoading({success: undefined});
         const result = await deleteDependent(data);
         
-        if(result.success && result.success === true) setIsChange(!isChange);
+        if(result.success && result.success === true) setIsChange(!isChange);  
         
         setIsLoading({success: result.success});
-        handleClose();
         setAlert(result);
+        
+        if(result.success === undefined && (result.status === 0 || result.status === 400 || 
+            result.status === 404 || result.response.status === 405 ||
+            result.status === 500)) {
+            setAlert({success: false, message: 'Error inesperado. Refresque la página o intente más tarde'});
+            setIsLoading({success: false});
+        }
+
+        handleClose();
         setDependentSelect(null);
     }
 
@@ -170,29 +197,38 @@ const DependentPage = () => {
                 }}> 
                     <IoAddCircle className={styles.icon} /> Nuevo
                 </Button>
-                <FilterComponent 
-                onFilter={handleChange} 
-                onClear={handleClear} 
-                filterText={filterText}
-                setFilterText={setFilterText}
-                inputText="Ingrese nombre o cedula a buscar"
-                className={styles.filter} />
+                { errorLoading.success === false && (
+                    <FilterComponent 
+                    onFilter={handleChange} 
+                    onClear={handleClear} 
+                    filterText={filterText}
+                    setFilterText={setFilterText}
+                    inputText="Ingrese nombre o cedula a buscar"
+                    className={styles.filter} />
+                )}
             </div>
             {
-                filterDependents ? (
-                    <DependentTable 
-                        styles="margin-bottom: 40px;" 
-                        dependents={filterDependents} 
-                        paginationResetDefaultPage={resetPaginationToggle}
-                        handleShow={handleShow}
-                        setTypeModal={setTypeModal}
-                        setDependentSelect={setDependentSelect} />
-                ): 
-                (
-                    <div className={`${styles.container_spinner}`}>
-                        <Spinner size="lg" className={styles.spinner} animation="border" variant="info" />
-                        <p className={styles.text_loading}>Cargando...</p>
-                    </div>
+                errorLoading.success === false ? (
+                    filterDependents ? (
+                        <DependentTable 
+                            styles="margin-bottom: 40px;" 
+                            dependents={filterDependents} 
+                            paginationResetDefaultPage={resetPaginationToggle}
+                            handleShow={handleShow}
+                            setTypeModal={setTypeModal}
+                            setDependentSelect={setDependentSelect} />
+                    ): 
+                    (
+                        <div className={`${styles.container_spinner}`}>
+                            <Spinner size="lg" className={styles.spinner} animation="border" variant="info" />
+                            <p className={styles.text_loading}>Cargando...</p>
+                        </div>
+                    )
+                )
+                :(
+                    <h4 className={styles.text_error}>
+                        {errorLoading.message}
+                    </h4>
                 )
             }
         </>

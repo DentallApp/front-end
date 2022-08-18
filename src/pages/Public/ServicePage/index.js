@@ -8,30 +8,51 @@ const ServicePage = () => {
 
     const { serviceId } = useParams();
     const [ service, setService ] = useState(null);
+    const [error, setError] = useState(false);
+    const [alert, setAlert] = useState(null);
 
     useEffect(() => {
         getGeneralTreatmentXId(serviceId).then((response) => {
             setService(response.data.data);
+        })
+        .catch(err => {
+            setError(true);
+            
+            if((err.response.status === 0 && err.response.data === undefined) || 
+                (err.response.data.success === undefined && (err.response.status === 400 
+                || err.response.status === 405 ||
+                err.status === 500))) {
+                setAlert({success: true, message: 'Error inesperado. Refresque la página o intente más tarde'});
+                return;
+            }
+            setAlert({success: true, message: err.response.data.message});
         });
     }, [serviceId]);
 
     return (
         <section className={styles.container_service}>
-            {service != null ? (
-                <>
-                    <h2 className={styles.section_title}>{service.name}</h2>
-                    <div className="mx-auto underline"></div>
-                    <div className={styles.container}>
-                        <p>{service.description}</p>
-                        <img src={require(`../../../img/${service.imageUrl}`)} alt={`Imagen de ${service.name}`} />
+            {error !== true ? (
+                service !== null ? (
+                    <>
+                        <h2 className={styles.section_title}>{service.name}</h2>
+                        <div className="mx-auto underline"></div>
+                        <div className={styles.container}>
+                            <p>{service.description}</p>
+                            <img src={require(`../../../img/${service.imageUrl}`)} alt={`Imagen de ${service.name}`} />
+                        </div>
+                    </>
+                )
+                : (
+                    <div className={`${styles.container_spinner}`}>
+                        <Spinner size="lg" className={styles.spinner} animation="border" variant="info" />
+                        <p className={styles.text_loading}>Cargando...</p>
                     </div>
-                </>
+                )
             ) 
             : (
-                <div className={`${styles.container_spinner}`}>
-                    <Spinner size="lg" className={styles.spinner} animation="border" variant="info" />
-                    <p className={styles.text_loading}>Cargando...</p>
-                </div>
+                <h2 className={styles.text_error}>
+                    {alert.message}
+                </h2>
             )}
         </section>
     );

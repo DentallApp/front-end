@@ -11,9 +11,12 @@ import {
     formatNames, 
     formatPassword, 
     formatPhone } from '../../../../../utils/formatUtils';
+import { calculatePreviousYear } from '../../../../../utils/dateUtils';   
 import { registerBasicUser } from '../../../../../services/UserService';
 import { getGenders } from '../../../../../services/GenderService';
 import styles from '../../../LoginPage/components/FormLogin/FormLogin.module.css';
+
+const maxDate = calculatePreviousYear(1);
 
 const RegistrationForm = () => {
 
@@ -26,7 +29,7 @@ const RegistrationForm = () => {
     useEffect(() => {
         getGenders()
             .then(response => setGenders(response.data))
-            .catch(error => console.error(error));
+            .catch(error => error);
     }, []);
 
     const registerUser = async (data) => {
@@ -46,6 +49,13 @@ const RegistrationForm = () => {
         setIsLoading({success: result.success});
 
         if(result.success === true) reset();
+
+        if(result.success === undefined && (result.status === 0 || result.status === 400 || 
+            result.status === 404 || result.response.status === 405 ||
+            result.status === 500)) {
+            setAlert({success: false, message: 'Error inesperado. Refresque la página o intente más tarde'});
+            setIsLoading({success: false});
+        }
     }
 
     return(
@@ -212,6 +222,7 @@ const RegistrationForm = () => {
                                 <Form.Label className={styles.label_input}>Fecha de nacimiento</Form.Label>
                                 <Form.Control 
                                 type="date"
+                                max={maxDate}
                                 {...register("dateBirth", {
                                     required: "Fecha de nacimiento requerida"
                                 })} />
@@ -221,7 +232,9 @@ const RegistrationForm = () => {
                     </Row>
                 </Container>
                 <div className={styles.container_button}>
-                    <Button className={styles.button_sign_in} type="submit">
+                    <Button 
+                    className={styles.button_sign_in} 
+                    type="submit">
                         Registrar
                     </Button>
                     <Button className={styles.button_back} type="button" onClick={() => navigate("/")}>

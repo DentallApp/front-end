@@ -8,7 +8,7 @@ const EliminationModal = ({show, handleClose, serviceSelect, eliminateService}) 
         onHide={handleClose} 
         dialogClassName={styles.container_modal}>
             <Modal.Header className={styles.container_header} closeButton>
-                <Modal.Title>Eliminar dependiente</Modal.Title>
+                <Modal.Title>Eliminar servicio</Modal.Title>
             </Modal.Header>
              <Modal.Body>
                 ¿Estás seguro que quieres eliminar el servicio:<br /> 

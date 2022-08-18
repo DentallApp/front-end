@@ -18,7 +18,6 @@ const FormProfile = ({user, setIsLoading, setAlert}) => {
     
         
     useEffect(() => {
-        
         setProfile({
             names: user.names,
             lastNames: user.lastNames,
@@ -27,7 +26,7 @@ const FormProfile = ({user, setIsLoading, setAlert}) => {
             genderId: user.genderId.toString(),
             cellPhone: user.cellPhone,
             dateBirth: moment(user.dateBirth).format('yyyy-MM-DD')
-        })
+        });
         
         getGenders()
             .then(response => setGenders(response.data))
@@ -79,9 +78,15 @@ const FormProfile = ({user, setIsLoading, setAlert}) => {
                     return;
                 }
             });
-
             setLocalUser(user);
             setProfile(data);
+        }
+
+        if(result.success === undefined && (result.status === 0 || result.status === 400 || 
+            result.status === 404 || result.response.status === 405 ||
+            result.status === 500)) {
+            setAlert({success: false, message: 'Error inesperado. Refresque la página o intente más tarde'});
+            setIsLoading({success: false});
         }
     }
 

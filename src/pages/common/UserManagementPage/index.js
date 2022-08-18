@@ -11,6 +11,8 @@ import styles from './UserManagementPage.module.css';
 
 const UserManagementPage = () => {
     const user = getLocalUser();
+
+    const [errorLoading, setErrorLoading] = useState({success: false, message: ''});
     // Estados para el filtro
     const [filterText, setFilterText] = useState('');
     const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
@@ -38,11 +40,18 @@ const UserManagementPage = () => {
             setDataUsers(res.data);
             setFilterUsers(res.data);
         })
-        .catch(err => console.log('Algo ocurrio: ' + err));
+        .catch(err => {
+            if((err.response.status === 0 && err.response.data === undefined) || 
+                (err.response.data.success === undefined && (err.response.status === 400 
+                || err.response.status === 405 ||
+                err.status === 500))) {
+                setErrorLoading({success: true, message: 'Error inesperado. Refresque la página o intente más tarde'});
+            }
+        });
     }, [isChange]);
      
     useEffect(() => {
-        if(filterUsers.length > 0 && filterText !== '') filterData();
+        if(filterUsers?.length > 0 && filterText !== '') filterData();
         
         if(filterUsers?.length <= 0 || filterText === '') setFilterUsers(dataUsers);
 
@@ -96,10 +105,11 @@ const UserManagementPage = () => {
         data.officeId = user.roles.includes(ROLES.SUPERADMIN) ? parseInt(data.officeId) : user.officeId;
         data.roles = data.roleId.map(role => parseInt(role));
 
+        let result = null;
         setIsLoading({success: undefined});
 
         if(type === 'create') {
-            const result = await createEmployee(data);
+            result = await createEmployee(data);
             if(result.success && result.success === true) setIsChange(!isChange);
             
             setIsLoading({success: result.success});
@@ -108,11 +118,18 @@ const UserManagementPage = () => {
         else {
             data.employeeId = rowSelect.employeeId;
             
-            const result = await updateEmployee(data);
+            result = await updateEmployee(data);
             if(result.success && result.success === true) setIsChange(!isChange);
             
             setIsLoading({success: result.success});
             setAlert(result);
+        }
+
+        if(result.success === undefined && (result.status === 0 || result.status === 400 || 
+            result.status === 404 || result.response.status === 405 ||
+            result.status === 500)) {
+            setAlert({success: false, message: 'Error inesperado. Refresque la página o intente más tarde'});
+            setIsLoading({success: false});
         }
 
         handleClose();
@@ -127,8 +144,15 @@ const UserManagementPage = () => {
         if(result.success && result.success === true) setIsChange(!isChange);
         
         setIsLoading({success: result.success});
-        handleClose();
         setAlert(result);
+
+        if(result.success === undefined && (result.status === 0 || result.status === 400 || 
+            result.status === 404 || result.status === 405 ||
+            result.status === 500)) {
+            setAlert({success: false, message: 'Error inesperado. Refresque la página o intente más tarde'});
+            setIsLoading({success: false});
+        }
+        handleClose();
         setRowSelect(null);
     }
 
@@ -176,29 +200,37 @@ const UserManagementPage = () => {
                 }}> 
                     <IoAddCircle className={styles.icon} /> Nuevo
                 </Button>
-                <FilterComponent 
-                onFilter={handleChange} 
-                onClear={handleClear} 
-                filterText={filterText}
-                setFilterText={setFilterText}
-                inputText="Ingrese usuario a buscar"
-                className={styles.filter} />
+                {errorLoading.success === false && (
+                    <FilterComponent 
+                    onFilter={handleChange} 
+                    onClear={handleClear} 
+                    filterText={filterText}
+                    setFilterText={setFilterText}
+                    inputText="Ingrese usuario a buscar"
+                    className={styles.filter} />
+                )}       
             </div>
             {
-                filterUsers ? (
-                    <UsersTable 
-                        styles="margin-bottom: 40px;" 
-                        users={filterUsers} 
-                        paginationResetDefaultPage={resetPaginationToggle}
-                        handleShow={handleShow}
-                        setTypeModal={setTypeModal}
-                        setUserSelect={setRowSelect} />
-                ): 
-                (
-                    <div className={`${styles.container_spinner}`}>
-                        <Spinner size="lg" className={styles.spinner} animation="border" variant="info" />
-                        <p className={styles.text_loading}>Cargando...</p>
-                    </div>
+                errorLoading.success === false ?  (
+                    filterUsers ? (
+                        <UsersTable 
+                            styles="margin-bottom: 40px;" 
+                            users={filterUsers} 
+                            paginationResetDefaultPage={resetPaginationToggle}
+                            handleShow={handleShow}
+                            setTypeModal={setTypeModal}
+                            setUserSelect={setRowSelect} />
+                    ): 
+                    (
+                        <div className={`${styles.container_spinner}`}>
+                            <Spinner size="lg" className={styles.spinner} animation="border" variant="info" />
+                            <p className={styles.text_loading}>Cargando...</p>
+                        </div>
+                    )
+                ):(
+                    <h4 className={styles.text_error}>
+                        {errorLoading.message}
+                    </h4>
                 )
             }
         </>

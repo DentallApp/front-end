@@ -11,12 +11,15 @@ import {
     formatIdentityDocument, 
     formatNames,  
     formatPhone } from '../../../../../utils/formatUtils';
+import { calculatePreviousYear } from '../../../../../utils/dateUtils';    
 import { getGenders } from '../../../../../services/GenderService';
 import { getLocalUser } from '../../../../../services/UserService';
 import { getRoles } from '../../../../../services/RoleService';
 import { getOffices } from '../../../../../services/OfficeService'; 
 import ROLES from '../../../../../constants/Roles';
 import styles from './FormModal.module.css';
+
+const maxDate = calculatePreviousYear(18);
 
 const FormModal = ({show, handleClose, userSelect = null, saveUser}) => {
     const user = getLocalUser();
@@ -255,6 +258,7 @@ const FormModal = ({show, handleClose, userSelect = null, saveUser}) => {
                                     <Form.Label className={styles.label_input}>* Fecha de nacimiento</Form.Label>
                                     <Form.Control 
                                     type="date"
+                                    max={maxDate}
                                     {...register("dateBirth", {
                                         required: "Fecha de nacimiento requerida"
                                     })} />
