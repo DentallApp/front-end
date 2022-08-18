@@ -4,7 +4,7 @@ import { IoArrowBackCircle } from "react-icons/io5";
 import styles from '../NotFoundPage/NotFoundPage.module.css';
 import { getLocalUser } from '../../../services/UserService';
 
-const NotFoundPage = () => {
+const UnathorizedPage = () => {
 
     const navigate = useNavigate();
     const user = getLocalUser();
@@ -26,4 +26,4 @@ const NotFoundPage = () => {
     );
 }
 
-export default NotFoundPage;
+export default UnathorizedPage;
