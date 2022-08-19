@@ -1,7 +1,7 @@
 import { Button, Modal } from 'react-bootstrap';
 import styles from '../FormModal/FormModal.module.css';
 
-const EliminationModal = ({show, handleClose, treatmentSelect, eliminateService}) => {
+const EliminationModal = ({show, handleClose, specificTreatmentSelect, eliminateService}) => {
     return (
         <Modal 
         show={show} 
@@ -12,13 +12,13 @@ const EliminationModal = ({show, handleClose, treatmentSelect, eliminateService}
             </Modal.Header>
              <Modal.Body>
                 ¿Estás seguro que quieres eliminar el tratamiento:<br /> 
-                {treatmentSelect.name}
+                {specificTreatmentSelect.specificTreatmentName}
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={handleClose}>
                     Cerrar
                 </Button>
-                <Button variant="primary" onClick={() => eliminateService(parseInt(treatmentSelect.id))}>
+                <Button variant="primary" onClick={() => eliminateService(parseInt(specificTreatmentSelect.specificTreatmentId))}>
                     Eliminar
                 </Button>
             </Modal.Footer>
