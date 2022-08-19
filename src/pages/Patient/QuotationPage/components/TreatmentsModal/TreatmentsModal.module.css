@@ -23,6 +23,30 @@ h2 {
     color: #999;
 }
 
-.filter{
+.container_filters {
+    margin-top: 40px;
+    margin-left: 20px;
     margin-bottom: 20px;
+    margin-right: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.filter_component{
+    margin-bottom: 20px;
+    width: 100% !important;
+}
+
+.text_error {
+    text-align: center;
+    margin-right: 20px;
+    margin-left: 20px;
+}
+
+@media screen and (max-width: 600px) {
+    .container_filters {
+        flex-direction: column;
+        align-items: flex-start;
+        margin-top: 20px !important;
+    }
 }
