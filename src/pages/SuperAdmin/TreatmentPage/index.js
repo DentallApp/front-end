@@ -1,13 +1,18 @@
 import { useState, useEffect } from 'react';
 import { Button, Spinner } from 'react-bootstrap';
 import { IoAddCircle } from "react-icons/io5";
-import { TreatmentTable, FormModal, EliminationModal } from './components';
+import { TreatmentTable, FormModal, EliminationModal, SelectGeneralService } from './components';
 import { AlertMessage, ModalLoading, FilterComponent } from '../../../components';
-import { createTreatment, getGeneralTreatmentEdit, updateTreatment, deleteTreatment } from '../../../services/GeneralTreatments';
-import data from './data';
+import { 
+    getSpecificTreatment, 
+    createSpecificTreatment, 
+    updateSpecificTreatment, 
+    deleteSpecificTreatment } from '../../../services/SpecificTreatmentService';
 import styles from './TreatmentPage.module.css';
 
 const TreatmentPage = () => {
+    const [errorLoading, setErrorLoading] = useState({success: false, message: ''});
+    const [valueSelected, setValueSelected] = useState(null);
     
     // Estados para el filtro
     const [filterText, setFilterText] = useState('');
@@ -32,22 +37,33 @@ const TreatmentPage = () => {
     const [isLoading, setIsLoading] = useState(null);
 
     useEffect(() => {
-        setDataTreatments(data);
-        setFilterTreatments(data);
+        getSpecificTreatment()
+        .then(res => {
+            setDataTreatments(res.data);
+            setFilterTreatments(res.data);
+        })
+        .catch(err => {
+            if((err.response.status === 0 && err.response.data === undefined) || 
+                (err.response.data.success === undefined && (err.response.status === 400 
+                || err.response.status === 405 ||
+                err.status === 500))) {
+                setErrorLoading({success: true, message: 'Error inesperado. Refresque la página o intente más tarde'});
+            }
+        });
+        
     }, [isChange]);
 
     useEffect(() => {
         if(filterTreatments.length > 0 && filterText !== '') filterData();
         
-        if(filterTreatments?.length <= 0 || filterText === '') setFilterTreatments(data);
-
+        if(filterTreatments?.length <= 0 || filterText === '') setFilterTreatments(dataTreatments);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [filterText]);
 
 
     const filterData = () => {
         const data = dataTreatments.filter(treatment => 
-            treatment.name.toString().toLocaleLowerCase().includes(filterText.toLocaleLowerCase()) === true 
+            treatment.specificTreatmentName.toString().toLocaleLowerCase().includes(filterText.toLocaleLowerCase()) === true 
         );
         setFilterTreatments(data);
     }
@@ -72,8 +88,38 @@ const TreatmentPage = () => {
     const handleClose = () => { 
         setShow(false);
         setRowSelect(null);
+        setValueSelected(0);
     }
     const handleShow = () => setShow(true);
+
+    const create = async(data) => {
+        const result = await createSpecificTreatment(data);
+        if(result.success && result.success === true) setIsChange(!isChange);
+        
+        setIsLoading({success: result.success});
+        setAlert(result);
+
+        return result;
+    }
+
+    const edit = async(data) => {
+        const result = await updateSpecificTreatment(data);
+        if(result.success && result.success === true) setIsChange(!isChange);
+        
+        setIsLoading({success: result.success});
+        setAlert(result);
+
+        return result;
+    }
+    
+    const handleErrors = (result) => {
+        if(result.success === undefined && (result.status === 0 || result.status === 400 || 
+            result.status === 404 || result.status === 405 ||
+            result.status === 500)) {
+            setAlert({success: false, message: 'Error inesperado. Refresque la página o intente más tarde'});
+            setIsLoading({success: false});
+        }
+    }
 
     // Función guardar y actualizar datos de los servicios
     const saveTreatment = async (data, reset, type) => {
@@ -84,24 +130,13 @@ const TreatmentPage = () => {
         data.name = sanitizedName.charAt(0).toUpperCase() + sanitizedName.slice(1);
         data.price = parseFloat(data.price);
 
-        //setIsLoading({success: undefined});
+        setIsLoading({success: undefined});
+        let result = null;
 
-        if(type === 'create') {
-            //const result = await createTreatment(data);
-            //if(result.success && result.success === true) setIsChange(!isChange);
-            console.log(data);
-            //setIsLoading({success: result.success});
-            //setAlert(result);
-        }    
-        else {
-            
-            //const result = await updateTreatment(data);
-            //if(result.success && result.success === true) setIsChange(!isChange);
-            
-            //setIsLoading({success: result.success});
-            //setAlert(result);
-        }
+        if(type === 'create') result = await create(data);
+        else result = await edit(data);
 
+        handleErrors(result);
         handleClose();
         reset();
         setRowSelect(null);
@@ -109,13 +144,15 @@ const TreatmentPage = () => {
 
     const eliminateService = async(data) => {
         setIsLoading({success: undefined});
-        const result = await deleteTreatment(data);
-        
+        const result = await deleteSpecificTreatment(data);
+
         if(result.success && result.success === true) setIsChange(!isChange);
         
         setIsLoading({success: result.success});
-        handleClose();
         setAlert(result);
+        handleErrors(result);
+        
+        handleClose();
         setRowSelect(null);
     }
 
@@ -131,12 +168,12 @@ const TreatmentPage = () => {
                         saveTreatment={saveTreatment}
                         alert={alert}
                         setAlert={setAlert}
-                        treatmentSelect={rowSelect} /> 
+                        specificTreatmentSelect={rowSelect} /> 
                     ):(
                         <EliminationModal
                         handleClose={handleClose} 
                         show={show}
-                        treatmentSelect={rowSelect}
+                        specificTreatmentSelect={rowSelect}
                         alert={alert}
                         setAlert={setAlert}
                         eliminateService={eliminateService}
@@ -155,38 +192,56 @@ const TreatmentPage = () => {
                 </div>
             }
             <div className={styles.container_header}>
-                <Button 
+
+            { errorLoading.success === false && (
+                <>
+                    <SelectGeneralService
+                    dataTreatments={dataTreatments} 
+                    setFilterTreatments={setFilterTreatments}
+                    valueSelected={valueSelected}
+                    setValueSelected={setValueSelected} />
+
+                    <FilterComponent 
+                    onFilter={handleChange} 
+                    onClear={handleClear} 
+                    filterText={filterText}
+                    setFilterText={setFilterText}
+                    inputText="Ingrese tratamiento a buscar"
+                    className={styles.filter} />
+                </>
+            )}
+            </div>
+
+            <Button 
                 className={styles.button_add} 
                 onClick={() => {
                     setTypeModal('form');
                     handleShow();
                 }}> 
                     <IoAddCircle className={styles.icon} /> Nuevo
-                </Button>
-                <FilterComponent 
-                onFilter={handleChange} 
-                onClear={handleClear} 
-                filterText={filterText}
-                setFilterText={setFilterText}
-                inputText="Ingrese servicio a buscar"
-                className={styles.filter} />
-            </div>
+            </Button>
 
             {
-                filterTreatments ? (
-                    <TreatmentTable 
-                        styles="margin-bottom: 40px;" 
-                        services={filterTreatments} 
-                        paginationResetDefaultPage={resetPaginationToggle}
-                        handleShow={handleShow}
-                        setTypeModal={setTypeModal}
-                        setServiceSelect={setRowSelect} />
-                ): 
-                (
-                    <div className={`${styles.container_spinner}`}>
-                        <Spinner size="lg" className={styles.spinner} animation="border" variant="info" />
-                        <p className={styles.text_loading}>Cargando...</p>
-                    </div>
+                errorLoading.success === false ? (
+                    filterTreatments ? (
+                        <TreatmentTable 
+                            styles="margin-bottom: 40px;" 
+                            services={filterTreatments} 
+                            paginationResetDefaultPage={resetPaginationToggle}
+                            handleShow={handleShow}
+                            setTypeModal={setTypeModal}
+                            setServiceSelect={setRowSelect} />
+                    ): 
+                    (
+                        <div className={`${styles.container_spinner}`}>
+                            <Spinner size="lg" className={styles.spinner} animation="border" variant="info" />
+                            <p className={styles.text_loading}>Cargando...</p>
+                        </div>
+                    )
+                ):(
+                    <h4 className={styles.text_error}>
+                        {errorLoading.message}
+                    </h4>
                 )
             }
         </>
