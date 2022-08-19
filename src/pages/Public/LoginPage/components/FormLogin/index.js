@@ -22,6 +22,15 @@ const FormLogin = () => {
         }
     });
 
+    const handleErrors = (result) => {
+        if(result.success === undefined && (result.status === 0 ||result.status === 400 || result.status === 404 
+            || result.status === 405 ||
+            result.status === 500)) {
+            setError({success: false, message: 'Error inesperado. Refresque la página o intente más tarde'});
+            setIsLoading({success: false});
+        }
+    }
+
     const handleLogin = async (data) => {
         setIsLoading({success: undefined});
         const result = await login(data);
@@ -30,13 +39,7 @@ const FormLogin = () => {
 
         if(result.success === true) navigate("/inicio");
         
-        if(result.success === undefined && (result.status === 0 ||result.status === 400 || result.status === 404 
-            || result.status === 405 ||
-            result.status === 500)) {
-            setError({success: false, message: 'Error inesperado. Refresque la página o intente más tarde'});
-            setIsLoading({success: false});
-        }
-        
+        handleErrors(result);
     }
 
     return (

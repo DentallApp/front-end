@@ -23,6 +23,15 @@ const FormResetPassword = () => {
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(null);
 
+    const handleErrors = (result) => {
+        if(result.success === undefined && (result.status === 0 || result.status === 400 || 
+            result.status === 404 || result.response.status === 405 ||
+            result.status === 500)) {
+            setAlert({success: false, message: 'Error inesperado. Refresque la página o intente más tarde'});
+            setIsLoading({success: false});
+        }
+    }
+
     const changePassword = async(data) => {
         
         const verification = verifyPassword(data.newPassword, data.confirmPassword);
@@ -43,12 +52,7 @@ const FormResetPassword = () => {
 
         if(result.success === true) {reset(); setIsValid(result.success);}
         
-        if(result.success === undefined && (result.status === 0 || result.status === 400 || 
-            result.status === 404 || result.response.status === 405 ||
-            result.status === 500)) {
-            setAlert({success: false, message: 'Error inesperado. Refresque la página o intente más tarde'});
-            setIsLoading({success: false});
-        }
+        handleErrors(result);
     }
 
     // Función que se encarga de verificar si las contraseñas ingresadas son iguales

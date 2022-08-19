@@ -19,6 +19,15 @@ const FormForgotPassword = () => {
         }
     });
 
+    const handleErrors = (result) => {
+        if(result.success === undefined && (result.status === 0 || result.status === 400 || 
+            result.status === 404 || result.response.status === 405 ||
+            result.status === 500)) {
+            setAlert({success: false, message: 'Error inesperado. Refresque la página o intente más tarde'});
+            setIsLoading({success: false});
+        }
+    }
+
     const sendData = async(data) => {
         setIsLoading({success: undefined});
         const result = await sendUserEmail(data.email);
@@ -26,12 +35,7 @@ const FormForgotPassword = () => {
         setIsLoading({success: result.success});
         reset();
 
-        if(result.success === undefined && (result.status === 0 || result.status === 400 || 
-            result.status === 404 || result.response.status === 405 ||
-            result.status === 500)) {
-            setAlert({success: false, message: 'Error inesperado. Refresque la página o intente más tarde'});
-            setIsLoading({success: false});
-        }
+        handleErrors(result);
     }
 
     return (

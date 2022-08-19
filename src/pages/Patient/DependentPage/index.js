@@ -56,7 +56,6 @@ const DependentPage = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [filterText]);
 
-
     const filterData = () => {
         const data = dataDependents.filter(dependent => 
             dependent.document.toString().includes(filterText.toLocaleLowerCase()) === true || 
@@ -89,6 +88,35 @@ const DependentPage = () => {
     }
     const handleShow = () => setShow(true);
 
+    const create = async(data) => {
+        const result = await createDependent(data);
+        if(result.success && result.success === true) setIsChange(!isChange);
+
+        setIsLoading({success: result.success});
+        setAlert(result);
+
+        return result;
+    }
+
+    const edit = async(data) => {
+        const result = await updateDependent(data);
+        if(result.success && result.success === true) setIsChange(!isChange);
+            
+        setIsLoading({success: result.success});
+        setAlert(result);
+
+        return result;
+    }
+
+    const handleErrors = (result) => {
+        if(result.success === undefined && (result.status === 0 || result.status === 400 || 
+            result.status === 404 || result.status === 405 ||
+            result.status === 500)) {
+            setAlert({success: false, message: 'Error inesperado. Refresque la página o intente más tarde'});
+            setIsLoading({success: false});
+        }
+    }
+
     // Función guardar y actualizar datos de los dependientes
     const saveDependent = async (data, reset, type) => {
         // Se elimina espacios innecesarios
@@ -104,30 +132,13 @@ const DependentPage = () => {
         setIsLoading({success: undefined});
         let result = null;
 
-        if(type === 'create') {
-            result = await createDependent(data);
-            if(result.success && result.success === true) setIsChange(!isChange);
-
-            setIsLoading({success: result.success});
-            setAlert(result);
-        }    
+        if(type === 'create') result = await create(data);   
         else {
             data.dependentId = dependentSelect.dependentId;
-            result = await updateDependent(data);
-
-            if(result.success && result.success === true) setIsChange(!isChange);
-            
-            setIsLoading({success: result.success});
-            setAlert(result);
+            result = await edit(data);
         }
 
-        if(result.success === undefined && (result.status === 0 || result.status === 400 || 
-            result.status === 404 || result.status === 405 ||
-            result.status === 500)) {
-            setAlert({success: false, message: 'Error inesperado. Refresque la página o intente más tarde'});
-            setIsLoading({success: false});
-        }
-
+        handleErrors(result);
         handleClose();
         reset();
         setDependentSelect(null);
@@ -142,13 +153,7 @@ const DependentPage = () => {
         setIsLoading({success: result.success});
         setAlert(result);
         
-        if(result.success === undefined && (result.status === 0 || result.status === 400 || 
-            result.status === 404 || result.response.status === 405 ||
-            result.status === 500)) {
-            setAlert({success: false, message: 'Error inesperado. Refresque la página o intente más tarde'});
-            setIsLoading({success: false});
-        }
-
+        handleErrors(result);
         handleClose();
         setDependentSelect(null);
     }

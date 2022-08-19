@@ -87,6 +87,35 @@ const GeneralServicePage = () => {
     }
     const handleShow = () => setShow(true);
 
+    const create = async(form) => {
+        const result = await createTreatment(form);
+        if(result.success && result.success === true) setIsChange(!isChange);
+            
+        setIsLoading({success: result.success});
+        setAlert(result);
+
+        return result;
+    }
+
+    const edit = async(form, data) => {
+        const result = await updateTreatment(form, data.id);
+        if(result.success && result.success === true) setIsChange(!isChange);
+        
+        setIsLoading({success: result.success});
+        setAlert(result);
+
+        return result;
+    }
+
+    const handleErrors = (result) => {
+        if(result.success === undefined && (result.status === 0 || result.status === 400 || 
+            result.status === 404 || result.status === 405 ||
+            result.status === 500)) {
+            setAlert({success: false, message: 'Error inesperado. Refresque la página o intente más tarde'});
+            setIsLoading({success: false});
+        }
+    }
+
     // Función guardar y actualizar datos de los servicios
     const saveService = async (data, reset, type, setError) => {
         // Se elimina espacios innecesarios
@@ -107,20 +136,8 @@ const GeneralServicePage = () => {
         let result = null;
         setIsLoading({success: undefined});
 
-        if(type === 'create') {
-            result = await createTreatment(form);
-            if(result.success && result.success === true) setIsChange(!isChange);
-            
-            setIsLoading({success: result.success});
-            setAlert(result);
-        }    
-        else {
-            result = await updateTreatment(form, data.id);
-            if(result.success && result.success === true) setIsChange(!isChange);
-            
-            setIsLoading({success: result.success});
-            setAlert(result);
-        }
+        if(type === 'create') result = await create(form);
+        else result = await edit(form, data);
 
         if(result.success === false && result.errors !== null) {
             setError("imageUrl", {
@@ -131,13 +148,7 @@ const GeneralServicePage = () => {
             return;
         }
 
-        if(result.success === undefined && (result.status === 0 || result.status === 400 || 
-            result.status === 404 || result.status === 405 ||
-            result.status === 500)) {
-            setAlert({success: false, message: 'Error inesperado. Refresque la página o intente más tarde'});
-            setIsLoading({success: false});
-        }
-
+        handleErrors(result);
         handleClose();
         reset();
         setRowSelect(null);
@@ -152,13 +163,7 @@ const GeneralServicePage = () => {
         setIsLoading({success: result.success});
         setAlert(result);
 
-        if(result.success === undefined && (result.status === 0 || result.status === 400 || 
-            result.status === 404 || result.status === 405 ||
-            result.status === 500)) {
-            setAlert({success: false, message: 'Error inesperado. Refresque la página o intente más tarde'});
-            setIsLoading({success: false});
-        }
-
+        handleErrors(result)
         handleClose();
         setRowSelect(null);
     }

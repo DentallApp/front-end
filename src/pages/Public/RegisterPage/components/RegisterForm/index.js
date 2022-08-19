@@ -32,6 +32,25 @@ const RegistrationForm = () => {
             .catch(error => error);
     }, []);
 
+    const create = async(data) => {
+        const result = await registerBasicUser(data);
+        setAlert(result);
+        setIsLoading({success: result.success});
+
+        if(result.success === true) reset();
+
+        return result;
+    }
+    
+    const handleErrors = (result) => {
+        if(result.success === undefined && (result.status === 0 || result.status === 400 || 
+            result.status === 404 || result.response.status === 405 ||
+            result.status === 500)) {
+            setAlert({success: false, message: 'Error inesperado. Refresque la página o intente más tarde'});
+            setIsLoading({success: false});
+        }
+    }
+
     const registerUser = async (data) => {
         setIsLoading({success: undefined});
 
@@ -44,18 +63,8 @@ const RegistrationForm = () => {
         data.lastNames = capitalizeFirstLetter(sanitizedLastName);
         data.genderId = parseInt(data.genderId);
 
-        const result = await registerBasicUser(data);
-        setAlert(result);
-        setIsLoading({success: result.success});
-
-        if(result.success === true) reset();
-
-        if(result.success === undefined && (result.status === 0 || result.status === 400 || 
-            result.status === 404 || result.response.status === 405 ||
-            result.status === 500)) {
-            setAlert({success: false, message: 'Error inesperado. Refresque la página o intente más tarde'});
-            setIsLoading({success: false});
-        }
+        const result = await create(data);
+        handleErrors(result);
     }
 
     return(

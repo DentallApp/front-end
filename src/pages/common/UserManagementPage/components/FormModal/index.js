@@ -51,14 +51,13 @@ const FormModal = ({show, handleClose, userSelect = null, saveUser}) => {
 
     useEffect(() => {
         getGenders().then(response => setGenders(response.data))
-            .catch(error => console.error(error));
+            .catch(error => error);
 
         getRoles(user.roles.includes(ROLES.SUPERADMIN)).then(response => setRoles(response.data))
-            .catch(error => console.log(error));    
-
+            .catch(error => error);    
 
         getOffices().then(response => setOffice(response.data))
-            .catch(error => console.log(error));    
+            .catch(error => error);    
 
         register("officeId", { required: "Consultorio requerido" });
         register("roleId", { required: "Rol es requerido" });

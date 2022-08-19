@@ -92,6 +92,35 @@ const UserManagementPage = () => {
     }
     const handleShow = () => setShow(true);
 
+    const create = async(data) => {
+        const result = await createEmployee(data);
+        if(result.success && result.success === true) setIsChange(!isChange);
+            
+        setIsLoading({success: result.success});
+        setAlert(result);
+
+        return result;
+    }
+    
+    const edit = async(data) => {
+        const result = await updateEmployee(data);
+        if(result.success && result.success === true) setIsChange(!isChange);
+        
+        setIsLoading({success: result.success});
+        setAlert(result);
+
+        return result;
+    }
+
+    const handleErrors = (result) => {
+        if(result.success === undefined && (result.status === 0 || result.status === 400 || 
+            result.status === 404 || result.response.status === 405 ||
+            result.status === 500)) {
+            setAlert({success: false, message: 'Error inesperado. Refresque la página o intente más tarde'});
+            setIsLoading({success: false});
+        }
+    }
+
     // Función guardar y actualizar datos de los dependientes
     const saveUser = async (data, reset, type) => {
         // Se elimina espacios innecesarios
@@ -109,29 +138,14 @@ const UserManagementPage = () => {
         setIsLoading({success: undefined});
 
         if(type === 'create') {
-            result = await createEmployee(data);
-            if(result.success && result.success === true) setIsChange(!isChange);
-            
-            setIsLoading({success: result.success});
-            setAlert(result);
+            result = await create(data);
         }    
         else {
             data.employeeId = rowSelect.employeeId;
-            
-            result = await updateEmployee(data);
-            if(result.success && result.success === true) setIsChange(!isChange);
-            
-            setIsLoading({success: result.success});
-            setAlert(result);
+            result = await edit(data);
         }
 
-        if(result.success === undefined && (result.status === 0 || result.status === 400 || 
-            result.status === 404 || result.response.status === 405 ||
-            result.status === 500)) {
-            setAlert({success: false, message: 'Error inesperado. Refresque la página o intente más tarde'});
-            setIsLoading({success: false});
-        }
-
+        handleErrors(result);
         handleClose();
         reset();
         setRowSelect(null);
@@ -146,12 +160,7 @@ const UserManagementPage = () => {
         setIsLoading({success: result.success});
         setAlert(result);
 
-        if(result.success === undefined && (result.status === 0 || result.status === 400 || 
-            result.status === 404 || result.status === 405 ||
-            result.status === 500)) {
-            setAlert({success: false, message: 'Error inesperado. Refresque la página o intente más tarde'});
-            setIsLoading({success: false});
-        }
+        handleErrors(result);
         handleClose();
         setRowSelect(null);
     }
