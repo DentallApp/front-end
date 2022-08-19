@@ -28,19 +28,30 @@ const customStyles = {
 const columns = [
     {
         name: <div className={styles.container_table_header}><h6>Codigo</h6></div>,
-        selector: row => row.id,
+        selector: row => row.specificTreatmentId,
         sortable: true,
         center: true,
         wrap: true,
-        width: "auto"
+        minWidth: "100px"
     },
     {
         name: <div className={styles.container_table_header}><h6>Tratamiento dental</h6></div>,
-        selector: row => row.name,
+        selector: row => row.specificTreatmentName,
         sortable: true,
         center: true,
+        cell: row => <div style={{"width": "100%", "textAlign":"center"}}>{row.specificTreatmentName}</div>,
         wrap: true,
-        width: "auto"
+        minWidth: '150px'
+    },
+    {
+        name: <div className={styles.container_table_header}><h6>Servicio dental</h6></div>,
+        selector: row => row.generalTreatmentName,
+        sortable: true,
+        center: true,
+        cell: row => <div style={{"width": "100%", "textAlign":"center"}}>{row.generalTreatmentName}</div>,
+        wrap: true,
+        minWidth: '150px'
+        
     },
     {
         name: <div className={styles.container_table_header}><h6>Precio</h6></div>,
@@ -48,7 +59,7 @@ const columns = [
         sortable: true,
         center: true,
         wrap: true,
-        width: "150px"
+        width: "100px"
     }
 ];
 
