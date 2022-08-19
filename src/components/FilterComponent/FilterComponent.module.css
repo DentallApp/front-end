@@ -8,8 +8,7 @@
     border-left-style: none !important;
     border-right-style: none !important;
     border-bottom-color: #73777B !important;
-    border-radius: 0px;
-    
+    border-radius: 0px;   
 }
 
 .filter_input:focus {
@@ -28,6 +27,10 @@
     border-radius: 0px;
     outline: none !important;
     box-shadow: none !important;
+}
+
+.filterFullWidth {
+    width: 100% !important;
 }
 
 @media screen and (max-width: 450px) {

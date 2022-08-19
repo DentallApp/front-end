@@ -1,9 +1,9 @@
 import { Button, InputGroup, Form } from 'react-bootstrap';
 import styles from './FilterComponent.module.css';
 
-const FilterComponent = ({ filterText, onFilter, onClear, setFilterText, inputText }) => {
+const FilterComponent = ({ filterText, onFilter, onClear, inputText, fullWidth=false }) => {
     return (
-        <Form.Group className={styles.filter} controlId="formBasic">
+        <Form.Group className={`${styles.filter} ${fullWidth === true && styles.filterFullWidth} `} controlId="formBasic">
                 <InputGroup>
                     <Form.Control
                     className={styles.filter_input}
