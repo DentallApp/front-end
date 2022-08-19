@@ -3,19 +3,30 @@ import { Button } from 'react-bootstrap';
 import { IoAddCircle } from "react-icons/io5";
 import { FaDownload } from "react-icons/fa";
 import { SelectedTreamentsTable, TreatmentsModal } from './components';
-import data from './data';
+import { getSpecificTreatment } from '../../../services/SpecificTreatmentService';
 import styles from './QuotationPage.module.css';
 
 const QuotationPage = () => {
 
+    const [errorLoading, setErrorLoading] = useState({success: false, message: ''});
     const [treatments, setTreatments] = useState(null);
     const [selectedTreatments, setSelectedTreatments] = useState([]);
     const [show, setShow] = useState(false); // Estado para el modal
     const [total, setTotal] = useState(0); 
     
     useEffect(() => {
-        setTreatments(data);
-        /*setSelectedTreatments(data);*/
+        getSpecificTreatment()
+        .then(res => {
+            setTreatments(res.data);
+        })
+        .catch(err => {
+            if((err.response.status === 0 && err.response.data === undefined) || 
+                (err.response.data.success === undefined && (err.response.status === 400 
+                || err.response.status === 405 ||
+                err.status === 500))) {
+                setErrorLoading({success: true, message: 'Error inesperado. Refresque la página o intente más tarde'});
+            }
+        });
     }, []);
 
     useEffect(() => {
@@ -29,14 +40,11 @@ const QuotationPage = () => {
     }, [selectedTreatments]);
 
     // Funciones para cerrar y mostrar el modal
-    const handleClose = () => { 
-        setShow(false);
-    }
-    
+    const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
     const deleteSelected = (row) => {
-        const result = selectedTreatments.filter(treatment => treatment.id !== row.id);
+        const result = selectedTreatments.filter(treatment => treatment.specificTreatmentId !== row.specificTreatmentId);
         setSelectedTreatments(result);
     }
 
@@ -47,7 +55,8 @@ const QuotationPage = () => {
                 <TreatmentsModal 
                 show ={show} 
                 handleClose={handleClose}
-                treatments={treatments} 
+                treatments={treatments}
+                errorLoading={errorLoading} 
                 selectedTreatments={selectedTreatments}
                 setSelectedTreatments={setSelectedTreatments} /> 
                 : 
