@@ -4,9 +4,15 @@ import { useWindowWidth } from '@react-hook/window-size';
 import TreatmentsTable from '../TreatmentsTable';
 import { FilterComponent } from '../../../../../components';
 import styles from './TreatmentsModal.module.css'
+import FilterGeneralService from '../FilterGeneralService';
 
-const TreatmentsModal = ({show, handleClose, treatments, selectedTreatments, setSelectedTreatments}) => {
-
+const TreatmentsModal = ({
+    show, 
+    handleClose, 
+    treatments, 
+    selectedTreatments, 
+    setSelectedTreatments, 
+    errorLoading}) => {  
     const [dataTreatments, setDataTreatments] = useState([]);
     const [filterTreatments, setFilterTreatments] = useState(null);
     // Estados para el filtro
@@ -20,13 +26,15 @@ const TreatmentsModal = ({show, handleClose, treatments, selectedTreatments, set
         if(selectedTreatments.length > 0) {
             setDataTreatments(treatments.filter(
                 treatment => !selectedTreatments.some(selected => 
-                        treatment.id === selected.id
+                        treatment.specificTreatmentId === selected.specificTreatmentId
             )));
         }
         else {
             setDataTreatments(treatments);
         }
-    }, []);
+        setFilterTreatments(dataTreatments);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [treatments]);
 
     useEffect(() => {
         setFilterTreatments(dataTreatments);
@@ -36,12 +44,13 @@ const TreatmentsModal = ({show, handleClose, treatments, selectedTreatments, set
         if(filterTreatments?.length > 0 && filterText !== '') filterData();
         
         if(filterTreatments?.length <= 0 || filterText === '') setFilterTreatments(dataTreatments);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [filterText]);
 
     const filterData = () => {
         const data = dataTreatments.filter(treatment => 
-            treatment.id.toString().includes(filterText.toLocaleLowerCase()) === true || 
-                treatment.name.toString().toLocaleLowerCase().includes(filterText.toLocaleLowerCase()) === true 
+            treatment.specificTreatmentId.toString().includes(filterText.toLocaleLowerCase()) === true || 
+                treatment.specificTreatmentName.toString().toLocaleLowerCase().includes(filterText.toLocaleLowerCase()) === true 
         );
         setFilterTreatments(data);
     }
@@ -77,22 +86,42 @@ const TreatmentsModal = ({show, handleClose, treatments, selectedTreatments, set
                 <h2>Tratamientos Dentales</h2>
                 <div className="underline mx-auto"></div>
                 <p className={styles.text_information}>Seleccione los tratamientos que desee cotizar</p>
-                <FilterComponent 
-                onFilter={handleChange} 
-                onClear={handleClear} 
-                filterText={filterText}
-                setFilterText={setFilterText}
-                inputText="Escriba el tratamiento a buscar" 
-                className={styles.filter} />
-                { 
-                    filterTreatments ? (
-                        <TreatmentsTable
-                        treatments={filterTreatments} 
-                        paginationResetDefaultPage={resetPaginationToggle}
-                        selectedTreatments={selectedTreatments}
-                        setSelected={setSelected} />
-                    ):
-                    <p>Cargando...</p>
+
+                <div className={styles.container_filters}>
+                    { errorLoading.success === false && (
+                        <>
+                            <FilterGeneralService 
+                            dataTreatments={dataTreatments}
+                            setFilterTreatments={setFilterTreatments}/>
+                            
+                            <FilterComponent 
+                            onFilter={handleChange} 
+                            onClear={handleClear} 
+                            filterText={filterText}
+                            setFilterText={setFilterText}
+                            inputText="Escriba el tratamiento a buscar"
+                            fullWidth={true} 
+                            className={styles.filter_component} />
+                        </>
+                    )}
+                </div>
+                
+                {
+                    errorLoading.success === false ?(
+                        filterTreatments ? (
+                            <TreatmentsTable
+                            treatments={filterTreatments} 
+                            paginationResetDefaultPage={resetPaginationToggle}
+                            selectedTreatments={selectedTreatments}
+                            setSelected={setSelected} />
+                        ):
+                        <p>Cargando...</p>
+                    )
+                    :(
+                        <h5 className={styles.text_error}>
+                            {errorLoading.message}
+                        </h5>
+                    )
                 }
                 
             </Modal.Body>
