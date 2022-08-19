@@ -43,20 +43,39 @@ const TreatmentTable = (
     // Columnas de la tabla
     const columns = [
         {
-            name: <div className={styles.container_table_header}><h6>Servicio Dental</h6></div>,
-            selector: row => row.name,
+            name: <div className={styles.container_table_header}><h6>Codigo</h6></div>,
+            selector: row => row.specificTreatmentId,
             sortable: true,
             center: true,
             wrap: true,
-            width: "col col-2"
+            minWidth: "100px"
         },
         {
-            name: <div className={styles.container_table_header}><h6>Precio ($)</h6></div>,
+            name: <div className={styles.container_table_header}><h6>Tratamiento dental</h6></div>,
+            selector: row => row.specificTreatmentName,
+            sortable: true,
+            center: true,
+            cell: row => <div style={{"width": "100%", "textAlign":"center"}}>{row.specificTreatmentName}</div>,
+            wrap: true,
+            minWidth: '150px'
+        },
+        {
+            name: <div className={styles.container_table_header}><h6>Servicio dental</h6></div>,
+            selector: row => row.generalTreatmentName,
+            sortable: true,
+            center: true,
+            cell: row => <div style={{"width": "100%", "textAlign":"center"}}>{row.generalTreatmentName}</div>,
+            wrap: true,
+            minWidth: '150px'
+            
+        },
+        {
+            name: <div className={styles.container_table_header}><h6>Precio</h6></div>,
             selector: row => '$ ' + formatter.format(row.price),
             sortable: true,
-            wrap: true,
             center: true,
-            width: "col col-2"
+            wrap: true,
+            width: "100px"
         },
         {
             name: <div className={styles.container_table_header}><h6>Acciones</h6></div>,
