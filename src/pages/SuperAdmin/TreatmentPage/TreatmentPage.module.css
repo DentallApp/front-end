@@ -12,6 +12,8 @@
     border-radius: 30px !important;
     border-style: none;
     background-color: #3CCF4E !important;
+    margin-left: 20px;
+    margin-bottom: 20px;
 }
 
 .button_add:active {
