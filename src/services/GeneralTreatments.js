@@ -75,3 +75,7 @@ export const deleteTreatment = (id) => {
         }
     })
 }
+
+export const getGeneralTreatmentName = async() => {
+    return await api.get('/general-treatment/name');
+}
