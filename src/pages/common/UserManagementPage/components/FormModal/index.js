@@ -17,6 +17,7 @@ import { getLocalUser } from '../../../../../services/UserService';
 import { getRoles } from '../../../../../services/RoleService';
 import { getOffices } from '../../../../../services/OfficeService'; 
 import ROLES from '../../../../../constants/Roles';
+import STATUS from '../../../../../constants/Status';
 import styles from './FormModal.module.css';
 
 const maxDate = calculatePreviousYear(18);
@@ -28,6 +29,7 @@ const FormModal = ({show, handleClose, userSelect = null, saveUser}) => {
     const [office, setOffice] = useState(null); // Estado para los consultorios
     const [roles, setRoles] = useState(null); // Estado para los roles
     const [type, setType] = useState('create'); // Estado para tipo de modal
+    const [status, setStatus] = useState(null);
     const onlyWidth = useWindowWidth(); // Se obtiene ancho y altura de pantalla para colocar el modal
 
     const { register, handleSubmit, reset, setValue, watch,  formState: {errors} } = useForm({
@@ -42,12 +44,14 @@ const FormModal = ({show, handleClose, userSelect = null, saveUser}) => {
             dateBirth: `${ userSelect !== null ? moment(userSelect.dateBirth).format('yyyy-MM-DD') : ""}`,
             genderId: `${ userSelect !== null ? userSelect.genderId : ""}`,
             officeId: `${ userSelect !== null ? userSelect.officeId : ""}`,
+            statusId: `${ userSelect !== null ? (userSelect.isDeleted === false ? STATUS[0].id : STATUS[1].id) : ""}`,
             pregradeUniversity: `${ userSelect !== null ? (userSelect.pregradeUniversity !== null ? userSelect.pregradeUniversity : "") : ""}`,
             postgradeUniversity: `${ userSelect !== null ? (userSelect.postgradeUniversity !== null ? userSelect.postgradeUniversity : "") : ""}`,
         }
     });
 
     const selectValue = watch("officeId");
+    const selectStatusValue = watch("statusId");
 
     useEffect(() => {
         getGenders().then(response => setGenders(response.data))
@@ -59,12 +63,15 @@ const FormModal = ({show, handleClose, userSelect = null, saveUser}) => {
         getOffices().then(response => setOffice(response.data))
             .catch(error => error);    
 
+        setStatus(STATUS);
         register("officeId", { required: "Consultorio requerido" });
         register("roleId", { required: "Rol es requerido" });
+        register("statusId", { required: "Estado es requerido" });
         
         if(userSelect !== null) {
             setValue("officeId", userSelect.officeId, true);
             setValue("roleId", userSelect.roles.map(role => role.id ), true);
+            setValue("statusId", userSelect.isDeleted === false ? STATUS[0].id : STATUS[1].id, true);
             setType('edit');
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -75,9 +82,14 @@ const FormModal = ({show, handleClose, userSelect = null, saveUser}) => {
          // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [office]);
 
+    useEffect(() => {
+        if(status !== null && selectStatusValue === '') setValue("statusId", STATUS[0].id, true);
+         // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [status]);
+
     const handleChange = (e) => setValue("officeId", e.target.value, true);
-    
-    const handleSelectRole = (e) => setValue("roleId", e.map(role => role.value ), true)    
+    const handleSelectRole = (e) => setValue("roleId", e.map(role => role.value ), true);
+    const handleStatusChange = (e) => setValue("statusId", e.target.value, true);    
     
     return (
         <Modal 
@@ -311,6 +323,34 @@ const FormModal = ({show, handleClose, userSelect = null, saveUser}) => {
                                 </Form.Group>
                             </Col>
                         </Row>
+
+                        {
+                            type === 'edit' && (
+                                <Row>
+                                    <Col lg={12} md>
+                                        <Form.Group className="mb-3" controlId="formBasicStatus">
+                                            <Form.Label className={styles.label_input}>* Estado</Form.Label>
+                                            <Form.Select
+                                            name="statusId"
+                                            value={selectStatusValue} 
+                                            onChange={handleStatusChange}
+                                            >
+                                            { status && (
+                                                status.map(data => (
+                                                    <option 
+                                                    key={data.id} 
+                                                    value={data.id}>
+                                                        {data.name}
+                                                    </option>
+                                                ))
+                                            ) }
+                                            </Form.Select>
+                                            { errors.statusId && <p className={styles.error_message}>{ errors.statusId.message }</p> }
+                                        </Form.Group>
+                                    </Col>
+                                </Row>
+                            )
+                        }
                        
                         <Row>
                             <Col lg={12} md>
