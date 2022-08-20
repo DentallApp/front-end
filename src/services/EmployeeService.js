@@ -49,6 +49,7 @@ export const updateEmployee = (data) => {
         genderId: data.genderId,
         email: data.email,
         officeId: data.officeId,
+        isDeleted: data.isDeleted,
         pregradeUniversity: data.pregradeUniversity,
         postgradeUniversity: data.postgradeUniversity,
         roles: data.roles

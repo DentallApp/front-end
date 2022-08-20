@@ -1,7 +1,6 @@
 import DataTable from 'react-data-table-component';
-import { Button } from 'react-bootstrap';
+import { Button, Badge } from 'react-bootstrap';
 import { FaEdit } from "react-icons/fa";
-import { AiFillDelete } from "react-icons/ai";
 import styles from './UsersTable.module.css';
 
 // Opciones de paginación
@@ -62,6 +61,7 @@ const UsersTable = (
         {
             name: <div className={styles.container_table_header}><h6>Cedula</h6></div>,
             selector: row => row.document,
+            center: true,
             sortable: true,
             minWidth: "auto"
         },
@@ -82,6 +82,17 @@ const UsersTable = (
             width: "150px"
         },
         {
+            name: <div className={styles.container_table_header}><h6>Estado</h6></div>,
+            selector: row => 
+                <div className={styles.badge_text}>
+                    <Badge pill bg={row.isDeleted === false ? 'success' : 'danger'}>{row.status}</Badge>
+                </div>,
+            sortable: true,
+            center: true,
+            wrap: true,
+            minWidth: "120px",
+        },
+        {
             name: <div className={styles.container_table_header}><h6>Acciones</h6></div>,
             cell: (row) => {
                 return (
@@ -95,15 +106,6 @@ const UsersTable = (
                         }}>
                             <FaEdit />
                         </Button>
-                        <Button 
-                        className={styles.button_cancel} 
-                        onClick={() => {
-                            setUserSelect(row);
-                            setTypeModal('warning');
-                            handleShow();
-                        }}>
-                            <AiFillDelete />
-                        </Button>
                     </div>
                 )
             },
@@ -111,7 +113,7 @@ const UsersTable = (
             allowOverflow: true,
             button: true,
             center: true,
-            minWidth: "200px"
+            minWidth: "120px"
         }
     ];
     
