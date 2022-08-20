@@ -56,7 +56,8 @@ const columns = [
         sortable: true,
         center: true,
         wrap: true,
-        width: "100px"
+        width: "100px",
+        sortFunction: (a, b) => a.price - b.price
     },
     {
         name: <div className={styles.container_table_header}><h6>Acciones</h6></div>,
