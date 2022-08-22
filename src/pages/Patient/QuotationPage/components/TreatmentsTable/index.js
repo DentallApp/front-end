@@ -63,10 +63,10 @@ const columns = [
     }
 ];
 
-const TreatmentsTable = ({ treatments, paginationResetDefaultPage, setSelected, selectedTreatments } ) => {
+const TreatmentsTable = ({ treatments, paginationResetDefaultPage, setSelected } ) => {
 
     const handleChange = (selectedRows) => {
-        setSelected([...selectedTreatments, ...selectedRows.selectedRows]);
+        setSelected([...selectedRows.selectedRows]);
     }
 
     return (
