@@ -3,22 +3,33 @@ import { Form, Row, Col } from 'react-bootstrap';
 import { getGeneralTreatmentName } from '../../../../../services/GeneralTreatments';
 import styles from './FilterGeneralService.module.css';
 
-const FilterGeneralService = ({dataTreatments, setFilterTreatments}) => {
+const FilterGeneralService = ({
+    dataTreatments, 
+    setFilterTreatments, 
+    valueSelected,
+    setValueSelected, 
+    setSelectedGeneralTreatments}) => {
 
     const [generalTreatments, setGeneralTreatments] = useState(null);
 
     useEffect(() => {
         getGeneralTreatmentName()
             .then(res => setGeneralTreatments(res.data))
-            .catch(err => err); 
+            .catch(err => err);
+        setValueSelected(0);      
+        // eslint-disable-next-line react-hooks/exhaustive-deps   
     }, []);
 
     const handleChange = (e) => {
+        setValueSelected(e.target.value);
         if(parseInt(e.target.value) !== 0) {
-            const filterData = dataTreatments.filter(treatment => treatment.generalTreatmentId === parseInt(e.target.value));
+            const filterData = dataTreatments.filter(treatment => 
+                treatment.generalTreatmentId === parseInt(e.target.value));
             setFilterTreatments(filterData);
+            setSelectedGeneralTreatments(filterData);
             return;
         }
+        setSelectedGeneralTreatments(dataTreatments);
         setFilterTreatments(dataTreatments);
     }
 
@@ -31,6 +42,7 @@ const FilterGeneralService = ({dataTreatments, setFilterTreatments}) => {
                         <Form.Select
                         name="officeId"
                         onChange={handleChange}
+                        value={valueSelected !== null && valueSelected}
                         >
                         <option  
                         value='0'>
