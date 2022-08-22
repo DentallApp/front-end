@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Modal, Button } from 'react-bootstrap';
+import { Modal, Button, Spinner } from 'react-bootstrap';
 import { useWindowWidth } from '@react-hook/window-size';
 import TreatmentsTable from '../TreatmentsTable';
 import { FilterComponent } from '../../../../../components';
@@ -12,14 +12,17 @@ const TreatmentsModal = ({
     treatments, 
     selectedTreatments, 
     setSelectedTreatments, 
-    errorLoading}) => {  
+    errorLoading}) => { 
+    
+    const [selectedGeneralTreatments, setSelectedGeneralTreatments] = useState(null);    
     const [dataTreatments, setDataTreatments] = useState([]);
     const [filterTreatments, setFilterTreatments] = useState(null);
     // Estados para el filtro
     const [filterText, setFilterText] = useState('');
     const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
     
-    const [selected, setSelected] = useState([]);
+    const [valueSelected, setValueSelected] = useState(null);
+    const [selectedSpecificTreatments, setSelectedSpecificTreatments] = useState([]);
     const onlyWidth = useWindowWidth(); // Se obtiene ancho y altura de pantalla para colocar el modal
 
     useEffect(() => {
@@ -37,21 +40,38 @@ const TreatmentsModal = ({
     }, [treatments]);
 
     useEffect(() => {
-        setFilterTreatments(dataTreatments);
+        if(valueSelected === 0) setFilterTreatments(dataTreatments);
+        if(valueSelected !== 0) setFilterTreatments(selectedGeneralTreatments);
+        //setFilterTreatments(dataTreatments);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dataTreatments]);
 
     useEffect(() => {
         if(filterTreatments?.length > 0 && filterText !== '') filterData();
         
-        if(filterTreatments?.length <= 0 || filterText === '') setFilterTreatments(dataTreatments);
+        if((filterTreatments?.length <= 0 || filterText === '') && valueSelected === 0) 
+            setFilterTreatments(dataTreatments);
+        if((filterTreatments?.length <= 0 || filterText === '') && valueSelected !== 0) 
+            setFilterTreatments(selectedGeneralTreatments);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [filterText]);
 
     const filterData = () => {
-        const data = dataTreatments.filter(treatment => 
-            treatment.specificTreatmentId.toString().includes(filterText.toLocaleLowerCase()) === true || 
-                treatment.specificTreatmentName.toString().toLocaleLowerCase().includes(filterText.toLocaleLowerCase()) === true 
-        );
+        let data = null;
+
+        if(valueSelected === 0)
+            data = dataTreatments.filter(treatment => 
+                treatment.specificTreatmentId.toString().includes(filterText.toLocaleLowerCase()) === true || 
+                treatment.specificTreatmentName.toString().toLocaleLowerCase()
+                .includes(filterText.toLocaleLowerCase()) === true 
+            );
+        else 
+            data = selectedGeneralTreatments.filter(treatment => 
+                treatment.specificTreatmentId.toString().includes(filterText.toLocaleLowerCase()) === true || 
+                treatment.specificTreatmentName.toString().toLocaleLowerCase()
+                .includes(filterText.toLocaleLowerCase()) === true 
+            );  
+
         setFilterTreatments(data);
     }
 
@@ -67,7 +87,8 @@ const TreatmentsModal = ({
     // Función que limpia los campos del input y resetea la tabla
     const handleClear = () => {
         setResetPaginationToggle(!resetPaginationToggle);
-        setFilterTreatments(dataTreatments);
+        if(valueSelected === 0) setFilterTreatments(dataTreatments);
+        else setFilterTreatments(selectedGeneralTreatments);
         setFilterText('');
     };
 
@@ -92,7 +113,10 @@ const TreatmentsModal = ({
                         <>
                             <FilterGeneralService 
                             dataTreatments={dataTreatments}
-                            setFilterTreatments={setFilterTreatments}/>
+                            setFilterTreatments={setFilterTreatments}
+                            valueSelected={valueSelected}
+                            setValueSelected={setValueSelected}
+                            setSelectedGeneralTreatments={setSelectedGeneralTreatments}/>
                             
                             <FilterComponent 
                             onFilter={handleChange} 
@@ -112,10 +136,12 @@ const TreatmentsModal = ({
                             <TreatmentsTable
                             treatments={filterTreatments} 
                             paginationResetDefaultPage={resetPaginationToggle}
-                            selectedTreatments={selectedTreatments}
-                            setSelected={setSelected} />
+                            setSelected={setSelectedSpecificTreatments} />
                         ):
-                        <p>Cargando...</p>
+                        <div className={`${styles.container_spinner}`}>
+                            <Spinner size="lg" className={styles.spinner} animation="border" variant="info" />
+                            <p className={styles.text_loading}>Cargando...</p>
+                        </div>
                     )
                     :(
                         <h5 className={styles.text_error}>
@@ -132,7 +158,7 @@ const TreatmentsModal = ({
                 <Button 
                 variant="primary"
                 onClick={() => {
-                    setSelectedTreatments(selected);
+                    setSelectedTreatments([...selectedTreatments ,...selectedSpecificTreatments]);
                     handleClose();
                 }}>
                     Guardar
