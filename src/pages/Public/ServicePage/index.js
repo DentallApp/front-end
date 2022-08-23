@@ -38,7 +38,7 @@ const ServicePage = () => {
                         <div className="mx-auto underline"></div>
                         <div className={styles.container}>
                             <p>{service.description}</p>
-                            <img src={require(`../../../img/${service.imageUrl}`)} alt={`Imagen de ${service.name}`} />
+                            <img src={require(`../../../img/dental-services/${service.imageUrl}`)} alt={`Imagen de ${service.name}`} />
                         </div>
                     </>
                 )

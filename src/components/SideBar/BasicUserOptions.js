@@ -3,13 +3,12 @@ import { NavLink } from 'react-router-dom';
 import { AiOutlineCaretDown,AiOutlineCaretUp } from "react-icons/ai";
 import { IoCalendarNumber } from "react-icons/io5";
 import { BsPersonPlusFill, BsPersonBadgeFill } from "react-icons/bs";
-import { MdFavorite, MdManageAccounts } from "react-icons/md";
+import { MdFavorite } from "react-icons/md";
 import { FaThList } from "react-icons/fa";
 import { HiCurrencyDollar } from "react-icons/hi";
 import styles from './SideBar.module.css';
 
 const BasicUserOptions = () => {
-    // window.scrollTo(0, document.body.scrollHeight)
     const [submenuShow, setSubmenuShow] = useState(false);
 
     return(
