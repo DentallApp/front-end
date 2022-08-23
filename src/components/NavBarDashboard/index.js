@@ -3,13 +3,11 @@ import { Link } from 'react-router-dom';
 import{ NavDropdown } from 'react-bootstrap';
 import { ImMenu } from "react-icons/im";
 import SideBarContext from '../../context/SideBarContext';
-import { getLocalUser } from '../../services/UserService';
 import { logout } from '../../services/AuthService';
 import { user } from '../../img';
 import styles from './NavBarDashboard.module.css';
 
 const NavBarDashboard = () => {
-    const userData = getLocalUser();
     const { handleSidebar, onlyWidth } = useContext(SideBarContext);
 
     return (
