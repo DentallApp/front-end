@@ -9,7 +9,6 @@ import { HiCurrencyDollar } from "react-icons/hi";
 import styles from './SideBar.module.css';
 
 const BasicUserOptions = () => {
-    // window.scrollTo(0, document.body.scrollHeight)
     const [submenuShow, setSubmenuShow] = useState(false);
 
     return(
