@@ -1,6 +1,7 @@
 import { useEffect } from 'react'; 
 import { Navigate, Outlet, useLocation, useNavigate } from "react-router-dom"
 import { getLocalUser } from '../services/UserService';
+import { getLocalAccessToken } from '../services/TokenService';
 
 const PrivateRoute = ({ role }) => {
     const navigate = useNavigate()
@@ -9,14 +10,15 @@ const PrivateRoute = ({ role }) => {
     const unProtectedPaths = ["/login"];
 
     useEffect(() => {
-        if(user === null || user === undefined) navigate("/login", {state:location});
+        if((user === null || user === undefined) || (getLocalAccessToken() === null || getLocalAccessToken() === undefined)) 
+            navigate("/login", {state:location});
     }, [navigate, location, user]);
 
     return (
         <>
             {
                 user ? (
-                    user.accessToken ? (
+                    getLocalAccessToken() ? (
                         user.roles.some(r => role.includes(r)) ? (
                             <Outlet />
                         )
