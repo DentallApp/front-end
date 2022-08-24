@@ -1,11 +1,17 @@
 import axios from 'axios';
 import { 
+  getLocalUser,
+  removeLocalUser
+} from './UserService';
+
+import { 
   getLocalAccessToken, 
   getLocalRefreshToken, 
   updateLocalAccessToken, 
   updateLocalRefreshToken,
-  removeLocalUser
-} from './UserService';
+  removeLocalAccessToken, 
+  removeLocalRefreshToken 
+} from './TokenService';
 
 const apiPublicRoutes = [
     "/login", 
@@ -48,6 +54,7 @@ instance.interceptors.response.use(
     },
     async (err) => {
       const originalConfig = err.config;
+
       if (apiPublicRoutes.includes(originalConfig.url) === false && err.response) {
         
         // Access Token was expired
@@ -64,6 +71,8 @@ instance.interceptors.response.use(
             
             return instance(originalConfig);
           } catch (_error) {
+            removeLocalAccessToken();
+            removeLocalRefreshToken();
             removeLocalUser();
             return Promise.reject(_error);
           }
