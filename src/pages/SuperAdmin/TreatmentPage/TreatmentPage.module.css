@@ -63,6 +63,12 @@
     font-size: 2rem;
 }
 
+.text_error {
+    text-align: center;
+    margin-right: 20px;
+    margin-left: 20px;
+}
+
 @media screen and (max-width: 450px) {
     .container_header {
         flex-direction: column;

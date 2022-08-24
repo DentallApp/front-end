@@ -41,12 +41,7 @@ const UserManagementPage = () => {
             setFilterUsers(res.data);
         })
         .catch(err => {
-            if((err.response.status === 0 && err.response.data === undefined) || 
-                (err.response.data.success === undefined && (err.response.status === 400 
-                || err.response.status === 405 ||
-                err.status === 500))) {
-                setErrorLoading({success: true, message: 'Error inesperado. Refresque la página o intente más tarde'});
-            }
+            handleErrorLoading(err);
         });
     }, [isChange]);
      
@@ -110,6 +105,17 @@ const UserManagementPage = () => {
         setAlert(result);
 
         return result;
+    }
+
+    const handleErrorLoading = (err) => {
+        if((err.response.status === 0 && err.response.data === undefined) || 
+            (err.response.data.success === undefined && (err.response.status === 400 
+            || err.response.status === 405 ||
+            err.status === 500))) {
+            setErrorLoading({success: true, message: 'Error inesperado. Refresque la página o intente más tarde'});
+            return;
+        }
+        setErrorLoading({success: true, message: err.response.data.message});
     }
 
     const handleErrors = (result) => {
