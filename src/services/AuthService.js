@@ -1,5 +1,11 @@
 import api from './Api';
 import { removeLocalUser, setLocalUser } from './UserService';
+import { 
+    setLocalAccessToken, 
+    setLocalRefreshToken, 
+    removeLocalAccessToken, 
+    removeLocalRefreshToken 
+} from './TokenService';
 
 export const login = ({ userName, password }) => {
     
@@ -7,8 +13,15 @@ export const login = ({ userName, password }) => {
         userName,
         password
     }).then(res => {
-        if(res.data.success) 
+        if(res.data.success) {
+            setLocalAccessToken(res.data.data.accessToken);
+            setLocalRefreshToken(res.data.data.refreshToken);
+
+            delete res.data.data.accessToken;
+            delete res.data.data.refreshToken;
+            
             setLocalUser({...res.data.data});
+        }
         return {
             status: res.status,
             success: res.data.success,
@@ -16,7 +29,6 @@ export const login = ({ userName, password }) => {
         };
     })
     .catch(err => {
-        
         if(err.response.status === 0) return {status: err.response.status,}
 
         return {
@@ -28,5 +40,7 @@ export const login = ({ userName, password }) => {
 }
 
 export const logout = () => {
+    removeLocalAccessToken();
+    removeLocalRefreshToken();
     removeLocalUser();
 }

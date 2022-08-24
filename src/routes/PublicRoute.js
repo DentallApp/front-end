@@ -1,23 +1,25 @@
 import { useEffect } from 'react'; 
 import { Outlet, useLocation, useNavigate, Navigate } from 'react-router-dom';
 import { getLocalUser } from '../services/UserService';
+import { getLocalAccessToken } from '../services/TokenService';
 
 const PublicRoute = () => {
 
     const navigate = useNavigate()
     const user = getLocalUser();
     const location = useLocation();
-    const protectedPaths = ["/inicio", "/inicio-superadministrador"];
+    const protectedPaths = ["/inicio"];
 
     useEffect(() => {
-        if(user !== null) navigate("/inicio", 
+        if(user !== null && getLocalAccessToken() !== null) navigate("/inicio", 
         {state:location});
     }, [navigate, location, user]);
     
     return (
         <>
             {
-                user === null || user === undefined ? (
+                (user === null || user === undefined) || 
+                (getLocalAccessToken() === null || getLocalAccessToken() === undefined) ? (
                     <Outlet />
                 ):(
                     !protectedPaths.includes(location.pathname) ? 

@@ -1,10 +1,16 @@
 import axios from 'axios';
 import { 
+  removeLocalUser
+} from './UserService';
+
+import { 
   getLocalAccessToken, 
   getLocalRefreshToken, 
   updateLocalAccessToken, 
   updateLocalRefreshToken,
-} from './UserService';
+  removeLocalAccessToken, 
+  removeLocalRefreshToken 
+} from './TokenService';
 
 const apiPublicRoutes = [
     "/login", 
@@ -33,11 +39,9 @@ instance.interceptors.request.use(
         if(token) {
             config.headers.Authorization = `Bearer ${token}`;
         }
-        console.log('Request: ', config);
         return config;
     },
     (err) => {
-        console.log(err);
         return Promise.reject(err);
     }
 );
@@ -49,28 +53,26 @@ instance.interceptors.response.use(
     },
     async (err) => {
       const originalConfig = err.config;
+
       if (apiPublicRoutes.includes(originalConfig.url) === false && err.response) {
         
         // Access Token was expired
         if (err.response.status === 401 && !originalConfig._retry) {
           originalConfig._retry = true;
-          console.log('Original config inicio: ' + originalConfig);
           try {
             const rs = await instance.post("/token/refresh", {
                 accessToken: getLocalAccessToken(),
                 refreshToken: getLocalRefreshToken()
             });
-            console.log(rs.data.data);
             const { accessToken, refreshToken } = rs.data.data;
             updateLocalAccessToken(accessToken);
             updateLocalRefreshToken(refreshToken);
-            /*err.config.headers[
-              "Authorization"
-            ] = `Bearer ${accessToken}`;*/
-            console.log('Original config fin: ' + originalConfig);
+
             return instance(originalConfig);
           } catch (_error) {
-            console.log('Interceptor response error: ' + _error)
+            removeLocalAccessToken();
+            removeLocalRefreshToken();
+            removeLocalUser();
             return Promise.reject(_error);
           }
         }
