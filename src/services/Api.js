@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { 
-  getLocalUser,
   removeLocalUser
 } from './UserService';
 
@@ -68,7 +67,7 @@ instance.interceptors.response.use(
             const { accessToken, refreshToken } = rs.data.data;
             updateLocalAccessToken(accessToken);
             updateLocalRefreshToken(refreshToken);
-            
+
             return instance(originalConfig);
           } catch (_error) {
             removeLocalAccessToken();
