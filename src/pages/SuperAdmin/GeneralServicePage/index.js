@@ -185,16 +185,12 @@ const GeneralServicePage = () => {
                         handleClose={handleClose} 
                         show={show}
                         saveService={saveService}
-                        alert={alert}
-                        setAlert={setAlert}
                         serviceSelect={rowSelect} /> 
                     ):(
                         <EliminationModal
                         handleClose={handleClose} 
                         show={show}
                         serviceSelect={rowSelect}
-                        alert={alert}
-                        setAlert={setAlert}
                         eliminateService={eliminateService}
                          /> 
                     )

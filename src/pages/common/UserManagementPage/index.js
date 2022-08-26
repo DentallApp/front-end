@@ -136,6 +136,7 @@ const UserManagementPage = () => {
         // Se convierte a mayúscula la primer letra de cada palabra
         data.names = capitalizeFirstLetter(sanitizedName);
         data.lastNames = capitalizeFirstLetter(sanitizedLastName);
+        
         data.genderId = parseInt(data.genderId);
         data.officeId = user.roles.includes(ROLES.SUPERADMIN) ? parseInt(data.officeId) : user.officeId;
         data.roles = data.roleId.map(role => parseInt(role));
@@ -181,16 +182,12 @@ const UserManagementPage = () => {
                         handleClose={handleClose} 
                         show={show}
                         saveUser={saveUser}
-                        alert={alert}
-                        setAlert={setAlert}
                         userSelect={rowSelect} /> 
                     ):(
                         <EliminationModal
                         handleClose={handleClose} 
                         show={show}
                         userSelect={rowSelect}
-                        alert={alert}
-                        setAlert={setAlert}
                         eliminateUser={eliminateUser}
                          />
                     )
