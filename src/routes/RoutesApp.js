@@ -20,7 +20,8 @@ import {
     UnauthorizedPage, 
     ChangePasswordPage,
     UserManagementPage,
-    EditProfilePage } from '../pages/common';
+    EditProfilePage,
+    ScheduleManagementPage } from '../pages/common';
 import { AppointmentChatbotPage, DependentPage, QuotationPage } from '../pages/Patient';
 import { AppointmentCalendarPage } from '../pages/Dentist';
 //import { AppointmentPage } from '../pages/Secretary';
@@ -82,6 +83,13 @@ const RoutesApp = () => {
                 role={[ROLES.ADMIN, ROLES.SUPERADMIN]} />}>
                     <Route element={<Dashboard />}>
                         <Route path={'/gestion-usuarios'} element={<UserManagementPage />} />
+                    </Route>
+                </Route>
+
+                {/* Rutas privadas para los roles de Administrador y Secretaria */}
+                <Route element={<PrivateRoute role={[ROLES.SECRETARY, ROLES.ADMIN]}/>}>
+                    <Route element={<Dashboard />}>
+                        <Route path={'/gestion-horarios'} element={<ScheduleManagementPage />} />
                     </Route>
                 </Route>
 
