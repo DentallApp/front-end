@@ -20,7 +20,9 @@ import {
     UnauthorizedPage, 
     ChangePasswordPage,
     UserManagementPage,
-    EditProfilePage } from '../pages/common';
+    EditProfilePage, 
+    OfficeManagementPage,
+    OfficeSchedulePage} from '../pages/common';
 import { AppointmentChatbotPage, DependentPage, QuotationPage } from '../pages/Patient';
 import { AppointmentCalendarPage } from '../pages/Dentist';
 //import { AppointmentPage } from '../pages/Secretary';
@@ -74,6 +76,7 @@ const RoutesApp = () => {
                     <Route element={<Dashboard />}>
                         <Route path="/gestion-servicio" element={<GeneralServicePage />} />
                         <Route path="/gestion-tratamientos" element={<TreatmentPage />} />
+                        <Route path={'/consultorios/gestion'} element={<OfficeManagementPage />} />
                     </Route>
                 </Route>}
 
@@ -82,6 +85,7 @@ const RoutesApp = () => {
                 role={[ROLES.ADMIN, ROLES.SUPERADMIN]} />}>
                     <Route element={<Dashboard />}>
                         <Route path={'/gestion-usuarios'} element={<UserManagementPage />} />
+                        <Route path={'/consultorios/horarios'} element={<OfficeSchedulePage />} />
                     </Route>
                 </Route>
 
