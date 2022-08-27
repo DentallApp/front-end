@@ -5,4 +5,6 @@ export { default as WelcomePage } from './WelcomePage';
 export { default as ChangePasswordPage } from './ChangePasswordPage';
 export { default as UserManagementPage } from './UserManagementPage';
 export { default as EditProfilePage } from './EditProfilePage';
+export { default as OfficeManagementPage } from './OfficeManagementPage';
+export { default as OfficeSchedulePage } from './OfficeSchedulePage';
 export { default as SessionExpiredPage } from './SessionExpiredPage';
