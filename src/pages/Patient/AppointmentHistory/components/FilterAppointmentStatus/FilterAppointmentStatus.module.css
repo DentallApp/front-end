@@ -1,0 +1,10 @@
+.container_form {
+    margin-top: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.label_input {
+    font-style: italic;
+    font-weight: bold;
+}
