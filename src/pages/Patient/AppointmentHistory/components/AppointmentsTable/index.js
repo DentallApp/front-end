@@ -40,12 +40,10 @@ const AppointmentsTable = ({appointments, handleShow, setAppointmentSelect}) => 
         },
         {
             name: <div className={styles.container_table_header}><h6>Fecha de la Cita</h6></div>,
-            selector: row => row.appointmentDate.toLocaleString('en-US'),
+            selector: row => row.appointmentDate,
             center: true,
-            sortable: true,
             wrap: true,
             width: "150px",
-            sortFunction: (a, b) => new Date(a.appointmentDate) - new Date(b.appointmentDate)
         },
         {
             name: <div className={styles.container_table_header}><h6>Hora de la Cita</h6></div>,
