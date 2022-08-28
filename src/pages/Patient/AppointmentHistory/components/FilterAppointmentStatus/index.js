@@ -8,6 +8,7 @@ const FilterAppointmentStatus = ({listStatus, statusSelected, setStatusSelected,
 
     useEffect(() => {
         setAppointmentStatus(listStatus);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const handleChange = (e) => {
