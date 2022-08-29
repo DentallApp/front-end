@@ -1,8 +1,7 @@
 import DataTable from 'react-data-table-component';
 import { Button, Badge } from 'react-bootstrap';
-import { FaSearch } from "react-icons/fa";
-import APPOINTMENT_STATUS from '../../../../../constants/AppointmentStatus';
-import styles from './AppointmentsTable.module.css';
+import { FaEdit } from "react-icons/fa";
+import styles from './OfficeTable.module.css';
 
 // Opciones de paginación
 const paginationOptions = {
@@ -18,53 +17,50 @@ const customStyles = {
         style: {
 			backgroundColor: "#002855",
 		}
+    },
+    cells: {
+        style: {
+            textAlign: 'center',
+        }
     }
 }
 
-const AppointmentsTable = ({appointments, handleShow, setAppointmentSelect}) => {
+const OfficeTable = ({offices, setOfficeSelect, handleShow, paginationResetDefaultPage}) => {
     // Columnas de la tabla
     const columns = [
         {
-            name: <div className={styles.container_table_header}><h6>Paciente</h6></div>,
-            selector: row => row.patientName,
+            name: <div className={styles.container_table_header}><h6>Consultorio</h6></div>,
+            selector: row => row.officeName,
             sortable: true,
-            wrap: true,
-            width: "170px"
-        },
-        {
-            name: <div className={styles.container_table_header}><h6>Servicio Dental</h6></div>,
-            selector: row => row.dentalServiceName,
-            sortable: true,
-            wrap: true,
-            minWidth: "170px",
-        },
-        {
-            name: <div className={styles.container_table_header}><h6>Fecha de la Cita</h6></div>,
-            selector: row => row.appointmentDate,
-            center: true,
-            wrap: true,
-            width: "150px",
-        },
-        {
-            name: <div className={styles.container_table_header}><h6>Hora de la Cita</h6></div>,
-            selector: row => row.startHour ,
             center: true,
             wrap: true,
             width: "150px"
+        },
+        {
+            name: <div className={styles.container_table_header}><h6>Dirección</h6></div>,
+            selector: row => row.address,
+            wrap: true,
+            center: true,
+            width: "250px"
+        },
+        {
+            name: <div className={styles.container_table_header}><h6>Teléfono</h6></div>,
+            selector: row => row.cellPhone,
+            wrap: true,
+            center: true,
+            Width: "100px",
         },
         {
             name: <div className={styles.container_table_header}><h6>Estado</h6></div>,
             selector: row => 
                 <div className={styles.badge_text}>
-                    <Badge pill 
-                    bg={APPOINTMENT_STATUS.filter(status => status.name === row.status)[0].colorName}>
-                        {row.status.toUpperCase()}
+                    <Badge pill bg={row.isDeleted === false ? 'success' : 'danger'}>
+                        {row.isDeleted === false ? 'ACTIVO' : 'INACTIVO' }
                     </Badge>
                 </div>,
-            sortable: true,
             center: true,
             wrap: true,
-            width: "150px"
+            Width: "120px",
         },
         {
             name: <div className={styles.container_table_header}><h6>Acciones</h6></div>,
@@ -72,13 +68,12 @@ const AppointmentsTable = ({appointments, handleShow, setAppointmentSelect}) => 
                 return (
                     <div className={styles.container_actions}>
                         <Button 
-                        className={styles.button_information} 
+                        className={styles.button_edit} 
                         onClick={() => {
-                            setAppointmentSelect(row);
+                            setOfficeSelect(row);
                             handleShow();
                         }}>
-                            <FaSearch className={styles.icon} />
-                             Más información
+                            <FaEdit />
                         </Button>
                     </div>
                 )
@@ -87,7 +82,7 @@ const AppointmentsTable = ({appointments, handleShow, setAppointmentSelect}) => 
             allowOverflow: true,
             button: true,
             center: true,
-            minWidth: "200px"
+            Width: "120px"
         }
     ];
 
@@ -96,18 +91,19 @@ const AppointmentsTable = ({appointments, handleShow, setAppointmentSelect}) => 
             <DataTable
             className={styles.rdt_TableHeadRow}
             columns={columns}
-            data={appointments}
+            data={offices}
             pagination
             highlightOnHover={true}
             wrap={true}
-            noDataComponent="No existen citas registradas en esta sección"
+            noDataComponent="No existen consultorios registrados"
             fixedHeader
             fixedHeaderScrollHeight="600px"
             paginationComponentOptions={paginationOptions}
+            paginationResetDefaultPage={paginationResetDefaultPage}
             customStyles={customStyles}
             />
         </div>
     );
 }
 
-export default AppointmentsTable;
+export default OfficeTable;

@@ -19,6 +19,12 @@ const AppointmentHistory = () => {
     const [appointmentSelect, setAppointmentSelect] = useState(null);
     const [isChange, setIsChange] = useState(false);
 
+    // Estado para el mensaje de alerta
+    const [alert, setAlert] = useState(null);
+
+    // Estado para el modal de carga 
+    const [isLoading, setIsLoading] = useState(null);
+
     useEffect(() => {
         getAppointments()
         .then(res => {
@@ -61,25 +67,35 @@ const AppointmentHistory = () => {
         }  
         setErrorLoading({success: true, message: err.response.data.message});
     }
-
-    const cancelAppointment = () => {
-        console.log('hola');
-        setStatusSelected(APPOINTMENT_STATUS[0].id.toString());
-    }
-
+    
     return (
         <>
+            { isLoading ? (isLoading.success === undefined ? <ModalLoading show={true} /> : "") : ""}
             { /* Ventana modal para el registro, actualización y eliminación de dependiente  */
                 show === true && (
                     <AppointmentModal 
                     handleClose={handleClose} 
                     show={show}
                     setAppointmentSelect={setAppointmentSelect}
-                    appointmentSelect={appointmentSelect} />
+                    appointmentSelect={appointmentSelect}
+                    setAlert={setAlert}
+                    setIsLoading={setIsLoading}
+                    setIsChange={setIsChange}
+                    isChange={isChange} />
                 )
                         
             }             
             <h1 className={styles.page_title}>Historial de Citas</h1>
+            { /* Mensaje de alerta para mostrar información al usuario */
+                alert && 
+                <div className={styles.container_alert}>
+                    <AlertMessage 
+                    type={ alert.success === false ? 'danger' : 'success' }
+                    message={ alert.message }
+                    setError= { setAlert }  /> 
+                </div>
+            }
+
             <FilterAppointmentStatus 
             listStatus={listStatus} 
             statusSelected={statusSelected}

@@ -46,7 +46,7 @@ const DependentPage = () => {
      
     useEffect(() => {
         if(filterDependents?.length > 0 && filterText !== '') filterData();
-        
+       
         if(filterDependents?.length <= 0 || filterText === '') setFilterDependents(dataDependents);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [filterText]);
@@ -174,16 +174,12 @@ const DependentPage = () => {
                         handleClose={handleClose} 
                         show={show}
                         saveDependent={saveDependent}
-                        alert={alert}
-                        setAlert={setAlert}
                         dependentSelect={dependentSelect} /> 
                     ):(
                         <EliminationModal
                         handleClose={handleClose} 
                         show={show}
                         dependentSelect={dependentSelect}
-                        alert={alert}
-                        setAlert={setAlert}
                         eliminateDependent={eliminateDependent}
                          />
                     )

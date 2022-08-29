@@ -1,37 +1,42 @@
 import { useState, useEffect } from 'react';
 import { Form, Row, Col } from 'react-bootstrap';
-import styles from './FilterAppointmentStatus.module.css';
+import styles from './FilterOffice.module.css';
 
-const FilterAppointmentStatus = ({listStatus, statusSelected, setStatusSelected, setIsChange}) => {
+const dataOffices = [
+    {id: 1, name: 'Mapasingue'},
+    {id: 2, name: 'Naranjito'},
+    {id: 3, name: 'El Triunfo'},
+];
 
-    const [appointmentStatus, setAppointmentStatus] = useState(null);
+const FilterOffice = ({setSelectOffice}) => {
+
+    const [offices, setOffices] = useState(dataOffices);
 
     useEffect(() => {
-        setAppointmentStatus(listStatus);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        setOffices(dataOffices);
     }, []);
 
     const handleChange = (e) => {
-        setStatusSelected(e.target.value);
+        setSelectOffice(e.target.value);
+        console.log(e.target.value);
     }
 
     return (
         <Form className={styles.container_form}>
             <Row>
                 <Col sm={12} lg={5}>
-                    <Form.Group className="mb-3" controlId="formBasicStatus">
-                        <Form.Label className={styles.label_input}>Seleccione estado de la cita</Form.Label>
+                    <Form.Group className="mb-3" controlId="formBasicOffice">
+                        <Form.Label className={styles.label_input}>Consultorios</Form.Label>
                         <Form.Select
-                        name="statusId"
-                        value={statusSelected !== null && statusSelected}
+                        name="office"
                         onChange={handleChange}
                         >
                         <option  
                         value='0'>
-                            Todas las citas
+                            Seleccione
                         </option>    
-                        { appointmentStatus && (
-                            appointmentStatus.map(data => (
+                        { offices && (
+                            offices.map(data => (
                                 <option 
                                 key={data.id} 
                                 value={data.id}>
@@ -47,4 +52,4 @@ const FilterAppointmentStatus = ({listStatus, statusSelected, setStatusSelected,
     );
 }
 
-export default FilterAppointmentStatus;
+export default FilterOffice;

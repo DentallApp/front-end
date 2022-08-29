@@ -5,13 +5,22 @@ import { MdFreeCancellation } from "react-icons/md";
 import moment from 'moment';
 import EliminationModal from '../EliminationModal';
 import APPOINTMENT_STATUS from '../../../../../constants/AppointmentStatus';
+import { deleteAppointment } from '../../../../../services/AppointmentBasicUserService'
 import styles from './AppointmentModal.module.css';
 
-const AppointmentModal = ({show, handleClose, setAppointmentSelect, appointmentSelect }) => {
+const AppointmentModal = ({
+    show, 
+    handleClose, 
+    setAppointmentSelect, 
+    appointmentSelect,
+    setAlert,
+    setIsLoading,
+    setIsChange,
+    isChange 
+}) => {
     const onlyWidth = useWindowWidth(); // Se obtiene ancho y altura de pantalla para colocar el modal
     const [showSubModal, setShowSubModal] = useState(false);
     const [dateAppointment, setDateAppointment] = useState(null);
-    const [creationDate, setCreationDate] = useState(null);
 
     useEffect(() => {
         const date = new Date();
@@ -19,7 +28,6 @@ const AppointmentModal = ({show, handleClose, setAppointmentSelect, appointmentS
         date.setHours(timeSplit[0]);
         date.setMinutes(timeSplit[1]);
         setDateAppointment(date);
-
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -29,7 +37,29 @@ const AppointmentModal = ({show, handleClose, setAppointmentSelect, appointmentS
     }
     const handleSubModalShow = () => setShowSubModal(true);
 
-    const cancelAppointment = () => {
+    const handleErrors = (result) => {
+        if(result.success === undefined && (result.status === 0 || result.status === 400 || 
+            result.status === 404 || result.status === 405 ||
+            result.status === 500)) {
+            setAlert({success: false, message: 'Error inesperado. Refresque la página o intente más tarde'});
+            setIsLoading({success: false});
+        }
+    }
+
+    const cancelAppointment = async (id) => {
+        setIsLoading({success: undefined});
+        const result = await deleteAppointment(parseInt(id));
+        
+        if(result.success && result.success === true) {
+            setIsChange(!isChange);
+            result.message = 'Cita cancelada exitosamente'  
+        }
+
+        setIsLoading({success: result.success});
+        setAlert(result);
+
+        handleErrors(result);
+
         setAppointmentSelect(null);
         setShowSubModal(false);
         handleClose();
@@ -119,6 +149,15 @@ const AppointmentModal = ({show, handleClose, setAppointmentSelect, appointmentS
                                     </Form.Group>
                                 </Col>
                             </Row>
+
+                            <Row>
+                                <Col lg={12} md>
+                                    <Form.Group className="mb-3" controlId="formBasicDate">
+                                        <Form.Label className={styles.label_input}>Fecha y Hora de Agendamiento</Form.Label>
+                                        <p>{appointmentSelect.createdAt}</p>
+                                    </Form.Group>
+                                </Col>
+                            </Row>    
                         </Container>
                         
                         <Modal.Footer className={styles.container_footer}>
