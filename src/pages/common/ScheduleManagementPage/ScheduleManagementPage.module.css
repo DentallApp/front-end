@@ -35,6 +35,39 @@
     justify-content: space-between;
 }
 
+.message_information {
+    text-align: center;
+}
+
+.container_alert {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container_spinner {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.spinner {
+    width: 10rem!important;
+    height: 10rem!important;
+}
+
+.text_loading {
+    font-size: 2rem;
+}
+
+.text_error {
+    text-align: center;
+    margin-right: 20px;
+    margin-left: 20px;
+}
+
 @media screen and (max-width: 450px) {
     .container_header {
         flex-direction: column;
