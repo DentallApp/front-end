@@ -14,3 +14,10 @@
     align-items: center;
     justify-content: space-between;
 }
+
+.container_alert {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

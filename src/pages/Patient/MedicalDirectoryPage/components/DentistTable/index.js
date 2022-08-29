@@ -1,6 +1,4 @@
 import DataTable from 'react-data-table-component';
-import { Button } from 'react-bootstrap';
-import { AiFillDelete } from "react-icons/ai";
 import FavoriteButton from '../FavoriteButton';
 import styles from './DentistTable.module.css';
 
@@ -20,7 +18,7 @@ const customStyles = {
     }
 }
 
-const DentistTable = ({dentists}) => {
+const DentistTable = ({dentists, setAlert}) => {
     // Columnas de la tabla
     const columns = [
         {
@@ -57,7 +55,9 @@ const DentistTable = ({dentists}) => {
             cell: (row) => {
                 return (
                     <div className={styles.container_actions}>
-                        <FavoriteButton />
+                        <FavoriteButton
+                        setAlert={setAlert}
+                        />
                     </div>
                 )
             },
