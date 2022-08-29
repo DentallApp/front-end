@@ -1,27 +1,8 @@
-import { useState, useEffect } from 'react';
 import { Form, Row, Col } from 'react-bootstrap';
+
 import styles from './FilterDentist.module.css';
 
-const dataDentists = [
-    {id: 1, name: 'Fernanda Galarza Hurtado'},
-    {id: 2, name: 'Luis Rodirguez Cevallos'},
-    {id: 3, name: 'Camila Jimenez Luna'},
-    {id: 4, name: 'Gabriela Palacio Nuñez'},
-    {id: 5, name: 'Juan Ponce Hernandez'}
-];
-
-const FilterDentist = ({setDentistSelected}) => {
-
-    const [dentists, setDentists] = useState(dataDentists);
-
-    useEffect(() => {
-        setDentists(dataDentists);
-    }, []);
-
-    const handleChange = (e) => {
-        setDentistSelected(e.target.value);
-        console.log(e.target.value);
-    }
+const FilterDentist = ({dentists, handleSelectDentist }) => {
 
     return (
         <Form className={styles.container_form}>
@@ -31,7 +12,7 @@ const FilterDentist = ({setDentistSelected}) => {
                         <Form.Label className={styles.label_input}>Odontólogos</Form.Label>
                         <Form.Select
                         name="dentist"
-                        onChange={handleChange}
+                        onChange={handleSelectDentist}
                         >
                         <option  
                         value='0'>
@@ -40,9 +21,9 @@ const FilterDentist = ({setDentistSelected}) => {
                         { dentists && (
                             dentists.map(data => (
                                 <option 
-                                key={data.id} 
-                                value={data.id}>
-                                    {data.name}
+                                key={data.employeeId} 
+                                value={data.employeeId}>
+                                    {data.fullName}
                                 </option>
                             ))
                         )}
