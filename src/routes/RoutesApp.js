@@ -20,9 +20,12 @@ import {
     UnauthorizedPage, 
     ChangePasswordPage,
     UserManagementPage,
+
     EditProfilePage,
     ScheduleManagementPage } from '../pages/common';
-import { AppointmentChatbotPage, DependentPage, QuotationPage } from '../pages/Patient';
+
+import { AppointmentChatbotPage, AppointmentHistory, DependentPage, QuotationPage } from '../pages/Patient';
+
 import { AppointmentCalendarPage } from '../pages/Dentist';
 //import { AppointmentPage } from '../pages/Secretary';
 import PrivateRoute from './PrivateRoute';
@@ -51,6 +54,7 @@ const RoutesApp = () => {
                 <Route element={<PrivateRoute role={[ROLES.BASIC_USER]} />}>
                     <Route element={<Dashboard />}>
                         <Route path="/agendamiento/chatbot" element={<AppointmentChatbotPage />}/>
+                        <Route path="/lista-citas" element={<AppointmentHistory />}/>
                         <Route path="/gestion-dependientes" element={<DependentPage />}/>
                         <Route path={'/cotizacion'} element={<QuotationPage />} />
                     </Route>
