@@ -25,7 +25,7 @@ const ScheduleTable = ({schedules, setSelectedSchedule, handleShow}) => {
     const columns = [
         {
             name: <div className={styles.container_table_header}><h6>Día</h6></div>,
-            selector: row => row.dayName,
+            selector: row => row.weekDayName,
             center: true,
             wrap: true,
             width: "100px"
@@ -34,8 +34,8 @@ const ScheduleTable = ({schedules, setSelectedSchedule, handleShow}) => {
             name: <div className={styles.container_table_header}><h6>Estado</h6></div>,
             selector: row => 
                 <div className={styles.badge_text}>
-                    <Badge pill bg={row.status === false ? 'success' : 'danger'}>
-                        {row.status === false ? 'ACTIVO' : 'INACTIVO'}
+                    <Badge pill bg={row.isDeleted === false ? 'success' : 'danger'}>
+                        {row.status}
                     </Badge>
                 </div>,
             center: true,
@@ -44,28 +44,28 @@ const ScheduleTable = ({schedules, setSelectedSchedule, handleShow}) => {
         },
         {
             name: <div className={styles.container_table_header}><h6>Hora inicio (Mañana)</h6></div>,
-            selector: row => row.startTimeMorning,
+            selector: row => row.morningStartHour !== null ? row.morningStartHour : 'No hay horario',
             center: true,
             wrap: true,
             width: "150px",
         },
         {
             name: <div className={styles.container_table_header}><h6>Hora fin (Mañana)</h6></div>,
-            selector: row => row.endTimeMorning,
+            selector: row => row.morningEndHour !== null ? row.morningEndHour : 'No hay horario',
             center: true,
             wrap: true,
             width: "150px"
         },
         {
             name: <div className={styles.container_table_header}><h6>Hora inicio (Tarde)</h6></div>,
-            selector: row => row.startTimeAfternoon,
+            selector: row => row.afternoonStartHour !== null ? row.afternoonStartHour : 'No hay horario',
             center: true,
             wrap: true,
             width: "150px"
         },
         {
             name: <div className={styles.container_table_header}><h6>Hora fin (Tarde)</h6></div>,
-            selector: row => row.endTimeAfternoon,
+            selector: row => row.afternoonEndHour !== null ? row.afternoonEndHour : 'No hay horario',
             center: true,
             wrap: true,
             width: "150px"
@@ -93,7 +93,6 @@ const ScheduleTable = ({schedules, setSelectedSchedule, handleShow}) => {
             minWidth: "120px"
         }
     ];
-
 
     return (
         <div className={styles.container_datable}>
