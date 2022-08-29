@@ -21,7 +21,12 @@ import {
     ChangePasswordPage,
     UserManagementPage,
     EditProfilePage } from '../pages/common';
-import { AppointmentChatbotPage, AppointmentHistory, DependentPage, MedicalDirectoryPage, QuotationPage } from '../pages/Patient';
+import { 
+    AppointmentChatbotPage, 
+    AppointmentHistory, DependentPage, 
+    FavoriteDentistPage, 
+    MedicalDirectoryPage, 
+    QuotationPage } from '../pages/Patient';
 import { AppointmentCalendarPage } from '../pages/Dentist';
 //import { AppointmentPage } from '../pages/Secretary';
 import PrivateRoute from './PrivateRoute';
@@ -53,6 +58,7 @@ const RoutesApp = () => {
                         <Route path="/lista-citas" element={<AppointmentHistory />}/>
                         <Route path="/gestion-dependientes" element={<DependentPage />}/>
                         <Route path="/odontologos/lista" element={<MedicalDirectoryPage />} />
+                        <Route path="/odontologos/favoritos" element={<FavoriteDentistPage />} />
                         <Route path={'/cotizacion'} element={<QuotationPage />} />
                     </Route>
                 </Route>
