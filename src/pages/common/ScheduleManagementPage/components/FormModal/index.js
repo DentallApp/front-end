@@ -3,20 +3,11 @@ import { Form, Button, Container, Row, Col, Modal } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { useWindowWidth } from '@react-hook/window-size';
 import STATUS from '../../../../../constants/Status';
+import WEEKDAYS from '../../../../../constants/WeekDays';
 import styles from './FormModal.module.css';
 
-const dataDays = [
-    {id: 1, name: 'Lunes'},
-    {id: 2, name: 'Martes'},
-    {id: 3, name: 'Miercoles'},
-    {id: 4, name: 'Jueves'},
-    {id: 5, name: 'Viernes'},
-    {id: 6, name: 'Sabado'},
-    {id: 7, name: 'Domingo'},
-]; 
-
-const FormModal = ({show, handleClose, scheduleSelect=null, saveSchedule}) => {
-
+const FormModal = ({show, handleClose, scheduleSelect=null, saveSchedule, schedules}) => {
+    
     const [type, setType] = useState('create'); // Estado para tipo de modal
     const [days, setDays] = useState(null);
     const onlyWidth = useWindowWidth(); // Se obtiene ancho y altura de pantalla para colocar el modal
@@ -25,34 +16,41 @@ const FormModal = ({show, handleClose, scheduleSelect=null, saveSchedule}) => {
     const { register, handleSubmit, reset, setValue, watch, setError, formState: {errors} } = useForm({
         defaultValues: {
             scheduleId: `${ scheduleSelect !== null ? scheduleSelect.scheduleId : ""}`,
-            dayId: `${ scheduleSelect !== null ? scheduleSelect.dayId : ""}`,
-            startTimeMorning: `${ scheduleSelect !== null ? scheduleSelect.startTimeMorning : ""}`,
-            endTimeMorning: `${ scheduleSelect !== null ? scheduleSelect.endTimeMorning : ""}`,
-            startTimeAfternoon: `${ scheduleSelect !== null ? scheduleSelect.startTimeAfternoon : ""}`,
-            endTimeAfternoon: `${ scheduleSelect !== null ? scheduleSelect.endTimeAfternoon : ""}`,
-            statusId: `${ scheduleSelect !== null ? (scheduleSelect.status === false ? STATUS[0].id : STATUS[1].id): ""}`
+            weekDayId: `${ scheduleSelect !== null ? scheduleSelect.weekDayId : ""}`,
+            morningStartHour: `${ scheduleSelect !== null ? scheduleSelect.morningStartHour : ""}`,
+            morningEndHour: `${ scheduleSelect !== null ? scheduleSelect.morningEndHour : ""}`,
+            afternoonStartHour: `${ scheduleSelect !== null ? scheduleSelect.afternoonStartHour : ""}`,
+            afternoonEndHour: `${ scheduleSelect !== null ? scheduleSelect.afternoonEndHour : ""}`,
+            statusId: `${ scheduleSelect !== null ? (scheduleSelect.isDeleted === false ? STATUS[0].id : STATUS[1].id): ""}`
         }
     });
 
-    const selectDayValue = watch("dayId");
+    const selectDayValue = watch("weekDayId");
     const selectStatusValue = watch("statusId");
 
     useEffect(() => {
         setStatus(STATUS);
-        setDays(dataDays);
+        const filterDays = WEEKDAYS.filter(day => !schedules?.some(schedule => schedule.weekDayId === day.id ));
         
         if(scheduleSelect !== null) {
-            setValue("dayId", scheduleSelect.dayId, true);
-            setValue("statusId", scheduleSelect.status === false ? STATUS[0].id : STATUS[1].id, true);
+            const daySelect = WEEKDAYS.filter(day => day.id === scheduleSelect.weekDayId);
+            const daysResult = [...filterDays, ...daySelect];
+            const daysSort = daysResult.sort((a, b) => a.id - b.id);
+            
+            setDays(daysSort);
+            setValue("weekDayId", scheduleSelect.weekDayId, true);
+            setValue("statusId", scheduleSelect.isDeleted === false ? STATUS[0].id : STATUS[1].id, true);
             setType('edit');
         }
         else {
-            setValue("dayId", 0, true);
+            setDays(filterDays);
+            setValue("weekDayId", 0, true);
             setValue("statusId", STATUS[0].id, true);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const handleDayChange = (e) => setValue("dayId", e.target.value, true);
+    const handleDayChange = (e) => setValue("weekDayId", e.target.value, true);
     const handleStatusChange = (e) => setValue("statusId", e.target.value, true);  
 
     return (
@@ -69,7 +67,7 @@ const FormModal = ({show, handleClose, scheduleSelect=null, saveSchedule}) => {
             <Modal.Body>
                 <Form 
                 className={styles.container_form} 
-                onSubmit={handleSubmit((data) => saveSchedule(data, reset, type, setError))}>
+                onSubmit={handleSubmit((data) => {console.log('Aqui'); saveSchedule(data, reset, type, setError)})}>
                     <h2>Registro</h2>
                     <div className="underline mx-auto"></div>
                     <p className={styles.text_information}>Los campos con el símbolo * son obligatorios</p>
@@ -79,10 +77,10 @@ const FormModal = ({show, handleClose, scheduleSelect=null, saveSchedule}) => {
                                 <Form.Group className="mb-3" controlId="formBasicDay">
                                     <Form.Label className={styles.label_input}>* Días</Form.Label>
                                     <Form.Select
-                                    name="dayId"
+                                    name="weekDayId"
                                     value={selectDayValue} 
                                     onChange={handleDayChange}
-                                    {...register("dayId", {
+                                    {...register("weekDayId", {
                                         required: "Debe de seleccionar un día"
                                     })}
                                     >
@@ -97,7 +95,7 @@ const FormModal = ({show, handleClose, scheduleSelect=null, saveSchedule}) => {
                                             ))
                                         )}
                                     </Form.Select>
-                                    { errors.dayId && <p className={styles.error_message}>{ errors.dayId.message }</p> }
+                                    { errors.weekDayId && <p className={styles.error_message}>{ errors.weekDayId.message }</p> }
                                 </Form.Group>
                             </Col>
                         </Row>
@@ -111,12 +109,10 @@ const FormModal = ({show, handleClose, scheduleSelect=null, saveSchedule}) => {
                                                 <Form.Label className={styles.label_input}>* Hora inicio</Form.Label>
                                                 <Form.Control 
                                                 type="time"
-                                                {...register("startTimeMorning", {
-                                                    required: "Hora de inicio es requerida"
-                                                })} />
-                                                { errors.startTimeMorning && 
+                                                {...register("morningStartHour")} />
+                                                { errors.morningStartHour && 
                                                 <p className={styles.error_message}>
-                                                    { errors.startTimeMorning.message }
+                                                    { errors.morningStartHour.message }
                                                 </p> }
                                             </Form.Group>
                                         </Col>
@@ -125,12 +121,10 @@ const FormModal = ({show, handleClose, scheduleSelect=null, saveSchedule}) => {
                                                 <Form.Label className={styles.label_input}>* Hora fin</Form.Label>
                                                 <Form.Control 
                                                 type="time"
-                                                {...register("endTimeMorning", {
-                                                    required: "Hora fin es requerida"
-                                                })} />
-                                                { errors.endTimeMorning && 
+                                                {...register("morningEndHour")} />
+                                                { errors.morningEndHour && 
                                                 <p className={styles.error_message}>
-                                                    { errors.endTimeMorning.message }
+                                                    { errors.morningEndHour.message }
                                                 </p> }
                                             </Form.Group>
                                         </Col>
@@ -149,10 +143,10 @@ const FormModal = ({show, handleClose, scheduleSelect=null, saveSchedule}) => {
                                                 <Form.Label className={styles.label_input}>* Hora inicio</Form.Label>
                                                 <Form.Control 
                                                 type="time"
-                                                {...register("startTimeAfternoon")} />
-                                                { errors.startTimeAfternoon && 
+                                                {...register("afternoonStartHour")} />
+                                                { errors.afternoonStartHour && 
                                                 <p className={styles.error_message}>
-                                                    { errors.startTimeAfternoon.message }
+                                                    { errors.afternoonStartHour.message }
                                                 </p> }
                                             </Form.Group>
                                         </Col>
@@ -161,10 +155,10 @@ const FormModal = ({show, handleClose, scheduleSelect=null, saveSchedule}) => {
                                                 <Form.Label className={styles.label_input}>* Hora fin</Form.Label>
                                                 <Form.Control 
                                                 type="time"
-                                                {...register("endTimeAfternoon")} />
-                                                { errors.endTimeAfternoon && 
+                                                {...register("afternoonEndHour")} />
+                                                { errors.afternoonEndHour && 
                                                 <p className={styles.error_message}>
-                                                    { errors.endTimeAfternoon.message }
+                                                    { errors.afternoonEndHour.message }
                                                 </p> }
                                             </Form.Group>
                                         </Col>
