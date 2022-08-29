@@ -1,0 +1,8 @@
+.favorite_button {
+    color: goldenrod;
+    font-size: 2rem;
+}
+
+.favorite_button:active {
+    transform: translateY(4px);
+}

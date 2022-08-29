@@ -1,0 +1,17 @@
+.container_datable {
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.container_table_header {
+    width: 100%;
+    text-align: center;
+    color: #FFF;
+}
+
+.container_actions {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

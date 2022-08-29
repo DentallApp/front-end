@@ -1,0 +1,32 @@
+.container_datable {
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.container_table_header {
+    width: 100%;
+    text-align: center;
+    color: #FFF;
+}
+
+.container_actions {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.button_cancel {
+    border-radius: 100%;
+    border-style: none;
+    background-color: #D61C4E !important;
+}
+
+.button_cancel:hover {
+    background-color: #D61C4E !important;
+}
+
+.button_cancel:active {
+    box-shadow: 0 5px #666 !important;
+    transform: translateY(4px) !important;
+}

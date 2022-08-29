@@ -1,0 +1,18 @@
+.container_form {
+    width: 100%;
+    padding: 20px;
+}
+
+.container_form h2 {
+    text-align: center;
+    font-weight: 700;
+}
+
+.container_header {
+    background-color: #002855 !important;
+    color: #FFF !important;
+}
+
+.container_header Button {
+    background: transparent url('../../../../../img/cancel.png') center/1.5em auto no-repeat !important;
+}

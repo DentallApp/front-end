@@ -1,0 +1,23 @@
+.page_title {
+    margin-top: 10px;
+    text-align: center;
+    font-weight: bold;
+    font-style: italic;
+    color: #002855;
+}
+
+.container_header {
+    margin-top: 40px;
+    margin-left: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.container_alert {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
