@@ -1,0 +1,43 @@
+.container_datable {
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.container_table_header {
+    width: 100%;
+    text-align: center;
+    color: #FFF;
+    
+}
+
+.badge_text {
+    width: 100%;
+    text-align: center;
+    font-size: .9rem;
+}
+
+.container_actions {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.button_information {
+    background-color: #102542 !important;
+    border-style: none;
+    color: #fff !important;
+    border-radius: 30px;
+    font-size: .8rem;
+    display: flex;
+    align-items: center;
+}
+
+.icon {
+    margin-right: 5px;
+}
+
+.button_information:active {
+    box-shadow: 0 5px #666 !important;
+    transform: translateY(4px) !important;
+}

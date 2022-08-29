@@ -172,16 +172,12 @@ const TreatmentPage = () => {
                         handleClose={handleClose} 
                         show={show}
                         saveTreatment={saveTreatment}
-                        alert={alert}
-                        setAlert={setAlert}
                         specificTreatmentSelect={rowSelect} /> 
                     ):(
                         <EliminationModal
                         handleClose={handleClose} 
                         show={show}
                         specificTreatmentSelect={rowSelect}
-                        alert={alert}
-                        setAlert={setAlert}
                         eliminateService={eliminateService}
                          /> 
                     )
