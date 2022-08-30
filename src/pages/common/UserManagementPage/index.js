@@ -98,6 +98,8 @@ const UserManagementPage = () => {
     }
     
     const edit = async(data) => {
+        data.isDeleted = parseInt(data.statusId) === 1 ? false : true;
+
         const result = await updateEmployee(data);
         if(result.success && result.success === true) setIsChange(!isChange);
         
@@ -129,6 +131,7 @@ const UserManagementPage = () => {
 
     // Función guardar y actualizar datos de los dependientes
     const saveUser = async (data, reset, type) => {
+        
         // Se elimina espacios innecesarios
         const sanitizedName = trimSpaces(data.names);
         const sanitizedLastName = trimSpaces(data.lastNames);
