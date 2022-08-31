@@ -3,13 +3,13 @@ import { Spinner } from 'react-bootstrap';
 import { AlertMessage, ModalLoading } from '../../../components';
 import { FavoriteDentistTable, EliminationModal } from './components';
 import { getFavoriteDentist, removeFavoriteByFavoriteId } from '../../../services/FavoriteDentistService';
+import { REMOVE_FAVORITE, UNEXPECTED_ERROR } from '../../../constants/InformationMessage';
 import styles from './FavoriteDentistPage.module.css';
 
 const FavoriteDentistPage = () => {
 
     const [errorLoading, setErrorLoading] = useState({success: false, message: ''});
     const [dentists, setDentists] = useState(null);
-    const [isChange, setIsChange] = useState(false);
 
     // Estado para el mensaje de alerta
     const [alert, setAlert] = useState(null);
@@ -25,15 +25,14 @@ const FavoriteDentistPage = () => {
         getFavoriteDentist()
             .then(res => setDentists(res.data))
             .catch(err => handleErrorLoading(err));
-
-    }, [isChange]);
+    }, []);
 
     const handleErrorLoading = (err) => {
         if((err.response.status === 0 && err.response.data === undefined) || 
                 (err.response.data.success === undefined && (err.response.status === 400 
                 || err.response.status === 405 ||
                 err.status === 500))) {
-                setErrorLoading({success: true, message: 'Error inesperado. Refresque la página o intente más tarde'});
+                setErrorLoading({success: true, message: UNEXPECTED_ERROR});
                 return;
         }  
         setErrorLoading({success: true, message: err.response.data.message});
@@ -43,7 +42,7 @@ const FavoriteDentistPage = () => {
         if(result.success === undefined && (result.status === 0 || result.status === 400 || 
             result.status === 404 || result.status === 405 ||
             result.status === 500)) {
-            setAlert({success: false, message: 'Error inesperado. Refresque la página o intente más tarde'});
+            setAlert({success: false, message: UNEXPECTED_ERROR});
             setIsLoading({success: false});
         }
     }
@@ -55,14 +54,23 @@ const FavoriteDentistPage = () => {
     }
     const handleShow = () => setShow(true);
 
-    const eliminateFavoriteDentist = async(id) => {
-        setIsLoading({success: undefined});
-        const result = await removeFavoriteByFavoriteId(id);
+    const eliminateFavoriteDentist = async(dentistSelect) => {
         
-        if(result.success && result.success === true) setIsChange(!isChange);  
+        setIsLoading({success: undefined});
+        const result = await removeFavoriteByFavoriteId(dentistSelect.favoriteDentistId);
+        
+        if(result.success && result.success === true) {
+            const newList = dentists.filter(dentist => 
+                dentist.favoriteDentistId !== dentistSelect.favoriteDentistId);
+            
+            setDentists(newList);
+            setAlert({succes: true, message: REMOVE_FAVORITE});
+        }
+        else {
+            setAlert(result);
+        }  
         
         setIsLoading({success: result.success});
-        setAlert(result.success === true ? 'Se ha quitado de favoritos' : result);
         
         handleErrors(result);
         handleClose();
