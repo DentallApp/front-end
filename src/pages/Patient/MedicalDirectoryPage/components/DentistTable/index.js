@@ -1,5 +1,6 @@
 import DataTable from 'react-data-table-component';
 import FavoriteButton from '../FavoriteButton';
+import { INFORMATION_NOT_AVAILABLE } from '../../../../../constants/InformationMessage';
 import styles from './DentistTable.module.css';
 
 const paginationOptions = {
@@ -18,7 +19,7 @@ const customStyles = {
     }
 }
 
-const DentistTable = ({filterDentists, setAlert, isChange, setIsChange, setIsLoading}) => {
+const DentistTable = ({filterDentists, setAlert, setIsLoading}) => {
     // Columnas de la tabla
     const columns = [
         {
@@ -32,24 +33,24 @@ const DentistTable = ({filterDentists, setAlert, isChange, setIsChange, setIsLoa
         {
             name: <div className={styles.container_table_header}><h6>Pregrado</h6></div>,
             selector: row => row.pregradeUniversity === null || row.pregradeUniversity === '' ? 
-                'Información no disponible' : row.pregradeUniversity,
+                INFORMATION_NOT_AVAILABLE : row.pregradeUniversity,
             center: true,
             wrap: true,
             cell: row => <p style={{'textAlign': 'center'}}>{
                 row.pregradeUniversity === null || row.pregradeUniversity === '' ? 
-                'Información no disponible' : row.pregradeUniversity}</p>,
+                INFORMATION_NOT_AVAILABLE : row.pregradeUniversity}</p>,
             width: '200px'
             
         },
         {
             name: <div className={styles.container_table_header}><h6>Posgrado</h6></div>,
             selector: row => row.postgradeUniversity === null || row.pregradeUniversity === '' ? 
-                'Información no disponible' : row.postgradeUniversity,
+                INFORMATION_NOT_AVAILABLE : row.postgradeUniversity,
             center: true,
             wrap: true,
             cell: row => <p style={{'textAlign': 'center'}}>{
                 row.postgradeUniversity === null || row.postgradeUniversity === '' ? 
-                'Información no disponible' : row.postgradeUniversity}</p>,
+                INFORMATION_NOT_AVAILABLE : row.postgradeUniversity}</p>,
             width: "200px",
         },
         {
@@ -67,8 +68,6 @@ const DentistTable = ({filterDentists, setAlert, isChange, setIsChange, setIsLoa
                         <FavoriteButton
                         dentist={row}
                         setAlert={setAlert}
-                        isChange={isChange}
-                        setIsChange={setIsChange}
                         setIsLoading={setIsLoading}
                         />
                     </div>
