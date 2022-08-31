@@ -1,6 +1,7 @@
 import DataTable from 'react-data-table-component';
 import { Button, Badge } from 'react-bootstrap';
 import { FaEdit } from "react-icons/fa";
+import { INFORMATION_NOT_AVAILABLE } from '../../../../../constants/InformationMessage';
 import styles from './ScheduleTable.module.css';
 
 // Opciones de paginación
@@ -44,28 +45,28 @@ const ScheduleTable = ({schedules, setSelectedSchedule, handleShow}) => {
         },
         {
             name: <div className={styles.container_table_header}><h6>Hora inicio (Mañana)</h6></div>,
-            selector: row => row.morningStartHour !== null ? row.morningStartHour : 'No hay horario',
+            selector: row => row.morningStartHour !== null ? row.morningStartHour : INFORMATION_NOT_AVAILABLE,
             center: true,
             wrap: true,
             width: "150px",
         },
         {
             name: <div className={styles.container_table_header}><h6>Hora fin (Mañana)</h6></div>,
-            selector: row => row.morningEndHour !== null ? row.morningEndHour : 'No hay horario',
+            selector: row => row.morningEndHour !== null ? row.morningEndHour : INFORMATION_NOT_AVAILABLE,
             center: true,
             wrap: true,
             width: "150px"
         },
         {
             name: <div className={styles.container_table_header}><h6>Hora inicio (Tarde)</h6></div>,
-            selector: row => row.afternoonStartHour !== null ? row.afternoonStartHour : 'No hay horario',
+            selector: row => row.afternoonStartHour !== null ? row.afternoonStartHour : INFORMATION_NOT_AVAILABLE,
             center: true,
             wrap: true,
             width: "150px"
         },
         {
             name: <div className={styles.container_table_header}><h6>Hora fin (Tarde)</h6></div>,
-            selector: row => row.afternoonEndHour !== null ? row.afternoonEndHour : 'No hay horario',
+            selector: row => row.afternoonEndHour !== null ? row.afternoonEndHour : INFORMATION_NOT_AVAILABLE,
             center: true,
             wrap: true,
             width: "150px"

@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import{ Button } from 'react-bootstrap';
 import { IoArrowBackCircle } from "react-icons/io5";
 import { getLocalUser } from '../../../services/UserService';
+import { getLocalAccessToken } from '../../../services/TokenService';
 import styles from './NotFoundPage.module.css';
 
 const NotFoundPage = () => {
@@ -18,7 +19,7 @@ const NotFoundPage = () => {
             <Button 
             className={styles.button_back}
             onClick={() => { 
-                user ? ( user.accessToken ? navigate("/inicio") : navigate("/") ) : navigate("/") 
+                user ? ( user && getLocalAccessToken() ? navigate("/inicio") : navigate("/") ) : navigate("/") 
             }}>
                 <IoArrowBackCircle className={styles.icon} /> Regresar
             </Button>

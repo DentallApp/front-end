@@ -8,6 +8,7 @@ import { SelectedTreamentsTable, TreatmentsModal } from './components';
 import { getSpecificTreatment } from '../../../services/SpecificTreatmentService';
 import { getLocalUser } from '../../../services/UserService';
 import { downloadQuotationPDF } from '../../../services/QuotationService';
+import { UNEXPECTED_ERROR } from '../../../constants/InformationMessage';
 import styles from './QuotationPage.module.css';
 
 const QuotationPage = () => {
@@ -52,7 +53,7 @@ const QuotationPage = () => {
         if(result.status === 0 || result.status === 400 || 
             result.status === 404 || result.status === 405 ||
             result.status === 500) {
-            setAlert({success: false, message: 'Error inesperado. Refresque la página o intente más tarde'});
+            setAlert({success: false, message: UNEXPECTED_ERROR});
             setIsLoading({status: result.status});
         }
     }
@@ -62,7 +63,7 @@ const QuotationPage = () => {
             (err.response.data.success === undefined && (err.response.status === 400 
             || err.response.status === 405 ||
             err.status === 500))) {
-            setErrorLoading({success: true, message: 'Error inesperado. Refresque la página o intente más tarde'});
+            setErrorLoading({success: true, message: UNEXPECTED_ERROR});
             return;
         }
         setErrorLoading({success: true, message: err.response.data.message});
@@ -88,8 +89,8 @@ const QuotationPage = () => {
         setIsLoading({status: result.status});
 
         if(result.status === 200) {
-            const blob = new Blob([result.data], { type: 'application/pdf' })
-            saveAs(blob, "cotizacion-tratamientos-dentales.pdf")
+            const blob = new Blob([result.data], { type: 'application/pdf' });
+            saveAs(blob, "cotizacion-tratamientos-dentales.pdf");
         }
 
         handleErrors(result);

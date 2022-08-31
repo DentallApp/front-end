@@ -7,6 +7,7 @@ import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 import { useForm } from 'react-hook-form';
 import { AlertMessage, ModalLoading } from '../../../../../components';
 import { formatEmail, formatPassword } from '../../../../../utils/formatUtils';
+import { UNEXPECTED_ERROR } from '../../../../../constants/InformationMessage';
 import { login } from '../../../../../services/AuthService';
 import styles from './FormLogin.module.css'; 
 
@@ -26,7 +27,7 @@ const FormLogin = () => {
         if(result.success === undefined && (result.status === 0 ||result.status === 400 || result.status === 404 
             || result.status === 405 ||
             result.status === 500)) {
-            setError({success: false, message: 'Error inesperado. Refresque la página o intente más tarde'});
+            setError({success: false, message: UNEXPECTED_ERROR});
             setIsLoading({success: false});
         }
     }

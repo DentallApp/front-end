@@ -4,6 +4,7 @@ import { AlertMessage, ModalLoading } from '../../../components';
 import { AppointmentsTable, AppointmentModal, FilterAppointmentStatus } from './components';
 import { Spinner } from 'react-bootstrap';
 import { getAppointments } from '../../../services/AppointmentBasicUserService';
+import { UNEXPECTED_ERROR } from '../../../constants/InformationMessage';
 import styles from './AppointmentHistory.module.css';
 
 const AppointmentHistory = () => {
@@ -62,7 +63,7 @@ const AppointmentHistory = () => {
                 (err.response.data.success === undefined && (err.response.status === 400 
                 || err.response.status === 405 ||
                 err.status === 500))) {
-                setErrorLoading({success: true, message: 'Error inesperado. Refresque la página o intente más tarde'});
+                setErrorLoading({success: true, message: UNEXPECTED_ERROR});
                 return;
         }  
         setErrorLoading({success: true, message: err.response.data.message});

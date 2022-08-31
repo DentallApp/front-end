@@ -22,7 +22,7 @@ const customStyles = {
 const SelectedTreamentsTable = ({selectedTreatments, deleteSelected}) => {
 
     // Columnas de la tabla
-const columns = [
+    const columns = [
     {
         name: <div className={styles.container_table_header}><h6>Codigo</h6></div>,
         selector: row => row.specificTreatmentId,
