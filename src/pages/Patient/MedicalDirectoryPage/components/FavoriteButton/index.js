@@ -1,21 +1,24 @@
 import { FaStar, FaRegStar } from "react-icons/fa";
 import { addFavoriteDentist, removeFavoriteDentist } from '../../../../../services/FavoriteDentistService';
+import { ADD_FAVORITE, REMOVE_FAVORITE, UNEXPECTED_ERROR } from "../../../../../constants/InformationMessage";
 import styles from './FavoriteButton.module.css';
 
-const FavoriteButton = ({dentist, setAlert, isChange, setIsChange, setIsLoading}) => {
+const FavoriteButton = ({dentist, setAlert, setIsLoading}) => {
 
     const handleErrors = (result) => {
         if(result.success === undefined && (result.status === 0 || result.status === 400 || 
             result.status === 404 || result.status === 405 ||
             result.status === 500)) {
-            setAlert({success: false, message: 'Error inesperado. Refresque la página o intente más tarde'});
+            setAlert({success: false, message: UNEXPECTED_ERROR});
             setIsLoading({success: false});
         }
     }
 
     const addFavorite = async () => {
         const result = await addFavoriteDentist(dentist.dentistId);
-        if(result.success === true) setIsChange(!isChange);
+        if(result.success === true) {
+            dentist.isFavorite = true;
+        }
         
         setIsLoading({success: result.success}); 
 
@@ -24,7 +27,9 @@ const FavoriteButton = ({dentist, setAlert, isChange, setIsChange, setIsLoading}
 
     const removeFavorite = async () => {
         const result = await removeFavoriteDentist(dentist.dentistId);
-        if(result.success === true) setIsChange(!isChange);
+        if(result.success === true) {
+            dentist.isFavorite = false;
+        }
         
         setIsLoading({success: result.success}); 
 
@@ -37,11 +42,11 @@ const FavoriteButton = ({dentist, setAlert, isChange, setIsChange, setIsLoading}
 
         if(dentist.isFavorite === false) {
             result = await addFavorite();
-            result.success === true ? setAlert({success: true, message: 'Se ha agregado a favoritos'}) : setAlert(result);
+            result.success === true ? setAlert({success: true, message: ADD_FAVORITE}) : setAlert(result);
         }
         else {
             result = await removeFavorite();
-            setAlert({success: true, message: 'Se ha quitado de favoritos'});
+            result.success === true ? setAlert({success: true, message: REMOVE_FAVORITE}) : setAlert(result);
         }
 
         handleErrors(result);
