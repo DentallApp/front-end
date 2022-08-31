@@ -5,11 +5,10 @@ import styles from './FilterOffice.module.css';
 
 const FilterOffice = ({
     selectOffice, 
-    setSelectOffice, 
+    setSelectOffice,
+    allDentist, 
     dentists, 
-    setFilterDentists, 
-    isChange, 
-    setIsChange}) => {
+    setFilterDentists}) => {
 
     const [offices, setOffices] = useState(null);
 
@@ -22,7 +21,7 @@ const FilterOffice = ({
         setSelectOffice(e.target.value);
 
         if(parseInt(e.target.value) === 0) {
-            setIsChange(!isChange);
+            setFilterDentists(allDentist);
         }
         else {
             const data = dentists.filter(dentist => dentist.officeId === parseInt(e.target.value));
