@@ -18,29 +18,38 @@ const customStyles = {
     }
 }
 
-const DentistTable = ({dentists, setAlert}) => {
+const DentistTable = ({filterDentists, setAlert, isChange, setIsChange, setIsLoading}) => {
     // Columnas de la tabla
     const columns = [
         {
             name: <div className={styles.container_table_header}><h6>Odontologo</h6></div>,
-            selector: row => row.dentistName,
+            selector: row => row.fullName,
             center: true,
             wrap: true,
-            Width: "150px"
+            cell: row => <p style={{'textAlign': 'center'}}>{row.fullName}</p>,
+            width: "250px"
         },
         {
             name: <div className={styles.container_table_header}><h6>Pregrado</h6></div>,
-            selector: row => row.pregradeUniversity,
+            selector: row => row.pregradeUniversity === null || row.pregradeUniversity === '' ? 
+                'Información no disponible' : row.pregradeUniversity,
             center: true,
             wrap: true,
-            Width: '200px'
+            cell: row => <p style={{'textAlign': 'center'}}>{
+                row.pregradeUniversity === null || row.pregradeUniversity === '' ? 
+                'Información no disponible' : row.pregradeUniversity}</p>,
+            width: '200px'
             
         },
         {
             name: <div className={styles.container_table_header}><h6>Posgrado</h6></div>,
-            selector: row => row.postgradeUniversity === null ? 'Información no disponible' : row.postgradeUniversity,
+            selector: row => row.postgradeUniversity === null || row.pregradeUniversity === '' ? 
+                'Información no disponible' : row.postgradeUniversity,
             center: true,
             wrap: true,
+            cell: row => <p style={{'textAlign': 'center'}}>{
+                row.postgradeUniversity === null || row.postgradeUniversity === '' ? 
+                'Información no disponible' : row.postgradeUniversity}</p>,
             width: "200px",
         },
         {
@@ -56,7 +65,11 @@ const DentistTable = ({dentists, setAlert}) => {
                 return (
                     <div className={styles.container_actions}>
                         <FavoriteButton
+                        dentist={row}
                         setAlert={setAlert}
+                        isChange={isChange}
+                        setIsChange={setIsChange}
+                        setIsLoading={setIsLoading}
                         />
                     </div>
                 )
@@ -65,7 +78,7 @@ const DentistTable = ({dentists, setAlert}) => {
             allowOverflow: true,
             button: true,
             center: true,
-            minWidth: "150px"
+            maxWidth: "200px"
         }
     ];
     return (
@@ -73,12 +86,12 @@ const DentistTable = ({dentists, setAlert}) => {
             <DataTable
             className={styles.rdt_TableHeadRow}
             columns={columns}
-            data={dentists}
+            data={filterDentists}
             pagination
             paginationComponentOptions={paginationOptions}
             highlightOnHover={true}
             wrap={true}
-            noDataComponent="No hay odontologos agregados"
+            noDataComponent="No hay datos para mostrar"
             fixedHeader
             fixedHeaderScrollHeight="600px"
             customStyles={customStyles}
