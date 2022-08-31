@@ -12,3 +12,25 @@
     justify-content: center;
     align-items: center;
 }
+
+.container_spinner {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.spinner {
+    width: 10rem!important;
+    height: 10rem!important;
+}
+
+.text_loading {
+    font-size: 2rem;
+}
+
+.text_error {
+    text-align: center;
+    margin-right: 20px;
+    margin-left: 20px;
+}
