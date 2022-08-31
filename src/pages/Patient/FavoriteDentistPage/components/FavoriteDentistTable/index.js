@@ -1,6 +1,7 @@
 import DataTable from 'react-data-table-component';
 import { Button } from 'react-bootstrap';
 import { AiFillDelete } from "react-icons/ai";
+import { INFORMATION_NOT_AVAILABLE } from '../../../../../constants/InformationMessage';
 import styles from './FavoriteDentistTable.module.css';
 
 const paginationOptions = {
@@ -33,24 +34,24 @@ const FavoriteDentistTable = ({dentists, setDentistSelect, handleShow}) => {
         {
             name: <div className={styles.container_table_header}><h6>Pregrado</h6></div>,
             selector: row => row.pregradeUniversity === null || row.pregradeUniversity === '' ? 
-                'Información no disponible' : row.pregradeUniversity,
+                INFORMATION_NOT_AVAILABLE : row.pregradeUniversity,
             center: true,
             wrap: true,
             cell: row => <p style={{'textAlign': 'center'}}>{
                 row.pregradeUniversity === null || row.pregradeUniversity === '' ? 
-                'Información no disponible' : row.pregradeUniversity}</p>,
+                INFORMATION_NOT_AVAILABLE : row.pregradeUniversity}</p>,
             width: '200px'
             
         },
         {
             name: <div className={styles.container_table_header}><h6>Posgrado</h6></div>,
             selector: row => row.postgradeUniversity === null || row.pregradeUniversity === '' ? 
-                'Información no disponible' : row.postgradeUniversity,
+                INFORMATION_NOT_AVAILABLE : row.postgradeUniversity,
             center: true,
             wrap: true,
             cell: row => <p style={{'textAlign': 'center'}}>{
                 row.postgradeUniversity === null || row.postgradeUniversity === '' ? 
-                'Información no disponible' : row.postgradeUniversity}</p>,
+                INFORMATION_NOT_AVAILABLE : row.postgradeUniversity}</p>,
             width: "200px",
         },
         {

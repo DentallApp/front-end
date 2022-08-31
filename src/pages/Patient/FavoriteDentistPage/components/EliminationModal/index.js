@@ -18,7 +18,7 @@ const EliminationModal = ({show, handleClose, dentistSelect, eliminateFavoriteDe
                 <Button variant="secondary" onClick={handleClose}>
                     Cerrar
                 </Button>
-                <Button variant="primary" onClick={() => eliminateFavoriteDentist(dentistSelect.favoriteDentistId)}>
+                <Button variant="primary" onClick={() => eliminateFavoriteDentist(dentistSelect)}>
                     Eliminar
                 </Button>
             </Modal.Footer>

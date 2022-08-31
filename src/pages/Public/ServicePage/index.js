@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Spinner from 'react-bootstrap/Spinner';
 import { getGeneralTreatmentXId } from '../../../services/GeneralTreatments';
+import { UNEXPECTED_ERROR } from '../../../constants/InformationMessage';
 import styles from './ServicePage.module.css';
 
 const ServicePage = () => {
@@ -22,7 +23,7 @@ const ServicePage = () => {
                 (err.response.data.success === undefined && (err.response.status === 400 
                 || err.response.status === 405 ||
                 err.status === 500))) {
-                setAlert({success: true, message: 'Error inesperado. Refresque la página o intente más tarde'});
+                setAlert({success: true, message: UNEXPECTED_ERROR});
                 return;
             }
             setAlert({success: true, message: err.response.data.message});
