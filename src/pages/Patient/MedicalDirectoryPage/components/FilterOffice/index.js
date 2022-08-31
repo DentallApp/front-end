@@ -3,7 +3,13 @@ import { Form, Row, Col } from 'react-bootstrap';
 import { getOffices } from '../../../../../services/OfficeService';
 import styles from './FilterOffice.module.css';
 
-const FilterOffice = ({setSelectOffice}) => {
+const FilterOffice = ({
+    selectOffice, 
+    setSelectOffice, 
+    dentists, 
+    setFilterDentists, 
+    isChange, 
+    setIsChange}) => {
 
     const [offices, setOffices] = useState(null);
 
@@ -14,7 +20,14 @@ const FilterOffice = ({setSelectOffice}) => {
 
     const handleChange = (e) => {
         setSelectOffice(e.target.value);
-        console.log(e.target.value);
+
+        if(parseInt(e.target.value) === 0) {
+            setIsChange(!isChange);
+        }
+        else {
+            const data = dentists.filter(dentist => dentist.officeId === parseInt(e.target.value));
+            setFilterDentists(data);
+        }
     }
 
     return (
@@ -25,6 +38,7 @@ const FilterOffice = ({setSelectOffice}) => {
                         <Form.Label className={styles.label_input}>Consultorios</Form.Label>
                         <Form.Select
                         name="office"
+                        value={selectOffice!== null && selectOffice}
                         onChange={handleChange}
                         >
                         <option  
