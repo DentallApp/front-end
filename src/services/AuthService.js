@@ -4,7 +4,8 @@ import {
     setLocalAccessToken, 
     setLocalRefreshToken, 
     removeLocalAccessToken, 
-    removeLocalRefreshToken 
+    removeLocalRefreshToken,
+    revokeToken 
 } from './TokenService';
 
 export const login = ({ userName, password }) => {
@@ -39,8 +40,14 @@ export const login = ({ userName, password }) => {
     })
 }
 
-export const logout = () => {
-    removeLocalAccessToken();
-    removeLocalRefreshToken();
+export const logout = async () => {
     removeLocalUser();
+
+    const result = await revokeToken();
+
+    if(result && result.success === true) {
+        removeLocalAccessToken();
+        removeLocalRefreshToken();
+    }
+    
 }

@@ -22,7 +22,7 @@ import {
     UserManagementPage,
     EditProfilePage, 
     OfficeManagementPage,
-    OfficeSchedulePage
+    OfficeSchedulePage,
     ScheduleManagementPage } from '../pages/common';
 import { AppointmentChatbotPage, AppointmentHistory, FavoriteDentistPage, MedicalDirectoryPage, DependentPage, QuotationPage } from '../pages/Patient';
 
