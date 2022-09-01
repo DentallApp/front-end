@@ -6,7 +6,6 @@ import styles from './FilterOffice.module.css';
 const FilterOffice = ({
     selectOffice, 
     setSelectOffice,
-    allDentist, 
     dentists, 
     setFilterDentists}) => {
 
@@ -21,7 +20,7 @@ const FilterOffice = ({
         setSelectOffice(e.target.value);
 
         if(parseInt(e.target.value) === 0) {
-            setFilterDentists(allDentist);
+            setFilterDentists(dentists);
         }
         else {
             const data = dentists.filter(dentist => dentist.officeId === parseInt(e.target.value));
