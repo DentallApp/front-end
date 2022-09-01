@@ -10,7 +10,6 @@ const MedicalDirectoryPage = () => {
 
     const [errorLoading, setErrorLoading] = useState({success: false, message: ''});
     const [selectOffice, setSelectOffice] = useState("0");
-    const [allDentist, setAllDentist] = useState(null);
     const [dentists, setDentists] = useState(null);
     const [filterDentits, setFilterDentists] = useState(null);
 
@@ -22,7 +21,6 @@ const MedicalDirectoryPage = () => {
 
     useEffect(() => {
         getAllDentist().then(res => {
-            setAllDentist(res.data);
             setDentists(res.data);
             setFilterDentists(res.data);
         })
@@ -57,7 +55,6 @@ const MedicalDirectoryPage = () => {
 
             <div className={styles.container_header}>
                 <FilterOffice
-                allDentist={allDentist} 
                 dentists={dentists} 
                 selectOffice={selectOffice}
                 setSelectOffice={setSelectOffice}
