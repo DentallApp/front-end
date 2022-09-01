@@ -7,6 +7,7 @@
 }
 
 .button_add {
+    margin-top: 20px;
     display: flex;
     align-items: center;
     border-radius: 30px !important;
@@ -33,6 +34,10 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+}
+
+.container_header .select_dentist {
+    width: 80% !important;
 }
 
 .message_information {
