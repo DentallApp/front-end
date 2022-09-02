@@ -40,6 +40,11 @@
     width: 80% !important;
 }
 
+.office_current {
+    margin-left: 20px;
+    margin-bottom: 20px;
+}
+
 .message_information {
     text-align: center;
 }

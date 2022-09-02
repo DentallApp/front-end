@@ -61,16 +61,22 @@ const OfficeSchedulePage = () => {
                     schedules={data}
                     saveSchedule={saveSchedule} />         
                 )
+            }
+            {
+                getLocalUser().roles.includes(ROLES.SUPERADMIN) ? (
+                    <h1 className={styles.page_title}>Gestión de Horarios de los Consultorios</h1>
+                ):(
+                    <h1 className={styles.page_title}>
+                        Horario del Consultorio de {getLocalUser().officeName}
+                    </h1>
+                ) 
             }    
-            <h1 className={styles.page_title}>Gestión de Horarios</h1>
-
-            <div className={styles.container_header}>
-                
+            
+            <div className={styles.container_header}>    
                 {
                     getLocalUser().roles.includes(ROLES.SUPERADMIN) && (
                         <FilterOffice className={styles.filter_office} setSelectOffice={setSelectOffice} />
                     )
-
                 }
 
                 <Button 
