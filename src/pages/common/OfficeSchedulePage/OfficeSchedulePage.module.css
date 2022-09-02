@@ -1,11 +1,3 @@
-.page_title {
-    margin-top: 10px;
-    text-align: center;
-    font-weight: bold;
-    font-style: italic;
-    color: #002855;
-}
-
 .button_add {
     display: flex;
     align-items: center;
@@ -13,7 +5,7 @@
     border-style: none;
     background-color: #3CCF4E !important;
 }
-
+  
 .button_add:active {
     box-shadow: 0 5px #666;
     transform: translateY(4px);

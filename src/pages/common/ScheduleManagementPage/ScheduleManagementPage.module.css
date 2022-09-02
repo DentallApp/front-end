@@ -1,20 +1,12 @@
-.page_title {
-    margin-top: 10px;
-    text-align: center;
-    font-weight: bold;
-    font-style: italic;
-    color: #002855;
-}
-
 .button_add {
-    margin-top: 20px;
+    margin-top: 10px;
     display: flex;
     align-items: center;
     border-radius: 30px !important;
     border-style: none;
     background-color: #3CCF4E !important;
 }
-
+  
 .button_add:active {
     box-shadow: 0 5px #666;
     transform: translateY(4px);
@@ -63,19 +55,19 @@
     align-items: center;
 }
 
-.spinner {
-    width: 10rem!important;
-    height: 10rem!important;
-}
-
-.text_loading {
-    font-size: 2rem;
-}
-
 .text_error {
     text-align: center;
     margin-right: 20px;
     margin-left: 20px;
+}
+
+.spinner {
+    width: 10rem!important;
+    height: 10rem!important;
+  }
+  
+.text_loading {
+  font-size: 2rem;
 }
 
 @media screen and (max-width: 450px) {

@@ -7,6 +7,7 @@ import { validationSchedule } from './utils';
 import data from './data';
 import { getLocalUser } from '../../../services/UserService';
 import ROLES from '../../../constants/Roles';
+import '../../../App.css';
 import styles from './OfficeSchedulePage.module.css';
 
 const OfficeSchedulePage = () => {
@@ -64,9 +65,9 @@ const OfficeSchedulePage = () => {
             }
             {
                 getLocalUser().roles.includes(ROLES.SUPERADMIN) ? (
-                    <h1 className={styles.page_title}>Gestión de Horarios de los Consultorios</h1>
+                    <h1 className={`page_title`}>Gestión de Horarios de los Consultorios</h1>
                 ):(
-                    <h1 className={styles.page_title}>
+                    <h1 className={`page_title`}>
                         Horario del Consultorio de {getLocalUser().officeName}
                     </h1>
                 ) 

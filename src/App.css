@@ -15,6 +15,14 @@
   margin-bottom: 10px;
 }
 
+.page_title {
+  margin-top: 10px;
+  text-align: center;
+  font-weight: bold;
+  font-style: italic;
+  color: #002855;
+}
+
 @media screen and (max-width: 1024px) {
   .title-section {
       margin-top: 40px;

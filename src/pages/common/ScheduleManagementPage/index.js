@@ -12,6 +12,7 @@ import {
     getAllSchedule } from '../../../services/DentistScheduleService';
 import { UNEXPECTED_ERROR } from '../../../constants/InformationMessage';
 import { getLocalUser } from '../../../services/UserService';
+import '../../../App.css';
 import styles from './ScheduleManagementPage.module.css';
 
 const ScheduleManagementPage = () => {
@@ -142,6 +143,7 @@ const ScheduleManagementPage = () => {
         if(validationAfternoon === false) return;
         
         let result = null;
+        setIsLoading({success: undefined});
 
         if(type === 'create') result = await create(data);
         else result = await update(data);
@@ -166,7 +168,7 @@ const ScheduleManagementPage = () => {
                     saveSchedule={saveSchedule} />         
                 )
             }    
-            <h1 className={styles.page_title}>Gestión de Horarios</h1>
+            <h1 className={`page_title`}>Gestión de Horarios</h1>
             { /* Mensaje de alerta para mostrar información al usuario */
                 alert && 
                 <div className={styles.container_alert}>
