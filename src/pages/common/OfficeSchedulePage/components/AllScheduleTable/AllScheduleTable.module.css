@@ -1,0 +1,18 @@
+.container_datable {
+    margin-left: 20px;
+    margin-right: 20px;
+    position: sticky;
+}
+
+.container_table_header {
+    width: 100%;
+    text-align: center;
+    color: #FFF;
+    
+}
+
+.badge_text {
+    width: 100%;
+    text-align: center;
+    font-size: .9rem;
+}
