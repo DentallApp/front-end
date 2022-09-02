@@ -57,3 +57,7 @@ export const updateOffice = (data) => {
         }
     })
 }
+
+export const getOfficesActiveAndInactive = async() => {
+    return await api.get('/office/all');
+}
