@@ -3,20 +3,11 @@ import { Form, Button, Container, Row, Col, Modal } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { useWindowWidth } from '@react-hook/window-size';
 import STATUS from '../../../../../constants/Status';
+import WEEKDAYS from '../../../../../constants/WeekDays';
 import styles from './FormModal.module.css';
 
-const dataDays = [
-    {id: 1, name: 'Lunes'},
-    {id: 2, name: 'Martes'},
-    {id: 3, name: 'Miercoles'},
-    {id: 4, name: 'Jueves'},
-    {id: 5, name: 'Viernes'},
-    {id: 6, name: 'Sabado'},
-    {id: 7, name: 'Domingo'},
-]; 
-
 const FormModal = ({show, handleClose, scheduleSelect=null, saveSchedule, schedules}) => {
-
+    
     const [type, setType] = useState('create'); // Estado para tipo de modal
     const [days, setDays] = useState(null);
     const onlyWidth = useWindowWidth(); // Se obtiene ancho y altura de pantalla para colocar el modal
@@ -25,34 +16,40 @@ const FormModal = ({show, handleClose, scheduleSelect=null, saveSchedule, schedu
     const { register, handleSubmit, reset, setValue, watch, setError, formState: {errors} } = useForm({
         defaultValues: {
             scheduleId: `${ scheduleSelect !== null ? scheduleSelect.scheduleId : ""}`,
-            dayId: `${ scheduleSelect !== null ? scheduleSelect.dayId : ""}`,
-            startTime: `${ scheduleSelect !== null ? scheduleSelect.startTime : ""}`,
-            endTime: `${ scheduleSelect !== null ? scheduleSelect.endTime : ""}`,
-            statusId: `${ scheduleSelect !== null ? (scheduleSelect.status === false ? STATUS[0].id : STATUS[1].id): ""}`
+            weekDayId: `${ scheduleSelect !== null ? scheduleSelect.weekDayId : ""}`,
+            startHour: `${ scheduleSelect !== null ? scheduleSelect.startHour : ""}`,
+            endHour: `${ scheduleSelect !== null ? scheduleSelect.endHour : ""}`,
+            isDeleted: `${ scheduleSelect !== null ? (scheduleSelect.isDeleted === false ? STATUS[0].id : STATUS[1].id): ""}`
         }
     });
 
-    const selectDayValue = watch("dayId");
-    const selectStatusValue = watch("statusId");
+    const selectDayValue = watch("weekDayId");
+    const selectStatusValue = watch("isDeleted");
 
     useEffect(() => {
         setStatus(STATUS);
-        const filterDays = dataDays.filter(day => !schedules.some(schedule => schedule.dayId === day.id ));
-        setDays(filterDays);
+        const filterDays = WEEKDAYS.filter(day => !schedules.some(schedule => schedule.weekDayId === day.id ));
         
         if(scheduleSelect !== null) {
-            setValue("dayId", scheduleSelect.dayId, true);
-            setValue("statusId", scheduleSelect.status === false ? STATUS[0].id : STATUS[1].id, true);
+            const daySelect = WEEKDAYS.filter(day => day.id === scheduleSelect.weekDayId);
+            const daysResult = [...filterDays, ...daySelect];
+            const daysSort = daysResult.sort((a, b) => a.id - b.id);
+            
+            setDays(daysSort);
+            setValue("weekDayId", scheduleSelect.weekDayId, true);
+            setValue("isDeleted", scheduleSelect.isDeleted === false ? STATUS[0].id : STATUS[1].id, true);
             setType('edit');
         }
         else {
-            setValue("dayId", 0, true);
-            setValue("statusId", STATUS[0].id, true);
+            setDays(filterDays);
+            setValue("weekDayId", 0, true);
+            setValue("isDeleted", STATUS[0].id, true);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const handleDayChange = (e) => setValue("dayId", e.target.value, true);
-    const handleStatusChange = (e) => setValue("statusId", e.target.value, true);  
+    const handleDayChange = (e) => setValue("weekDayId", e.target.value, true);
+    const handleStatusChange = (e) => setValue("isDeleted", e.target.value, true);  
 
     return (
         <Modal 
@@ -78,10 +75,10 @@ const FormModal = ({show, handleClose, scheduleSelect=null, saveSchedule, schedu
                                 <Form.Group className="mb-3" controlId="formBasicDay">
                                     <Form.Label className={styles.label_input}>* Días</Form.Label>
                                     <Form.Select
-                                    name="dayId"
+                                    name="weekDayId"
                                     value={selectDayValue} 
                                     onChange={handleDayChange}
-                                    {...register("dayId", {
+                                    {...register("weekDayId", {
                                         required: "Debe de seleccionar un día"
                                     })}
                                     >
@@ -96,7 +93,7 @@ const FormModal = ({show, handleClose, scheduleSelect=null, saveSchedule, schedu
                                             ))
                                         )}
                                     </Form.Select>
-                                    { errors.dayId && <p className={styles.error_message}>{ errors.dayId.message }</p> }
+                                    { errors.weekDayId && <p className={styles.error_message}>{ errors.weekDayId.message }</p> }
                                 </Form.Group>
                             </Col>
                         </Row>
@@ -110,12 +107,12 @@ const FormModal = ({show, handleClose, scheduleSelect=null, saveSchedule, schedu
                                                 <Form.Label className={styles.label_input}>* Hora inicio</Form.Label>
                                                 <Form.Control 
                                                 type="time"
-                                                {...register("startTime", {
+                                                {...register("startHour", {
                                                     required: "Hora de inicio es requerida"
                                                 })} />
-                                                { errors.startTime && 
+                                                { errors.startHour && 
                                                 <p className={styles.error_message}>
-                                                    { errors.startTime.message }
+                                                    { errors.startHour.message }
                                                 </p> }
                                             </Form.Group>
                                         </Col>
@@ -124,12 +121,12 @@ const FormModal = ({show, handleClose, scheduleSelect=null, saveSchedule, schedu
                                                 <Form.Label className={styles.label_input}>* Hora fin</Form.Label>
                                                 <Form.Control 
                                                 type="time"
-                                                {...register("endTime", {
+                                                {...register("endHour", {
                                                     required: "Hora fin es requerida"
                                                 })} />
-                                                { errors.endTime && 
+                                                { errors.endHour && 
                                                 <p className={styles.error_message}>
-                                                    { errors.endTime.message }
+                                                    { errors.endHour.message }
                                                 </p> }
                                             </Form.Group>
                                         </Col>
@@ -145,7 +142,7 @@ const FormModal = ({show, handleClose, scheduleSelect=null, saveSchedule, schedu
                                         <Form.Group className="mb-3" controlId="formBasicStatus">
                                             <Form.Label className={styles.label_input}>* Estado</Form.Label>
                                             <Form.Select
-                                            name="statusId"
+                                            name="isDeleted"
                                             value={selectStatusValue} 
                                             onChange={handleStatusChange}
                                             >
@@ -159,7 +156,7 @@ const FormModal = ({show, handleClose, scheduleSelect=null, saveSchedule, schedu
                                                 ))
                                             ) }
                                             </Form.Select>
-                                            { errors.statusId && <p className={styles.error_message}>{ errors.statusId.message }</p> }
+                                            { errors.isDeleted && <p className={styles.error_message}>{ errors.isDeleted.message }</p> }
                                         </Form.Group>
                                     </Col>
                                 </Row>
