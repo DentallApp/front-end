@@ -11,6 +11,7 @@ import {
     updateSchedule,
     getAllSchedule } from '../../../services/DentistScheduleService';
 import { UNEXPECTED_ERROR } from '../../../constants/InformationMessage';
+import { getLocalUser } from '../../../services/UserService';
 import styles from './ScheduleManagementPage.module.css';
 
 const ScheduleManagementPage = () => {
@@ -201,6 +202,11 @@ const ScheduleManagementPage = () => {
                 }    
             </div>
 
+            <p className={styles.office_current}>
+                <span style={{"fontWeight":"bold"}}>Consultorio actual: </span> 
+                {getLocalUser().officeName}
+            </p>
+
             {
                 errorLoading.success === false ? (
                     selectedDentist === 0 ? (
@@ -235,8 +241,7 @@ const ScheduleManagementPage = () => {
                     </h4>
                 )
             }    
-            
-        </>
+        </> 
     );
 }
 
