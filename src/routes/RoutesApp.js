@@ -21,7 +21,6 @@ import {
     ChangePasswordPage,
     UserManagementPage,
     EditProfilePage, 
-    OfficeManagementPage,
     OfficeSchedulePage,
     ScheduleManagementPage } from '../pages/common';
 import { AppointmentChatbotPage, AppointmentHistory, FavoriteDentistPage, MedicalDirectoryPage, DependentPage, QuotationPage } from '../pages/Patient';
@@ -30,7 +29,7 @@ import { AppointmentCalendarPage } from '../pages/Dentist';
 //import { AppointmentPage } from '../pages/Secretary';
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
-import { GeneralServicePage, TreatmentPage } from '../pages/SuperAdmin';
+import { GeneralServicePage, TreatmentPage, OfficeManagementPage } from '../pages/SuperAdmin';
 
 const RoutesApp = () => {
     return (

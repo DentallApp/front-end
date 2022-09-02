@@ -3,7 +3,7 @@ import { Button, Spinner } from 'react-bootstrap';
 import { IoAddCircle } from "react-icons/io5";
 import { AlertMessage, ModalLoading, FilterComponent } from '../../../components';
 import { OfficeTable, FormModal } from './components';
-import data from './data';
+import { getAllOffices, createOffice, updateOffice } from '../../../services/OfficeService';
 import styles from './OfficeManagementPage.module.css';
 
 const OfficeManagementPage = () => {
@@ -13,7 +13,7 @@ const OfficeManagementPage = () => {
     const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
 
     // Estado para los datos de la tabla
-    const [dataOffices, setDataOffices] = useState(null);
+    const [offices, setOffices] = useState(null);
     const [isChange, setIsChange] = useState(false);
     const [filterOffices, setFilterOffices] = useState([]);
 
@@ -28,21 +28,24 @@ const OfficeManagementPage = () => {
     const [isLoading, setIsLoading] = useState(null);
 
     useEffect(() => {
-        setDataOffices(data);
-        setFilterOffices(data);
+        getAllOffices().then(res => {
+            setOffices(res.data);
+            setFilterOffices(res.data);
+        })
+            .catch(err => err)
     }, [isChange]);
      
     useEffect(() => {
         if(filterOffices?.length > 0 && filterText !== '') filterData();
         
-        if(filterOffices?.length <= 0 || filterText === '') setFilterOffices(data);
+        if(filterOffices?.length <= 0 || filterText === '') setFilterOffices(offices);
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [filterText]);
 
     const filterData = () => {
-        const data = dataOffices.filter(office => 
-            office.officeName.toString().toLocaleLowerCase().includes(filterText.toLocaleLowerCase()) === true 
+        const data = offices.filter(office => 
+            office.name.toString().toLocaleLowerCase().includes(filterText.toLocaleLowerCase()) === true 
            
         );
         setFilterOffices(data);
@@ -53,14 +56,17 @@ const OfficeManagementPage = () => {
         setFilterText(e.target.value.toString());
         if(filterText === '' || filterOffices.length <= 0) {
             setResetPaginationToggle(!resetPaginationToggle);
-            setFilterOffices(dataOffices);
+            setFilterOffices(offices);
+            return;
         }
+
+        filterData();
     }
 
     // Función que limpia los campos del input y resetea la tabla
     const handleClear = () => {
         setResetPaginationToggle(!resetPaginationToggle);
-        setFilterOffices(dataOffices);
+        setFilterOffices(offices);
         setFilterText('');
     };
 
@@ -71,9 +77,61 @@ const OfficeManagementPage = () => {
     }
     const handleShow = () => setShow(true);
 
-    const saveOffice = (data, reset, type) => {
-        console.log(data);
+    const handleErrors = (result) => {
+        if(result.success === undefined && (result.status === 0 || result.status === 400 || 
+            result.status === 404 || result.status === 405 ||
+            result.status === 500)) {
+            setAlert({success: false, message: 'Error inesperado. Refresque la página o intente más tarde'});
+            setIsLoading({success: false});
+        }
+    }
 
+    const create = async(data) => {
+        const result = await createOffice(data);
+        if(result.success && result.success === true) setIsChange(!isChange);
+            
+        setIsLoading({success: result.success});
+        setAlert(result);
+
+        return result;
+    }
+
+    const edit = async(data) => {
+
+        const result = await updateOffice(data);
+        if(result.success && result.success === true) {
+            const newList = offices.map(office => 
+                office.id === data.id ? { ...office, ...data} : office    
+            );
+            setOffices(newList);
+            setFilterOffices(newList);
+        }
+            
+        setIsLoading({success: result.success});
+        setAlert(result);
+
+        return result;
+    }
+
+    const saveOffice = async(data, reset, type) => {
+        // Se elimina espacios innecesarios
+        const sanitizedName = data.name.trim();
+        const sanitizedAddress = data.address.trim();
+
+        // Se convierte a mayúscula la primer letra
+        data.name = sanitizedName.charAt(0).toUpperCase() + sanitizedName.slice(1);
+        data.address = sanitizedAddress.charAt(0).toUpperCase() + sanitizedAddress.slice(1);
+
+        data.id = parseInt(data.id);
+        data.isDeleted = parseInt(data.isDeleted) === 1 ? false : true;
+
+        let result = null;
+        setIsLoading({success: undefined});
+
+        if(type === 'create') result = await create(data);
+        else result = await edit(data);
+
+        handleErrors(result);
         handleClose();
         reset();
         setRowSelect(null);
@@ -81,6 +139,7 @@ const OfficeManagementPage = () => {
 
     return (
         <>
+            { isLoading ? (isLoading.success === undefined ? <ModalLoading show={true} /> : "") : ""}
             { /* Ventana modal para el registro, actualización y eliminación de dependiente  */
                 show === true && (
                     <FormModal
@@ -92,7 +151,15 @@ const OfficeManagementPage = () => {
                 )
             }   
             <h1 className={styles.page_title}>Gestión de Consultorios</h1>
-
+            { /* Mensaje de alerta para mostrar información al usuario */
+                alert && 
+                <div className={styles.container_alert}>
+                    <AlertMessage 
+                    type={ alert.success === false ? 'danger' : 'success' }
+                    message={ alert.message }
+                    setError= { setAlert }  /> 
+                </div>
+            }
             <div className={styles.container_header}>
                 <Button 
                 className={styles.button_add} 

@@ -1,6 +1,7 @@
 import DataTable from 'react-data-table-component';
 import { Button, Badge } from 'react-bootstrap';
 import { FaEdit } from "react-icons/fa";
+import { INFORMATION_NOT_AVAILABLE } from '../../../../../constants/InformationMessage';
 import styles from './OfficeTable.module.css';
 
 // Opciones de paginación
@@ -30,7 +31,7 @@ const OfficeTable = ({offices, setOfficeSelect, handleShow, paginationResetDefau
     const columns = [
         {
             name: <div className={styles.container_table_header}><h6>Consultorio</h6></div>,
-            selector: row => row.officeName,
+            selector: row => row.name,
             sortable: true,
             center: true,
             wrap: true,
@@ -45,7 +46,7 @@ const OfficeTable = ({offices, setOfficeSelect, handleShow, paginationResetDefau
         },
         {
             name: <div className={styles.container_table_header}><h6>Teléfono</h6></div>,
-            selector: row => row.cellPhone,
+            selector: row => row.contactNumber ? row.contactNumber : INFORMATION_NOT_AVAILABLE,
             wrap: true,
             center: true,
             Width: "100px",

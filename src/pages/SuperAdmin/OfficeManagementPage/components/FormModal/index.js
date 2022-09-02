@@ -14,39 +14,39 @@ const FormModal = ({show, handleClose, officeSelect=null, saveOffice}) => {
 
     const { register, handleSubmit, reset, setValue, watch, formState: {errors} } = useForm({
         defaultValues: {
-            officeId: `${ officeSelect !== null ? officeSelect.officeId : ""}`,
-            officeName: `${ officeSelect !== null ? officeSelect.officeName : ""}`,
+            id: `${ officeSelect !== null ? officeSelect.id : ""}`,
+            name: `${ officeSelect !== null ? officeSelect.name : ""}`,
             address: `${ officeSelect !== null ? officeSelect.address : ""}`,
-            cellPhone: `${ officeSelect !== null ? officeSelect.cellPhone : ""}`,
-            statusId: `${ officeSelect !== null ? (officeSelect.status === false ? STATUS[0].id : STATUS[1].id): ""}`,
-            disableAccounts: `${ officeSelect !== null && false }`,
+            contactNumber: `${ officeSelect !== null ? (officeSelect.contactNumber ? officeSelect.contactNumber : '') : ""}`,
+            isDeleted: `${ officeSelect !== null ? (officeSelect.isDeleted === false ? STATUS[0].id : STATUS[1].id): ""}`,
+            disableEmployeeAccounts: `${ officeSelect !== null && true }`,
         }
     });
 
-    const selectStatusValue = watch("statusId");
+    const selectStatusValue = watch("isDeleted");
 
     useEffect(() => {
         setStatus(STATUS);
         
         if(officeSelect !== null) {
-            setValue("statusId", officeSelect.isDeleted === false ? STATUS[0].id : STATUS[1].id, true);
-            setValue("disableAccounts", false, true);
+            setValue("isDeleted", officeSelect.isDeleted === false ? STATUS[0].id : STATUS[1].id, true);
+            setValue("disableEmployeeAccounts", true, true);
             setType('edit');
         }
         else {
-            setValue("statusId", STATUS[0].id, true);
+            setValue("isDeleted", STATUS[0].id, true);
         }
     }, []);
 
     const handleStatusChange = (e) => {
-        setValue("statusId", e.target.value, true);
+        setValue("isDeleted", e.target.value, true);
 
         if(parseInt(e.target.value) === 2) {
             setShowDisableAccounts(true);
         }
         else {
             setShowDisableAccounts(false);
-            setValue("disableAccounts", false, true);
+            setValue("disableEmployeeAccounts", false, true);
         }
         
     }      
@@ -76,14 +76,14 @@ const FormModal = ({show, handleClose, officeSelect=null, saveOffice}) => {
                                     <Form.Label className={styles.label_input}>* Consultorio</Form.Label>
                                     <Form.Control 
                                     placeholder="Ingrese nombre del consultorio"
-                                    {...register("officeName", {
+                                    {...register("name", {
                                         required: "Nombre del consultorio es requerido",
                                         minLength: {
                                             value: 2,
                                             message: "Nombre no válido" 
                                         }
                                     })} /> 
-                                    { errors.officeName && <p className={styles.error_message}>{ errors.officeName.message }</p> } 
+                                    { errors.name && <p className={styles.error_message}>{ errors.name.message }</p> } 
                                 </Form.Group>
                             </Col>
                         </Row>
@@ -110,7 +110,7 @@ const FormModal = ({show, handleClose, officeSelect=null, saveOffice}) => {
                                     <Form.Label className={styles.label_input}>Teléfono</Form.Label>
                                     <Form.Control 
                                     placeholder="Ingrese número de teléfono"
-                                    {...register("cellPhone", {
+                                    {...register("contactNumber", {
                                         pattern: {
                                             value: formatPhone,
                                             message: "Número de celular no válido"
@@ -124,7 +124,7 @@ const FormModal = ({show, handleClose, officeSelect=null, saveOffice}) => {
                                             message: "Número de celular debe de tener 10 dígitos"
                                         }
                                     })} />
-                                    { errors.cellPhone && <p className={styles.error_message}>{ errors.cellPhone.message }</p> }
+                                    { errors.contactNumber && <p className={styles.error_message}>{ errors.contactNumber.message }</p> }
                                 </Form.Group>
                             </Col>
                         </Row>
@@ -136,7 +136,7 @@ const FormModal = ({show, handleClose, officeSelect=null, saveOffice}) => {
                                         <Form.Group className="mb-3" controlId="formBasicStatus">
                                             <Form.Label className={styles.label_input}>* Estado</Form.Label>
                                             <Form.Select
-                                            name="statusId"
+                                            name="isDeleted"
                                             value={selectStatusValue} 
                                             onChange={handleStatusChange}
                                             >
@@ -150,7 +150,7 @@ const FormModal = ({show, handleClose, officeSelect=null, saveOffice}) => {
                                                 ))
                                             ) }
                                             </Form.Select>
-                                            { errors.statusId && <p className={styles.error_message}>{ errors.statusId.message }</p> }
+                                            { errors.isDeleted && <p className={styles.error_message}>{ errors.isDeleted.message }</p> }
                                         </Form.Group>
                                     </Col>
                                 </Row>
@@ -158,16 +158,21 @@ const FormModal = ({show, handleClose, officeSelect=null, saveOffice}) => {
                         }
 
                         {
-                            (type === 'edit' && (showDisableAccounts === true || selectStatusValue == 2)) && (
+                            (type === 'edit' && (showDisableAccounts === true || parseInt(selectStatusValue) === 2)) && (
                                 <Row>
                                     <Col lg={12} md>
                                         <Form.Group className="mb-3" controlId="formBasicStatus">
                                         <Form.Check
                                         type='checkbox'
                                         label='Deshabilitar las cuentas de usuario del consultorio'
-                                        {...register("disableAccounts")}
+                                        {...register("disableEmployeeAccounts")}
                                         />
-                                            { errors.disableAccounts && <p className={styles.error_message}>{ errors.disableAccounts.message }</p> }
+                                            { 
+                                                errors.disableEmployeeAccounts && 
+                                                <p className={styles.error_message}>
+                                                    { errors.disableEmployeeAccounts.message }
+                                                </p> 
+                                            }
                                         </Form.Group>
                                     </Col>
                                 </Row>
