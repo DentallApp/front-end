@@ -1,15 +1,7 @@
-import { useState, useEffect } from 'react';
 import { Form, Row, Col } from 'react-bootstrap';
 import styles from './FilterAppointmentStatus.module.css';
 
-const FilterAppointmentStatus = ({listStatus, statusSelected, setStatusSelected, setIsChange}) => {
-
-    const [appointmentStatus, setAppointmentStatus] = useState(null);
-
-    useEffect(() => {
-        setAppointmentStatus(listStatus);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+const FilterAppointmentStatus = ({listStatus, statusSelected, setStatusSelected}) => {
 
     const handleChange = (e) => {
         setStatusSelected(e.target.value);
@@ -30,8 +22,8 @@ const FilterAppointmentStatus = ({listStatus, statusSelected, setStatusSelected,
                         value='0'>
                             Todas las citas
                         </option>    
-                        { appointmentStatus && (
-                            appointmentStatus.map(data => (
+                        { listStatus && (
+                            listStatus.map(data => (
                                 <option 
                                 key={data.id} 
                                 value={data.id}>

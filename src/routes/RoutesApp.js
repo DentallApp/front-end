@@ -23,7 +23,8 @@ import {
     EditProfilePage, 
     OfficeSchedulePage,
     ScheduleManagementPage } from '../pages/common';
-import { AppointmentChatbotPage, AppointmentHistory, DependentPage, QuotationPage } from '../pages/Patient';
+import { AppointmentChatbotPage, AppointmentHistory, FavoriteDentistPage, MedicalDirectoryPage, DependentPage, QuotationPage } from '../pages/Patient';
+
 import { AppointmentCalendarPage } from '../pages/Dentist';
 //import { AppointmentPage } from '../pages/Secretary';
 import PrivateRoute from './PrivateRoute';
@@ -54,6 +55,8 @@ const RoutesApp = () => {
                         <Route path="/agendamiento/chatbot" element={<AppointmentChatbotPage />}/>
                         <Route path="/lista-citas" element={<AppointmentHistory />}/>
                         <Route path="/gestion-dependientes" element={<DependentPage />}/>
+                        <Route path="/odontologos/lista" element={<MedicalDirectoryPage />} />
+                        <Route path="/odontologos/favoritos" element={<FavoriteDentistPage />} />
                         <Route path={'/cotizacion'} element={<QuotationPage />} />
                     </Route>
                 </Route>

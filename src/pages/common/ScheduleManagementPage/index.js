@@ -1,10 +1,16 @@
 import { useState, useEffect } from 'react';
 import { Button, Spinner } from 'react-bootstrap';
 import { IoAddCircle } from "react-icons/io5";
-import { ScheduleTable, FilterDentist, FormModal } from './components';
+import { ScheduleTable, FilterDentist, FormModal, AllScheduleTable } from './components';
 import { AlertMessage, ModalLoading } from '../../../components';
 import { validationScheduleMorning, validationScheduleAfternoon } from './utils';
-import { getDentists, getSchedulesByEmployee, createSchedule, updateSchedule } from '../../../services/DentistScheduleService';
+import { 
+    getDentists, 
+    getSchedulesByEmployee, 
+    createSchedule, 
+    updateSchedule,
+    getAllSchedule } from '../../../services/DentistScheduleService';
+import { UNEXPECTED_ERROR } from '../../../constants/InformationMessage';
 import styles from './ScheduleManagementPage.module.css';
 
 const ScheduleManagementPage = () => {
@@ -12,8 +18,9 @@ const ScheduleManagementPage = () => {
     const [errorLoading, setErrorLoading] = useState({success: false, message: ''});
 
     const [dentists, setDentists] = useState(null);
-    const [selectedDentist, setSelectedDentist] = useState(null);
+    const [selectedDentist, setSelectedDentist] = useState(0);
     const [schedules, setSchedules] = useState(null);
+    const [allSchedules, setAllSchedules] = useState(null);
     const [selectedSchedule, setSelectedSchedule] = useState(null);
 
     // Estado para el modal de creación y actualización de información de usuarios
@@ -26,10 +33,17 @@ const ScheduleManagementPage = () => {
     // Estado para el modal de carga 
     const [isLoading, setIsLoading] = useState(null);
 
+    const [isChange, setIsChange] = useState(null)
+
     useEffect(() => {
         getDentists().then(res => setDentists(res.data))
             .catch(err => err);
     }, []);
+
+    useEffect(() => {
+        getAllSchedule().then(res => setAllSchedules(res.data))
+            .catch(err => handleErrorLoading(err));    
+    }, [isChange]);
 
     // Funciones para cerrar y mostrar el modal
     const handleClose = () => { 
@@ -44,19 +58,21 @@ const ScheduleManagementPage = () => {
                 .then(res => setSchedules(res.data))
                 .catch(err => handleErrorLoading(err));
         }
+        else {
+            setAllSchedules(allSchedules);
+        }
     }
 
     const handleSelectDentist = (e) => {
-        setSelectedDentist(parseInt(e.target.value));
-        
-        showSchedules(e.target.value);
+        setSelectedDentist(parseInt(e.value));
+        showSchedules(e.value);
     }
 
     const handleErrors = (result) => {
         if(result.success === undefined && (result.status === 0 || result.status === 400 || 
             result.status === 404 || result.status === 405 ||
             result.status === 500)) {
-            setAlert({success: false, message: 'Error inesperado. Refresque la página o intente más tarde'});
+            setAlert({success: false, message: UNEXPECTED_ERROR});
             setIsLoading({success: false});
         }
     }
@@ -66,7 +82,7 @@ const ScheduleManagementPage = () => {
                 (err.response.data.success === undefined && (err.response.status === 400 
                 || err.response.status === 405 ||
                 err.status === 500))) {
-                setErrorLoading({success: true, message: 'Error inesperado. Refresque la página o intente más tarde'});
+                setErrorLoading({success: true, message: UNEXPECTED_ERROR});
                 return;
         }  
         setErrorLoading({success: true, message: err.response.data.message});
@@ -76,7 +92,10 @@ const ScheduleManagementPage = () => {
         data.employeeId = parseInt(selectedDentist);
 
         const result = await createSchedule(data);
-        if(result.success && result.success === true) showSchedules(data.employeeId);
+        if(result.success && result.success === true) {
+            showSchedules(data.employeeId);
+            setIsChange(!isChange);
+        }    
 
         setIsLoading({success: result.success});
         setAlert(result);
@@ -94,7 +113,10 @@ const ScheduleManagementPage = () => {
         data.isDeleted = parseInt(data.statusId) === 1 ? false : true;
         
         const result = await updateSchedule(data);
-        if(result.success && result.success === true) showSchedules(data.employeeId);
+        if(result.success && result.success === true) {
+            showSchedules(data.employeeId);
+            setIsChange(!isChange);
+        }    
 
         setIsLoading({success: result.success});
         setAlert(result);
@@ -155,11 +177,16 @@ const ScheduleManagementPage = () => {
             }
 
             <div className={styles.container_header}>
-                <FilterDentist 
-                dentists={dentists}
-                selectedDentist={selectedDentist}
-                handleSelectDentist={handleSelectDentist} 
-                />
+                {
+                    dentists && (
+                        <FilterDentist 
+                        dentists={dentists}
+                        selectedDentist={selectedDentist}
+                        handleSelectDentist={handleSelectDentist}
+                        className={styles.select_dentist}
+                        />
+                    )
+                }
                 
                 { 
                     (selectedDentist !== 0 && selectedDentist !== null) ? (
@@ -175,28 +202,37 @@ const ScheduleManagementPage = () => {
             </div>
 
             {
-                selectedDentist === 0 || selectedDentist === null ? (
-                    <p className={styles.message_information}>No hay datos para mostrar</p>
-                ):(
-                    
-                    errorLoading.success === false ? (
-                            schedules ? (
-                                <ScheduleTable 
-                                schedules={schedules}
-                                setSelectedSchedule={setSelectedSchedule}
-                                handleShow={handleShow}
-                                />
-                            ):(
-                                <div className={`${styles.container_spinner}`}>
-                                    <Spinner size="lg" className={styles.spinner} animation="border" variant="info" />
-                                    <p className={styles.text_loading}>Cargando...</p>
-                                </div>
-                            )
+                errorLoading.success === false ? (
+                    selectedDentist === 0 ? (
+                        allSchedules ? (
+                            <AllScheduleTable
+                            allSchedules={allSchedules}
+                            />
+                        ):(
+                            <div className={`${styles.container_spinner}`}>
+                                <Spinner size="lg" className={styles.spinner} animation="border" variant="info" />
+                                <p className={styles.text_loading}>Cargando...</p>
+                            </div>
+                        )
                     ):(
-                        <h4 className={styles.text_error}>
-                            {errorLoading.message}
-                        </h4>
+                        schedules ? (
+                            <ScheduleTable 
+                            schedules={schedules}
+                            setSelectedSchedule={setSelectedSchedule}
+                            handleShow={handleShow}
+                            />
+                        ):(
+                            <div className={`${styles.container_spinner}`}>
+                                <Spinner size="lg" className={styles.spinner} animation="border" variant="info" />
+                                <p className={styles.text_loading}>Cargando...</p>
+                            </div>
+                        )
                     )
+                )
+                :(
+                    <h4 className={styles.text_error}>
+                        {errorLoading.message}
+                    </h4>
                 )
             }    
             

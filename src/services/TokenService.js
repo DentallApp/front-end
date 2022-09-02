@@ -1,3 +1,4 @@
+import api from './Api';
 
 export const setLocalAccessToken = (token) => {
     localStorage.setItem('accessToken', token);
@@ -29,4 +30,23 @@ export const updateLocalRefreshToken = (token) => {
 
 export const removeLocalRefreshToken = () => {
     localStorage.removeItem('refreshToken');
+}
+
+export const revokeToken = () => {
+    return api.post('/token/revoke').then(res => {
+        return {
+            status: res.status,
+            success: res.data.success,
+            message: res.data.message
+        };
+    })
+    .catch(err => {
+        if(err.response.status === 0) return {status: err.response.status,}
+
+        return {
+            status: err.response.status,
+            success: err.response.data.success,
+            message: err.response.data.message
+        };
+    })
 }

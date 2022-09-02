@@ -1,16 +1,17 @@
 import { useState, useEffect } from 'react';
-import APPOINTMENT_STATUS from '../../../constants/AppointmentStatus';
 import { AlertMessage, ModalLoading } from '../../../components';
 import { AppointmentsTable, AppointmentModal, FilterAppointmentStatus } from './components';
 import { Spinner } from 'react-bootstrap';
 import { getAppointments } from '../../../services/AppointmentBasicUserService';
+import { UNEXPECTED_ERROR } from '../../../constants/InformationMessage';
+import { getAppointmentStatus } from '../../../services/AppointmentStatusService';
 import styles from './AppointmentHistory.module.css';
 
 const AppointmentHistory = () => {
 
     const [errorLoading, setErrorLoading] = useState({success: false, message: ''});
     
-    const [listStatus ] = useState(APPOINTMENT_STATUS);
+    const [listStatus, setListStatus ] = useState(null);
     const [statusSelected, setStatusSelected] = useState('');
     const [appointments, setAppointments] = useState(null);
     const [filterAppointments, setFilterAppointments] = useState(null);
@@ -26,15 +27,16 @@ const AppointmentHistory = () => {
     const [isLoading, setIsLoading] = useState(null);
 
     useEffect(() => {
-        getAppointments()
+        getAppointmentStatus()
         .then(res => {
-            setAppointments(res.data);
+            setListStatus(res.data);
+            setStatusSelected(res.data[0].id.toString());
         })
-        .catch(err => {
-            handleErrorLoading(err);
-        });
+        .catch(err => err);
 
-        setStatusSelected(APPOINTMENT_STATUS[0].id.toString());
+        getAppointments()
+        .then(res => setAppointments(res.data))
+        .catch(err => handleErrorLoading(err));
     }, [isChange]);
 
     useEffect(() => {
@@ -44,11 +46,11 @@ const AppointmentHistory = () => {
         }    
 
         const data = appointments?.filter(appoinment => 
-            APPOINTMENT_STATUS.some(status => 
+            listStatus?.some(status => 
                 status.id === parseInt(statusSelected) && status.name === appoinment.status));
         
         setFilterAppointments(data);        
-    }, [appointmentSelect, statusSelected, appointments]);
+    }, [appointmentSelect, statusSelected, appointments, listStatus]);
 
     // Funciones para cerrar y mostrar el modal
     const handleClose = () => { 
@@ -62,7 +64,7 @@ const AppointmentHistory = () => {
                 (err.response.data.success === undefined && (err.response.status === 400 
                 || err.response.status === 405 ||
                 err.status === 500))) {
-                setErrorLoading({success: true, message: 'Error inesperado. Refresque la página o intente más tarde'});
+                setErrorLoading({success: true, message: UNEXPECTED_ERROR});
                 return;
         }  
         setErrorLoading({success: true, message: err.response.data.message});
@@ -95,12 +97,15 @@ const AppointmentHistory = () => {
                     setError= { setAlert }  /> 
                 </div>
             }
-
-            <FilterAppointmentStatus 
-            listStatus={listStatus} 
-            statusSelected={statusSelected}
-            setIsChange={setIsChange} 
-            setStatusSelected={setStatusSelected}/>
+            
+            {
+                listStatus && (
+                    <FilterAppointmentStatus 
+                    listStatus={listStatus} 
+                    statusSelected={statusSelected}
+                    setStatusSelected={setStatusSelected}/>
+                )
+            }
 
             {
                 errorLoading.success === false ? (

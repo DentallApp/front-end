@@ -7,6 +7,7 @@ import { trimSpaces, capitalizeFirstLetter } from '../../../utils/stringUtils';
 import { getLocalUser } from '../../../services/UserService';
 import ROLES from '../../../constants/Roles';
 import { createEmployee, getEmployee, updateEmployee, deleteEmployee } from '../../../services/EmployeeService';
+import { UNEXPECTED_ERROR } from '../../../constants/InformationMessage';
 import styles from './UserManagementPage.module.css';
 
 const UserManagementPage = () => {
@@ -98,6 +99,8 @@ const UserManagementPage = () => {
     }
     
     const edit = async(data) => {
+        data.isDeleted = parseInt(data.statusId) === 1 ? false : true;
+
         const result = await updateEmployee(data);
         if(result.success && result.success === true) setIsChange(!isChange);
         
@@ -112,7 +115,7 @@ const UserManagementPage = () => {
             (err.response.data.success === undefined && (err.response.status === 400 
             || err.response.status === 405 ||
             err.status === 500))) {
-            setErrorLoading({success: true, message: 'Error inesperado. Refresque la página o intente más tarde'});
+            setErrorLoading({success: true, message: UNEXPECTED_ERROR});
             return;
         }
         setErrorLoading({success: true, message: err.response.data.message});
@@ -122,13 +125,14 @@ const UserManagementPage = () => {
         if(result.success === undefined && (result.status === 0 || result.status === 400 || 
             result.status === 404 || result.response.status === 405 ||
             result.status === 500)) {
-            setAlert({success: false, message: 'Error inesperado. Refresque la página o intente más tarde'});
+            setAlert({success: false, message: UNEXPECTED_ERROR});
             setIsLoading({success: false});
         }
     }
 
     // Función guardar y actualizar datos de los dependientes
     const saveUser = async (data, reset, type) => {
+        
         // Se elimina espacios innecesarios
         const sanitizedName = trimSpaces(data.names);
         const sanitizedLastName = trimSpaces(data.lastNames);

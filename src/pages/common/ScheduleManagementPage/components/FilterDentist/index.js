@@ -1,37 +1,31 @@
-import { Form, Row, Col } from 'react-bootstrap';
-
+import Select from 'react-select';
+import { Form, Row } from 'react-bootstrap';
 import styles from './FilterDentist.module.css';
 
 const FilterDentist = ({dentists, handleSelectDentist }) => {
 
     return (
-        <Form className={styles.container_form}>
+        <>
             <Row>
-                <Col sm={12} lg={5}>
-                    <Form.Group className="mb-3" controlId="formBasicDentist">
-                        <Form.Label className={styles.label_input}>Odontólogos</Form.Label>
-                        <Form.Select
-                        name="dentist"
-                        onChange={handleSelectDentist}
-                        >
-                        <option  
-                        value='0'>
-                            Seleccione
-                        </option>    
-                        { dentists && (
-                            dentists.map(data => (
-                                <option 
-                                key={data.employeeId} 
-                                value={data.employeeId}>
-                                    {data.fullName}
-                                </option>
-                            ))
-                        )}
-                        </Form.Select>
-                    </Form.Group>
-                </Col>
-            </Row>
-        </Form>
+            <Form.Label className={styles.label_input}>Odontólogos</Form.Label>
+                    <Select
+                    style={{"minWidth": "80% !important"}}
+                    defaultValue={{
+                        value: 0, 
+                        label: 'Todos' 
+                    }}
+                    name="dentists"
+                    options={ 
+                        dentists && [{value: 0, label: 'Todos'}, ...dentists.map(data => {
+                            return {
+                                value: data.employeeId, 
+                                label: data.fullName
+                            }
+                    })] }
+                    onChange={handleSelectDentist}
+                    />
+            </Row>             
+        </>
     );
 }
 

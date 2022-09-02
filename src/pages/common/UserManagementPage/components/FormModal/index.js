@@ -23,12 +23,27 @@ import styles from './FormModal.module.css';
 const maxDate = calculatePreviousYear(18);
 
 const FormModal = ({show, handleClose, userSelect = null, saveUser}) => {
+    
+    const stylesSelect = {
+        multiValue: (base, state) => {
+          return state.data.isFixed  && userSelect !== null ? { ...base, backgroundColor: "#002855" } : base;
+        },
+        multiValueLabel: (base, state) => {
+          return state.data.isFixed && userSelect !== null
+            ? { ...base, fontWeight: "bold", color: "white", paddingRight: 6 }
+            : base;
+        },
+        multiValueRemove: (base, state) => {
+          return state.data.isFixed && userSelect !== null ? { ...base, display: "none" } : base;
+        }
+    };
+
     const user = getLocalUser();
     const [passwordShow, setPasswordShow] = useState(false); // Estado para la acción de mostrar contraseña
     const [genders, setGenders] = useState(null); // Estado para los géneros
     const [office, setOffice] = useState(null); // Estado para los consultorios
     const [roles, setRoles] = useState(null); // Estado para los roles
-    const [type, setType] = useState('create'); // Estado para tipo de modal
+    const [type, setType] = useState(userSelect === null ? 'create' : 'edit'); // Estado para tipo de modal
     const [status, setStatus] = useState(null);
     const onlyWidth = useWindowWidth(); // Se obtiene ancho y altura de pantalla para colocar el modal
 
@@ -57,8 +72,22 @@ const FormModal = ({show, handleClose, userSelect = null, saveUser}) => {
         getGenders().then(response => setGenders(response.data))
             .catch(error => error);
 
-        getRoles(user.roles.includes(ROLES.SUPERADMIN)).then(response => setRoles(response.data))
-            .catch(error => error);    
+        getRoles(user.roles.includes(ROLES.SUPERADMIN)).then(response => {
+            if(type === 'edit') {
+                if(user.roles.includes(ROLES.SUPERADMIN) && userSelect.employeeId === user.employeeId) {
+                    const rolesForSuperAdmin = response.data.filter(role => 
+                        (role.name !== ROLES.SUPERADMIN && role.name !== ROLES.ADMIN) ) 
+                        setRoles(rolesForSuperAdmin);   
+                }
+                else {
+                    setRoles(response.data);
+                }
+            }
+            else {
+                setRoles(response.data);
+            }
+        })
+        .catch(error => error);    
 
         getOffices().then(response => setOffice(response.data))
             .catch(error => error);    
@@ -88,7 +117,21 @@ const FormModal = ({show, handleClose, userSelect = null, saveUser}) => {
     }, [status]);
 
     const handleChange = (e) => setValue("officeId", e.target.value, true);
-    const handleSelectRole = (e) => setValue("roleId", e.map(role => role.value ), true);
+    const handleSelectRole = (e, option) => {
+        switch (option.action) {
+            case 'remove-value':
+            case 'pop-value':
+              if (option.removedValue.isFixed) {
+                e.push(option.removedValue);
+              }
+              break;
+            case 'clear':
+                e = option.removedValues.filter(role => role.isFixed);
+              break;
+            default: break;  
+          }
+        setValue("roleId", e.map(role => role.value ), true);
+    }  
     const handleStatusChange = (e) => setValue("statusId", e.target.value, true);    
     
     return (
@@ -311,13 +354,33 @@ const FormModal = ({show, handleClose, userSelect = null, saveUser}) => {
                                 <Form.Group className="mb-3" controlId="formBasicRole">
                                     <Form.Label className={styles.label_input}>* Roles</Form.Label><br />
                                     <Select
-                                    defaultValue={userSelect !== null && userSelect.roles.map(r => {return {value:r.id, label: r.name}})}
+                                    defaultValue={
+                                        userSelect !== null && userSelect.roles.map(r => {
+                                            return {
+                                                value:r.id, 
+                                                label: r.name, 
+                                                isFixed: userSelect !== null ? (user.roles.includes(ROLES.SUPERADMIN) && 
+                                                    userSelect.employeeId === user.employeeId && 
+                                                    r.name === ROLES.SUPERADMIN ? true : false): false
+                                            }
+                                        })
+                                    }
                                     isMulti
                                     name="colors"
-                                    options={ roles && roles.map(role => {return {value: role.id, label: role.name, color: '#00B8D9'}})}
+                                    options={ roles && roles.map(role => {
+                                        return {
+                                            value: role.id, 
+                                            label: role.name, 
+                                            isFixed: userSelect !== null ? (user.roles.includes(ROLES.SUPERADMIN) && 
+                                                    userSelect.employeeId === user.employeeId && 
+                                                    role.name === ROLES.SUPERADMIN ? true : false) : false
+                                        }
+                                    })}
                                     onChange={handleSelectRole}
+                                    isClearable={ (roles && userSelect !== null) ? !userSelect.roles.some(role => role.name === ROLES.SUPERADMIN) : null}
                                     className="basic-multi-select"
                                     classNamePrefix="select"
+                                    styles={stylesSelect}
                                     />
                                     { errors.roleId && <p className={styles.error_message}>{ errors.roleId.message }</p> }
                                 </Form.Group>
@@ -334,6 +397,10 @@ const FormModal = ({show, handleClose, userSelect = null, saveUser}) => {
                                             name="statusId"
                                             value={selectStatusValue} 
                                             onChange={handleStatusChange}
+                                            disabled={
+                                                user.roles.includes(ROLES.SUPERADMIN) && userSelect.employeeId === user.employeeId ?
+                                                true: false
+                                            }
                                             >
                                             { status && (
                                                 status.map(data => (

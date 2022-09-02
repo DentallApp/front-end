@@ -5,6 +5,7 @@ import { GeneralServiceTable, FormModal, EliminationModal } from './components';
 import { AlertMessage, ModalLoading, FilterComponent } from '../../../components';
 import { createTreatment, getGeneralTreatmentEdit, updateTreatment, deleteTreatment } from '../../../services/GeneralTreatments';
 import { HoursToMinutes } from '../../../utils/timeUtils';
+import { UNEXPECTED_ERROR } from '../../../constants/InformationMessage';
 import styles from './GeneralServicePage.module.css';
 
 const GeneralServicePage = () => {
@@ -108,7 +109,7 @@ const GeneralServicePage = () => {
             (err.response.data.success === undefined && (err.response.status === 400 
             || err.response.status === 405 ||
             err.status === 500))) {
-            setErrorLoading({success: true, message: 'Error inesperado. Refresque la página o intente más tarde'});
+            setErrorLoading({success: true, message: UNEXPECTED_ERROR});
             return;
         }
         setErrorLoading({success: true, message: err.response.data.message});
@@ -118,7 +119,7 @@ const GeneralServicePage = () => {
         if(result.success === undefined && (result.status === 0 || result.status === 400 || 
             result.status === 404 || result.status === 405 ||
             result.status === 500)) {
-            setAlert({success: false, message: 'Error inesperado. Refresque la página o intente más tarde'});
+            setAlert({success: false, message: UNEXPECTED_ERROR});
             setIsLoading({success: false});
         }
     }

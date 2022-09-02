@@ -9,6 +9,7 @@ import { trimSpaces, capitalizeFirstLetter } from '../../../../../utils/stringUt
 import { 
     formatNames, 
     formatPhone } from '../../../../../utils/formatUtils';
+import { UNEXPECTED_ERROR } from '../../../../../constants/InformationMessage'; 
 import styles from './FormProfile.module.css';
 
 const FormProfile = ({user, setIsLoading, setAlert}) => {
@@ -57,7 +58,7 @@ const FormProfile = ({user, setIsLoading, setAlert}) => {
         if(result.success === undefined && (result.status === 0 || result.status === 400 ||
             result.status === 404 || result.response.status === 405 ||
             result.status === 500)) {
-            setAlert({success: false, message: 'Error inesperado. Refresque la página o intente más tarde'});
+            setAlert({success: false, message: UNEXPECTED_ERROR});
             setIsLoading({success: false});
         }
     }

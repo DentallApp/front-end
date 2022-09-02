@@ -6,6 +6,7 @@ import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 import { ModalLoading, AlertMessage } from '../../../components';
 import { formatPassword } from '../../../utils/formatUtils';
 import { updatePassword } from '../../../services/UserService';
+import { UNEXPECTED_ERROR } from '../../../constants/InformationMessage';
 import styles from './ChangePasswordPage.module.css';
 
 const ChangePasswordPage = () => {
@@ -22,7 +23,7 @@ const ChangePasswordPage = () => {
         if(result.success === undefined && (result.status === 0 || result.status === 400 || 
             result.status === 404 || result.response.status === 405 ||
             result.status === 500)) {
-            setAlert({success: false, message: 'Error inesperado. Refresque la página o intente más tarde'});
+            setAlert({success: false, message: UNEXPECTED_ERROR});
             setIsLoading({success: false});
         }
     }
