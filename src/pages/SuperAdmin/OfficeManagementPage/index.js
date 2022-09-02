@@ -4,6 +4,7 @@ import { IoAddCircle } from "react-icons/io5";
 import { AlertMessage, ModalLoading, FilterComponent } from '../../../components';
 import { OfficeTable, FormModal } from './components';
 import { getAllOffices, createOffice, updateOffice } from '../../../services/OfficeService';
+import { UNEXPECTED_ERROR } from '../../../constants/InformationMessage';
 import styles from './OfficeManagementPage.module.css';
 
 const OfficeManagementPage = () => {
@@ -32,7 +33,7 @@ const OfficeManagementPage = () => {
             setOffices(res.data);
             setFilterOffices(res.data);
         })
-            .catch(err => err)
+            .catch(err => handleErrorLoading(err))
     }, [isChange]);
      
     useEffect(() => {
@@ -84,6 +85,17 @@ const OfficeManagementPage = () => {
             setAlert({success: false, message: 'Error inesperado. Refresque la página o intente más tarde'});
             setIsLoading({success: false});
         }
+    }
+
+    const handleErrorLoading = (err) => {
+        if((err.response.status === 0 && err.response.data === undefined) || 
+                (err.response.data.success === undefined && (err.response.status === 400 
+                || err.response.status === 405 ||
+                err.status === 500))) {
+                setErrorLoading({success: true, message: UNEXPECTED_ERROR});
+                return;
+        }  
+        setErrorLoading({success: true, message: err.response.data.message});
     }
 
     const create = async(data) => {
