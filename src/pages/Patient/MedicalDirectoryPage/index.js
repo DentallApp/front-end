@@ -3,7 +3,7 @@ import { Spinner } from 'react-bootstrap';
 import { DentistTable, FilterOffice } from './components';
 import { AlertMessage, ModalLoading } from '../../../components';
 import { getAllDentist } from '../../../services/FavoriteDentistService';
-import { UNEXPECTED_ERROR } from '../../../constants/InformationMessage';
+import { handleErrorLoading } from '../../../utils/handleErrors';
 import styles from './MedicalDirectoryPage.module.css';
 
 const MedicalDirectoryPage = () => {
@@ -24,25 +24,15 @@ const MedicalDirectoryPage = () => {
             setDentists(res.data);
             setFilterDentists(res.data);
         })
-        .catch(err => handleErrorLoading(err));
+        .catch(err => handleErrorLoading(err, setErrorLoading));
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-
-    const handleErrorLoading = (err) => {
-        if((err.response.status === 0 && err.response.data === undefined) || 
-                (err.response.data.success === undefined && (err.response.status === 400 
-                || err.response.status === 405 ||
-                err.status === 500))) {
-                setErrorLoading({success: true, message: UNEXPECTED_ERROR});
-                return;
-        }  
-        setErrorLoading({success: true, message: err.response.data.message});
-    }
 
     return (
         <>
             { isLoading ? (isLoading.success === undefined ? <ModalLoading show={true} /> : "") : ""}
-            <h1 className={styles.page_title}>Directorio de Odontólogos</h1>
+            <h1 className={'page_title'}>Directorio de Odontólogos</h1>
+            <div className="underline mx-auto"></div>
             { /* Mensaje de alerta para mostrar información al usuario */
                 alert && 
                 <div className={styles.container_alert}>

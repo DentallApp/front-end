@@ -7,7 +7,7 @@ import { trimSpaces, capitalizeFirstLetter } from '../../../utils/stringUtils';
 import { getLocalUser } from '../../../services/UserService';
 import ROLES from '../../../constants/Roles';
 import { createEmployee, getEmployee, updateEmployee, deleteEmployee } from '../../../services/EmployeeService';
-import { UNEXPECTED_ERROR } from '../../../constants/InformationMessage';
+import { handleErrors, handleErrorLoading } from '../../../utils/handleErrors';
 import styles from './UserManagementPage.module.css';
 
 const UserManagementPage = () => {
@@ -42,7 +42,7 @@ const UserManagementPage = () => {
             setFilterUsers(res.data);
         })
         .catch(err => {
-            handleErrorLoading(err);
+            handleErrorLoading(err, setErrorLoading);
         });
     }, [isChange]);
      
@@ -110,27 +110,7 @@ const UserManagementPage = () => {
         return result;
     }
 
-    const handleErrorLoading = (err) => {
-        if((err.response.status === 0 && err.response.data === undefined) || 
-            (err.response.data.success === undefined && (err.response.status === 400 
-            || err.response.status === 405 ||
-            err.status === 500))) {
-            setErrorLoading({success: true, message: UNEXPECTED_ERROR});
-            return;
-        }
-        setErrorLoading({success: true, message: err.response.data.message});
-    }
-
-    const handleErrors = (result) => {
-        if(result.success === undefined && (result.status === 0 || result.status === 400 || 
-            result.status === 404 || result.response.status === 405 ||
-            result.status === 500)) {
-            setAlert({success: false, message: UNEXPECTED_ERROR});
-            setIsLoading({success: false});
-        }
-    }
-
-    // Función guardar y actualizar datos de los dependientes
+    // Función guardar y actualizar datos de los usuarios
     const saveUser = async (data, reset, type) => {
         
         // Se elimina espacios innecesarios
@@ -156,7 +136,7 @@ const UserManagementPage = () => {
             result = await edit(data);
         }
 
-        handleErrors(result);
+        handleErrors(result, setAlert, setIsLoading);
         handleClose();
         reset();
         setRowSelect(null);
@@ -197,7 +177,8 @@ const UserManagementPage = () => {
                     )
                 ):<></>
             }
-            <h1 className={styles.page_title}>Gestión de Usuarios</h1>
+            <h1 className={'page_title'}>Gestión de Usuarios</h1>
+            <div className="underline mx-auto"></div>
             { /* Mensaje de alerta para mostrar información al usuario */
                 alert && 
                 <div className={styles.container_alert}>

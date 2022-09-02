@@ -10,9 +10,8 @@ import {
     createSchedule, 
     updateSchedule,
     getAllSchedule } from '../../../services/DentistScheduleService';
-import { UNEXPECTED_ERROR } from '../../../constants/InformationMessage';
 import { getLocalUser } from '../../../services/UserService';
-import '../../../App.css';
+import { handleErrors, handleErrorLoading } from '../../../utils/handleErrors';
 import styles from './ScheduleManagementPage.module.css';
 
 const ScheduleManagementPage = () => {
@@ -35,17 +34,13 @@ const ScheduleManagementPage = () => {
     // Estado para el modal de carga 
     const [isLoading, setIsLoading] = useState(null);
 
-    const [isChange, setIsChange] = useState(null)
-
     useEffect(() => {
         getDentists().then(res => setDentists(res.data))
             .catch(err => err);
-    }, []);
-
-    useEffect(() => {
+            
         getAllSchedule().then(res => setAllSchedules(res.data))
-            .catch(err => handleErrorLoading(err));    
-    }, [isChange]);
+            .catch(err => handleErrorLoading(err, setErrorLoading));      
+    }, []);
 
     // Funciones para cerrar y mostrar el modal
     const handleClose = () => { 
@@ -58,10 +53,11 @@ const ScheduleManagementPage = () => {
         if(parseInt(employeeId) !== 0) {
             getSchedulesByEmployee(parseInt(employeeId))
                 .then(res => setSchedules(res.data))
-                .catch(err => handleErrorLoading(err));
+                .catch(err => handleErrorLoading(err, setErrorLoading));
         }
         else {
-            setAllSchedules(allSchedules);
+            getAllSchedule().then(res => setAllSchedules(res.data))
+                .catch(err => handleErrorLoading(err, setErrorLoading)); 
         }
     }
 
@@ -70,33 +66,12 @@ const ScheduleManagementPage = () => {
         showSchedules(e.value);
     }
 
-    const handleErrors = (result) => {
-        if(result.success === undefined && (result.status === 0 || result.status === 400 || 
-            result.status === 404 || result.status === 405 ||
-            result.status === 500)) {
-            setAlert({success: false, message: UNEXPECTED_ERROR});
-            setIsLoading({success: false});
-        }
-    }
-
-    const handleErrorLoading = (err) => {
-        if((err.response.status === 0 && err.response.data === undefined) || 
-                (err.response.data.success === undefined && (err.response.status === 400 
-                || err.response.status === 405 ||
-                err.status === 500))) {
-                setErrorLoading({success: true, message: UNEXPECTED_ERROR});
-                return;
-        }  
-        setErrorLoading({success: true, message: err.response.data.message});
-    }
-
     const create = async (data) => {
         data.employeeId = parseInt(selectedDentist);
 
         const result = await createSchedule(data);
         if(result.success && result.success === true) {
             showSchedules(data.employeeId);
-            setIsChange(!isChange);
         }    
 
         setIsLoading({success: result.success});
@@ -116,8 +91,10 @@ const ScheduleManagementPage = () => {
         
         const result = await updateSchedule(data);
         if(result.success && result.success === true) {
-            showSchedules(data.employeeId);
-            setIsChange(!isChange);
+            const newList = schedules.map(schedule => 
+                schedule.scheduleId === data.scheduleId ? { ...schedule, ...data} : schedule    
+            );
+            setSchedules(newList);
         }    
 
         setIsLoading({success: result.success});
@@ -148,7 +125,7 @@ const ScheduleManagementPage = () => {
         if(type === 'create') result = await create(data);
         else result = await update(data);
         
-        handleErrors(result);
+        handleErrors(result, setAlert, setIsLoading);
         handleClose();
         reset();
         setSelectedSchedule(null);
@@ -169,6 +146,7 @@ const ScheduleManagementPage = () => {
                 )
             }    
             <h1 className={`page_title`}>Gestión de Horarios</h1>
+            <div className="underline mx-auto"></div>
             { /* Mensaje de alerta para mostrar información al usuario */
                 alert && 
                 <div className={styles.container_alert}>
@@ -206,7 +184,7 @@ const ScheduleManagementPage = () => {
 
             <p className={styles.office_current}>
                 <span style={{"fontWeight":"bold"}}>Consultorio actual: </span> 
-                {getLocalUser().officeName}
+                {getLocalUser()?.officeName}
             </p>
 
             {

@@ -3,8 +3,8 @@ import { AlertMessage, ModalLoading } from '../../../components';
 import { AppointmentsTable, AppointmentModal, FilterAppointmentStatus } from './components';
 import { Spinner } from 'react-bootstrap';
 import { getAppointments } from '../../../services/AppointmentBasicUserService';
-import { UNEXPECTED_ERROR } from '../../../constants/InformationMessage';
 import { getAppointmentStatus } from '../../../services/AppointmentStatusService';
+import { handleErrorLoading } from '../../../utils/handleErrors';
 import styles from './AppointmentHistory.module.css';
 
 const AppointmentHistory = () => {
@@ -36,7 +36,7 @@ const AppointmentHistory = () => {
 
         getAppointments()
         .then(res => setAppointments(res.data))
-        .catch(err => handleErrorLoading(err));
+        .catch(err => handleErrorLoading(err, setErrorLoading));
     }, [isChange]);
 
     useEffect(() => {
@@ -58,17 +58,6 @@ const AppointmentHistory = () => {
         setAppointmentSelect(null);
     }
     const handleShow = () => setShow(true);
-
-    const handleErrorLoading = (err) => {
-        if((err.response.status === 0 && err.response.data === undefined) || 
-                (err.response.data.success === undefined && (err.response.status === 400 
-                || err.response.status === 405 ||
-                err.status === 500))) {
-                setErrorLoading({success: true, message: UNEXPECTED_ERROR});
-                return;
-        }  
-        setErrorLoading({success: true, message: err.response.data.message});
-    }
     
     return (
         <>
@@ -87,7 +76,8 @@ const AppointmentHistory = () => {
                 )
                         
             }             
-            <h1 className={styles.page_title}>Historial de Citas</h1>
+            <h1 className={'page_title'}>Historial de Citas</h1>
+            <div className="underline mx-auto"></div>
             { /* Mensaje de alerta para mostrar información al usuario */
                 alert && 
                 <div className={styles.container_alert}>

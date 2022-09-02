@@ -3,7 +3,8 @@ import { Spinner } from 'react-bootstrap';
 import { AlertMessage, ModalLoading } from '../../../components';
 import { FavoriteDentistTable, EliminationModal } from './components';
 import { getFavoriteDentist, removeFavoriteByFavoriteId } from '../../../services/FavoriteDentistService';
-import { REMOVE_FAVORITE, UNEXPECTED_ERROR } from '../../../constants/InformationMessage';
+import { REMOVE_FAVORITE } from '../../../constants/InformationMessage';
+import { handleErrors, handleErrorLoading } from '../../../utils/handleErrors';
 import styles from './FavoriteDentistPage.module.css';
 
 const FavoriteDentistPage = () => {
@@ -24,28 +25,8 @@ const FavoriteDentistPage = () => {
     useEffect(() => {
         getFavoriteDentist()
             .then(res => setDentists(res.data))
-            .catch(err => handleErrorLoading(err));
+            .catch(err => handleErrorLoading(err, setErrorLoading));
     }, []);
-
-    const handleErrorLoading = (err) => {
-        if((err.response.status === 0 && err.response.data === undefined) || 
-                (err.response.data.success === undefined && (err.response.status === 400 
-                || err.response.status === 405 ||
-                err.status === 500))) {
-                setErrorLoading({success: true, message: UNEXPECTED_ERROR});
-                return;
-        }  
-        setErrorLoading({success: true, message: err.response.data.message});
-    }
-
-    const handleErrors = (result) => {
-        if(result.success === undefined && (result.status === 0 || result.status === 400 || 
-            result.status === 404 || result.status === 405 ||
-            result.status === 500)) {
-            setAlert({success: false, message: UNEXPECTED_ERROR});
-            setIsLoading({success: false});
-        }
-    }
 
     // Funciones para cerrar y mostrar el modal
     const handleClose = () => { 
@@ -72,7 +53,7 @@ const FavoriteDentistPage = () => {
         
         setIsLoading({success: result.success});
         
-        handleErrors(result);
+        handleErrors(result, setAlert, setIsLoading);
         handleClose();
         setDentistSelect(null);
     }
@@ -91,7 +72,8 @@ const FavoriteDentistPage = () => {
                 )
             }
 
-            <h1 className={styles.page_title}>Odontólogos Favoritos</h1>
+            <h1 className={'page_title'}>Odontólogos Favoritos</h1>
+            <div className="underline mx-auto"></div><br/>
             { /* Mensaje de alerta para mostrar información al usuario */
                 alert && 
                 <div className={styles.container_alert}>

@@ -9,7 +9,7 @@ import {
     createDependent, 
     updateDependent, 
     deleteDependent } from '../../../services/DependentService';
-import { UNEXPECTED_ERROR } from '../../../constants/InformationMessage';
+import { handleErrors, handleErrorLoading } from '../../../utils/handleErrors';
 import styles from './DependentPage.module.css';
 
 const DependentPage = () => {
@@ -45,7 +45,7 @@ const DependentPage = () => {
             setFilterDependents(res.data)
         })
         .catch(err => {
-            handleErrorLoading(err);
+            handleErrorLoading(err, setErrorLoading);
         });
     }, [isChange]);
      
@@ -108,26 +108,6 @@ const DependentPage = () => {
         return result;
     }
 
-    const handleErrors = (result) => {
-        if(result.success === undefined && (result.status === 0 || result.status === 400 || 
-            result.status === 404 || result.status === 405 ||
-            result.status === 500)) {
-            setAlert({success: false, message: UNEXPECTED_ERROR});
-            setIsLoading({success: false});
-        }
-    }
-
-    const handleErrorLoading = (err) => {
-        if((err.response.status === 0 && err.response.data === undefined) || 
-                (err.response.data.success === undefined && (err.response.status === 400 
-                || err.response.status === 405 ||
-                err.status === 500))) {
-                setErrorLoading({success: true, message: UNEXPECTED_ERROR});
-                return;
-        }  
-        setErrorLoading({success: true, message: err.response.data.message});
-    }
-
     // Función guardar y actualizar datos de los dependientes
     const saveDependent = async (data, reset, type) => {
         // Se elimina espacios innecesarios
@@ -149,7 +129,7 @@ const DependentPage = () => {
             result = await edit(data);
         }
 
-        handleErrors(result);
+        handleErrors(result, setAlert, setIsLoading);
         handleClose();
         reset();
         setDependentSelect(null);
@@ -164,7 +144,7 @@ const DependentPage = () => {
         setIsLoading({success: result.success});
         setAlert(result);
         
-        handleErrors(result);
+        handleErrors(result, setAlert, setIsLoading);
         handleClose();
         setDependentSelect(null);
     }
@@ -190,7 +170,8 @@ const DependentPage = () => {
                     )
                 ):<></>
             }
-            <h1 className={styles.page_title}>Gestión de Dependientes</h1>
+            <h1 className={'page_title'}>Gestión de Dependientes</h1>
+            <div className="underline mx-auto"></div>
             { /* Mensaje de alerta para mostrar información al usuario */
                 alert && 
                 <div className={styles.container_alert}>

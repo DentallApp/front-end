@@ -4,7 +4,7 @@ import { IoAddCircle } from "react-icons/io5";
 import { AlertMessage, ModalLoading, FilterComponent } from '../../../components';
 import { OfficeTable, FormModal } from './components';
 import { getAllOffices, createOffice, updateOffice } from '../../../services/OfficeService';
-import { UNEXPECTED_ERROR } from '../../../constants/InformationMessage';
+import { handleErrors, handleErrorLoading } from '../../../utils/handleErrors';
 import styles from './OfficeManagementPage.module.css';
 
 const OfficeManagementPage = () => {
@@ -33,7 +33,7 @@ const OfficeManagementPage = () => {
             setOffices(res.data);
             setFilterOffices(res.data);
         })
-            .catch(err => handleErrorLoading(err))
+            .catch(err => handleErrorLoading(err, setErrorLoading))
     }, [isChange]);
      
     useEffect(() => {
@@ -77,26 +77,6 @@ const OfficeManagementPage = () => {
         setRowSelect(null);
     }
     const handleShow = () => setShow(true);
-
-    const handleErrors = (result) => {
-        if(result.success === undefined && (result.status === 0 || result.status === 400 || 
-            result.status === 404 || result.status === 405 ||
-            result.status === 500)) {
-            setAlert({success: false, message: 'Error inesperado. Refresque la página o intente más tarde'});
-            setIsLoading({success: false});
-        }
-    }
-
-    const handleErrorLoading = (err) => {
-        if((err.response.status === 0 && err.response.data === undefined) || 
-                (err.response.data.success === undefined && (err.response.status === 400 
-                || err.response.status === 405 ||
-                err.status === 500))) {
-                setErrorLoading({success: true, message: UNEXPECTED_ERROR});
-                return;
-        }  
-        setErrorLoading({success: true, message: err.response.data.message});
-    }
 
     const create = async(data) => {
         const result = await createOffice(data);
@@ -143,7 +123,7 @@ const OfficeManagementPage = () => {
         if(type === 'create') result = await create(data);
         else result = await edit(data);
 
-        handleErrors(result);
+        handleErrors(result, setAlert, setIsLoading);
         handleClose();
         reset();
         setRowSelect(null);
@@ -162,7 +142,8 @@ const OfficeManagementPage = () => {
                     saveOffice={saveOffice} />         
                 )
             }   
-            <h1 className={styles.page_title}>Gestión de Consultorios</h1>
+            <h1 className={'page_title'}>Gestión de Consultorios</h1>
+            <div className="underline mx-auto"></div>
             { /* Mensaje de alerta para mostrar información al usuario */
                 alert && 
                 <div className={styles.container_alert}>

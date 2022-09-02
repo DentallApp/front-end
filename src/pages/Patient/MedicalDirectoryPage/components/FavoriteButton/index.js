@@ -1,18 +1,10 @@
 import { FaStar, FaRegStar } from "react-icons/fa";
 import { addFavoriteDentist, removeFavoriteDentist } from '../../../../../services/FavoriteDentistService';
-import { ADD_FAVORITE, REMOVE_FAVORITE, UNEXPECTED_ERROR } from "../../../../../constants/InformationMessage";
+import { ADD_FAVORITE, REMOVE_FAVORITE } from "../../../../../constants/InformationMessage";
+import { handleErrors } from "../../../../../utils/handleErrors";
 import styles from './FavoriteButton.module.css';
 
 const FavoriteButton = ({dentist, setAlert, setIsLoading}) => {
-
-    const handleErrors = (result) => {
-        if(result.success === undefined && (result.status === 0 || result.status === 400 || 
-            result.status === 404 || result.status === 405 ||
-            result.status === 500)) {
-            setAlert({success: false, message: UNEXPECTED_ERROR});
-            setIsLoading({success: false});
-        }
-    }
 
     const addFavorite = async () => {
         const result = await addFavoriteDentist(dentist.dentistId);
@@ -49,7 +41,7 @@ const FavoriteButton = ({dentist, setAlert, setIsLoading}) => {
             result.success === true ? setAlert({success: true, message: REMOVE_FAVORITE}) : setAlert(result);
         }
 
-        handleErrors(result);
+        handleErrors(result, setAlert, setIsLoading);
     }
 
     return (

@@ -8,7 +8,7 @@ import {
     createSpecificTreatment, 
     updateSpecificTreatment, 
     deleteSpecificTreatment } from '../../../services/SpecificTreatmentService';
-import { UNEXPECTED_ERROR } from '../../../constants/InformationMessage';    
+import { handleErrors, handleErrorLoading } from '../../../utils/handleErrors';  
 import styles from './TreatmentPage.module.css';
 
 const TreatmentPage = () => {
@@ -44,13 +44,13 @@ const TreatmentPage = () => {
             setFilterTreatments(res.data);
         })
         .catch(err => {
-            handleErrorLoading(err);
+            handleErrorLoading(err, setErrorLoading);
         });
         
     }, [isChange]);
 
     useEffect(() => {
-        if(filterTreatments.length > 0 && filterText !== '') filterData();
+        if(filterTreatments?.length > 0 && filterText !== '') filterData();
         
         if(filterTreatments?.length <= 0 || filterText === '') setFilterTreatments(dataTreatments);
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -108,26 +108,6 @@ const TreatmentPage = () => {
         return result;
     }
 
-    const handleErrorLoading = (err) => {
-        if((err.response.status === 0 && err.response.data === undefined) || 
-            (err.response.data.success === undefined && (err.response.status === 400 
-            || err.response.status === 405 ||
-            err.status === 500))) {
-            setErrorLoading({success: true, message: UNEXPECTED_ERROR});
-            return;
-        }
-        setErrorLoading({success: true, message: err.response.data.message});
-    }
-    
-    const handleErrors = (result) => {
-        if(result.success === undefined && (result.status === 0 || result.status === 400 || 
-            result.status === 404 || result.status === 405 ||
-            result.status === 500)) {
-            setAlert({success: false, message: UNEXPECTED_ERROR});
-            setIsLoading({success: false});
-        }
-    }
-
     // Función guardar y actualizar datos de los servicios
     const saveTreatment = async (data, reset, type) => {
         // Se elimina espacios innecesarios
@@ -143,7 +123,7 @@ const TreatmentPage = () => {
         if(type === 'create') result = await create(data);
         else result = await edit(data);
 
-        handleErrors(result);
+        handleErrors(result, setAlert, setIsLoading);
         handleClose();
         reset();
         setRowSelect(null);
@@ -184,7 +164,8 @@ const TreatmentPage = () => {
                     )
                 ):<></>
             }
-            <h1 className={styles.page_title}>Gestión de Tratamientos</h1>
+            <h1 className={'page_title'}>Gestión de Tratamientos</h1>
+            <div className="underline mx-auto"></div>
             { /* Mensaje de alerta para mostrar información al usuario */
                 alert && 
                 <div className={styles.container_alert}>

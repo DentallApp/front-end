@@ -1,11 +1,3 @@
-.page_title {
-    margin-top: 10px;
-    text-align: center;
-    font-weight: bold;
-    font-style: italic;
-    color: #002855;
-}
-
 .text_information {
     margin: 20px;
     text-align: center;
@@ -53,6 +45,13 @@
     text-align: right;
     margin-right: 20px;
     font-weight: bold;
+}
+
+.container_alert {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 @media screen and (max-width: 400px) {
