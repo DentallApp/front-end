@@ -5,7 +5,7 @@ import { GeneralServiceTable, FormModal, EliminationModal } from './components';
 import { AlertMessage, ModalLoading, FilterComponent } from '../../../components';
 import { createTreatment, getGeneralTreatmentEdit, updateTreatment, deleteTreatment } from '../../../services/GeneralTreatments';
 import { HoursToMinutes } from '../../../utils/timeUtils';
-import { UNEXPECTED_ERROR } from '../../../constants/InformationMessage';
+import { handleErrors, handleErrorLoading } from '../../../utils/handleErrors';
 import styles from './GeneralServicePage.module.css';
 
 const GeneralServicePage = () => {
@@ -40,13 +40,13 @@ const GeneralServicePage = () => {
             setFilterServices(res.data);
         })
         .catch(err => {
-            handleErrorLoading(err);
+            handleErrorLoading(err, setErrorLoading);
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isChange]);
 
     useEffect(() => {
-        if(filterServices.length > 0 && filterText !== '') filterData();
+        if(filterServices?.length > 0 && filterText !== '') filterData();
         
         if(filterServices?.length <= 0 || filterText === '') setFilterServices(dataServices);
 
@@ -104,26 +104,6 @@ const GeneralServicePage = () => {
         return result;
     }
 
-    const handleErrorLoading = (err) => {
-        if((err.response.status === 0 && err.response.data === undefined) || 
-            (err.response.data.success === undefined && (err.response.status === 400 
-            || err.response.status === 405 ||
-            err.status === 500))) {
-            setErrorLoading({success: true, message: UNEXPECTED_ERROR});
-            return;
-        }
-        setErrorLoading({success: true, message: err.response.data.message});
-    }
-
-    const handleErrors = (result) => {
-        if(result.success === undefined && (result.status === 0 || result.status === 400 || 
-            result.status === 404 || result.status === 405 ||
-            result.status === 500)) {
-            setAlert({success: false, message: UNEXPECTED_ERROR});
-            setIsLoading({success: false});
-        }
-    }
-
     // Función guardar y actualizar datos de los servicios
     const saveService = async (data, reset, type, setError) => {
         // Se elimina espacios innecesarios
@@ -156,7 +136,7 @@ const GeneralServicePage = () => {
             return;
         }
 
-        handleErrors(result);
+        handleErrors(result, setAlert, setIsLoading);
         handleClose();
         reset();
         setRowSelect(null);
@@ -171,7 +151,7 @@ const GeneralServicePage = () => {
         setIsLoading({success: result.success});
         setAlert(result);
 
-        handleErrors(result)
+        handleErrors(result, setAlert, setIsLoading);
         handleClose();
         setRowSelect(null);
     }
@@ -197,7 +177,8 @@ const GeneralServicePage = () => {
                     )
                 ):<></>
             }
-            <h1 className={styles.page_title}>Gestión de Servicios</h1>
+            <h1 className={'page_title'}>Gestión de Servicios</h1>
+            <div className="underline mx-auto"></div>
             { /* Mensaje de alerta para mostrar información al usuario */
                 alert && 
                 <div className={styles.container_alert}>

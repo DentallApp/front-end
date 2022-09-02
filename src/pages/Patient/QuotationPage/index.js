@@ -8,7 +8,7 @@ import { SelectedTreamentsTable, TreatmentsModal } from './components';
 import { getSpecificTreatment } from '../../../services/SpecificTreatmentService';
 import { getLocalUser } from '../../../services/UserService';
 import { downloadQuotationPDF } from '../../../services/QuotationService';
-import { UNEXPECTED_ERROR } from '../../../constants/InformationMessage';
+import { handleErrors, handleErrorLoading } from '../../../utils/handleErrors';
 import styles from './QuotationPage.module.css';
 
 const QuotationPage = () => {
@@ -31,7 +31,7 @@ const QuotationPage = () => {
             setTreatments(res.data);
         })
         .catch(err => {
-            handleErrorLoading(err);
+            handleErrorLoading(err, setErrorLoading);
         });
     }, []);
 
@@ -48,26 +48,6 @@ const QuotationPage = () => {
     // Funciones para cerrar y mostrar el modal
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
-
-    const handleErrors = (result) => {
-        if(result.status === 0 || result.status === 400 || 
-            result.status === 404 || result.status === 405 ||
-            result.status === 500) {
-            setAlert({success: false, message: UNEXPECTED_ERROR});
-            setIsLoading({status: result.status});
-        }
-    }
-
-    const handleErrorLoading = (err) => {
-        if((err.response.status === 0 && err.response.data === undefined) || 
-            (err.response.data.success === undefined && (err.response.status === 400 
-            || err.response.status === 405 ||
-            err.status === 500))) {
-            setErrorLoading({success: true, message: UNEXPECTED_ERROR});
-            return;
-        }
-        setErrorLoading({success: true, message: err.response.data.message});
-    }
 
     const deleteSelected = (row) => {
         const result = selectedTreatments.filter(treatment => treatment.specificTreatmentId !== row.specificTreatmentId);
@@ -93,7 +73,7 @@ const QuotationPage = () => {
             saveAs(blob, "cotizacion-tratamientos-dentales.pdf");
         }
 
-        handleErrors(result);
+        handleErrors(result, setAlert, setIsLoading);
     }
 
     return (
@@ -111,7 +91,8 @@ const QuotationPage = () => {
                 : 
                 null
             }
-            <h1 className={styles.page_title}>Cotizaciones</h1>
+            <h1 className={'page_title'}>Cotizaciones</h1>
+            <div className="underline mx-auto"></div>
             <p className={styles.text_information}>Atención: Los tratamientos que se muestran a elegir son indicados por el odontólogo en la consulta</p>
             { /* Mensaje de alerta para mostrar información al usuario */
                 alert && 

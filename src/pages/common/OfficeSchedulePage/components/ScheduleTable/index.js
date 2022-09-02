@@ -25,7 +25,7 @@ const ScheduleTable = ({schedules, setSelectedSchedule, handleShow}) => {
     const columns = [
         {
             name: <div className={styles.container_table_header}><h6>Día</h6></div>,
-            selector: row => row.dayName,
+            selector: row => row.weekDayName,
             center: true,
             wrap: true,
             width: "150px"
@@ -34,8 +34,8 @@ const ScheduleTable = ({schedules, setSelectedSchedule, handleShow}) => {
             name: <div className={styles.container_table_header}><h6>Estado</h6></div>,
             selector: row => 
                 <div className={styles.badge_text}>
-                    <Badge pill bg={row.status === false ? 'success' : 'danger'}>
-                        {row.status === false ? 'ACTIVO' : 'INACTIVO'}
+                    <Badge pill bg={row.isDeleted === false ? 'success' : 'danger'}>
+                        {row.isDeleted === false ? 'ACTIVO' : 'INACTIVO'}
                     </Badge>
                 </div>,
             center: true,
@@ -44,14 +44,14 @@ const ScheduleTable = ({schedules, setSelectedSchedule, handleShow}) => {
         },
         {
             name: <div className={styles.container_table_header}><h6>Hora de Apertura</h6></div>,
-            selector: row => row.startTime,
+            selector: row => row.startHour,
             center: true,
             wrap: true,
             width: "200px",
         },
         {
             name: <div className={styles.container_table_header}><h6>Hora de Cierre</h6></div>,
-            selector: row => row.endTime,
+            selector: row => row.endHour,
             center: true,
             wrap: true,
             width: "200px"
@@ -90,7 +90,7 @@ const ScheduleTable = ({schedules, setSelectedSchedule, handleShow}) => {
             pagination
             highlightOnHover={true}
             wrap={true}
-            noDataComponent="No existen horarios registrados para este empleado"
+            noDataComponent="No existen horarios registrados para este consultorio"
             fixedHeader
             fixedHeaderScrollHeight="600px"
             paginationComponentOptions={paginationOptions}

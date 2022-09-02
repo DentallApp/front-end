@@ -1,18 +1,19 @@
 import api from './Api';
 
-export const getOffices = async() => {
-    return await api.get('/office');
+export const getAllSchedules = async() => {
+    return await api.get('/office-schedule');
 }
 
-export const getAllOffices = async() => {
-    return await api.get('/office/edit');
+export const getScheduleByOfficeId = async(officeId) => {
+    return await api.get(`/office-schedule/${officeId}`);
 }
 
-export const createOffice = (data) => {
-    return api.post('/office', {
-        name: data.name,
-        address: data.address,
-        contactNumber: data.contactNumber
+export const createSchedule = (data) => {
+    return api.post('/office-schedule', {
+        weekDayId: data.weekDayId,
+        officeId: data.officeId,
+        startHour: data.startHour,
+        endHour: data.endHour
     })
     .then(res => {
         return {
@@ -32,13 +33,12 @@ export const createOffice = (data) => {
     })
 }
 
-export const updateOffice = (data) => {
-    return api.put(`/office/${data.id}`, {
-        name: data.name,
-        address: data.address,
-        contactNumber: data.contactNumber,
-        isDeleted: data.isDeleted,
-        disableEmployeeAccounts: data.disableEmployeeAccounts
+export const updateSchedule = (data) => {
+    return api.put(`/office-schedule/${data.scheduleId}`, {
+        weekDayId: data.weekDayId,
+        startHour: data.startHour,
+        endHour: data.endHour,
+        isDeleted: data.isDeleted
     })
     .then(res => {
         return {
@@ -56,8 +56,4 @@ export const updateOffice = (data) => {
             message: err.response.data.message
         }
     })
-}
-
-export const getOfficesActiveAndInactive = async() => {
-    return await api.get('/office/all');
 }

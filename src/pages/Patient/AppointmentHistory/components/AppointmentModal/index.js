@@ -5,7 +5,7 @@ import { MdFreeCancellation } from "react-icons/md";
 import moment from 'moment';
 import EliminationModal from '../EliminationModal';
 import APPOINTMENT_STATUS from '../../../../../constants/AppointmentStatus';
-import { UNEXPECTED_ERROR } from '../../../../../constants/InformationMessage';
+import { handleErrors } from '../../../../../utils/handleErrors';
 import { deleteAppointment } from '../../../../../services/AppointmentBasicUserService';
 import styles from './AppointmentModal.module.css';
 
@@ -38,15 +38,6 @@ const AppointmentModal = ({
     }
     const handleSubModalShow = () => setShowSubModal(true);
 
-    const handleErrors = (result) => {
-        if(result.success === undefined && (result.status === 0 || result.status === 400 || 
-            result.status === 404 || result.status === 405 ||
-            result.status === 500)) {
-            setAlert({success: false, message: UNEXPECTED_ERROR});
-            setIsLoading({success: false});
-        }
-    }
-
     const cancelAppointment = async (id) => {
         setIsLoading({success: undefined});
         const result = await deleteAppointment(parseInt(id));
@@ -59,7 +50,7 @@ const AppointmentModal = ({
         setIsLoading({success: result.success});
         setAlert(result);
 
-        handleErrors(result);
+        handleErrors(result, setAlert, setIsLoading);
 
         setAppointmentSelect(null);
         setShowSubModal(false);

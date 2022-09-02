@@ -94,6 +94,8 @@ const DentistTable = ({filterDentists, setAlert, setIsLoading}) => {
             fixedHeader
             fixedHeaderScrollHeight="600px"
             customStyles={customStyles}
+            paginationPerPage={5}
+            paginationRowsPerPageOptions={[5, 10, 15, 20, 25, 30]}
             />
         </div>
     );

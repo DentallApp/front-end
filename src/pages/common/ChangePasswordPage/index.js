@@ -6,7 +6,7 @@ import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 import { ModalLoading, AlertMessage } from '../../../components';
 import { formatPassword } from '../../../utils/formatUtils';
 import { updatePassword } from '../../../services/UserService';
-import { UNEXPECTED_ERROR } from '../../../constants/InformationMessage';
+import { handleErrors } from '../../../utils/handleErrors';
 import styles from './ChangePasswordPage.module.css';
 
 const ChangePasswordPage = () => {
@@ -19,15 +19,6 @@ const ChangePasswordPage = () => {
 
     const { register, handleSubmit, reset, formState: {errors} } = useForm();
 
-    const handleErrors = (result) => {
-        if(result.success === undefined && (result.status === 0 || result.status === 400 || 
-            result.status === 404 || result.response.status === 405 ||
-            result.status === 500)) {
-            setAlert({success: false, message: UNEXPECTED_ERROR});
-            setIsLoading({success: false});
-        }
-    }
-
     const changePassword = async(data) => {
         setIsLoading({success: undefined});
         const result = await updatePassword(data);
@@ -36,7 +27,7 @@ const ChangePasswordPage = () => {
 
         if(result.success === true) reset();
 
-        handleErrors(result);
+        handleErrors(result, setAlert, setIsLoading);
     }
 
     return (
@@ -44,7 +35,7 @@ const ChangePasswordPage = () => {
             { isLoading ? (isLoading.success === undefined ? <ModalLoading show={true} /> : "") : ""}
             <div className={styles.wrapper}>
                 <Form className={`${styles.container_form} ${styles.container_form_center}`} onSubmit={handleSubmit(changePassword)}>
-                    <h2>Cambiar contraseña</h2>
+                    <h2 className='page_title'>Cambiar contraseña</h2>
                     <div className="underline mx-auto"></div>
                     { 
                         alert && 

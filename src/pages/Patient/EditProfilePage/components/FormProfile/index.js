@@ -8,6 +8,7 @@ import { trimSpaces, capitalizeFirstLetter } from '../../../../../utils/stringUt
 import { 
     formatNames, 
     formatPhone } from '../../../../../utils/formatUtils';
+import { handleErrors } from '../../../../../utils/handleErrors';
 import styles from './FormProfile.module.css';
 
 const FormProfile = ({user, setIsLoading, setAlert}) => {
@@ -48,15 +49,6 @@ const FormProfile = ({user, setIsLoading, setAlert}) => {
          // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [profile]);
 
-    const handleErrors = (result) =>  {
-        if(result.success === undefined && (result.status === 0 || result.status === 400 || 
-            result.status === 404 || result.response.status === 405 ||
-            result.status === 500)) {
-            setAlert({success: false, message: 'Error inesperado. Refresque la página o intente más tarde'});
-            setIsLoading({success: false});
-        }
-    }
-
     const updateProfile = async(data) => {
         setIsLoading({success: undefined});
 
@@ -91,7 +83,7 @@ const FormProfile = ({user, setIsLoading, setAlert}) => {
             setProfile(data);
         }
 
-        handleErrors(result);
+        handleErrors(result, setAlert, setIsLoading);
     }
 
     return (
