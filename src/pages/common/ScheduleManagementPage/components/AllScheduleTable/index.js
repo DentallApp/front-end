@@ -155,6 +155,8 @@ const AllScheduleTable = ({allSchedules}) => {
             fixedHeaderScrollHeight="600px"
             paginationComponentOptions={paginationOptions}
             customStyles={customStyles}
+            paginationPerPage={5}
+            paginationRowsPerPageOptions={[5, 10, 15, 20, 25, 30]}
             />
     </div>
     );

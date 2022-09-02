@@ -102,6 +102,8 @@ const OfficeTable = ({offices, setOfficeSelect, handleShow, paginationResetDefau
             paginationComponentOptions={paginationOptions}
             paginationResetDefaultPage={paginationResetDefaultPage}
             customStyles={customStyles}
+            paginationPerPage={5}
+            paginationRowsPerPageOptions={[5, 10, 15, 20, 25, 30]}
             />
         </div>
     );
