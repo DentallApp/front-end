@@ -44,7 +44,7 @@ const OfficeCard = ({office}) => {
                         office.schedules.map((schedule, index) => (
                             <Row key={schedule.weekDayId} >
                                 <Col><h6 className={styles.day}>{schedule.weekDayName}</h6></Col>
-                                <Col>{schedule.startHour} - {schedule.endHour}</Col>
+                                <Col>{schedule.schedule}</Col>
                             </Row>
                         ))
                     }

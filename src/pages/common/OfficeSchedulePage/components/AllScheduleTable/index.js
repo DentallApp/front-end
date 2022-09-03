@@ -32,10 +32,10 @@ const showSchedule = (schedule) => {
     return schedule[0] !== null && schedule[0] !== undefined ? (
         <>
             {
-                schedule[0].startHour && (
+                schedule[0].schedule && (
                     <>
                         <p style={{"textAlign":"center"}}>
-                            {schedule[0].startHour} - {schedule[0].endHour}
+                            {schedule[0].schedule}
                         </p>
                     </>
                 )
