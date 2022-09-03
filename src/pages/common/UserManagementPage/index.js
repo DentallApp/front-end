@@ -8,6 +8,7 @@ import { getLocalUser } from '../../../services/UserService';
 import ROLES from '../../../constants/Roles';
 import { createEmployee, getEmployee, updateEmployee, deleteEmployee } from '../../../services/EmployeeService';
 import { handleErrors, handleErrorLoading } from '../../../utils/handleErrors';
+import { verifyIdentityDocument } from '../../../utils/validationIdentityDocument';
 import styles from './UserManagementPage.module.css';
 
 const UserManagementPage = () => {
@@ -111,8 +112,17 @@ const UserManagementPage = () => {
     }
 
     // Función guardar y actualizar datos de los usuarios
-    const saveUser = async (data, reset, type) => {
-        
+    const saveUser = async (data, reset, type, setError) => {
+        const verifyDocument = verifyIdentityDocument(data.document);
+
+        if(verifyDocument === false) {
+            setError("document", {
+                type: 'custom',
+                message: 'Cedula de identidad no válida'
+            });
+            return;
+        }
+
         // Se elimina espacios innecesarios
         const sanitizedName = trimSpaces(data.names);
         const sanitizedLastName = trimSpaces(data.lastNames);

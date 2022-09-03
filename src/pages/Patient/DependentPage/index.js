@@ -10,6 +10,7 @@ import {
     updateDependent, 
     deleteDependent } from '../../../services/DependentService';
 import { handleErrors, handleErrorLoading } from '../../../utils/handleErrors';
+import { verifyIdentityDocument } from '../../../utils/validationIdentityDocument';
 import styles from './DependentPage.module.css';
 
 const DependentPage = () => {
@@ -109,7 +110,18 @@ const DependentPage = () => {
     }
 
     // Función guardar y actualizar datos de los dependientes
-    const saveDependent = async (data, reset, type) => {
+    const saveDependent = async (data, reset, type, setError) => {
+
+        const verifyDocument = verifyIdentityDocument(data.document);
+
+        if(verifyDocument === false) {
+            setError("document", {
+                type: 'custom',
+                message: 'Cedula de identidad no válida'
+            });
+            return;
+        }
+
         // Se elimina espacios innecesarios
         const sanitizedName = trimSpaces(data.names);
         const sanitizedLastName = trimSpaces(data.lastNames);
