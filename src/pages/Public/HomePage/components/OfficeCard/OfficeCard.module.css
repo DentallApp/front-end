@@ -1,0 +1,47 @@
+.card_office {
+    min-height: 400px;
+    background-color: #fff;
+    border: 1px solid #eee;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 20px;
+    text-align: center;
+    border-radius: 20px;
+    box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.4);
+}
+
+.card_office.rotated > .front{
+    transform: perspective(600px) rotateY(180deg);
+}
+
+.card_office.rotated > .back{ 
+    transform: perspective(600px) rotateY(0deg);
+}
+
+.icon {
+    text-align: center;
+    font-size: 2rem;
+}
+
+.card_office h5, h6 {
+    font-weight: bold;
+}
+
+.card_office h6 {
+    color: #002855;
+}
+
+.button_view_schedule, .button_back {
+    margin-top: 10px;
+    background-color: #00b4d8 !important;
+    color: #fff;
+    border-radius: 30px;
+    border: none;
+}
+
+.day {
+    color:#000 !important;
+}
