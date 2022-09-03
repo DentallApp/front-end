@@ -57,3 +57,7 @@ export const updateSchedule = (data) => {
         }
     })
 }
+
+export const getOfficeHomePage = async() => {
+    return await api.get('/office-schedule/home-page');
+}
