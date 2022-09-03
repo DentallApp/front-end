@@ -5,7 +5,7 @@ import { FaArrowCircleLeft } from 'react-icons/fa';
 import { BsFillKeyFill } from "react-icons/bs";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 import { useForm } from 'react-hook-form';
-import { formatPassword } from '../../../../../utils/formatUtils';
+import { formatSecurePassword } from '../../../../../utils/formatUtils';
 import { resetPassword } from '../../../../../services/PasswordResetService';
 import { AlertMessage, ModalLoading } from '../../../../../components';
 import { UNEXPECTED_ERROR } from '../../../../../constants/InformationMessage';
@@ -82,8 +82,9 @@ const FormResetPassword = () => {
                         {...register("newPassword", { 
                             required: "Contraseña es requerida",
                             pattern: {
-                                value: formatPassword,
-                                message: "La contraseña contiene caracteres no permitidos"
+                                value: formatSecurePassword,
+                                message: "La contraseña debe de contener: " +
+                                    "Mínimo 5 caracteres, una letra mayúscula, una minúscula y un número"
                             },
                             minLength: {
                                 value: 5,
@@ -97,7 +98,7 @@ const FormResetPassword = () => {
                             {passwordShow ? <MdVisibilityOff /> : <MdVisibility />}
                         </Button>   
                     </InputGroup>
-                    { errors.newPassword && <p className={styles.error_message}>{ errors.newPassword.message }</p> } 
+                    { errors.newPassword && <p style={{"maxWidth": "350px"}} className={styles.error_message}>{ errors.newPassword.message }</p> } 
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="formConfirmPassword">

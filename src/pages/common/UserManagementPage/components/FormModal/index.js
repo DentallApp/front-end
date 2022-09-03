@@ -7,7 +7,7 @@ import Select from 'react-select';
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 import { 
     formatEmail,
-    formatPassword, 
+    formatSecurePassword, 
     formatIdentityDocument, 
     formatNames,  
     formatPhone } from '../../../../../utils/formatUtils';
@@ -47,7 +47,7 @@ const FormModal = ({show, handleClose, userSelect = null, saveUser}) => {
     const [status, setStatus] = useState(null);
     const onlyWidth = useWindowWidth(); // Se obtiene ancho y altura de pantalla para colocar el modal
 
-    const { register, handleSubmit, reset, setValue, watch,  formState: {errors} } = useForm({
+    const { register, handleSubmit, reset, setValue, watch, setError, formState: {errors} } = useForm({
         defaultValues: {
             employeeId: `${ userSelect !== null ? userSelect.employeeId : ""}`,
             names: `${ userSelect !== null ? userSelect.names : ""}`,
@@ -148,7 +148,7 @@ const FormModal = ({show, handleClose, userSelect = null, saveUser}) => {
             <Modal.Body>
                 <Form 
                 className={styles.container_form} 
-                onSubmit={handleSubmit((data) => saveUser(data, reset, type))}>
+                onSubmit={handleSubmit((data) => saveUser(data, reset, type, setError))}>
                     <h2>Registro</h2>
                     <div className="underline mx-auto"></div>
                     <p className={styles.text_information}>Los campos con el símbolo * son obligatorios</p>
@@ -266,8 +266,9 @@ const FormModal = ({show, handleClose, userSelect = null, saveUser}) => {
                                         {...register("password", { 
                                             required: "Contraseña es requerida",
                                             pattern: {
-                                                value: formatPassword,
-                                                message: "La contraseña contiene caracteres no permitidos"
+                                                value: formatSecurePassword,
+                                                message: "La contraseña debe de contener: " +
+                                                    "Mínimo 5 caracteres, una letra mayúscula, una minúscula y un número"
                                             },
                                             minLength: {
                                                 value: 5,

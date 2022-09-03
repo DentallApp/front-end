@@ -9,3 +9,5 @@ export const formatPassword = /[A-Za-zÁÉÍÓÚáéíóú0-9\-\_\@\#\$\%\?\[\]\
 export const formatPhone = /^[09]{2}[0-9]+$/;
 
 export const formatPrice = /^\d+(?:\.\d{1,2})?$/;
+
+export const formatSecurePassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d (@$!%*?_\-&)?]{5,}$/;

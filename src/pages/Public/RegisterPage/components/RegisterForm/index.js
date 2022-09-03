@@ -9,9 +9,10 @@ import {
     formatEmail, 
     formatIdentityDocument, 
     formatNames, 
-    formatPassword, 
-    formatPhone } from '../../../../../utils/formatUtils';
-import { calculatePreviousYear } from '../../../../../utils/dateUtils'; 
+    formatPhone,
+    formatSecurePassword } from '../../../../../utils/formatUtils';
+import { calculatePreviousYear } from '../../../../../utils/dateUtils';
+import { verifyIdentityDocument } from '../../../../../utils/validationIdentityDocument'; 
 import { UNEXPECTED_ERROR } from '../../../../../constants/InformationMessage';  
 import { registerBasicUser } from '../../../../../services/UserService';
 import { getGenders } from '../../../../../services/GenderService';
@@ -23,7 +24,7 @@ const RegistrationForm = () => {
 
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(null);
-    const { register, handleSubmit, reset, formState: {errors} } = useForm();
+    const { register, handleSubmit, reset, setError, formState: {errors} } = useForm();
     const [genders, setGenders] = useState(null);
     const [alert, setAlert] = useState(null);
 
@@ -53,6 +54,16 @@ const RegistrationForm = () => {
     }
 
     const registerUser = async (data) => {
+        const verifyDocument = verifyIdentityDocument(data.document);
+
+        if(verifyDocument === false) {
+            setError("document", {
+                type: 'custom',
+                message: 'Cedula de identidad no válida'
+            });
+            return;
+        }
+
         setIsLoading({success: undefined});
 
         // Se elimina espacios innecesarios
@@ -194,8 +205,9 @@ const RegistrationForm = () => {
                                 {...register("password", { 
                                     required: "Contraseña es requerida",
                                     pattern: {
-                                        value: formatPassword,
-                                        message: "La contraseña contiene caracteres no permitidos"
+                                        value: formatSecurePassword,
+                                        message: "La contraseña debe de contener: " +
+                                        "Mínimo 5 caracteres, una letra mayúscula, una minúscula y un número"
                                     },
                                     minLength: {
                                         value: 5,

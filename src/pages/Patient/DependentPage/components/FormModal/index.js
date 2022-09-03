@@ -21,7 +21,7 @@ const FormModal = ({show, handleClose, dependentSelect = null, saveDependent}) =
     const [type, setType] = useState('create'); // Estado para tipo de modal
     const onlyWidth = useWindowWidth(); // Se obtiene ancho y altura de pantalla para colocar el modal
 
-    const { register, handleSubmit, reset, setValue, watch,  formState: {errors} } = useForm({
+    const { register, handleSubmit, reset, setValue, watch, setError,  formState: {errors} } = useForm({
         defaultValues: {
             dependentId: `${ dependentSelect !== null ? dependentSelect.dependentId : ""}`,
             names: `${ dependentSelect !== null ? dependentSelect.names : ""}`,
@@ -74,7 +74,7 @@ const FormModal = ({show, handleClose, dependentSelect = null, saveDependent}) =
             <Modal.Body>
                 <Form 
                 className={styles.container_form} 
-                onSubmit={handleSubmit((data) => saveDependent(data, reset, type))}>
+                onSubmit={handleSubmit((data) => saveDependent(data, reset, type, setError))}>
                     <h2>Registro</h2>
                     <div className="underline mx-auto"></div>
                     <p className={styles.text_information}>Los campos con el símbolo * son obligatorios</p>
