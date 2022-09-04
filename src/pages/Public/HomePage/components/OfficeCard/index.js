@@ -21,15 +21,19 @@ const OfficeCard = ({office}) => {
                     <ImOffice className={styles.icon}/>
                         <h5>{office.name}</h5>
                         <br></br>
-                        <h6><FaMapMarkerAlt /> Dirección</h6>
-                        <p>{office.address}</p><br></br>
-                        <h6><FaPhone /> Contacto</h6>
-                        <p>{office.contactNumber ? office.contactNumber : 'N/A'}</p>
-                <Button 
-                className={styles.button_view_schedule} 
-                onClick={() => onRotate() }> 
-                    <FaCalendarAlt /> Ver Horarios
-                </Button>
+                        <div style={{"height":"100px"}}>
+                            <h6><FaMapMarkerAlt /> Dirección</h6>
+                            <p>{office.address}</p>
+                        </div>    
+                            <br />    
+                            <h6><FaPhone /> Contacto</h6>
+                            <p>{office.contactNumber ? office.contactNumber : 'N/A'}</p>
+                        
+                        <Button 
+                        className={styles.button_view_schedule} 
+                        onClick={() => onRotate() }> 
+                            <FaCalendarAlt /> Ver Horarios
+                        </Button>
                 </Card>
                 
             </FrontSide>
