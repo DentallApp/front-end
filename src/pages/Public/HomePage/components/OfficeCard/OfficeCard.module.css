@@ -1,4 +1,5 @@
 .card_office {
+    width: 18rem;
     min-height: 400px;
     background-color: #fff;
     border: 1px solid #eee;
@@ -23,7 +24,8 @@
 
 .icon {
     text-align: center;
-    font-size: 2rem;
+    font-size: 1rem;
+    margin-right: 5px;
 }
 
 .card_office h5, h6 {
@@ -40,8 +42,30 @@
     color: #fff;
     border-radius: 30px;
     border: none;
+    display: flex;
+    align-items: center;
 }
 
 .day {
     color:#000 !important;
+}
+
+@media screen and (max-width: 390px) {
+    .card_office {
+        min-height: 350px;
+        width: 195px;
+        font-size: .7rem;
+    }
+
+    .card_office h5, h6 {
+        font-size: .8rem;
+    }
+
+    .button_view_schedule, .button_back {
+        font-size: .7rem !important;
+    }
+
+    .icon {
+        font-size: 1rem;
+    }
 }

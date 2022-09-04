@@ -17,35 +17,33 @@ const OfficeCard = ({office}) => {
         isFlipped={isRotated}
         >
             <FrontSide style={{"boxShadow": "none"}} >
-                <Card className={`${styles.card_office}`} style={{ width: '18rem' }}>
+                <Card className={`${styles.card_office}`}>
                     <ImOffice className={styles.icon}/>
                     <h5>{office.name}</h5>
                     <br></br>
-                    <div style={{"height":"100px"}}>
+                    <div style={{"height":"120px"}}>
                         <h6><FaMapMarkerAlt /> Dirección</h6>
-                        <p>{office.address}</p>
-                    </div>    
-                    <br />    
+                        <p>{office.address}</p><br></br>
+                    </div>
                     <h6><FaPhone /> Contacto</h6>
                     <p>{office.contactNumber ? office.contactNumber : 'N/A'}</p>
-                        
                     <Button 
                     className={styles.button_view_schedule} 
                     onClick={() => onRotate() }> 
-                        <FaCalendarAlt /> Ver Horarios
+                        <FaCalendarAlt className={styles.icon} /> Ver Horarios
                     </Button>
                 </Card>
                 
             </FrontSide>
             <BackSide style={{"boxShadow": "none"}} >
-                <Card className={`${styles.card_office}`} style={{ width: '18rem' }}>
+                <Card className={`${styles.card_office}`}>
                     <ImOffice className={styles.icon}/>
                     <h5>{office.name}</h5>
                     <br></br>
-                    <h6><FaCalendarAlt /> Horarios</h6>
+                    <h6><FaCalendarAlt /> Horarios</h6><br/>
                     <div style={{"width": "100%", "minHeight":"165px"}}>
                     {
-                        office.schedules.map((schedule, index) => (
+                        office.schedules.map((schedule) => (
                             <Row key={schedule.weekDayId} >
                                 <Col><h6 className={styles.day}>{schedule.weekDayName}</h6></Col>
                                 <Col>{schedule.schedule}</Col>
@@ -53,8 +51,6 @@ const OfficeCard = ({office}) => {
                         ))
                     }
                     </div>
-                    
-
                     <Button 
                     className={styles.button_back} 
                     onClick={() => onRotate() }> 
