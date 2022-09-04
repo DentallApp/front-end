@@ -10,14 +10,14 @@ import {
     formatSecurePassword, 
     formatIdentityDocument, 
     formatNames,  
-    formatPhone } from '../../../../../utils/formatUtils';
-import { calculatePreviousYear } from '../../../../../utils/dateUtils';    
-import { getGenders } from '../../../../../services/GenderService';
-import { getLocalUser } from '../../../../../services/UserService';
-import { getRoles } from '../../../../../services/RoleService';
-import { getOffices } from '../../../../../services/OfficeService'; 
-import ROLES from '../../../../../constants/Roles';
-import STATUS from '../../../../../constants/Status';
+    formatPhone } from 'utils/formatUtils';
+import { calculatePreviousYear } from 'utils/dateUtils';    
+import { getGenders } from 'services/GenderService';
+import { getLocalUser } from 'services/UserService';
+import { getRoles } from 'services/RoleService';
+import { getOffices } from 'services/OfficeService'; 
+import ROLES from 'constants/Roles';
+import STATUS from 'constants/Status';
 import styles from './FormModal.module.css';
 
 const maxDate = calculatePreviousYear(18);

@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import ReactWebChat, { createDirectLine, createStore } from 'botframework-webchat';
 import simpleUpdateIn from 'simple-update-in';
-import { getLocalUser } from '../../../../../services/UserService'
+import { getLocalUser } from 'services/UserService'
 
 const Chatbot = () => {
 

@@ -10,7 +10,7 @@ import {
     EmailVerifyPage,
     ForgotPasswordPage,
     ResetPasswordPage
-} from '../pages/Public';
+} from 'pages/Public';
 
 import { 
     Dashboard, 
@@ -22,14 +22,14 @@ import {
     UserManagementPage,
     EditProfilePage, 
     OfficeSchedulePage,
-    ScheduleManagementPage } from '../pages/common';
+    ScheduleManagementPage } from 'pages/common';
 import { AppointmentChatbotPage, AppointmentHistory, FavoriteDentistPage, MedicalDirectoryPage, DependentPage, QuotationPage } from '../pages/Patient';
 
-import { AppointmentCalendarPage } from '../pages/Dentist';
+import { AppointmentCalendarPage } from 'pages/Dentist';
 //import { AppointmentPage } from '../pages/Secretary';
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
-import { GeneralServicePage, TreatmentPage, OfficeManagementPage } from '../pages/SuperAdmin';
+import { GeneralServicePage, TreatmentPage, OfficeManagementPage } from 'pages/SuperAdmin';
 
 const RoutesApp = () => {
     return (

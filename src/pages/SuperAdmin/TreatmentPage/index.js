@@ -2,13 +2,13 @@ import { useState, useEffect } from 'react';
 import { Button, Spinner } from 'react-bootstrap';
 import { IoAddCircle } from "react-icons/io5";
 import { TreatmentTable, FormModal, EliminationModal, SelectGeneralService } from './components';
-import { AlertMessage, ModalLoading, FilterComponent } from '../../../components';
+import { AlertMessage, ModalLoading, FilterComponent } from 'components';
 import { 
     getSpecificTreatment, 
     createSpecificTreatment, 
     updateSpecificTreatment, 
-    deleteSpecificTreatment } from '../../../services/SpecificTreatmentService';
-import { handleErrors, handleErrorLoading } from '../../../utils/handleErrors';  
+    deleteSpecificTreatment } from 'services/SpecificTreatmentService';
+import { handleErrors, handleErrorLoading } from 'utils/handleErrors';  
 import styles from './TreatmentPage.module.css';
 
 const TreatmentPage = () => {

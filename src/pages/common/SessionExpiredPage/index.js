@@ -2,8 +2,8 @@ import { useNavigate } from 'react-router-dom';
 import{ Button } from 'react-bootstrap';
 import { IoArrowBackCircle } from "react-icons/io5";
 import styles from '../NotFoundPage/NotFoundPage.module.css';
-import ROLES from '../../../constants/Roles';
-import { getLocalUser } from '../../../services/UserService';
+import ROLES from 'constants/Roles';
+import { getLocalUser } from 'services/UserService';
 
 const SessionExpiredPage = () => {
 

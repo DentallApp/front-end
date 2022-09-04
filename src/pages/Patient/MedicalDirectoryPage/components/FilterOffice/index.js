@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Form, Row, Col } from 'react-bootstrap';
-import { getOffices } from '../../../../../services/OfficeService';
+import { getOffices } from 'services/OfficeService';
 import styles from './FilterOffice.module.css';
 
 const FilterOffice = ({

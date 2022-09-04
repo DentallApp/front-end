@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Modal, Button, Spinner } from 'react-bootstrap';
 import { useWindowWidth } from '@react-hook/window-size';
 import TreatmentsTable from '../TreatmentsTable';
-import { FilterComponent } from '../../../../../components';
+import { FilterComponent } from 'components';
 import styles from './TreatmentsModal.module.css'
 import FilterGeneralService from '../FilterGeneralService';
 

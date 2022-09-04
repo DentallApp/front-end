@@ -2,10 +2,10 @@ import { useState, useEffect } from 'react';
 import { Button, Spinner } from 'react-bootstrap';
 import { IoAddCircle } from "react-icons/io5";
 import { GeneralServiceTable, FormModal, EliminationModal } from './components';
-import { AlertMessage, ModalLoading, FilterComponent } from '../../../components';
-import { createTreatment, getGeneralTreatmentEdit, updateTreatment, deleteTreatment } from '../../../services/GeneralTreatments';
-import { HoursToMinutes } from '../../../utils/timeUtils';
-import { handleErrors, handleErrorLoading } from '../../../utils/handleErrors';
+import { AlertMessage, ModalLoading, FilterComponent } from 'components';
+import { createTreatment, getGeneralTreatmentEdit, updateTreatment, deleteTreatment } from 'services/GeneralTreatments';
+import { HoursToMinutes } from 'utils/timeUtils';
+import { handleErrors, handleErrorLoading } from 'utils/handleErrors';
 import styles from './GeneralServicePage.module.css';
 
 const GeneralServicePage = () => {

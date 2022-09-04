@@ -5,10 +5,10 @@ import { FaArrowCircleLeft } from 'react-icons/fa';
 import { BsFillEnvelopeFill, BsFillKeyFill } from "react-icons/bs";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 import { useForm } from 'react-hook-form';
-import { AlertMessage, ModalLoading } from '../../../../../components';
-import { formatEmail, formatPassword } from '../../../../../utils/formatUtils';
-import { UNEXPECTED_ERROR } from '../../../../../constants/InformationMessage';
-import { login } from '../../../../../services/AuthService';
+import { AlertMessage, ModalLoading } from 'components';
+import { formatEmail, formatPassword } from 'utils/formatUtils';
+import { UNEXPECTED_ERROR } from 'constants/InformationMessage';
+import { login } from 'services/AuthService';
 import styles from './FormLogin.module.css'; 
 
 const FormLogin = () => {

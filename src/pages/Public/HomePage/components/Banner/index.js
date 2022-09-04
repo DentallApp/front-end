@@ -1,6 +1,6 @@
 import{ Button } from 'react-bootstrap';
 import { FaArrowRight } from 'react-icons/fa';
-import { dentalBanner } from '../../../../../img';
+import { dentalBanner } from 'img';
 import styles from './Banner.module.css';
 
 const Banner = () => {

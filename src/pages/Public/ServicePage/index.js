@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Spinner from 'react-bootstrap/Spinner';
-import { getGeneralTreatmentXId } from '../../../services/GeneralTreatments';
-import { UNEXPECTED_ERROR } from '../../../constants/InformationMessage';
+import { getGeneralTreatmentXId } from 'services/GeneralTreatments';
+import { UNEXPECTED_ERROR } from 'constants/InformationMessage';
 import styles from './ServicePage.module.css';
 
 const ServicePage = () => {

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Form, Row, Col } from 'react-bootstrap';
-import { getGeneralTreatmentName } from '../../../../../services/GeneralTreatments';
+import { getGeneralTreatmentName } from 'services/GeneralTreatments';
 import styles from './FilterGeneralService.module.css';
 
 const FilterGeneralService = ({

@@ -3,20 +3,20 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import { FaArrowCircleLeft } from 'react-icons/fa';
 import { useForm } from 'react-hook-form';
-import { AlertMessage, ModalLoading } from '../../../../../components';
-import { trimSpaces, capitalizeFirstLetter } from '../../../../../utils/stringUtils';
+import { AlertMessage, ModalLoading } from 'components';
+import { trimSpaces, capitalizeFirstLetter } from 'utils/stringUtils';
 import { 
     formatEmail, 
     formatIdentityDocument, 
     formatNames, 
     formatPhone,
-    formatSecurePassword } from '../../../../../utils/formatUtils';
-import { calculatePreviousYear } from '../../../../../utils/dateUtils';
-import { verifyIdentityDocument } from '../../../../../utils/validationIdentityDocument'; 
-import { UNEXPECTED_ERROR } from '../../../../../constants/InformationMessage';  
-import { registerBasicUser } from '../../../../../services/UserService';
-import { getGenders } from '../../../../../services/GenderService';
-import styles from '../../../LoginPage/components/FormLogin/FormLogin.module.css';
+    formatSecurePassword } from 'utils/formatUtils';
+import { calculatePreviousYear } from 'utils/dateUtils';
+import { verifyIdentityDocument } from 'utils/validationIdentityDocument'; 
+import { UNEXPECTED_ERROR } from 'constants/InformationMessage';  
+import { registerBasicUser } from 'services/UserService';
+import { getGenders } from 'services/GenderService';
+import styles from 'pages/Public/LoginPage/components/FormLogin/FormLogin.module.css';
 
 const maxDate = calculatePreviousYear(1);
 

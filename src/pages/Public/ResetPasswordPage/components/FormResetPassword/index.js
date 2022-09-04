@@ -5,11 +5,11 @@ import { FaArrowCircleLeft } from 'react-icons/fa';
 import { BsFillKeyFill } from "react-icons/bs";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 import { useForm } from 'react-hook-form';
-import { formatSecurePassword } from '../../../../../utils/formatUtils';
-import { resetPassword } from '../../../../../services/PasswordResetService';
-import { AlertMessage, ModalLoading } from '../../../../../components';
-import { UNEXPECTED_ERROR } from '../../../../../constants/InformationMessage';
-import styles from '../../../LoginPage/components/FormLogin/FormLogin.module.css';
+import { formatSecurePassword } from 'utils/formatUtils';
+import { resetPassword } from 'services/PasswordResetService';
+import { AlertMessage, ModalLoading } from 'components';
+import { UNEXPECTED_ERROR } from 'constants/InformationMessage';
+import styles from 'pages/Public/LoginPage/components/FormLogin/FormLogin.module.css';
 
 const FormResetPassword = () => {
     // Estado para el botón de mostrar contraseña

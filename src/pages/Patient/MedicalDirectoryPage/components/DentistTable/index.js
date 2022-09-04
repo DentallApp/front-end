@@ -1,6 +1,6 @@
 import DataTable from 'react-data-table-component';
 import FavoriteButton from '../FavoriteButton';
-import { INFORMATION_NOT_AVAILABLE } from '../../../../../constants/InformationMessage';
+import { INFORMATION_NOT_AVAILABLE } from 'constants/InformationMessage';
 import styles from './DentistTable.module.css';
 
 const paginationOptions = {

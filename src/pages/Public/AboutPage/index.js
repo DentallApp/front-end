@@ -1,4 +1,4 @@
-import { imageAbout } from '../../../img';
+import { imageAbout } from 'img';
 import styles from './AboutPage.module.css';
 
 const AboutPage = () => {

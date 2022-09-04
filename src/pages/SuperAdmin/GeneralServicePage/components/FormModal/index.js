@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import { Form, Button, Container, Row, Col, Modal } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { useWindowWidth } from '@react-hook/window-size';
-import { MinutesToHours } from '../../../../../utils/timeUtils';
-import FORMAT_IMAGE from '../../../../../constants/FormatImage';
+import { MinutesToHours } from 'utils/timeUtils';
+import FORMAT_IMAGE from 'constants/FormatImage';
 import styles from './FormModal.module.css';
 
 const FormModal = ({show, handleClose, serviceSelect = null, saveService}) => {

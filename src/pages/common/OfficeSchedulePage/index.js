@@ -3,12 +3,12 @@ import { Button, Spinner } from 'react-bootstrap';
 import { IoAddCircle } from "react-icons/io5";
 import { ScheduleTable, FilterOffice, FormModal, AllScheduleTable } from './components';
 import { validationSchedule } from './utils';
-import { getLocalUser } from '../../../services/UserService';
-import { getOfficesActiveAndInactive} from '../../../services/OfficeService';
-import { getAllSchedules, getScheduleByOfficeId, createSchedule, updateSchedule } from '../../../services/OfficeScheduleService';
-import ROLES from '../../../constants/Roles';
-import { handleErrors, handleErrorLoading } from '../../../utils/handleErrors';
-import { AlertMessage, ModalLoading } from '../../../components';
+import { getLocalUser } from 'services/UserService';
+import { getOfficesActiveAndInactive} from 'services/OfficeService';
+import { getAllSchedules, getScheduleByOfficeId, createSchedule, updateSchedule } from 'services/OfficeScheduleService';
+import ROLES from 'constants/Roles';
+import { handleErrors, handleErrorLoading } from 'utils/handleErrors';
+import { AlertMessage, ModalLoading } from 'components';
 import styles from './OfficeSchedulePage.module.css';
 
 const OfficeSchedulePage = () => {

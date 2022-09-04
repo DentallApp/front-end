@@ -2,16 +2,16 @@ import { useState, useEffect } from 'react';
 import { Button, Spinner } from 'react-bootstrap';
 import { IoAddCircle } from "react-icons/io5";
 import { ScheduleTable, FilterDentist, FormModal, AllScheduleTable } from './components';
-import { AlertMessage, ModalLoading } from '../../../components';
+import { AlertMessage, ModalLoading } from 'components';
 import { validationScheduleMorning, validationScheduleAfternoon } from './utils';
 import { 
     getDentists, 
     getSchedulesByEmployee, 
     createSchedule, 
     updateSchedule,
-    getAllSchedule } from '../../../services/DentistScheduleService';
-import { getLocalUser } from '../../../services/UserService';
-import { handleErrors, handleErrorLoading } from '../../../utils/handleErrors';
+    getAllSchedule } from 'services/DentistScheduleService';
+import { getLocalUser } from 'services/UserService';
+import { handleErrors, handleErrorLoading } from 'utils/handleErrors';
 import styles from './ScheduleManagementPage.module.css';
 
 const ScheduleManagementPage = () => {

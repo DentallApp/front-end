@@ -2,9 +2,9 @@ import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import{ NavDropdown } from 'react-bootstrap';
 import { ImMenu } from "react-icons/im";
-import SideBarContext from '../../context/SideBarContext';
-import { logout } from '../../services/AuthService';
-import { user } from '../../img';
+import SideBarContext from 'context/SideBarContext';
+import { logout } from 'services/AuthService';
+import { user } from 'img';
 import styles from './NavBarDashboard.module.css';
 
 const NavBarDashboard = () => {

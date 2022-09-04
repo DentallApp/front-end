@@ -2,13 +2,13 @@ import { useState, useEffect } from 'react';
 import { Button, Spinner } from 'react-bootstrap';
 import { IoAddCircle } from "react-icons/io5";
 import { UsersTable, FormModal, EliminationModal } from './components';
-import { AlertMessage, ModalLoading, FilterComponent } from '../../../components';
-import { trimSpaces, capitalizeFirstLetter } from '../../../utils/stringUtils';
-import { getLocalUser } from '../../../services/UserService';
-import ROLES from '../../../constants/Roles';
-import { createEmployee, getEmployee, updateEmployee, deleteEmployee } from '../../../services/EmployeeService';
-import { handleErrors, handleErrorLoading } from '../../../utils/handleErrors';
-import { verifyIdentityDocument } from '../../../utils/validationIdentityDocument';
+import { AlertMessage, ModalLoading, FilterComponent } from 'components';
+import { trimSpaces, capitalizeFirstLetter } from 'utils/stringUtils';
+import { getLocalUser } from 'services/UserService';
+import ROLES from 'constants/Roles';
+import { createEmployee, getEmployee, updateEmployee, deleteEmployee } from 'services/EmployeeService';
+import { handleErrors, handleErrorLoading } from 'utils/handleErrors';
+import { verifyIdentityDocument } from 'utils/validationIdentityDocument';
 import styles from './UserManagementPage.module.css';
 
 const UserManagementPage = () => {

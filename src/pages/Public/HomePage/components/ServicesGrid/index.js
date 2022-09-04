@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import Carousel from 'react-elastic-carousel';
 import Spinner from 'react-bootstrap/Spinner';
-import GeneralTreamentsContext from '../../../../../context/GeneralTreamentsContext';
+import GeneralTreamentsContext from 'context/GeneralTreamentsContext';
 import ServiceCard from '../ServiceCard';
 import styles from './ServicesGrid.module.css';
 

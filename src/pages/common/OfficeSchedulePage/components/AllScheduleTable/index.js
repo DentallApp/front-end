@@ -1,7 +1,7 @@
 import DataTable from 'react-data-table-component';
 import { Badge } from 'react-bootstrap';
-import { INFORMATION_NOT_AVAILABLE } from '../../../../../constants/InformationMessage';
-import WEEKDAYS from '../../../../../constants/WeekDays';
+import { INFORMATION_NOT_AVAILABLE } from 'constants/InformationMessage';
+import WEEKDAYS from 'constants/WeekDays';
 import styles from './AllScheduleTable.module.css';
 
 // Opciones de paginación

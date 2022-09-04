@@ -1,4 +1,4 @@
-import { dentalBanner } from '../../../img';
+import { dentalBanner } from 'img';
 import { RegisterForm } from './components';
 import styles from './RegisterPage.module.css';
 

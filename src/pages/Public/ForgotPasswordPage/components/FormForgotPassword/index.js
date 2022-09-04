@@ -4,11 +4,11 @@ import { Form, Button, InputGroup } from 'react-bootstrap';
 import { FaArrowCircleLeft } from 'react-icons/fa';
 import { BsFillEnvelopeFill } from "react-icons/bs";
 import { useForm } from 'react-hook-form';
-import { formatEmail } from '../../../../../utils/formatUtils';
-import { sendUserEmail } from '../../../../../services/PasswordResetService';
-import { AlertMessage, ModalLoading } from '../../../../../components';
-import { UNEXPECTED_ERROR } from '../../../../../constants/InformationMessage';
-import styles from '../../../LoginPage/components/FormLogin/FormLogin.module.css';
+import { formatEmail } from 'utils/formatUtils';
+import { sendUserEmail } from 'services/PasswordResetService';
+import { AlertMessage, ModalLoading } from 'components';
+import { UNEXPECTED_ERROR } from 'constants/InformationMessage';
+import styles from 'pages/Public/LoginPage/components/FormLogin/FormLogin.module.css';
 
 const FormForgotPassword = () => {
     const navigate = useNavigate();

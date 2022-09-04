@@ -3,8 +3,8 @@ import { Navigate, useNavigate, useSearchParams } from 'react-router-dom';
 import{ Button } from 'react-bootstrap';
 import Spinner from 'react-bootstrap/Spinner';
 import { IoArrowBackCircle } from "react-icons/io5";
-import { check } from '../../../img';
-import { emailVerification } from '../../../services/EmailService';
+import { check } from 'img';
+import { emailVerification } from 'services/EmailService';
 import styles from './EmailVerifyPage.module.css';
 
 const EmailVerifyPage = () => {

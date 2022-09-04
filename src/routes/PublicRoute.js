@@ -1,7 +1,7 @@
 import { useEffect } from 'react'; 
 import { Outlet, useLocation, useNavigate, Navigate } from 'react-router-dom';
-import { getLocalUser } from '../services/UserService';
-import { getLocalAccessToken } from '../services/TokenService';
+import { getLocalUser } from 'services/UserService';
+import { getLocalAccessToken } from 'services/TokenService';
 
 const PublicRoute = () => {
 

@@ -1,16 +1,13 @@
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { FaUsers } from "react-icons/fa";
-
 import { AiOutlineCaretDown,AiOutlineCaretUp } from "react-icons/ai";
 import { FaTasks } from 'react-icons/fa';
 import { BsFillCalendar2WeekFill } from "react-icons/bs";
 import { ImOffice } from "react-icons/im";
-
 import { BsCalendarWeekFill } from "react-icons/bs";
-
-import ROLES from '../../constants/Roles';
-import { getLocalUser } from '../../services/UserService';
+import ROLES from 'constants/Roles';
+import { getLocalUser } from 'services/UserService';
 import styles from './SideBar.module.css';
 
 const CommonOptions = () => {

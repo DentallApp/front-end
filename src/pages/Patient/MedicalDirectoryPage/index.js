@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Spinner } from 'react-bootstrap';
 import { DentistTable, FilterOffice } from './components';
-import { AlertMessage, ModalLoading } from '../../../components';
-import { getAllDentist } from '../../../services/FavoriteDentistService';
-import { handleErrorLoading } from '../../../utils/handleErrors';
+import { AlertMessage, ModalLoading } from 'components';
+import { getAllDentist } from 'services/FavoriteDentistService';
+import { handleErrorLoading } from 'utils/handleErrors';
 import styles from './MedicalDirectoryPage.module.css';
 
 const MedicalDirectoryPage = () => {

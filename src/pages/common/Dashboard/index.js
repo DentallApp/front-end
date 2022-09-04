@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { Outlet } from 'react-router-dom';
-import { SideBar, NavBarDashboard } from "../../../components";
-import SideBarContext from '../../../context/SideBarContext';
+import { SideBar, NavBarDashboard } from "components";
+import SideBarContext from 'context/SideBarContext';
 import styles from './Dashboard.module.css';
 
 const Dashboard = () => {
