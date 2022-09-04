@@ -89,7 +89,8 @@ const OfficeManagementPage = () => {
     }
 
     const edit = async(data) => {
-
+        data.isCheckboxTicked = data.isDeleted === false ? true : data.isCheckboxTicked;
+        
         const result = await updateOffice(data);
         if(result.success && result.success === true) {
             const newList = offices.map(office => 
@@ -116,7 +117,7 @@ const OfficeManagementPage = () => {
 
         data.id = parseInt(data.id);
         data.isDeleted = parseInt(data.isDeleted) === 1 ? false : true;
-
+        
         let result = null;
         setIsLoading({success: undefined});
 
