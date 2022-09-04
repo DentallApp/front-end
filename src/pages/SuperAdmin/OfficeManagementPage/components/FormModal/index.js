@@ -19,7 +19,7 @@ const FormModal = ({show, handleClose, officeSelect=null, saveOffice}) => {
             address: `${ officeSelect !== null ? officeSelect.address : ""}`,
             contactNumber: `${ officeSelect !== null ? (officeSelect.contactNumber ? officeSelect.contactNumber : '') : ""}`,
             isDeleted: `${ officeSelect !== null ? (officeSelect.isDeleted === false ? STATUS[0].id : STATUS[1].id): ""}`,
-            disableEmployeeAccounts: `${ officeSelect !== null && true }`,
+            isCheckboxTicked: `${ officeSelect !== null ? officeSelect.isCheckboxTicked : "" }`,
         }
     });
 
@@ -30,27 +30,22 @@ const FormModal = ({show, handleClose, officeSelect=null, saveOffice}) => {
         
         if(officeSelect !== null) {
             setValue("isDeleted", officeSelect.isDeleted === false ? STATUS[0].id : STATUS[1].id, true);
-            setValue("disableEmployeeAccounts", true, true);
+            setValue("isCheckboxTicked", officeSelect.isCheckboxTicked, true);
             setType('edit');
         }
         else {
             setValue("isDeleted", STATUS[0].id, true);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const handleStatusChange = (e) => {
         setValue("isDeleted", e.target.value, true);
 
-        if(parseInt(e.target.value) === 2) {
-            setShowDisableAccounts(true);
-        }
-        else {
-            setShowDisableAccounts(false);
-            setValue("disableEmployeeAccounts", false, true);
-        }
-        
-    }      
-
+        if(parseInt(e.target.value) === 2) setShowDisableAccounts(true);
+        else setShowDisableAccounts(false);
+    }
+    
     return (
         <Modal 
         show={show} 
@@ -165,12 +160,12 @@ const FormModal = ({show, handleClose, officeSelect=null, saveOffice}) => {
                                         <Form.Check
                                         type='checkbox'
                                         label='Deshabilitar las cuentas de usuario del consultorio'
-                                        {...register("disableEmployeeAccounts")}
+                                        {...register("isCheckboxTicked")}
                                         />
                                             { 
-                                                errors.disableEmployeeAccounts && 
+                                                errors.isCheckboxTicked && 
                                                 <p className={styles.error_message}>
-                                                    { errors.disableEmployeeAccounts.message }
+                                                    { errors.isCheckboxTicked.message }
                                                 </p> 
                                             }
                                         </Form.Group>
