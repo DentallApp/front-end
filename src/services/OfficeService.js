@@ -38,7 +38,7 @@ export const updateOffice = (data) => {
         address: data.address,
         contactNumber: data.contactNumber,
         isDeleted: data.isDeleted,
-        disableEmployeeAccounts: data.disableEmployeeAccounts
+        isCheckboxTicked: data.isCheckboxTicked
     })
     .then(res => {
         return {
