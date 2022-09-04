@@ -15,14 +15,6 @@
     font-weight: bold;
 }
 
-.container_card {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, 330px);
-    gap: 40px;
-    padding: 20px;
-    justify-content: center;
-}
-
 .container_spinner {
     display: flex;
     flex-direction: column;
@@ -37,12 +29,6 @@
 
 .text_loading {
     font-size: 2rem;
-}
-
-@media (max-width: 320px) {
-    .container_card {
-        grid-template-columns: 90%;
-    }
 }
 
 @media screen and (max-width: 450px) {
