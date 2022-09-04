@@ -3,10 +3,10 @@ import { Form, Button, InputGroup } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { BsFillKeyFill } from "react-icons/bs";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
-import { ModalLoading, AlertMessage } from '../../../components';
-import { formatSecurePassword } from '../../../utils/formatUtils';
-import { updatePassword } from '../../../services/UserService';
-import { handleErrors } from '../../../utils/handleErrors';
+import { ModalLoading, AlertMessage } from 'components';
+import { formatSecurePassword } from 'utils/formatUtils';
+import { updatePassword } from 'services/UserService';
+import { handleErrors } from 'utils/handleErrors';
 import styles from './ChangePasswordPage.module.css';
 
 const ChangePasswordPage = () => {

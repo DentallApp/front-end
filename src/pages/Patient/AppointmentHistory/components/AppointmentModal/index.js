@@ -4,9 +4,9 @@ import { useWindowWidth } from '@react-hook/window-size';
 import { MdFreeCancellation } from "react-icons/md";
 import moment from 'moment';
 import EliminationModal from '../EliminationModal';
-import APPOINTMENT_STATUS from '../../../../../constants/AppointmentStatus';
-import { handleErrors } from '../../../../../utils/handleErrors';
-import { deleteAppointment } from '../../../../../services/AppointmentBasicUserService';
+import APPOINTMENT_STATUS from 'constants/AppointmentStatus';
+import { handleErrors } from 'utils/handleErrors';
+import { deleteAppointment } from 'services/AppointmentBasicUserService';
 import styles from './AppointmentModal.module.css';
 
 const AppointmentModal = ({

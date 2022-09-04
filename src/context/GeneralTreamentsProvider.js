@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import GeneralTreamentsContext from './GeneralTreamentsContext';
-import { getGeneralTreatment } from '../services/GeneralTreatments';
+import { getGeneralTreatment } from 'services/GeneralTreatments';
 
 const GeneralTreamentsProvider = ({ children }) => {
     const [generalTreatments, setGeneralTreatments] = useState(null);

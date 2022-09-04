@@ -3,12 +3,12 @@ import { Button } from 'react-bootstrap';
 import { saveAs } from 'file-saver';
 import { IoAddCircle } from "react-icons/io5";
 import { FaDownload } from "react-icons/fa";
-import { AlertMessage, ModalLoading } from '../../../components';
+import { AlertMessage, ModalLoading } from 'components';
 import { SelectedTreamentsTable, TreatmentsModal } from './components';
-import { getSpecificTreatment } from '../../../services/SpecificTreatmentService';
-import { getLocalUser } from '../../../services/UserService';
-import { downloadQuotationPDF } from '../../../services/QuotationService';
-import { handleErrors, handleErrorLoading } from '../../../utils/handleErrors';
+import { getSpecificTreatment } from 'services/SpecificTreatmentService';
+import { getLocalUser } from 'services/UserService';
+import { downloadQuotationPDF } from 'services/QuotationService';
+import { handleErrors, handleErrorLoading } from 'utils/handleErrors';
 import styles from './QuotationPage.module.css';
 
 const QuotationPage = () => {

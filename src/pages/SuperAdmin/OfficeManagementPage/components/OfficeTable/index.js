@@ -1,7 +1,7 @@
 import DataTable from 'react-data-table-component';
 import { Button, Badge } from 'react-bootstrap';
 import { FaEdit } from "react-icons/fa";
-import { INFORMATION_NOT_AVAILABLE } from '../../../../../constants/InformationMessage';
+import { INFORMATION_NOT_AVAILABLE } from 'constants/InformationMessage';
 import styles from './OfficeTable.module.css';
 
 // Opciones de paginación

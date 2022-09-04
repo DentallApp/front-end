@@ -1,7 +1,7 @@
 import { FaStar, FaRegStar } from "react-icons/fa";
-import { addFavoriteDentist, removeFavoriteDentist } from '../../../../../services/FavoriteDentistService';
-import { ADD_FAVORITE, REMOVE_FAVORITE } from "../../../../../constants/InformationMessage";
-import { handleErrors } from "../../../../../utils/handleErrors";
+import { addFavoriteDentist, removeFavoriteDentist } from 'services/FavoriteDentistService';
+import { ADD_FAVORITE, REMOVE_FAVORITE } from "constants/InformationMessage";
+import { handleErrors } from "utils/handleErrors";
 import styles from './FavoriteButton.module.css';
 
 const FavoriteButton = ({dentist, setAlert, setIsLoading}) => {

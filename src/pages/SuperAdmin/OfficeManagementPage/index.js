@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Button, Spinner } from 'react-bootstrap';
 import { IoAddCircle } from "react-icons/io5";
-import { AlertMessage, ModalLoading, FilterComponent } from '../../../components';
+import { AlertMessage, ModalLoading, FilterComponent } from 'components';
 import { OfficeTable, FormModal } from './components';
-import { getAllOffices, createOffice, updateOffice } from '../../../services/OfficeService';
-import { handleErrors, handleErrorLoading } from '../../../utils/handleErrors';
+import { getAllOffices, createOffice, updateOffice } from 'services/OfficeService';
+import { handleErrors, handleErrorLoading } from 'utils/handleErrors';
 import styles from './OfficeManagementPage.module.css';
 
 const OfficeManagementPage = () => {

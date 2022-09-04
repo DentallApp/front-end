@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
-import { AlertMessage, ModalLoading } from '../../../components';
+import { AlertMessage, ModalLoading } from 'components';
 import { AppointmentsTable, AppointmentModal, FilterAppointmentStatus } from './components';
 import { Spinner } from 'react-bootstrap';
-import { getAppointments } from '../../../services/AppointmentBasicUserService';
-import { getAppointmentStatus } from '../../../services/AppointmentStatusService';
-import { handleErrorLoading } from '../../../utils/handleErrors';
+import { getAppointments } from 'services/AppointmentBasicUserService';
+import { getAppointmentStatus } from 'services/AppointmentStatusService';
+import { handleErrorLoading } from 'utils/handleErrors';
 import styles from './AppointmentHistory.module.css';
 
 const AppointmentHistory = () => {

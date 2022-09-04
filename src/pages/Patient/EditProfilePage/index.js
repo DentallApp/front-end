@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import FormProfile from './components/FormProfile';
-import { AlertMessage, ModalLoading } from '../../../components';
-import { getLocalUser } from '../../../services/UserService';
+import { AlertMessage, ModalLoading } from 'components';
+import { getLocalUser } from 'services/UserService';
 import styles from './EditProfilePage.module.css';
 
 const EditProfilePage = () => {

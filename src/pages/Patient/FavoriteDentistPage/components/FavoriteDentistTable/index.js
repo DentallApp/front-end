@@ -1,7 +1,7 @@
 import DataTable from 'react-data-table-component';
 import { Button } from 'react-bootstrap';
 import { AiFillDelete } from "react-icons/ai";
-import { INFORMATION_NOT_AVAILABLE } from '../../../../../constants/InformationMessage';
+import { INFORMATION_NOT_AVAILABLE } from 'constants/InformationMessage';
 import styles from './FavoriteDentistTable.module.css';
 
 const paginationOptions = {

@@ -1,6 +1,6 @@
 import { FormResetPassword } from './components';
 import styles from '../LoginPage/LoginPage.module.css'; 
-import { dentalBanner } from '../../../img';
+import { dentalBanner } from 'img';
 
 const ResetPasswordPage = () => {
     return (

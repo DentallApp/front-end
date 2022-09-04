@@ -2,8 +2,8 @@ import { useContext } from 'react';
 import{ Navbar, Nav, Container, NavDropdown, Form, Button } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaCalendarAlt } from 'react-icons/fa'
-import { logo } from '../../img';
-import GeneralTreamentsContext from '../../context/GeneralTreamentsContext';
+import { logo } from 'img';
+import GeneralTreamentsContext from 'context/GeneralTreamentsContext';
 import styles from './Header.module.css';
 
 const Header = () => {

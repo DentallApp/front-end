@@ -2,8 +2,8 @@ import { useNavigate } from 'react-router-dom';
 import{ Button } from 'react-bootstrap';
 import { IoArrowBackCircle } from "react-icons/io5";
 import styles from '../NotFoundPage/NotFoundPage.module.css';
-import { getLocalUser } from '../../../services/UserService';
-import { getLocalAccessToken } from '../../../services/TokenService';
+import { getLocalUser } from 'services/UserService';
+import { getLocalAccessToken } from 'services/TokenService';
 
 const UnathorizedPage = () => {
 

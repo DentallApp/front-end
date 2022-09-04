@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import { Form, Button, Container, Row, Col, Modal } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { useWindowWidth } from '@react-hook/window-size';
-import STATUS from '../../../../../constants/Status';
-import { formatPhone } from '../../../../../utils/formatUtils';
+import STATUS from 'constants/Status';
+import { formatPhone } from 'utils/formatUtils';
 import styles from './FormModal.module.css';
 
 const FormModal = ({show, handleClose, officeSelect=null, saveOffice}) => {

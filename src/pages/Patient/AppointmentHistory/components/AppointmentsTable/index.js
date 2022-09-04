@@ -27,14 +27,12 @@ const AppointmentsTable = ({appointments, handleShow, setAppointmentSelect}) => 
         {
             name: <div className={styles.container_table_header}><h6>Paciente</h6></div>,
             selector: row => row.patientName,
-            sortable: true,
             wrap: true,
             width: "170px"
         },
         {
             name: <div className={styles.container_table_header}><h6>Servicio Dental</h6></div>,
             selector: row => row.dentalServiceName,
-            sortable: true,
             wrap: true,
             minWidth: "170px",
         },
@@ -105,6 +103,8 @@ const AppointmentsTable = ({appointments, handleShow, setAppointmentSelect}) => 
             fixedHeaderScrollHeight="600px"
             paginationComponentOptions={paginationOptions}
             customStyles={customStyles}
+            paginationPerPage={5}
+            paginationRowsPerPageOptions={[5, 10, 15, 20, 25, 30]}
             />
         </div>
     );

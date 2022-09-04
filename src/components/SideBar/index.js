@@ -4,15 +4,15 @@ import { AiFillHome } from "react-icons/ai";
 import { MdPassword, MdManageAccounts  } from "react-icons/md";
 import { ImExit } from "react-icons/im";
 import BasicUserOptions from './BasicUserOptions';
-import { logo } from '../../img';
-import { logout } from '../../services/AuthService';
-import { getLocalUser } from '../../services/UserService';
-import ROLES from '../../constants/Roles';
+import { logo } from 'img';
+import { logout } from 'services/AuthService';
+import { getLocalUser } from 'services/UserService';
+import ROLES from 'constants/Roles';
 import styles from './SideBar.module.css';
 import DentistOptions from './DentistOptions';
 //import SecretaryOptions from './SecretaryOptions';
 import SuperadminOptions from './SuperadminOptions';
-import SideBarContext from '../../context/SideBarContext';
+import SideBarContext from 'context/SideBarContext';
 import CommonOptions from './CommonOptions';
 
 const SideBar = () => {

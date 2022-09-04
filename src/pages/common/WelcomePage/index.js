@@ -1,5 +1,5 @@
-import { getLocalUser } from '../../../services/UserService';
-import { asistente_robot } from '../../../img';
+import { getLocalUser } from 'services/UserService';
+import { asistente_robot } from 'img';
 import styles from './WelcomePage.module.css'
 
 const WelcomePage = () => {

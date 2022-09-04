@@ -54,7 +54,6 @@ const UsersTable = (
         {
             name: <div className={styles.container_table_header}><h6>Correo</h6></div>,
             selector: row => row.email,
-            sortable: true,
             wrap: true,
             minWidth: "170px",
         },
@@ -62,13 +61,11 @@ const UsersTable = (
             name: <div className={styles.container_table_header}><h6>Cedula</h6></div>,
             selector: row => row.document,
             center: true,
-            sortable: true,
             minWidth: "auto"
         },
         {
             name: <div className={styles.container_table_header}><h6>Consultorio</h6></div>,
             selector: row => row.officeName,
-            sortable: true,
             center: true,
             wrap: true,
             width: "150px"
@@ -76,7 +73,6 @@ const UsersTable = (
         {
             name: <div className={styles.container_table_header}><h6>Roles</h6></div>,
             selector: row => row.roles.map(role => role.name).toString().replaceAll(",", "\n"),
-            sortable: true,
             center: true,
             wrap: true,
             width: "150px"

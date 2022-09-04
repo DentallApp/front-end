@@ -2,14 +2,14 @@ import { useEffect, useState } from 'react';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import moment from 'moment';
-import { getGenders } from '../../../../../services/GenderService';
-import { setLocalUser } from '../../../../../services/UserService';
-import { updateProfileEmployee } from '../../../../../services/EmployeeService';
-import { trimSpaces, capitalizeFirstLetter } from '../../../../../utils/stringUtils';
+import { getGenders } from 'services/GenderService';
+import { setLocalUser } from 'services/UserService';
+import { updateProfileEmployee } from 'services/EmployeeService';
+import { trimSpaces, capitalizeFirstLetter } from 'utils/stringUtils';
 import { 
     formatNames, 
-    formatPhone } from '../../../../../utils/formatUtils';
-import { handleErrors } from '../../../../../utils/handleErrors'; 
+    formatPhone } from 'utils/formatUtils';
+import { handleErrors } from 'utils/handleErrors'; 
 import styles from './FormProfile.module.css';
 
 const FormProfile = ({user, setIsLoading, setAlert}) => {

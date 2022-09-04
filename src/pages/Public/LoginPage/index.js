@@ -1,6 +1,6 @@
 import { FormLogin } from './components';
 import styles from './LoginPage.module.css'; 
-import { dentalBanner } from '../../../img';
+import { dentalBanner } from 'img';
 
 const LoginPage = () => {
     return (

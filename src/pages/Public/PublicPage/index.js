@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router-dom';
-import { Header, Footer } from '../../../components';
-import GeneralTreamentsProvider from '../../../context/GeneralTreamentsProvider';
+import { Header, Footer } from 'components';
+import GeneralTreamentsProvider from 'context/GeneralTreamentsProvider';
 import styles from './PublicPage.module.css';
 
 const PublicPage = () => {

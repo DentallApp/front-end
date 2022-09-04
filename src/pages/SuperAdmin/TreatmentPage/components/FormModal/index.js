@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import { Form, Button, Container, Row, Col, Modal } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { useWindowWidth } from '@react-hook/window-size';
-import { formatPrice } from '../../../../../utils/formatUtils';
-import { getGeneralTreatmentName } from '../../../../../services/GeneralTreatments';
+import { formatPrice } from 'utils/formatUtils';
+import { getGeneralTreatmentName } from 'services/GeneralTreatments';
 import styles from './FormModal.module.css';
 
 const formatter = new Intl.NumberFormat('en-US', {
@@ -40,7 +40,6 @@ const FormModal = ({show, handleClose, specificTreatmentSelect = null, saveTreat
             setValue("generalTreatmentId", specificTreatmentSelect.generalTreatmentId, true);
             setType('edit');
         }
-        
         // eslint-disable-next-line react-hooks/exhaustive-deps      
     }, []);
 

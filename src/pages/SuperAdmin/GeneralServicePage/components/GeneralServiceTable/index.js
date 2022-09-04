@@ -2,7 +2,7 @@ import DataTable from 'react-data-table-component';
 import { Button } from 'react-bootstrap';
 import { FaEdit } from "react-icons/fa";
 import { AiFillDelete } from "react-icons/ai";
-import { MinutesToHours } from '../../../../../utils/timeUtils';
+import { MinutesToHours } from 'utils/timeUtils';
 import styles from './GeneralServiceTable.module.css';
 
 // Opciones de paginación
@@ -49,7 +49,6 @@ const GeneralServiceTable = (
         {
             name: <div className={styles.container_table_header}><h6>Duración (horas)</h6></div>,
             selector: row => MinutesToHours(row.duration),
-            sortable: true,
             wrap: true,
             center: true,
             width: "col col-2"

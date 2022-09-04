@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Spinner } from 'react-bootstrap';
-import { AlertMessage, ModalLoading } from '../../../components';
+import { AlertMessage, ModalLoading } from 'components';
 import { FavoriteDentistTable, EliminationModal } from './components';
-import { getFavoriteDentist, removeFavoriteByFavoriteId } from '../../../services/FavoriteDentistService';
-import { REMOVE_FAVORITE } from '../../../constants/InformationMessage';
-import { handleErrors, handleErrorLoading } from '../../../utils/handleErrors';
+import { getFavoriteDentist, removeFavoriteByFavoriteId } from 'services/FavoriteDentistService';
+import { REMOVE_FAVORITE } from 'constants/InformationMessage';
+import { handleErrors, handleErrorLoading } from 'utils/handleErrors';
 import styles from './FavoriteDentistPage.module.css';
 
 const FavoriteDentistPage = () => {

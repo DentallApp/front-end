@@ -7,10 +7,10 @@ import {
     formatEmail, 
     formatIdentityDocument, 
     formatNames,  
-    formatPhone } from '../../../../../utils/formatUtils';
-import { calculatePreviousYear } from '../../../../../utils/dateUtils';
-import { getGenders } from '../../../../../services/GenderService';
-import { getKinship } from '../../../../../services/KinshipService';
+    formatPhone } from 'utils/formatUtils';
+import { calculatePreviousYear } from 'utils/dateUtils';
+import { getGenders } from 'services/GenderService';
+import { getKinship } from 'services/KinshipService';
 import styles from './FormModal.module.css';
 
 const maxDate = calculatePreviousYear(1);

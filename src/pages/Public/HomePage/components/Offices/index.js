@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import Carousel from 'react-elastic-carousel';
 import Spinner from 'react-bootstrap/Spinner';
 import OfficeCard from '../OfficeCard';
-import { getOfficeHomePage } from '../../../../../services/OfficeScheduleService';
+import { getOfficeHomePage } from 'services/OfficeScheduleService';
 import styles from './Office.module.css';
 
 const breakPoints = [
