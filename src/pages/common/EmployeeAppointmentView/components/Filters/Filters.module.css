@@ -3,3 +3,20 @@
     font-style: italic;
     font-weight: bold;
 }
+
+.container_button {
+    display: flex;
+    justify-content: center;
+}
+
+.btn_search {
+    background-color: #002855 !important;
+    border-radius: 30px !important;
+    box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.4);
+    border-style: none;
+}
+
+.btn_search:active {
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+}
