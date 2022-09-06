@@ -1,0 +1,18 @@
+.wrapper {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.container_status {
+    display: flex;
+    align-items: center;
+}
+
+.color_status {
+    width: 10px; 
+    height: 10px; 
+    border-radius: 100%;
+    margin-right: 5px;
+}

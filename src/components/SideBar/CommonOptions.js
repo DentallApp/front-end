@@ -6,6 +6,7 @@ import { FaTasks } from 'react-icons/fa';
 import { BsFillCalendar2WeekFill } from "react-icons/bs";
 import { ImOffice } from "react-icons/im";
 import { BsCalendarWeekFill } from "react-icons/bs";
+import { IoCalendarNumber } from "react-icons/io5";
 import ROLES from 'constants/Roles';
 import { getLocalUser } from 'services/UserService';
 import styles from './SideBar.module.css';
@@ -16,6 +17,20 @@ const CommonOptions = () => {
 
     return (
         <>
+            {
+                (user.roles.includes(ROLES.DENTIST) || user.roles.includes(ROLES.SECRETARY) || 
+                user.roles.includes(ROLES.ADMIN)) &&
+                
+                <>
+                    <NavLink className={({ isActive }) => isActive ? styles.navlink_active : styles.navlink } 
+                    to="calendario-de-citas" 
+                    onClick={() => {window.scrollTo({ top: 0, behavior: 'smooth' })} }>
+                        <IoCalendarNumber className={styles.icon} /> 
+                        Citas
+                    </NavLink>
+                </>
+            }
+
             { 
                 (user.roles.includes(ROLES.ADMIN) || user.roles.includes(ROLES.SUPERADMIN)) &&  
                 <>

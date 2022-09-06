@@ -22,10 +22,15 @@ import {
     UserManagementPage,
     EditProfilePage, 
     OfficeSchedulePage,
-    ScheduleManagementPage } from 'pages/common';
-import { AppointmentChatbotPage, AppointmentHistory, FavoriteDentistPage, MedicalDirectoryPage, DependentPage, QuotationPage } from '../pages/Patient';
-
-import { AppointmentCalendarPage } from 'pages/Dentist';
+    ScheduleManagementPage, 
+    EmployeeAppointmentView} from 'pages/common';
+import { 
+    AppointmentChatbotPage, 
+    AppointmentHistory, 
+    FavoriteDentistPage, 
+    MedicalDirectoryPage, 
+    DependentPage, 
+    QuotationPage } from '../pages/Patient';
 //import { AppointmentPage } from '../pages/Secretary';
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
@@ -61,13 +66,6 @@ const RoutesApp = () => {
                     </Route>
                 </Route>
 
-                {/* Rutas privadas para el odontólogo */}
-                <Route element={<PrivateRoute role={[ROLES.DENTIST]} />}>
-                    <Route element={<Dashboard />}>
-                        <Route path="/calendario-de-citas" element={<AppointmentCalendarPage />} />
-                    </Route>
-                </Route>
-
                 {/* Rutas privadas para el administrador */}
                 {/*<Route element={<PrivateRoute role={[ROLES.SECRETARY]} />}>
                     <Route element={<Dashboard />}>
@@ -97,6 +95,13 @@ const RoutesApp = () => {
                 <Route element={<PrivateRoute role={[ROLES.SECRETARY, ROLES.ADMIN]}/>}>
                     <Route element={<Dashboard />}>
                         <Route path={'/gestion-horarios'} element={<ScheduleManagementPage />} />
+                    </Route>
+                </Route>
+
+                {/* Rutas privadas para el odontólogo */}
+                <Route element={<PrivateRoute role={[ROLES.DENTIST, ROLES.SECRETARY, ROLES.ADMIN]} />}>
+                    <Route element={<Dashboard />}>
+                        <Route path="/calendario-de-citas" element={<EmployeeAppointmentView />} />
                     </Route>
                 </Route>
 

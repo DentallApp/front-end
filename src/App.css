@@ -23,6 +23,60 @@
   color: #002855;
 }
 
+.fc-col-header {
+  background-color: #002855;
+  
+}
+
+.fc-col-header a {
+  text-decoration: none;
+  color: #FFF;
+}
+
+.fc-toolbar-chunk {
+  display: flex;
+}
+
+.fc-daygrid-event-dot {
+  border: none;
+}
+
+.fc-daygrid-event {
+  white-space: normal;
+}
+
+.fc-event-main {
+  font-weight: bold;
+} 
+
+@media screen and (max-width:767px) { 
+  .fc-toolbar.fc-header-toolbar {
+    font-size: 60%;
+    
+  }
+}
+
+@media screen and (max-width: 390px) { 
+  .fc-toolbar-chunk {
+    display: block;
+    text-align: center;
+    
+  }
+
+  .fc-toolbar-chunk .fc-button{
+    margin-bottom: 5px;
+  }
+
+  .fc-direction-ltr .fc-button-group > .fc-button:not(:last-child) {
+    border-top-right-radius: 0.25em;
+    border-bottom-right-radius: 0.25em;
+  }
+
+  .fc-button:nth-child(2) {
+    display: none;
+  }
+}
+
 @media screen and (max-width: 1024px) {
   .title-section {
       margin-top: 40px;

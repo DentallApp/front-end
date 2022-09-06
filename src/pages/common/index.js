@@ -8,3 +8,4 @@ export { default as EditProfilePage } from './EditProfilePage';
 export { default as OfficeSchedulePage } from './OfficeSchedulePage';
 export { default as ScheduleManagementPage } from './ScheduleManagementPage';
 export { default as SessionExpiredPage } from './SessionExpiredPage';
+export { default as EmployeeAppointmentView } from './EmployeeAppointmentView';
