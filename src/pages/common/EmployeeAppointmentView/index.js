@@ -53,6 +53,7 @@ const EmployeeAppointmentView = () => {
             <div className={styles.container_header}>
               <Filters />
             </div>
+            <hr style={{"marginTop": "30px"}}/>
             <DescriptionStatus /><br/>  
             {
                 onlyWidth < 768 ? (
