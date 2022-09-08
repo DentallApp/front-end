@@ -1,0 +1,26 @@
+.container_datable {
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.container_table_header {
+    width: 100%;
+    text-align: center;
+    color: #FFF;
+    
+}
+
+.container_actions {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.button_view {
+    border: none;
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    background-color: #21a4f1 !important;
+}
