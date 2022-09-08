@@ -67,7 +67,7 @@ const FormModal = ({show, handleClose, scheduleSelect=null, saveSchedule, schedu
             <Modal.Body>
                 <Form 
                 className={styles.container_form} 
-                onSubmit={handleSubmit((data) => {console.log('Aqui'); saveSchedule(data, reset, type, setError)})}>
+                onSubmit={handleSubmit((data) => {saveSchedule(data, reset, type, setError)})}>
                     <h2>Registro</h2>
                     <div className="underline mx-auto"></div>
                     <p className={styles.text_information}>Los campos con el símbolo * son obligatorios</p>
