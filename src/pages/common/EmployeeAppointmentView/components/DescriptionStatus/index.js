@@ -3,23 +3,20 @@ import { getAppointmentStatus } from 'services/AppointmentStatusService';
 import APPOINTMENT_STATUS from 'constants/AppointmentStatus';
 import styles from './DescriptionStatus.module.css';
 
-const DescriptionStatus = () => {
-    const [listStatus, setListStatus] = useState(null);
+const DescriptionStatus = ({listStatus}) => {
+    const [statusAppointment, setStatusAppointment] = useState(listStatus);
 
     useEffect(() => {
-        getAppointmentStatus().then(res => {
-            setListStatus(res.data.filter(status => status.id === APPOINTMENT_STATUS[0].id || 
+        setStatusAppointment(listStatus.filter(status => status.id === APPOINTMENT_STATUS[0].id || 
             status.id === APPOINTMENT_STATUS[2].id || status.id === APPOINTMENT_STATUS[4].id || 
-            status.id === APPOINTMENT_STATUS[5].id))
-        })
-        .catch(err => console.log(err));    
+            status.id === APPOINTMENT_STATUS[5].id)); 
     }, []);
 
     return (
         <div className={styles.wrapper}>
             {
-                listStatus ? (
-                    listStatus.map(data => (
+                statusAppointment ? (
+                    statusAppointment.map(data => (
                         <div className={styles.container_status} key={data.id}>
                             <div
                             className={styles.color_status} 
