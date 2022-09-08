@@ -1,9 +1,24 @@
+import { useState, useEffect } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import listPlugin from '@fullcalendar/list';
 import esLocale from '@fullcalendar/core/locales/es';
+import moment from 'moment';
 import styles from './AppointmentCalendar.module.css';
 
-const MobileCalendar = ({events, setAppointmentSelect, handleShow, setEventClassNames}) => {
+const MobileCalendar = ({
+    events, 
+    setAppointmentSelect, 
+    handleShow, 
+    setEventClassNames,
+    startDate,
+    endDate
+}) => {
+
+    const getStartDate = () => startDate;
+    
+    const getEndDate = () => moment(endDate).add(1, 'days').format('yyyy-MM-DD');
+    
+
     return (
         <FullCalendar
         initialView= {'listDay'}
@@ -29,6 +44,10 @@ const MobileCalendar = ({events, setAppointmentSelect, handleShow, setEventClass
         eventClassNames= {(arg) => setEventClassNames(arg, styles)}
         slotMinTime={'9:00:00'}
         slotMaxTime={'20:00:00'}
+        validRange={{
+            start: getStartDate(),
+            end: getEndDate()
+        }}
         eventClick={function(arg) {
             setAppointmentSelect(arg);
             handleShow();
