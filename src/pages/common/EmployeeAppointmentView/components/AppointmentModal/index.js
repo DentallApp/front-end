@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { Form, Button, Container, Row, Col, Modal, Badge } from 'react-bootstrap';
 import { useWindowWidth } from '@react-hook/window-size';
 import { useForm } from 'react-hook-form';
-import { getAppointmentStatus } from 'services/AppointmentStatusService';
 import APPOINTMENT_STATUS from 'constants/AppointmentStatus';
 import styles from './AppointmentModal.module.css';
 
@@ -10,10 +9,11 @@ const AppointmentModal = ({
     show, 
     handleClose,
     appointmentSelect,
-    saveChanges
+    saveChanges,
+    listStatus
 }) => {
     const onlyWidth = useWindowWidth(); // Se obtiene ancho y altura de pantalla para colocar el modal
-    const [listStatus, setListStatus] = useState(null);
+    const [statusAppointment, setStatusAppointment] = useState(null);
 
     const { register, handleSubmit, setValue, watch, formState: {errors} } = useForm();
 
@@ -23,11 +23,8 @@ const AppointmentModal = ({
         register("statusId", { required: "Estado de la cita es requerido" });
         setValue("statusId", appointmentSelect.event.extendedProps.statusId, true);
         
-        getAppointmentStatus().then(res => {
-            setListStatus(res.data.filter(status => status.id === APPOINTMENT_STATUS[0].id || 
-                status.id === APPOINTMENT_STATUS[2].id || status.id === APPOINTMENT_STATUS[4].id));
-        })
-        .catch(err => err);
+        setStatusAppointment(listStatus.filter(status => status.id === APPOINTMENT_STATUS[0].id || 
+            status.id === APPOINTMENT_STATUS[2].id || status.id === APPOINTMENT_STATUS[4].id));
     }, []);
 
     const handleStatusChange = (e) => setValue("statusId", e.target.value, true); 
@@ -61,29 +58,36 @@ const AppointmentModal = ({
 
                                 <Col xs={12} md>
                                     <Form.Group className="mb-3" controlId="formBasicDentist">
-                                        <Form.Label className={styles.label_input}>Dentista</Form.Label>
-                                        <p>{appointmentSelect.event.extendedProps.dentist}</p>
+                                        <Form.Label className={styles.label_input}>N. Cedula</Form.Label>
+                                        <p>{appointmentSelect.event.extendedProps.document}</p>
                                     </Form.Group>
                                 </Col>
                             </Row>
 
                             <Row>
+                                <Col xs={12} md>
+                                    <Form.Group className="mb-3" controlId="formBasicDentist">
+                                        <Form.Label className={styles.label_input}>Dentista</Form.Label>
+                                        <p>{appointmentSelect.event.extendedProps.dentist}</p>
+                                    </Form.Group>
+                                </Col>
+
                                 <Col xs={12} md>
                                     <Form.Group className="mb-3" controlId="formBasicService">
                                         <Form.Label className={styles.label_input}>Servicio Dental</Form.Label>
                                         <p>{appointmentSelect.event.extendedProps.service}</p>
                                     </Form.Group>
                                 </Col>
+                            </Row>
 
+                            <Row>
                                 <Col xs={12} md>
                                     <Form.Group className="mb-3" controlId="formBasicOffice">
                                         <Form.Label className={styles.label_input}>Consultorio</Form.Label>
                                         <p>{appointmentSelect.event.extendedProps.officeName}</p>
                                     </Form.Group>
                                 </Col>
-                            </Row>
 
-                            <Row>
                                 <Col sm={12} md>
                                     <Form.Group className="mb-3" controlId="formBasicDate">
                                         <Form.Label className={styles.label_input}>Fecha y Hora de la Cita</Form.Label>
@@ -94,7 +98,8 @@ const AppointmentModal = ({
                                         </p>
                                     </Form.Group>
                                 </Col>
-
+                            </Row> 
+                            <Row>
                                 <Col xs={12} md>
                                     <Form.Group className="mb-3" controlId="formBasicStatus">
                                         <Form.Label className={styles.label_input}>Estado</Form.Label>
@@ -106,8 +111,8 @@ const AppointmentModal = ({
                                                 value={selectStatusValue} 
                                                 onChange={handleStatusChange}
                                                 >   
-                                                { listStatus && (
-                                                    listStatus.map(data => (
+                                                { statusAppointment && (
+                                                    statusAppointment.map(data => (
                                                         <option 
                                                         key={data.id} 
                                                         value={data.id}>
@@ -130,7 +135,7 @@ const AppointmentModal = ({
                                         }
                                     </Form.Group>
                                 </Col>
-                            </Row> 
+                            </Row>
                         </Container>
                         
                         <Modal.Footer className={styles.container_footer}>
