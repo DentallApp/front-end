@@ -23,7 +23,8 @@ import {
     EditProfilePage, 
     OfficeSchedulePage,
     ScheduleManagementPage, 
-    EmployeeAppointmentView} from 'pages/common';
+    EmployeeAppointmentView,
+    CancelEmployeeAppointment} from 'pages/common';
 import { 
     AppointmentChatbotPage, 
     AppointmentHistory, 
@@ -101,7 +102,8 @@ const RoutesApp = () => {
                 {/* Rutas privadas para el odontólogo */}
                 <Route element={<PrivateRoute role={[ROLES.DENTIST, ROLES.SECRETARY, ROLES.ADMIN]} />}>
                     <Route element={<Dashboard />}>
-                        <Route path="/calendario-de-citas" element={<EmployeeAppointmentView />} />
+                        <Route path="citas/calendario" element={<EmployeeAppointmentView />} />
+                        <Route path="citas/cancelacion" element={<CancelEmployeeAppointment />} />
                     </Route>
                 </Route>
 
