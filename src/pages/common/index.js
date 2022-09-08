@@ -9,3 +9,4 @@ export { default as OfficeSchedulePage } from './OfficeSchedulePage';
 export { default as ScheduleManagementPage } from './ScheduleManagementPage';
 export { default as SessionExpiredPage } from './SessionExpiredPage';
 export { default as EmployeeAppointmentView } from './EmployeeAppointmentView';
+export { default as CancelEmployeeAppointment } from './CancelEmployeeAppointment';
