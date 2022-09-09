@@ -53,7 +53,7 @@ const Chatbot = () => {
             action = simpleUpdateIn(
                 action,
                 ['payload', 'activity', 'channelData', 'personId'],
-                () => user.userId
+                () => user.personId
             );
 
             action = simpleUpdateIn(
