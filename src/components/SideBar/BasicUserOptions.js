@@ -15,7 +15,7 @@ const BasicUserOptions = () => {
         <>
             <NavLink className={({ isActive }) => isActive ? styles.navlink_active : styles.navlink } 
             to="agendamiento/chatbot" 
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth'}) }>
+            onClick={() => window.scrollTo(0, document.body.scrollHeight)}>
                 <IoCalendarNumber className={styles.icon} /> 
                 Agendar cita
             </NavLink>
