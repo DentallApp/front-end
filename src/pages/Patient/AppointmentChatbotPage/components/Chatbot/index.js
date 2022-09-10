@@ -10,14 +10,23 @@ const Chatbot = () => {
     const user = getLocalUser();
     
     const styleOptions = {
-        botAvatarImage:
-            'https://docs.microsoft.com/en-us/azure/bot-service/v4sdk/media/logo_bot.svg?view=azure-bot-service-4.0',
+        botAvatarImage: require('img/bot.png'),
         botAvatarInitials: 'BF',
-        userAvatarImage: 'https://github.com/compulim.png?size=64',
+        userAvatarImage: require('img/user.png'),
         userAvatarInitials: 'WC',
         scrollToEndBehavior: false,
         showSpokenText: true,
-        hideUploadButton: true
+        hideUploadButton: true,
+        bubbleBackground: '#12CAD6',
+        bubbleFromUserBackground: '#003865',
+        bubbleBorderRadius: 10,
+        bubbleFromUserBorderRadius: 10,
+        bubbleFromUserTextColor: 'White',
+        rootWidth: '100%',
+        sendBoxBorderBottom: '1px solid #9FC9F3',
+        sendBoxBorderLeft: '1px solid #9FC9F3',
+        sendBoxBorderRight: '1px solid #9FC9F3',
+        sendBoxBorderTop: '1px solid #9FC9F3'
     };
 
     const getToken = async () => {
@@ -48,7 +57,7 @@ const Chatbot = () => {
 
     directline = useMemo(() => createDirectLine({domain:'http://localhost:5000/v3/directline',token: token}), [token]);
 
-    const store = useMemo(() => createStore({}, () => next => action => {
+    const store = useMemo(() => createStore({}, ({dispatch}) => next => action => {
         if(action.type === 'DIRECT_LINE/POST_ACTIVITY') {
             action = simpleUpdateIn(
                 action,
@@ -81,7 +90,8 @@ const Chatbot = () => {
                 userID={user.userId.toString()} 
                 userName={user.userName}
                 styleOptions={styleOptions}
-                store={store} /> 
+                store={store}
+                /> 
                 : 
                 <p>Cargando</p>
             }
