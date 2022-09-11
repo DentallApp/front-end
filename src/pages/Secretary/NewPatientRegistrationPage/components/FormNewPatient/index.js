@@ -1,60 +1,40 @@
 import { useEffect, useState } from 'react';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
-import moment from 'moment';
 import { getGenders } from 'services/GenderService';
-import { setLocalUser } from 'services/UserService';
-import { updateProfileEmployee } from 'services/EmployeeService';
 import { trimSpaces, capitalizeFirstLetter } from 'utils/stringUtils';
 import { 
     formatNames, 
     formatPhone } from 'utils/formatUtils';
-import { handleErrors } from 'utils/handleErrors'; 
-import styles from './FormProfile.module.css';
+import { handleErrors } from 'utils/handleErrors';
+import { verifyIdentityDocument } from 'utils/validationIdentityDocument'; 
+import { createPerson } from 'services/PersonService'; 
+import styles from './FormNewPatient.module.css';
 
-const FormProfile = ({user, setIsLoading, setAlert}) => {
+const FormNewPatient = ({setIsLoading, setAlert}) => {
     
     const [genders, setGenders] = useState(null);
-    const { register, handleSubmit, setValue, formState: {errors} } = useForm();
-    const [profile, setProfile] = useState(null);
+    const { register, handleSubmit, reset, setError, formState: {errors} } = useForm();
     
     useEffect(() => {
-        
-        setProfile({
-            names: user.names,
-            lastNames: user.lastNames,
-            document: user.document,
-            userName: user.userName,
-            genderId: user.genderId.toString(),
-            cellPhone: user.cellPhone,
-            dateBirth: moment(user.dateBirth).format('yyyy-MM-DD'),
-            pregradeUniversity: user.pregradeUniversity !== null ? user.pregradeUniversity : "",
-            postgradeUniversity: user.postgradeUniversity !== null ? user.postgradeUniversity : ""
-        })
-        
         getGenders()
             .then(response => setGenders(response.data))
             .catch(error => error);
          // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    const createPatient = async(data) => {
 
-    useEffect(() => {
-        if(profile !== null) {
-            setValue('names', profile.names);
-            setValue('lastNames', profile.lastNames);
-            setValue('document', profile.document);
-            setValue('cellPhone', profile.cellPhone);
-            setValue('userName', profile.userName);
-            setValue('dateBirth', profile.dateBirth);
-            setValue('genderId', profile.genderId.toString());
-            setValue('pregradeUniversity', profile.pregradeUniversity);
-            setValue('postgradeUniversity', profile.postgradeUniversity);
+        const verifyDocument = verifyIdentityDocument(data.document);
+
+        if(verifyDocument === false) {
+            setError("document", {
+                type: 'custom',
+                message: 'Cedula de identidad no válida'
+            });
+            return;
         }
-         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [profile]);
 
-    const updateProfile = async(data) => {
         setIsLoading({success: undefined});
 
         // Se elimina espacios innecesarios
@@ -66,37 +46,17 @@ const FormProfile = ({user, setIsLoading, setAlert}) => {
         data.lastNames = capitalizeFirstLetter(sanitizedLastName);
         data.genderId = parseInt(data.genderId);
 
-        const result = await updateProfileEmployee(data);
+        const result = await createPerson(data);
         setAlert(result);
         setIsLoading({success: result.success});
 
-        if(result.success === true) {
-            user.names = data.names;
-            user.lastNames = data.lastNames;
-            user.fullName = data.names + ' ' + data.lastNames;
-            user.cellPhone = data.cellPhone;
-            user.dateBirth = data.dateBirth;
-            user.genderId = data.genderId;
-            user.pregradeUniversity = data.pregradeUniversity;
-            user.postgradeUniversity = data.postgradeUniversity;
-
-            genders.forEach(gender => {
-                if(gender.id === user.genderId) {
-                    user.genderName = gender.name;
-                    return;
-                }
-            });
-
-            setLocalUser(user);
-            setProfile(data);
-        }
-
+        reset();
         handleErrors(result, setAlert, setIsLoading);
     }
 
     return (
         <>
-            <Form className={styles.container_form} onSubmit={handleSubmit((data) => updateProfile(data))}>
+            <Form className={styles.container_form} onSubmit={handleSubmit((data) => createPatient(data))}>
                 <Container>
                     <Row>
                         <Col xs={12} md>
@@ -169,9 +129,10 @@ const FormProfile = ({user, setIsLoading, setAlert}) => {
                                 <Form.Label className={styles.label_input}>* Cedula</Form.Label>
                                 <Form.Control 
                                 type="number"
-                                disabled 
                                 placeholder="Ingrese número de cedula"
-                                {...register("document")} />
+                                {...register("document", {
+                                    required: "Número de cedula es requerido"
+                                })} />
                                 { errors.document && <p className={styles.error_message}>{ errors.document.message }</p> }
                             </Form.Group>
                         </Col>
@@ -180,11 +141,10 @@ const FormProfile = ({user, setIsLoading, setAlert}) => {
                     <Row>
                         <Col xs={12} md>
                             <Form.Group className="mb-3" controlId="formBasicEmail">
-                                <Form.Label className={styles.label_input}>* Correo</Form.Label>
+                                <Form.Label className={styles.label_input}> Correo</Form.Label>
                                 <Form.Control 
                                 type="email" 
                                 placeholder="Ingrese correo electrónico"
-                                disabled
                                 {...register("userName")} />
                                 { errors.userName && <p className={styles.error_message}>{ errors.userName.message }</p> }  
                             </Form.Group>
@@ -192,48 +152,11 @@ const FormProfile = ({user, setIsLoading, setAlert}) => {
 
                         <Col xs={12} md>
                             <Form.Group className="mb-3" controlId="formBasicDate">
-                                <Form.Label className={styles.label_input}>* Fecha de nacimiento</Form.Label>
+                                <Form.Label className={styles.label_input}> Fecha de nacimiento</Form.Label>
                                 <Form.Control 
                                 type="date"
-                                {...register("dateBirth", {
-                                    required: "Fecha de nacimiento requerida"
-                                })} />
+                                {...register("dateBirth")} />
                                 { errors.dateBirth && <p className={styles.error_message}>{ errors.dateBirth.message }</p> }
-                            </Form.Group>
-                        </Col>
-                    </Row>
-
-                    <Row>
-                        <Col lg={12} md>
-                            <Form.Group className="mb-3" controlId="formBasicPregradeUniversity">
-                                <Form.Label className={styles.label_input}>Universidad pregrado</Form.Label>
-                                <Form.Control 
-                                placeholder="Ingrese universidad de pregrado"
-                                {...register("pregradeUniversity", {
-                                    minLength: {
-                                        value: 2,
-                                        message: "Nombre de universidad no válido" 
-                                    }
-                                })} /> 
-                                { errors.pregrade_university && <p className={styles.error_message}>
-                                    { errors.pregrade_university.message }</p> } 
-                            </Form.Group>
-                        </Col>
-
-                        <Col xs={12} md>
-                            <Form.Group className="mb-3" controlId="formBasicPostgradeUniversity">
-                                <Form.Label className={styles.label_input}>Universidad postgrado</Form.Label>
-                                <Form.Control 
-                                type="text" 
-                                placeholder="Ingrese universidad de prostgrado"
-                                {...register("postgradeUniversity", {
-                                    minLength: {
-                                        value: 2,
-                                        message: "Nombre de universidad no válido" 
-                                    }
-                                })} />
-                                { errors.postgrade_university && <p className={styles.error_message}>
-                                    { errors.postgrade_university.message }</p> }
                             </Form.Group>
                         </Col>
                     </Row>
@@ -269,4 +192,4 @@ const FormProfile = ({user, setIsLoading, setAlert}) => {
     );
 }
 
-export default FormProfile;
+export default FormNewPatient;

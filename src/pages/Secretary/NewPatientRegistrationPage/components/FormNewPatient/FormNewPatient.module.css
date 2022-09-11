@@ -1,0 +1,82 @@
+.container_form {
+    width: 70%;
+    padding: 20px;
+}
+
+.container_form h2 {
+    text-align: center;
+    font-weight: 700;
+}
+
+.container_form_center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.input_group_text {
+    background-color: transparent !important;
+    border-right-style: none !important;
+    border-radius: 30px 30px 30px 30px;
+}
+
+.form_control {
+    border-left-style: none !important;
+    border-radius: 0px 30px 30px 30px;
+}
+
+.form_control_password {
+    border-right-style: none !important;
+}
+
+.button_visible {
+    background-color: transparent !important;
+    color: #000 !important;
+    border-left-style: none !important;
+    border-radius: 0px 30px 30px 30px;
+    border-color: #ced4da;
+}
+
+.button_visible:hover {
+    border-color: #ced4da;
+}
+
+.label_input {
+    font-style: italic;
+    font-weight: bold;
+}
+
+.container_button {
+    width: 100%;
+    padding-right: var(--bs-gutter-x,.75rem);
+    padding-left: var(--bs-gutter-x,.75rem);
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.container_button Button{
+    width: 100%;
+    border-radius: 30px !important;
+    box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.4);
+    border-style: none;
+    background-color: #002855 !important;
+}
+
+.container_button Button:active {
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+}
+
+.error_message {
+    color: #ec5990;
+    font-size: 12px;
+}
+
+@media screen and (max-width: 580px) {
+    .container_form {
+        width: 100%;
+        padding: 20px;
+    }
+}

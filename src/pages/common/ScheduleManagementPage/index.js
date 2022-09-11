@@ -36,8 +36,10 @@ const ScheduleManagementPage = () => {
 
     useEffect(() => {
         getDentists().then(res => setDentists(res.data))
-            .catch(err => err);
-            
+            .catch(err => err);     
+    }, []);
+
+    useEffect(() => {
         getAllSchedule().then(res => setAllSchedules(res.data))
             .catch(err => handleErrorLoading(err, setErrorLoading));      
     }, []);

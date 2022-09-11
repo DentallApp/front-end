@@ -17,7 +17,7 @@ const CommonOptions = () => {
     return (
         <>
             { 
-                (user.roles.includes(ROLES.ADMIN) || user.roles.includes(ROLES.SUPERADMIN)) &&  
+                ( user && (user.roles.includes(ROLES.ADMIN) || user.roles.includes(ROLES.SUPERADMIN))) &&  
                 <>
                     <NavLink className={({ isActive }) => isActive ? styles.navlink_active : styles.navlink } 
                     to={'gestion-usuarios'} 
@@ -63,7 +63,6 @@ const CommonOptions = () => {
                     ) }
                 </>
             }
-
             
             { 
                 (user.roles.includes(ROLES.SECRETARY) || user.roles.includes(ROLES.ADMIN)) &&  
