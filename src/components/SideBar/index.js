@@ -10,7 +10,7 @@ import { getLocalUser } from 'services/UserService';
 import ROLES from 'constants/Roles';
 import styles from './SideBar.module.css';
 import DentistOptions from './DentistOptions';
-//import SecretaryOptions from './SecretaryOptions';
+import SecretaryOptions from './SecretaryOptions';
 import SuperadminOptions from './SuperadminOptions';
 import SideBarContext from 'context/SideBarContext';
 import CommonOptions from './CommonOptions';
@@ -56,7 +56,7 @@ const SideBar = () => {
     
                             { userData ? (userData.roles.includes(ROLES.DENTIST) && <DentistOptions />) : null }
 
-                            { /*userData ? (userData.roles.includes(ROLES.SECRETARY) && <SecretaryOptions />) : null */}
+                            { userData ? (userData.roles.includes(ROLES.SECRETARY) && <SecretaryOptions />) : null }
 
                             { userData ? (userData.roles.includes(ROLES.SUPERADMIN) && <SuperadminOptions />) : null }
 
