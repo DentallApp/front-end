@@ -1,16 +1,16 @@
 import { useState, useEffect } from 'react';
 import { Button, Spinner } from 'react-bootstrap';
 import { IoAddCircle } from "react-icons/io5";
-import { AlertMessage, ModalLoading, FilterComponent } from '../../../components';
+import { AlertMessage, ModalLoading, FilterComponent } from 'components';
 import { DependentTable, FormModal, EliminationModal } from './components';
-import { trimSpaces, capitalizeFirstLetter } from '../../../utils/stringUtils';
+import { trimSpaces, capitalizeFirstLetter } from 'utils/stringUtils';
 import { 
     getDependents, 
     createDependent, 
     updateDependent, 
-    deleteDependent } from '../../../services/DependentService';
-import { handleErrors, handleErrorLoading } from '../../../utils/handleErrors';
-import { verifyIdentityDocument } from '../../../utils/validationIdentityDocument';
+    deleteDependent } from 'services/DependentService';
+import { handleErrors, handleErrorLoading } from 'utils/handleErrors';
+import { verifyIdentityDocument } from 'utils/validationIdentityDocument';
 import styles from './DependentPage.module.css';
 
 const DependentPage = () => {
