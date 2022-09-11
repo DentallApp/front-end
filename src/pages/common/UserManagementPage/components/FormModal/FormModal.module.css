@@ -18,7 +18,7 @@
 }
 
 .container_header Button {
-    background: transparent url('../../../../../img/cancel.png') center/1.5em auto no-repeat !important;
+    background: transparent url('img/cancel.png') center/1.5em auto no-repeat !important;
 }
 
 .container_form .text_information {
