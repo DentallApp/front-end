@@ -1,0 +1,14 @@
+.wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.text_information {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #999;
+}
