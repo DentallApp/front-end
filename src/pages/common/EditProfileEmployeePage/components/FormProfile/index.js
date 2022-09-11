@@ -34,7 +34,7 @@ const FormProfile = ({user, setIsLoading, setAlert}) => {
         
         getGenders()
             .then(response => setGenders(response.data))
-            .catch(error => console.error(error));
+            .catch(error => error);
          // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
