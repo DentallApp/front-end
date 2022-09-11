@@ -10,8 +10,8 @@ export const handleErrors = (result, setAlert, setIsLoading) => {
 }
 
 export const handleErrorLoading = (err, setErrorLoading) => {
-    if((err.response.status === 0 && err.response.data === undefined) || 
-            (err.response.data.success === undefined && (err.response.status === 400 
+    if((err.response?.status === 0 && err.response?.data === undefined) || 
+            (err.response?.data.success === undefined && (err.response?.status === 400 
             || err.response.status === 405 ||
             err.status === 500))) {
             setErrorLoading({success: true, message: UNEXPECTED_ERROR});
