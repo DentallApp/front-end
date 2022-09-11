@@ -23,13 +23,18 @@ import {
     EditProfilePage, 
     OfficeSchedulePage,
     ScheduleManagementPage } from 'pages/common';
-import { AppointmentChatbotPage, AppointmentHistory, FavoriteDentistPage, MedicalDirectoryPage, DependentPage, QuotationPage } from '../pages/Patient';
-
+import { 
+    AppointmentChatbotPage, 
+    AppointmentHistory, 
+    FavoriteDentistPage, 
+    MedicalDirectoryPage, 
+    DependentPage, 
+    QuotationPage } from 'pages/Patient';
 import { AppointmentCalendarPage } from 'pages/Dentist';
-//import { AppointmentPage } from '../pages/Secretary';
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
 import { GeneralServicePage, TreatmentPage, OfficeManagementPage } from 'pages/SuperAdmin';
+import { AppointmentPage, NewPatientRegistrationPage } from 'pages/Secretary';
 
 const RoutesApp = () => {
     return (
@@ -68,12 +73,13 @@ const RoutesApp = () => {
                     </Route>
                 </Route>
 
-                {/* Rutas privadas para el administrador */}
-                {/*<Route element={<PrivateRoute role={[ROLES.SECRETARY]} />}>
+                {/* Rutas privadas para la secretaria */}
+                {<Route element={<PrivateRoute role={[ROLES.SECRETARY]} />}>
                     <Route element={<Dashboard />}>
-                        <Route path="/agendamiento-citas" element={<AppointmentPage />} />
+                        <Route path="/registrar-paciente" element={<NewPatientRegistrationPage />} />
+                        <Route path="/agendar-cita" element={<AppointmentPage />} />
                     </Route>
-                </Route>*/}
+                </Route>}
                 
                 {/* Rutas privadas para el superadministrador */}
                 {<Route element={<PrivateRoute role={[ROLES.SUPERADMIN]} />}>

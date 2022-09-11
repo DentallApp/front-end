@@ -11,7 +11,7 @@ const PublicRoute = () => {
     const protectedPaths = ["/inicio"];
 
     useEffect(() => {
-        if(user !== null && getLocalAccessToken() !== null) navigate("/inicio", 
+        if(user !== null && user !== undefined && getLocalAccessToken() !== null && getLocalAccessToken() !== undefined) navigate("/inicio", 
         {state:location});
     }, [navigate, location, user]);
     
