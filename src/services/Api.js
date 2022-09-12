@@ -22,6 +22,22 @@ const apiPublicRoutes = [
     "/general-treatment/:id"
 ];
 
+// for multiple requests
+let isRefreshing = false;
+let failedQueue = [];
+
+const processQueue = (error, token = null) => {
+  failedQueue.forEach(prom => {
+    if (error) {
+      prom.reject(error);
+    } else {
+      prom.resolve(token);
+    }
+  })
+  
+  failedQueue = [];
+}
+
 
 // Se configura la instancia de axios con la URL de la API a consumir y los headers
 const instance = axios.create({
@@ -46,40 +62,54 @@ instance.interceptors.request.use(
     }
 );
 
-
-instance.interceptors.response.use(
-    (res) => {
-      return res;
-    },
-    async (err) => {
-      const originalConfig = err.config;
-
-      if (apiPublicRoutes.includes(originalConfig.url) === false && err.response) {
-        
-        // Access Token was expired
-        if (err.response.status === 401 && !originalConfig._retry) {
-          originalConfig._retry = true;
-          try {
-            const rs = await instance.post("/token/refresh", {
-                accessToken: getLocalAccessToken(),
-                refreshToken: getLocalRefreshToken()
-            });
-            const { accessToken, refreshToken } = rs.data.data;
-            updateLocalAccessToken(accessToken);
-            updateLocalRefreshToken(refreshToken);
-
-            return instance(originalConfig);
-          } catch (_error) {
-            removeLocalAccessToken();
-            removeLocalRefreshToken();
-            removeLocalUser();
-            return Promise.reject(_error);
-          }
-        }
-      }
+  instance.interceptors.response.use(function (response) {
+    return response;
+  }, function (error) {
   
-      return Promise.reject(err);
+    const originalRequest = error.config;
+  
+    if (error.response.status === 401 && !originalRequest._retry && 
+      apiPublicRoutes.includes(originalRequest.url) === false) {
+        
+        if (isRefreshing) {
+          return new Promise(function(resolve, reject) {
+            failedQueue.push({resolve, reject})
+          }).then(token => {
+            originalRequest.headers['Authorization'] = 'Bearer ' + token;
+            return instance(originalRequest);
+          }).catch(err => {
+            return Promise.reject(err);
+          })
+        }
+  
+      originalRequest._retry = true;
+      isRefreshing = true;
+  
+      return new Promise(function (resolve, reject) {
+        instance.post("/token/refresh", {
+          accessToken: getLocalAccessToken(),
+          refreshToken: getLocalRefreshToken()
+        })
+          .then(res => {
+            updateLocalAccessToken(res.data.data.accessToken);
+            updateLocalRefreshToken(res.data.data.refreshToken);
+            instance.defaults.headers.common['Authorization'] = 'Bearer ' + res.data.data.accessToken;
+            originalRequest.headers['Authorization'] = 'Bearer ' + res.data.data.accessToken;
+            processQueue(null, res.data.data.token);
+            resolve(axios(originalRequest));
+          })
+          .catch((err) => {
+              processQueue(err, null);
+              removeLocalAccessToken();
+              removeLocalRefreshToken();
+              removeLocalUser();
+              reject(err);
+          })
+          .finally(() => { isRefreshing = false })
+      })
     }
-  );
+  
+    return Promise.reject(error);
+  });  
 
 export default instance;

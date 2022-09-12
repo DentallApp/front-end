@@ -1,0 +1,14 @@
+.button_hour {
+    width: 100%;
+    color: #FFF;
+    font-weight: bold;
+    border-radius: 30px;
+}
+
+.button_active {
+    background-color: #000 !important;
+    width: 100%;
+    color: #FFF;
+    font-weight: bold;
+    border-radius: 30px;
+}

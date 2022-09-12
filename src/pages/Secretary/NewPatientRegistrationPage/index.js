@@ -1,0 +1,30 @@
+import { useState } from 'react';
+import { FormNewPatient } from './components';
+import { AlertMessage, ModalLoading } from 'components';
+import styles from './NewPatientRegistrationPage.module.css';
+
+const NewPatientRegistrationPage = () => {
+    const [isLoading, setIsLoading] = useState(null);
+    const [alert, setAlert] = useState(null);
+
+    return (
+        <>
+            { isLoading ? (isLoading.success === undefined ? <ModalLoading show={true} /> : "") : ""}
+            <div className={styles.wrapper}>
+                <h1 className={`page_title`}>Nuevo Paciente</h1>
+                <div className="underline mx-auto"></div>
+                <p className={styles.text_information}>Los campos con el símbolo * son obligatorios</p>
+                { 
+                    alert && 
+                    <AlertMessage 
+                    type={ alert.success === false ? 'danger' : 'success' }
+                    message={ alert.message }
+                    setError= { setAlert }  /> 
+                }
+                <FormNewPatient setIsLoading={setIsLoading} setAlert={setAlert}/>
+            </div>
+        </>
+    );
+}
+
+export default NewPatientRegistrationPage;

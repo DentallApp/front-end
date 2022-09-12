@@ -33,24 +33,32 @@
     font-weight: bold;
 }
 
-.form_control_password {
-    border-right-style: none !important;
-}
-
-.button_visible {
-    background-color: transparent !important;
-    color: #000 !important;
-    border-left-style: none !important;
-    border-color: #ced4da;
-}
-
-.button_visible:hover {
-    border-color: #ced4da;
-}
-
 .error_message {
     color: #ec5990;
     font-size: 12px;
+}
+
+.container_spinner {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.spinner {
+    width: 10rem!important;
+    height: 10rem!important;
+}
+
+.text_loading {
+    font-size: 2rem;
+}
+
+.container_alert {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 @media screen and (max-width: 580px) {

@@ -255,37 +255,54 @@ const FormModal = ({show, handleClose, userSelect = null, saveUser}) => {
                                 </Form.Group>
                             </Col>
                             
-                            <Col xs={12} md>
-                                <Form.Group className="mb-3" controlId="formBasicPassword">
-                                    <Form.Label className={styles.label_input}>* Contraseña</Form.Label>
-                                    <InputGroup className="mb-1">
-                                        <Form.Control 
-                                        className={`${styles.form_control} ${styles.form_control_password}`} 
-                                        disabled={userSelect !== null ? true : false}
-                                        type={passwordShow ? "text" : "password"} 
-                                        {...register("password", { 
-                                            required: "Contraseña es requerida",
-                                            pattern: {
-                                                value: formatSecurePassword,
-                                                message: "La contraseña debe de contener: " +
-                                                    "Mínimo 5 caracteres, una letra mayúscula, una minúscula y un número"
-                                            },
-                                            minLength: {
-                                                value: 5,
-                                                message: "La contraseña debe de tener mínimo 5 carácteres"
-                                            }
-                                        })}
-                                        placeholder="Ingrese contraseña" />
-                                        <Button 
-                                        className={styles.button_visible}
-                                        disabled={userSelect !== null ? true : false}
-                                        onClick={() => setPasswordShow(!passwordShow)}>
-                                            {passwordShow ? <MdVisibilityOff /> : <MdVisibility />}
-                                        </Button>   
-                                    </InputGroup>
-                                    { errors.password && <p className={styles.error_message}>{ errors.password.message }</p> } 
-                                </Form.Group> 
-                            </Col>
+                            {
+                                type !== 'edit' ? (
+                                    <Col xs={12} md>
+                                        <Form.Group className="mb-3" controlId="formBasicPassword">
+                                            <Form.Label className={styles.label_input}>* Contraseña</Form.Label>
+                                            <InputGroup className="mb-1">
+                                                <Form.Control 
+                                                className={`${styles.form_control} ${styles.form_control_password}`} 
+                                                disabled={userSelect !== null ? true : false}
+                                                type={passwordShow ? "text" : "password"} 
+                                                {...register("password", { 
+                                                    required: "Contraseña es requerida",
+                                                    pattern: {
+                                                        value: formatSecurePassword,
+                                                        message: "La contraseña debe de contener: " +
+                                                            "Mínimo 5 caracteres, una letra mayúscula, una minúscula y un número"
+                                                    },
+                                                    minLength: {
+                                                        value: 5,
+                                                        message: "La contraseña debe de tener mínimo 5 carácteres"
+                                                    }
+                                                })}
+                                                placeholder="Ingrese contraseña" />
+                                                <Button 
+                                                className={styles.button_visible}
+                                                disabled={userSelect !== null ? true : false}
+                                                onClick={() => setPasswordShow(!passwordShow)}>
+                                                    {passwordShow ? <MdVisibilityOff /> : <MdVisibility />}
+                                                </Button>   
+                                            </InputGroup>
+                                            { errors.password && <p className={styles.error_message}>{ errors.password.message }</p> } 
+                                        </Form.Group> 
+                                    </Col>
+                                ):(
+                                    <Col xs={12} md>
+                                        <Form.Group className="mb-3" controlId="formBasicDate">
+                                            <Form.Label className={styles.label_input}>* Fecha de nacimiento</Form.Label>
+                                            <Form.Control 
+                                            type="date"
+                                            max={maxDate}
+                                            {...register("dateBirth", {
+                                                required: "Fecha de nacimiento requerida"
+                                            })} />
+                                            { errors.dateBirth && <p className={styles.error_message}>{ errors.dateBirth.message }</p> }
+                                        </Form.Group>
+                                    </Col>
+                                )
+                            }
                         </Row>
 
                         <Row>
@@ -308,18 +325,22 @@ const FormModal = ({show, handleClose, userSelect = null, saveUser}) => {
                                 </Form.Group>
                             </Col>
                             
-                            <Col xs={12} md>
-                                <Form.Group className="mb-3" controlId="formBasicDate">
-                                    <Form.Label className={styles.label_input}>* Fecha de nacimiento</Form.Label>
-                                    <Form.Control 
-                                    type="date"
-                                    max={maxDate}
-                                    {...register("dateBirth", {
-                                        required: "Fecha de nacimiento requerida"
-                                    })} />
-                                    { errors.dateBirth && <p className={styles.error_message}>{ errors.dateBirth.message }</p> }
-                                </Form.Group>
-                            </Col>
+                            {
+                                type !== 'edit' && (
+                                    <Col xs={12} md>
+                                        <Form.Group className="mb-3" controlId="formBasicDate">
+                                            <Form.Label className={styles.label_input}>* Fecha de nacimiento</Form.Label>
+                                            <Form.Control 
+                                            type="date"
+                                            max={maxDate}
+                                            {...register("dateBirth", {
+                                                required: "Fecha de nacimiento requerida"
+                                            })} />
+                                            { errors.dateBirth && <p className={styles.error_message}>{ errors.dateBirth.message }</p> }
+                                        </Form.Group>
+                                    </Col>
+                                )
+                            }
                         </Row>
 
                         { 
