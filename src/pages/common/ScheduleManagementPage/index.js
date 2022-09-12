@@ -5,11 +5,11 @@ import { ScheduleTable, FilterDentist, FormModal, AllScheduleTable } from './com
 import { AlertMessage, ModalLoading } from 'components';
 import { validationScheduleMorning, validationScheduleAfternoon } from './utils';
 import { 
-    getAllDentists, 
     getSchedulesByEmployee, 
     createSchedule, 
     updateSchedule,
     getAllSchedule } from 'services/DentistScheduleService';
+import { getAllEmployee } from 'services/EmployeeService';    
 import { getLocalUser } from 'services/UserService';
 import { handleErrors, handleErrorLoading } from 'utils/handleErrors';
 import styles from './ScheduleManagementPage.module.css';
@@ -35,7 +35,7 @@ const ScheduleManagementPage = () => {
     const [isLoading, setIsLoading] = useState(null);
 
     useEffect(() => {
-        getAllDentists().then(res => setDentists(res.data))
+        getAllEmployee().then(res => setDentists(res.data))
             .catch(err => err);
             
         getAllSchedule().then(res => setAllSchedules(res.data))
