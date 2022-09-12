@@ -1,0 +1,32 @@
+.container_event {
+    display: flex;
+    flex-direction: column;
+    border: none;
+}
+
+.center_text {
+    padding: 10px;
+    text-align: center;
+}
+
+.scheduled {
+    background: #81c9fa !important;
+    color: #000 !important;
+    border: none;
+}
+
+.assisted {
+    background: green !important;
+    color: #FFF !important;
+}
+
+.unassisted {
+    background: #ffc107 !important;
+    color: #000 !important;
+    border: none !important;
+}
+
+.cancel {
+    background: #d62828 !important;
+    color: #FFF !important;
+}

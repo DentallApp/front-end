@@ -3,19 +3,58 @@ import { NavLink } from 'react-router-dom';
 import { FaUsers } from "react-icons/fa";
 import { AiOutlineCaretDown,AiOutlineCaretUp } from "react-icons/ai";
 import { FaTasks } from 'react-icons/fa';
-import { BsFillCalendar2WeekFill } from "react-icons/bs";
+import { BsFillCalendar2WeekFill, BsCalendarWeekFill, BsFillCalendarWeekFill, BsFillCalendar2XFill } from "react-icons/bs";
 import { ImOffice } from "react-icons/im";
-import { BsCalendarWeekFill } from "react-icons/bs";
+import { IoCalendarNumber } from "react-icons/io5";
 import ROLES from 'constants/Roles';
 import { getLocalUser } from 'services/UserService';
 import styles from './SideBar.module.css';
 
 const CommonOptions = () => {
     const [submenuShow, setSubmenuShow] = useState(false);
+    const [submenuAppointment, setSubmenuAppointment] = useState(false);
     const user = getLocalUser();
 
     return (
         <>
+            {
+                (user.roles.includes(ROLES.DENTIST) || user.roles.includes(ROLES.SECRETARY) || 
+                user.roles.includes(ROLES.ADMIN)) &&
+                <>
+                    <NavLink className={styles.navlink }
+                    to="#"
+                    onClick={() => {setSubmenuAppointment(!submenuAppointment)} }>
+                        <div className={styles.container_submenu}>
+                            <div style={{display: 'flex', alignItems: 'center'}}>
+                                <IoCalendarNumber className={styles.icon} /> 
+                                Citas
+                            </div>
+                            { !submenuAppointment ? 
+                                <AiOutlineCaretDown className={styles.icon} /> 
+                                : <AiOutlineCaretUp className={styles.icon}/> 
+                            } 
+                        </div>
+                    </NavLink>
+                    { submenuAppointment && (
+                        <ul className={styles.submenu}>
+                            <NavLink className={({ isActive }) => isActive ? styles.navlink_active : styles.navlink }
+                            to="citas/calendario"
+                            onClick={() => {window.scrollTo({ top: 0, behavior: 'smooth' })} }>
+                                <BsFillCalendarWeekFill className={styles.icon} />
+                                Calendario
+                            </NavLink>
+                                   
+                            <NavLink className={({ isActive }) => isActive ? styles.navlink_active : styles.navlink } 
+                            to="citas/cancelacion"
+                            onClick={() => {window.scrollTo({ top: 0, behavior: 'smooth' })} }>
+                                <BsFillCalendar2XFill className={styles.icon} /> 
+                                Cancelar
+                            </NavLink>      
+                        </ul>
+                    ) }
+                </>
+            }
+
             { 
                 ( user && (user.roles.includes(ROLES.ADMIN) || user.roles.includes(ROLES.SUPERADMIN))) &&  
                 <>

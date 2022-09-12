@@ -1,0 +1,25 @@
+.page_title {
+    margin-top: 10px;
+    text-align: center;
+    font-weight: bold;
+    font-style: italic;
+    color: #002855;
+}
+
+.container_header {
+    margin-top: 40px;
+    margin-left: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.btn_cancel {
+    margin-left: 20px;
+    margin-bottom: 10px;
+    border-radius: 30px;
+    background: #d62828 !important;
+    color: #FFF !important;
+    border: none;
+}

@@ -13,7 +13,7 @@ const NavBarDashboard = () => {
     return (
         <header>
             <nav className={styles.navbar}>
-                { onlyWidth <= 768 && (
+                { onlyWidth <= 1000 && (
                     <div className={styles.toggle} onClick={() => handleSidebar() }>
                         <ImMenu className={styles.icon} />
                     </div>

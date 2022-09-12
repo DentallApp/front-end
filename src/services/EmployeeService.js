@@ -4,6 +4,10 @@ export const getEmployee = async () => {
     return await api.get('/employee');
 }
 
+export const getAllEmployee = async () => {
+    return await api.get('/employee/dentist/all');
+}
+
 export const createEmployee = (data) => {
     return api.post('/register/employee', {
         document: data.document,

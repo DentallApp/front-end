@@ -45,7 +45,7 @@ header {
     height: 100%;
 }
 
-@media screen and (min-width: 769px) {
+@media screen and (min-width: 1000px) {
     .navbar {
         justify-content: flex-end;
     }
