@@ -1,19 +1,23 @@
 import { useState, useEffect } from 'react';
+import {  Col, Spinner  } from 'react-bootstrap';
 import moment from 'moment';
-import data from './data';
-import { Filters, FilterComponent } from 'components';
+import { Filters, FilterComponent, FilterDentist, ModalLoading, AlertMessage  } from 'components';
 import { AppointmentTable, AppointmentModal, CancelModal } from './components';
 import { getDentists } from 'services/DentistScheduleService';
 import { getLocalUser } from 'services/UserService';
+import { getScheduledAppointmentByOffice, getScheduledAppointmentByDentist } from 'services/AppointmentEmployeeService';
 import ROLES from 'constants/Roles';
+import { filterAppointmentByDentist } from './utils';
+import { handleErrors, handleErrorLoading } from 'utils/handleErrors';
 import styles from './CancelEmployeeAppointment.module.css'
 import { Button } from 'react-bootstrap';
 
 const CancelEmployeeAppointment = () => {
     const [show, setShow] = useState(false);
-    const [appointmentSelect, setAppointmentSelect] = useState(null);
     const [appointmentsForCancel, setAppointmentsForCancel] = useState(null);
-    const [appointments, setAppointments] = useState(data);
+    const [appointmentSelect, setAppointmentSelect] = useState(null);
+    const [storeAppointments, setStoreAppointments] = useState(null);
+    const [appointments, setAppointments] = useState(null);
     const [dentists, setDentists] = useState(null);
     const [selectDentist, setSelectDentist] = useState(0);
     const [startDate, setStartDate] = useState(new Date());
@@ -24,46 +28,95 @@ const CancelEmployeeAppointment = () => {
 
     // Estados para el filtro
     const [filterText, setFilterText] = useState('');
-    const [filterAppointments, setFilterAppointments] = useState([]);
+    const [filterAppointments, setFilterAppointments] = useState(null);
+
+    // Estado para el mensaje de alerta
+    const [alert, setAlert] = useState(null);
+
+    // Estado para el modal de carga 
+    const [isLoading, setIsLoading] = useState(null);
+
+    const [errorLoading, setErrorLoading] = useState({success: false, message: ''});
 
     useEffect(() => {
-        (getLocalUser().roles.includes(ROLES.SECRETARY) || getLocalUser().roles.includes(ROLES.ADMIN)) && (
+        if(getLocalUser().roles.includes(ROLES.SECRETARY) || getLocalUser().roles.includes(ROLES.ADMIN))
             getDentists().then(res => setDentists(res.data))
                 .catch(err => err)
-        )
+        
+        getAppointments(startDate, endDate);
+        // eslint-disable-next-line react-hooks/exhaustive-deps 
     }, []);
 
     useEffect(() => {
         if(filterAppointments?.length > 0 && filterText !== '') filterData();
        
-        if(filterAppointments?.length <= 0 || filterText === '') setFilterAppointments(appointments);
+        if((filterAppointments?.length <= 0 || filterText === '') && selectDentist === 0 ) setFilterAppointments(storeAppointments);
+        
+        if((filterAppointments?.length <= 0 || filterText === '') && selectDentist !== 0 ) setFilterAppointments(appointments);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [filterText]);
 
     const filterData = () => {
         const data = appointments.filter(appointment => 
             appointment.document.toString().includes(filterText.toLocaleLowerCase()) === true || 
-                appointment.patient.toString().toLocaleLowerCase().includes(filterText.toLocaleLowerCase()) === true 
+                appointment.patientName.toString().toLocaleLowerCase().includes(filterText.toLocaleLowerCase()) === true 
         );
         setFilterAppointments(data);
     }
 
+    // Trae las citas de todos los odontologos dentro de un rango de fecha definido
+    const getAppointments = (startDate, endDate) => {
+        if(getLocalUser().roles.includes(ROLES.SECRETARY) || getLocalUser().roles.includes(ROLES.ADMIN)) {
+            getScheduledAppointmentByOffice(moment(startDate).format('yyyy-MM-DD'), moment(endDate).format('yyyy-MM-DD'))
+                .then(res => {
+                    setStoreAppointments(res.data);
+                    setAppointments(res.data);
+                    setFilterAppointments(res.data);
+                })
+                .catch(err => handleErrorLoading(err, setErrorLoading)); 
+        }
+        else {
+            getScheduledAppointmentByDentist(moment(startDate).format('yyyy-MM-DD'), moment(endDate).format('yyyy-MM-DD'))
+                .then(res => {
+                    setStoreAppointments(res.data);
+                    setAppointments(res.data);
+                    setFilterAppointments(res.data);
+                })
+                .catch(err => handleErrorLoading(err, setErrorLoading)); 
+        }   
+    }
+
+
     // Función que capta los datos que se ingresa en el input y realiza el filtro de la tabla 
     const handleChange = (e) => {
         setFilterText(e.target.value.toString());
-        if(filterText === '' || filterAppointments.length <= 0) {
-            setFilterAppointments(appointments);
-        }
+        if((filterText === '' || filterAppointments.length <= 0) && selectDentist === 0) 
+            setFilterAppointments(storeAppointments);
+        
+        if((filterText === '' || filterAppointments.length <= 0) && selectDentist !== 0)
+            setFilterAppointments(appointments)
     }
 
     // Función que limpia los campos del input y resetea la tabla
     const handleClear = () => {
-        setFilterAppointments(appointments);
+        if(selectDentist !== 0) setFilterAppointments(appointments);
+        
+        if(selectDentist === 0) setFilterAppointments(storeAppointments);
         setFilterText('');
     };
 
     const handleSelectDentist = (e) => {
         setSelectDentist(parseInt(e.value));
+        
+        if(parseInt(e.value) !== 0) {
+            const result = filterAppointmentByDentist(parseInt(e.value), storeAppointments);
+            setAppointments(result);
+            setFilterAppointments(result);
+        }
+        else {
+            setAppointments(storeAppointments);
+            setFilterAppointments(storeAppointments);
+        }
     }
 
     // Funciones para cerrar y mostrar el modal
@@ -93,6 +146,7 @@ const CancelEmployeeAppointment = () => {
 
         setStartDate(data.startDate);
         setEndDate(data.endDate);
+        getAppointments(data.startDate, data.endDate);
     }
 
     // Cancela citas
@@ -103,6 +157,7 @@ const CancelEmployeeAppointment = () => {
 
     return (
         <>
+            { isLoading ? (isLoading.success === undefined ? <ModalLoading show={true} /> : "") : ""}
             { /* Ventana modal para el registro, actualización y eliminación de dependiente  */
                 show === true ? (
                     typeModal === 'form' ? (
@@ -122,6 +177,15 @@ const CancelEmployeeAppointment = () => {
             }
             <h1 className={styles.page_title}>Cancelar citas</h1>
             <div className="underline mx-auto"></div>
+            {/* Mensaje de alerta para mostrar información al usuario */
+                alert && 
+                <div className={styles.container_alert}>
+                    <AlertMessage 
+                    type={ alert.success === false ? 'danger' : 'success' }
+                    message={ alert.message }
+                    setError= { setAlert }  /> 
+                </div>
+            } 
             <div className={styles.container_header}>
               <Filters
                startDate={moment(startDate).format('yyyy-MM-DD')}
@@ -132,6 +196,20 @@ const CancelEmployeeAppointment = () => {
                />
             </div>
             <div style={{'marginLeft': '20px', 'marginRight': '20px', 'display': 'flex', 'alignItems': 'center'}}>
+                {
+                    getLocalUser().roles.includes(ROLES.SECRETARY) ||
+                        getLocalUser().roles.includes(ROLES.ADMIN)  ? (
+                            <Col sm={12} lg={6} md>
+                                <FilterDentist
+                                dentists={dentists}
+                                handleSelectDentist={handleSelectDentist}
+                                /> 
+                            </Col>
+                        ):(
+                            <></>
+                        )
+                }
+                
                 <FilterComponent 
                 inputText='Escriba el nombre o cedula del paciente'
                 onFilter={handleChange} 
@@ -154,14 +232,30 @@ const CancelEmployeeAppointment = () => {
                     Cancelar citas
                 </Button>
             </div>
-
-            <AppointmentTable
-            data={filterAppointments}
-            setAppointmentsForCancel={setAppointmentsForCancel}
-            setAppointmentSelect={setAppointmentSelect}
-            handleShow={handleShow}
-            setTypeModal={setTypeModal}
-            />
+            
+            {
+                errorLoading.success === false ? (
+                    filterAppointments ? (
+                        <AppointmentTable
+                        data={filterAppointments}
+                        setAppointmentsForCancel={setAppointmentsForCancel}
+                        setAppointmentSelect={setAppointmentSelect}
+                        handleShow={handleShow}
+                        setTypeModal={setTypeModal}
+                        />
+                    ):(
+                        <div className={`${styles.container_spinner}`}>
+                            <Spinner size="lg" className={styles.spinner} animation="border" variant="info" />
+                            <p className={styles.text_loading}>Cargando...</p>
+                        </div>
+                    )
+                ):(
+                    <h4 className={styles.text_error}>
+                        {errorLoading.message}
+                    </h4>
+                )
+            }
+            
         </>
     );
 }

@@ -49,6 +49,20 @@
   font-weight: bold;
 } 
 
+.fc .fc-view-harness {
+  position: sticky;
+}
+
+.fc-v-event .fc-event-main-frame {
+  display: flex;
+  flex-direction: row;
+  color: #000;
+}
+
+.fc-v-event .fc-event-main-frame .fc-event-time {
+  margin-right: 10px;
+}
+
 @media screen and (max-width:767px) { 
   .fc-toolbar.fc-header-toolbar {
     font-size: 60%;

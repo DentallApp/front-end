@@ -1,6 +1,8 @@
 import { Form, Button, Container, Row, Col, Modal, Badge } from 'react-bootstrap';
 import { useWindowWidth } from '@react-hook/window-size';
 import APPOINTMENT_STATUS from 'constants/AppointmentStatus';
+import { getLocalUser } from 'services/UserService';
+import ROLES from 'constants/Roles';
 import styles from './AppointmentModal.module.css';
 
 const AppointmentModal = ({
@@ -32,7 +34,7 @@ const AppointmentModal = ({
                                 <Col xs={12} md>
                                     <Form.Group className="mb-3" controlId="formBasicPatient">
                                         <Form.Label className={styles.label_input}>Paciente</Form.Label>
-                                        <p>{appointmentSelect.patient}</p>
+                                        <p>{appointmentSelect.patientName}</p>
                                     </Form.Group>
                                 </Col>
 
@@ -47,15 +49,35 @@ const AppointmentModal = ({
                             <Row>
                                 <Col xs={12} md>
                                     <Form.Group className="mb-3" controlId="formBasicDentist">
+                                        <Form.Label className={styles.label_input}>Teléfono paciente</Form.Label>
+                                        <p>{appointmentSelect.cellPhone}</p>
+                                    </Form.Group>
+                                </Col>
+
+                                <Col xs={12} md>
+                                    <Form.Group className="mb-3" controlId="formBasicService">
+                                        <Form.Label className={styles.label_input}>Correo paciente</Form.Label>
+                                        <p>{appointmentSelect.email}</p>
+                                    </Form.Group>
+                                </Col>
+                            </Row>
+
+                            <Row>
+                                <Col xs={12} md>
+                                    <Form.Group className="mb-3" controlId="formBasicDentist">
                                         <Form.Label className={styles.label_input}>Dentista</Form.Label>
-                                        <p>{appointmentSelect.dentist}</p>
+                                        <p>{
+                                        (getLocalUser().roles.includes(ROLES.SECRETARY) || getLocalUser().roles.includes(ROLES.ADMIN)) ?
+                                            appointmentSelect.dentistName :
+                                            getLocalUser().fullName
+                                        }</p>
                                     </Form.Group>
                                 </Col>
 
                                 <Col xs={12} md>
                                     <Form.Group className="mb-3" controlId="formBasicService">
                                         <Form.Label className={styles.label_input}>Servicio Dental</Form.Label>
-                                        <p>{appointmentSelect.service}</p>
+                                        <p>{appointmentSelect.dentalServiceName}</p>
                                     </Form.Group>
                                 </Col>
                             </Row>
@@ -65,9 +87,10 @@ const AppointmentModal = ({
                                     <Form.Group className="mb-3" controlId="formBasicDate">
                                         <Form.Label className={styles.label_input}>Fecha y Hora de la Cita</Form.Label>
                                         <p style={{"fontWeight": "bold"}}>
-                                            {appointmentSelect.hour}
+                                            {appointmentSelect.startHour} - 
+                                            {appointmentSelect.endHour}
                                         </p>
-                                        <p>{appointmentSelect.date}</p>
+                                        <p>{appointmentSelect.appointmentDate}</p>
                                     </Form.Group>
                                 </Col>
                                 <Col xs={12} md>
@@ -75,11 +98,8 @@ const AppointmentModal = ({
                                         <Form.Label className={styles.label_input}>Estado</Form.Label>
                                         <div className={styles.badge_text}>
                                             <Badge pill 
-                                            bg={
-                                                APPOINTMENT_STATUS.filter(status => 
-                                                status.name === appointmentSelect.status)[0].colorName
-                                            }>
-                                                {appointmentSelect.status.toUpperCase()}
+                                            bg={APPOINTMENT_STATUS[0].colorName}>
+                                                {APPOINTMENT_STATUS[0].name.toUpperCase()}
                                             </Badge>
                                         </div>
                                     </Form.Group>

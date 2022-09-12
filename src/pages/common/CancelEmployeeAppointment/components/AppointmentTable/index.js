@@ -36,38 +36,38 @@ const AppointmentTable = ({
     const columns = [
         {
             name: <div className={styles.container_table_header}><h6>Fecha</h6></div>,
-            selector: row => row.date,
+            selector: row => row.appointmentDate,
             center: true,
             wrap: true,
-            width: "120px"
+            width: "180px"
         },
         {
             name: <div className={styles.container_table_header}><h6>Hora</h6></div>,
-            selector: row => row.hour,
+            selector: row => `${row.startHour} - ${row.endHour}`,
             center: true,
             wrap: true,
             width: "120px"
         },
         {
             name: <div className={styles.container_table_header}><h6>Odontologo</h6></div>,
-            selector: row => row.dentist,
+            selector: row => row.dentistName,
             center: true,
             wrap: true,
             width: "170px",
         },
         {
             name: <div className={styles.container_table_header}><h6>Paciente</h6></div>,
-            selector: row => row.patient,
+            selector: row => row.patientName,
             center: true,
             wrap: true,
             width: "170px"
         },
         {
             name: <div className={styles.container_table_header}><h6>Servicio</h6></div>,
-            selector: row => row.service,
+            selector: row => row.dentalServiceName,
             center: true,
             wrap: true,
-            width: "150px"
+            width: "170px"
         },
         {
             name: <div className={styles.container_table_header}><h6>Acciones</h6></div>,
@@ -114,6 +114,8 @@ const AppointmentTable = ({
             customStyles={customStyles}
             selectableRows
             onSelectedRowsChange={handleChange}
+            paginationPerPage={5}
+            paginationRowsPerPageOptions={[5, 10, 15, 20, 25, 30]}
             />
         </div>
     );

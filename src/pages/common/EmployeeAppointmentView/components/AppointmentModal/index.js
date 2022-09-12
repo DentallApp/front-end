@@ -2,7 +2,9 @@ import { useState, useEffect } from 'react';
 import { Form, Button, Container, Row, Col, Modal, Badge } from 'react-bootstrap';
 import { useWindowWidth } from '@react-hook/window-size';
 import { useForm } from 'react-hook-form';
+import { getLocalUser } from 'services/UserService';
 import APPOINTMENT_STATUS from 'constants/AppointmentStatus';
+import ROLES from 'constants/Roles';
 import styles from './AppointmentModal.module.css';
 
 const AppointmentModal = ({
@@ -15,7 +17,7 @@ const AppointmentModal = ({
     const onlyWidth = useWindowWidth(); // Se obtiene ancho y altura de pantalla para colocar el modal
     const [statusAppointment, setStatusAppointment] = useState(null);
 
-    const { register, handleSubmit, setValue, watch, formState: {errors} } = useForm();
+    const { register, handleSubmit, setValue, watch} = useForm();
 
     const selectStatusValue = watch("statusId");
 
@@ -25,6 +27,7 @@ const AppointmentModal = ({
         
         setStatusAppointment(listStatus.filter(status => status.id === APPOINTMENT_STATUS[0].id || 
             status.id === APPOINTMENT_STATUS[2].id || status.id === APPOINTMENT_STATUS[4].id));
+        // eslint-disable-next-line react-hooks/exhaustive-deps    
     }, []);
 
     const handleStatusChange = (e) => setValue("statusId", e.target.value, true); 
@@ -52,7 +55,7 @@ const AppointmentModal = ({
                                 <Col xs={12} md>
                                     <Form.Group className="mb-3" controlId="formBasicPatient">
                                         <Form.Label className={styles.label_input}>Paciente</Form.Label>
-                                        <p>{appointmentSelect.event.extendedProps.patient}</p>
+                                        <p>{appointmentSelect.event.extendedProps.patientName}</p>
                                     </Form.Group>
                                 </Col>
 
@@ -67,39 +70,50 @@ const AppointmentModal = ({
                             <Row>
                                 <Col xs={12} md>
                                     <Form.Group className="mb-3" controlId="formBasicDentist">
-                                        <Form.Label className={styles.label_input}>Dentista</Form.Label>
-                                        <p>{appointmentSelect.event.extendedProps.dentist}</p>
+                                        <Form.Label className={styles.label_input}>Teléfono paciente</Form.Label>
+                                        <p>{appointmentSelect.event.extendedProps.cellPhone}</p>
                                     </Form.Group>
                                 </Col>
 
                                 <Col xs={12} md>
                                     <Form.Group className="mb-3" controlId="formBasicService">
-                                        <Form.Label className={styles.label_input}>Servicio Dental</Form.Label>
-                                        <p>{appointmentSelect.event.extendedProps.service}</p>
+                                        <Form.Label className={styles.label_input}>Correo paciente</Form.Label>
+                                        <p>{appointmentSelect.event.extendedProps.email}</p>
                                     </Form.Group>
                                 </Col>
                             </Row>
 
                             <Row>
                                 <Col xs={12} md>
-                                    <Form.Group className="mb-3" controlId="formBasicOffice">
-                                        <Form.Label className={styles.label_input}>Consultorio</Form.Label>
-                                        <p>{appointmentSelect.event.extendedProps.officeName}</p>
+                                    <Form.Group className="mb-3" controlId="formBasicDentist">
+                                        <Form.Label className={styles.label_input}>Dentista</Form.Label>
+                                        <p>{
+                                        (getLocalUser().roles.includes(ROLES.SECRETARY) || getLocalUser().roles.includes(ROLES.ADMIN)) ?
+                                            appointmentSelect.event.extendedProps.dentistName :
+                                            getLocalUser().fullName
+                                        }</p>
                                     </Form.Group>
                                 </Col>
 
+                                <Col xs={12} md>
+                                    <Form.Group className="mb-3" controlId="formBasicService">
+                                        <Form.Label className={styles.label_input}>Servicio Dental</Form.Label>
+                                        <p>{appointmentSelect.event.extendedProps.dentalServiceName}</p>
+                                    </Form.Group>
+                                </Col>
+                            </Row>
+
+                            <Row>
                                 <Col sm={12} md>
                                     <Form.Group className="mb-3" controlId="formBasicDate">
                                         <Form.Label className={styles.label_input}>Fecha y Hora de la Cita</Form.Label>
-                                        <p>{appointmentSelect.event.extendedProps.dateAppointment}</p>
                                         <p style={{"fontWeight": "bold"}}>
                                             {appointmentSelect.event.extendedProps.startHour} - 
                                             {appointmentSelect.event.extendedProps.endHour}
                                         </p>
+                                        <p>{appointmentSelect.event.extendedProps.appointmentDate}</p>
                                     </Form.Group>
                                 </Col>
-                            </Row> 
-                            <Row>
                                 <Col xs={12} md>
                                     <Form.Group className="mb-3" controlId="formBasicStatus">
                                         <Form.Label className={styles.label_input}>Estado</Form.Label>
@@ -135,7 +149,7 @@ const AppointmentModal = ({
                                         }
                                     </Form.Group>
                                 </Col>
-                            </Row>
+                            </Row> 
                         </Container>
                         
                         <Modal.Footer className={styles.container_footer}>

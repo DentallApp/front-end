@@ -1,6 +1,7 @@
 .container_datable {
     margin-left: 20px;
     margin-right: 20px;
+    position: sticky;
 }
 
 .container_table_header {
