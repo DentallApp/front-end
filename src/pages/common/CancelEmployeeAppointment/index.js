@@ -1,16 +1,20 @@
 import { useState, useEffect } from 'react';
-import {  Col, Spinner  } from 'react-bootstrap';
+import {  Col, Spinner, Button  } from 'react-bootstrap';
 import moment from 'moment';
 import { Filters, FilterComponent, FilterDentist, ModalLoading, AlertMessage  } from 'components';
 import { AppointmentTable, AppointmentModal, CancelModal } from './components';
 import { getDentists } from 'services/DentistScheduleService';
 import { getLocalUser } from 'services/UserService';
-import { getScheduledAppointmentByOffice, getScheduledAppointmentByDentist } from 'services/AppointmentEmployeeService';
+import { 
+    getScheduledAppointmentByOffice, 
+    getScheduledAppointmentByDentist, 
+    cancelAppointments 
+} from 'services/AppointmentEmployeeService';
 import ROLES from 'constants/Roles';
 import { filterAppointmentByDentist } from './utils';
 import { handleErrors, handleErrorLoading } from 'utils/handleErrors';
+import { formatURL } from 'utils/formatUtils';
 import styles from './CancelEmployeeAppointment.module.css'
-import { Button } from 'react-bootstrap';
 
 const CancelEmployeeAppointment = () => {
     const [show, setShow] = useState(false);
@@ -111,6 +115,7 @@ const CancelEmployeeAppointment = () => {
         
         if(parseInt(e.value) !== 0) {
             const result = filterAppointmentByDentist(parseInt(e.value), storeAppointments);
+            console.log()
             setAppointments(result);
             setFilterAppointments(result);
         }
@@ -150,10 +155,59 @@ const CancelEmployeeAppointment = () => {
         getAppointments(data.startDate, data.endDate);
     }
 
+    const updateLocalAppointments = (appointmentsCancelled) => {
+        
+        setStoreAppointments(
+            storeAppointments.filter(appointment => 
+                !appointmentsCancelled.appoinments.some(cancel => 
+                    cancel.appoinmentId === appointment.appoinmentId)    
+        ));
+        
+        setAppointments(
+            appointments.filter(appointment => 
+                !appointmentsCancelled.appoinments.some(cancel => 
+                    cancel.appoinmentId === appointment.appoinmentId)    
+        ));
+
+        setFilterAppointments(
+            filterAppointments.filter(appointment => 
+                !appointmentsCancelled.appoinments.some(cancel => 
+                    cancel.appoinmentId === appointment.appoinmentId)    
+        ));
+    }
+
     // Cancela citas
-    const cancelAppointments = (data) => {
-        console.log(data);
-        console.log(appointmentsForCancel);
+    const cancel = async(data, setError) => {
+
+        const validateReason = formatURL.test(data.reason);
+        
+        if(validateReason === true) {
+            setError('reason', {
+                type: 'custom',
+                message: 'El mensaje no puede contener una URL'
+            });
+            return;
+        }
+        
+        setIsLoading({success: undefined});
+
+        const newData = {
+            reason: data.reason,
+            appoinments: appointmentsForCancel
+        }
+
+        const result = await cancelAppointments(newData);
+        if(result.success && result.success === true) {
+            result.message = newData.appoinments.length > 1 ? 'Citas canceladas con éxito' : 'Cita cancelada con éxito';
+            updateLocalAppointments(newData);
+        }
+        
+        setIsLoading({success: result.success});
+        setAlert(result);
+
+        handleErrors(result, setAlert, setIsLoading);
+        handleClose();
+        setAppointmentsForCancel(null);
     }
 
     return (
@@ -171,7 +225,7 @@ const CancelEmployeeAppointment = () => {
                         handleClose={handleClose} 
                         show={show}
                         appointmentsForCancel={appointmentsForCancel}
-                        cancelAppointments={cancelAppointments}
+                        cancel={cancel}
                         />
                     )
                 ):<></>
