@@ -86,8 +86,11 @@ const GeneralServicePage = () => {
 
     const create = async(form) => {
         const result = await createTreatment(form);
-        if(result.success && result.success === true) setIsChange(!isChange);
-            
+        if(result.success && result.success === true) {
+            result.message = 'Servicio creado con éxito';
+            setIsChange(!isChange);
+        }
+
         setIsLoading({success: result.success});
         setAlert(result);
 
@@ -96,8 +99,11 @@ const GeneralServicePage = () => {
 
     const edit = async(form, data) => {
         const result = await updateTreatment(form, data.id);
-        if(result.success && result.success === true) setIsChange(!isChange);
-        
+        if(result.success && result.success === true) {
+            result.message = 'Servicio actualizado exitosamente';
+            setIsChange(!isChange);
+        }
+
         setIsLoading({success: result.success});
         setAlert(result);
 
@@ -146,8 +152,11 @@ const GeneralServicePage = () => {
         setIsLoading({success: undefined});
         const result = await deleteTreatment(data);
         
-        if(result.success && result.success === true) setIsChange(!isChange);
-        
+        if(result.success && result.success === true) {
+            result.message = 'Servicio eliminado exitosamente';
+            setIsChange(!isChange);
+        }
+
         setIsLoading({success: result.success});
         setAlert(result);
 

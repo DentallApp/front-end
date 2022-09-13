@@ -67,10 +67,10 @@ const FormProfile = ({user, setIsLoading, setAlert}) => {
         data.genderId = parseInt(data.genderId);
 
         const result = await updateProfileEmployee(data);
-        setAlert(result);
         setIsLoading({success: result.success});
 
         if(result.success === true) {
+            result.message = 'Perfil actualizado exitosamente';
             user.names = data.names;
             user.lastNames = data.lastNames;
             user.fullName = data.names + ' ' + data.lastNames;
@@ -91,6 +91,7 @@ const FormProfile = ({user, setIsLoading, setAlert}) => {
             setProfile(data);
         }
 
+        setAlert(result);
         handleErrors(result, setAlert, setIsLoading);
     }
 

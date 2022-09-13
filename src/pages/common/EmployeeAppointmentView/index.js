@@ -160,6 +160,7 @@ const EmployeeAppointmentView = () => {
         const result = await updateStatusAppointment(statusId, id);
         if(result.success && result.success === true) {
             updateLocalDataAppointment(statusId, parseInt(appointmentSelect.event.extendedProps.appoinmentId));
+            result.message = 'Estado de la cita actualizado con éxito';
         }
             
         setIsLoading({success: result.success});

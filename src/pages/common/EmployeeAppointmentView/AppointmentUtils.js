@@ -7,7 +7,8 @@ export const mappingAppointments = (data) => {
         return {
             id: appointment.appoinmentId,
             title: appointment.patientName.split(' ')[0] + ' ' + 
-            appointment.patientName.split(' ')[appointment.patientName.split(' ').length - 2],
+            appointment.patientName.split(' ')[appointment.patientName.split(' ').length === 4 ? 
+            appointment.patientName.split(' ').length - 2 : appointment.patientName.split(' ').length - 1],
             start: getDateWithHour(appointment.appointmentDate, appointment.startHour),
             end: getDateWithHour(appointment.appointmentDate, appointment.endHour),
             color: APPOINTMENT_STATUS.filter(status => status.name === appointment.status)[0].colorHex,

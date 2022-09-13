@@ -91,7 +91,10 @@ const DependentPage = () => {
 
     const create = async(data) => {
         const result = await createDependent(data);
-        if(result.success && result.success === true) setIsChange(!isChange);
+        if(result.success && result.success === true) {
+            result.message = 'Dependiente creado exitosamente';
+            setIsChange(!isChange);
+        }    
 
         setIsLoading({success: result.success});
         setAlert(result);
@@ -101,7 +104,10 @@ const DependentPage = () => {
 
     const edit = async(data) => {
         const result = await updateDependent(data);
-        if(result.success && result.success === true) setIsChange(!isChange);
+        if(result.success && result.success === true) {
+            result.message = 'Dependiente actualizado exitosamente';
+            setIsChange(!isChange);
+        }    
             
         setIsLoading({success: result.success});
         setAlert(result);
@@ -151,8 +157,11 @@ const DependentPage = () => {
         setIsLoading({success: undefined});
         const result = await deleteDependent(data);
         
-        if(result.success && result.success === true) setIsChange(!isChange);  
-        
+        if(result.success && result.success === true) {
+            result.message = 'Dependiente eliminado con éxito';
+            setIsChange(!isChange);  
+        }
+
         setIsLoading({success: result.success});
         setAlert(result);
         

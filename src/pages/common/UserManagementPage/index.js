@@ -91,8 +91,11 @@ const UserManagementPage = () => {
 
     const create = async(data) => {
         const result = await createEmployee(data);
-        if(result.success && result.success === true) setIsChange(!isChange);
-            
+        if(result.success && result.success === true) {
+            result.message = 'Usuario creado con éxito';
+            setIsChange(!isChange);
+        }    
+        
         setIsLoading({success: result.success});
         setAlert(result);
 
@@ -103,8 +106,11 @@ const UserManagementPage = () => {
         data.isDeleted = parseInt(data.statusId) === 1 ? false : true;
 
         const result = await updateEmployee(data);
-        if(result.success && result.success === true) setIsChange(!isChange);
-        
+        if(result.success && result.success === true) {
+            result.message = 'Usuario actualizado exitosamente';
+            setIsChange(!isChange);
+        }
+
         setIsLoading({success: result.success});
         setAlert(result);
 
