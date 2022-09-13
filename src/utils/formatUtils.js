@@ -11,3 +11,5 @@ export const formatPhone = /^[09]{2}[0-9]+$/;
 export const formatPrice = /^\d+(?:\.\d{1,2})?$/;
 
 export const formatSecurePassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d (@$!%*?_\-&)?]{5,}$/;
+
+export const formatURL = /\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/;
