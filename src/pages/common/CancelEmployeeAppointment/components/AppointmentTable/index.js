@@ -1,6 +1,7 @@
 import DataTable from 'react-data-table-component';
 import { Button } from 'react-bootstrap';
 import { MdVisibility } from "react-icons/md";
+import { mappingAppointmentsForCancel } from '../../utils';
 import styles from './AppointmentTable.module.css';
 
 // Opciones de paginación
@@ -95,7 +96,7 @@ const AppointmentTable = ({
     ];
 
     const handleChange = (selectedRows) => {
-        setAppointmentsForCancel([...selectedRows.selectedRows]);
+        setAppointmentsForCancel(mappingAppointmentsForCancel([...selectedRows.selectedRows]));
     }
     
     return (
