@@ -3,7 +3,14 @@ import { Form, Row, Col } from 'react-bootstrap';
 import { getGeneralTreatmentName } from 'services/GeneralTreatments';
 import styles from './SelectGeneralService.module.css';
 
-const SelectGeneralService = ({dataTreatments, setFilterTreatments, valueSelected, setValueSelected}) => {
+const SelectGeneralService = (
+    {
+        storeTreatments, 
+        setFilterTreatments, 
+        valueSelected, 
+        setValueSelected,
+        setDataTreatments
+    }) => {
 
     const [generalTreatments, setGeneralTreatments] = useState(null);
 
@@ -18,11 +25,13 @@ const SelectGeneralService = ({dataTreatments, setFilterTreatments, valueSelecte
     const handleChange = (e) => {
         setValueSelected(e.target.value);
         if(parseInt(e.target.value) !== 0) {
-            const filterData = dataTreatments.filter(treatment => treatment.generalTreatmentId === parseInt(e.target.value));
+            const filterData = storeTreatments.filter(treatment => treatment.generalTreatmentId === parseInt(e.target.value));
             setFilterTreatments(filterData);
+            setDataTreatments(filterData);
             return;
         }
-        setFilterTreatments(dataTreatments);
+        setDataTreatments(storeTreatments);
+        setFilterTreatments(storeTreatments);
     }
 
     return (

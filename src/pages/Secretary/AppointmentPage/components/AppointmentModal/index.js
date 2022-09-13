@@ -5,16 +5,16 @@ import { useWindowWidth } from '@react-hook/window-size';
 import moment from 'moment';
 import { v4 as uuidv4 } from 'uuid';
 import ContainerAvailableHours from '../ContainerAvailableHours';
-import { getOffices, getDentalServices, getDentistByOffice, getAvailabilityHours } from 'services/SchedulingService';
+import { getDentalServices, getDentistByOffice, getAvailabilityHours } from 'services/SchedulingService';
 import Select from 'react-select'
 import { AlertMessage } from 'components';
 import { UNEXPECTED_ERROR } from 'constants/InformationMessage';
+import { getLocalUser } from 'services/UserService';
 import styles from './AppointmentModal.module.css';
 
 const AppointmentModal = ({show, handleClose, createNewAppointment}) => {
     
     const [dentists, setDentists] = useState(null);
-    const [offices, setOffices] = useState(null);
     const [services, setServices] = useState(null);
     const [availableHours, setAvailableHours] = useState(null);
     const [areSchedulesAvailable, setAreSchedulesAvailable] = useState(false);
@@ -45,27 +45,15 @@ const AppointmentModal = ({show, handleClose, createNewAppointment}) => {
         register("appointmentDate", {required: "Fecha es requerida"});
         register("hours", {required: "Hora de la cita es requerida"});
 
-        getOffices().then(res => setOffices(res.data))
-            .catch(err => err)
+        setValue('officeId', getLocalUser().officeId, true);
+        
+        getDentistByOffice(getLocalUser().officeId).then(res => setDentists(res.data))
+            .catch(err => handleErrorLoading(err));
+        
+        getDentalServices().then(res => setServices(res.data))
+            .catch(err => handleErrorLoading(err));    
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-
-    // Se invoca cada vez que se cambia la selección hecha en el combobox de consultorio
-    useEffect(() => {
-        if(selectOffice !== '') {
-            
-            // Se verifica si ya había seleccionado un odontologo en su respectivo combobox
-            // de ser así se resetea el combobox
-            if(selectDentistRef.current !== null && selectDentistRef.current !== undefined) {
-                selectDentistRef.current.clearValue();
-                setValue('dentistId', '', true);
-            }
-
-            getDentistByOffice(selectOffice).then(res => setDentists(res.data))
-                .catch(err => handleErrorLoading(err));
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps  
-    }, [selectOffice]);
 
     // Se invoca cada vez que se cambia la selección hecha en el combobox de servicio dental
     useEffect(() => {
@@ -105,17 +93,9 @@ const AppointmentModal = ({show, handleClose, createNewAppointment}) => {
         setAreSchedulesAvailable(false);
     }, [selectDate]);
 
-    const handleSelectOffice = (e) => {
-        setValue('officeId', parseInt(e.value), true);
-
-        getDentalServices().then(res => setServices(res.data))
-            .catch(err => handleErrorLoading(err));  
-    }
-
     const handleSelectService = (e) => 
         setValue('generalTreatmentId', parseInt(e.value), true);
     
-
     const handleSelectDentist = (e) => {
         if(e !== null && e !== undefined) setValue('dentistId', parseInt(e.value), true);
     }
@@ -203,15 +183,10 @@ const AppointmentModal = ({show, handleClose, createNewAppointment}) => {
                             <Col sm={12} md>
                                 <Form.Group className="mb-3" controlId="formBasicOffice">
                                     <Form.Label className={styles.label_input}>* Consultorio</Form.Label><br />
-                                    <Select 
-                                    options={offices && offices.map(office => {
-                                        return {
-                                            value: office.value,
-                                            label: office.title
-                                        }
-                                    })}
-                                    placeholder={'Seleccione'}
-                                    onChange={handleSelectOffice}
+                                    <Form.Control 
+                                    type="text" 
+                                    value={getLocalUser().officeName}
+                                    disabled
                                     />
                                     { errors.officeId && <p className={styles.error_message}>{ errors.officeId.message }</p> }
                                 </Form.Group>

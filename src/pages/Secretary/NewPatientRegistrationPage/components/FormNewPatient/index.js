@@ -47,6 +47,9 @@ const FormNewPatient = ({setIsLoading, setAlert}) => {
         data.genderId = parseInt(data.genderId);
 
         const result = await createPerson(data);
+
+        if(result.success && result.success === true) result.message = 'Paciente creado con éxito';
+
         setAlert(result);
         setIsLoading({success: result.success});
 

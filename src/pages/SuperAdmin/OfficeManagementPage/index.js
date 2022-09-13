@@ -80,8 +80,11 @@ const OfficeManagementPage = () => {
 
     const create = async(data) => {
         const result = await createOffice(data);
-        if(result.success && result.success === true) setIsChange(!isChange);
-            
+        if(result.success && result.success === true) {
+            result.message = 'Consultorio creado con éxito';
+            setIsChange(!isChange);
+        }
+
         setIsLoading({success: result.success});
         setAlert(result);
 
@@ -93,6 +96,7 @@ const OfficeManagementPage = () => {
         
         const result = await updateOffice(data);
         if(result.success && result.success === true) {
+            result.message = 'Consultorio actualizado exitosamente';
             const newList = offices.map(office => 
                 office.id === data.id ? { ...office, ...data} : office    
             );

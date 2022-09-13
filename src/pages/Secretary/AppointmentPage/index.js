@@ -81,6 +81,9 @@ const AppointmentPage = () => {
         }
 
         const result = await createAppointment(dataAppointment);
+
+        if(result.success && result.success === true) result.message = 'Cita agendada con éxito';
+
         setAlert(result);
         setIsLoading({success: result.success});
 

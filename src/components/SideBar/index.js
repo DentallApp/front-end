@@ -26,7 +26,6 @@ const SideBar = () => {
         setLoading(true);
     }, []);
 
-
     return(
         <>
             {loading === true ? (

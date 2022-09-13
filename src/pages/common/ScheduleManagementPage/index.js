@@ -72,6 +72,7 @@ const ScheduleManagementPage = () => {
         const result = await createSchedule(data);
         if(result.success && result.success === true) {
             showSchedules(data.employeeId);
+            result.message = 'Horario creado con éxito';
         }    
 
         setIsLoading({success: result.success});
@@ -95,6 +96,8 @@ const ScheduleManagementPage = () => {
                 schedule.scheduleId === data.scheduleId ? { ...schedule, ...data} : schedule    
             );
             setSchedules(newList);
+
+            result.message = 'Horario actualizado exitosamente';
         }    
 
         setIsLoading({success: result.success});

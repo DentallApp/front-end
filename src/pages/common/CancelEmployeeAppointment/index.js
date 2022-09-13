@@ -66,6 +66,7 @@ const CancelEmployeeAppointment = () => {
 
     // Trae las citas de todos los odontologos dentro de un rango de fecha definido
     const getAppointments = (startDate, endDate) => {
+
         if(getLocalUser().roles.includes(ROLES.SECRETARY) || getLocalUser().roles.includes(ROLES.ADMIN)) {
             getScheduledAppointmentByOffice(moment(startDate).format('yyyy-MM-DD'), moment(endDate).format('yyyy-MM-DD'))
                 .then(res => {
@@ -195,7 +196,7 @@ const CancelEmployeeAppointment = () => {
                searchAppointments={searchAppointments}
                />
             </div>
-            <div style={{'marginLeft': '20px', 'marginRight': '20px', 'display': 'flex', 'alignItems': 'center'}}>
+            <div className={styles.container_filters}>
                 {
                     getLocalUser().roles.includes(ROLES.SECRETARY) ||
                         getLocalUser().roles.includes(ROLES.ADMIN)  ? (

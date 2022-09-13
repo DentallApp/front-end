@@ -20,6 +20,7 @@ const TreatmentPage = () => {
     const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
 
     // Estado para los datos de la tabla
+    const [storeTreatments, setStoreTreatments] = useState(null);
     const [dataTreatments, setDataTreatments] = useState(null);
     const [isChange, setIsChange] = useState(false);
     const [filterTreatments, setFilterTreatments] = useState([]);
@@ -40,6 +41,7 @@ const TreatmentPage = () => {
     useEffect(() => {
         getSpecificTreatment()
         .then(res => {
+            setStoreTreatments(res.data);
             setDataTreatments(res.data);
             setFilterTreatments(res.data);
         })
@@ -52,7 +54,9 @@ const TreatmentPage = () => {
     useEffect(() => {
         if(filterTreatments?.length > 0 && filterText !== '') filterData();
         
-        if(filterTreatments?.length <= 0 || filterText === '') setFilterTreatments(dataTreatments);
+        if((filterTreatments?.length <= 0 || filterText === '') && valueSelected === 0) setFilterTreatments(storeTreatments);
+
+        if((filterTreatments?.length <= 0 || filterText === '') && valueSelected !== 0) setFilterTreatments(dataTreatments);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [filterText]);
 
@@ -67,16 +71,20 @@ const TreatmentPage = () => {
     // Función que capta los datos que se ingresa en el input y realiza el filtro de la tabla 
     const handleChange = (e) => {
         setFilterText(e.target.value.toString());
-        if(filterText === '' || filterTreatments.length <= 0) {
-            setResetPaginationToggle(!resetPaginationToggle);
-            setFilterTreatments(dataTreatments);
-        }
+        if((filterText === '' || filterTreatments.length <= 0) && valueSelected === 0) 
+            setFilterTreatments(storeTreatments);
+        
+        if((filterText === '' || filterTreatments.length <= 0) && valueSelected !== 0)
+            setFilterTreatments(dataTreatments)
     }
 
     // Función que limpia los campos del input y resetea la tabla
     const handleClear = () => {
         setResetPaginationToggle(!resetPaginationToggle);
-        setFilterTreatments(dataTreatments);
+        if(valueSelected !== 0) setFilterTreatments(dataTreatments);
+        
+        if(valueSelected === 0) setFilterTreatments(storeTreatments);
+        
         setFilterText('');
     };
 
@@ -90,8 +98,11 @@ const TreatmentPage = () => {
 
     const create = async(data) => {
         const result = await createSpecificTreatment(data);
-        if(result.success && result.success === true) setIsChange(!isChange);
-        
+        if(result.success && result.success === true) {
+            result.message = 'Tratamiento creado con éxito';
+            setIsChange(!isChange);
+        }
+
         setIsLoading({success: result.success});
         setAlert(result);
 
@@ -100,8 +111,11 @@ const TreatmentPage = () => {
 
     const edit = async(data) => {
         const result = await updateSpecificTreatment(data);
-        if(result.success && result.success === true) setIsChange(!isChange);
-        
+        if(result.success && result.success === true) {
+            result.message = 'Tratamiento actualizado exitosamente';
+            setIsChange(!isChange);
+        }
+
         setIsLoading({success: result.success});
         setAlert(result);
 
@@ -133,8 +147,11 @@ const TreatmentPage = () => {
         setIsLoading({success: undefined});
         const result = await deleteSpecificTreatment(data);
 
-        if(result.success && result.success === true) setIsChange(!isChange);
-        
+        if(result.success && result.success === true) {
+            result.message = 'Tratamiento eliminado con éxito';
+            setIsChange(!isChange);
+        }
+
         setIsLoading({success: result.success});
         setAlert(result);
         handleErrors(result);
@@ -180,10 +197,11 @@ const TreatmentPage = () => {
             { errorLoading.success === false && (
                 <>
                     <SelectGeneralService
-                    dataTreatments={dataTreatments} 
+                    storeTreatments={storeTreatments} 
                     setFilterTreatments={setFilterTreatments}
                     valueSelected={valueSelected}
-                    setValueSelected={setValueSelected} />
+                    setValueSelected={setValueSelected}
+                    setDataTreatments={setDataTreatments} />
 
                     <FilterComponent 
                     onFilter={handleChange} 
