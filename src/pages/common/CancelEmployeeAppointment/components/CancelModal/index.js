@@ -2,9 +2,9 @@ import { Form, Button, Modal } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import styles from './CancelModal.module.css';
 
-const CancelModal = ({show, handleClose, appointmentsForCancel, cancelAppointments}) => {
+const CancelModal = ({show, handleClose, appointmentsForCancel, cancel}) => {
 
-    const { register, handleSubmit, formState: {errors} } = useForm();
+    const { register, handleSubmit, setError, formState: {errors} } = useForm();
 
     return (
         <Modal 
@@ -18,16 +18,19 @@ const CancelModal = ({show, handleClose, appointmentsForCancel, cancelAppointmen
                 Esta a punto de cancelar las citas de los siguientes pacientes:<br /> 
                 {
                     appointmentsForCancel.map(appointment => (
-                        <p key={appointment.id}>📋 {appointment.patient}</p>
+                        <p key={appointment.appoinmentId}>📋 {appointment.patientName}</p>
                     ))
                 }
                 <br/>
                 <Form
                 className={styles.container_form} 
-                onSubmit={handleSubmit((data) => cancelAppointments(data))}
+                onSubmit={handleSubmit((data) => cancel(data, setError))}
                 >
                     <Form.Label>Motivo</Form.Label>
-                    <Form.Control as="textarea" rows={5}
+                    <Form.Control 
+                    as="textarea" 
+                    rows={5}
+                    maxLength={200}
                     placeholder="Ingrese motivo de cancelación"
                     {...register("reason", {
                         required: "Motivo de cancelación es requerido",
