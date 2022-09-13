@@ -1,7 +1,9 @@
 import DataTable from 'react-data-table-component';
 import { Button } from 'react-bootstrap';
 import { MdVisibility } from "react-icons/md";
+import { getLocalUser } from 'services/UserService';
 import { mappingAppointmentsForCancel } from '../../utils';
+import ROLES from 'constants/Roles';
 import styles from './AppointmentTable.module.css';
 
 // Opciones de paginación
@@ -51,7 +53,10 @@ const AppointmentTable = ({
         },
         {
             name: <div className={styles.container_table_header}><h6>Odontologo</h6></div>,
-            selector: row => row.dentistName,
+            selector: row => (getLocalUser().roles.includes(ROLES.SECRETARY) || 
+                getLocalUser().roles.includes(ROLES.ADMIN)) ?
+                row.dentistName :
+                getLocalUser().fullName,
             center: true,
             wrap: true,
             width: "170px",
