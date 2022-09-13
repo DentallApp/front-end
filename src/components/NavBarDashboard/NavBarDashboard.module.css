@@ -16,7 +16,6 @@ header {
 .toggle {
     width: 40px;
     height: 40px;
-    /*background-color: rgba(75,73,172,255);*/
     background-color: #002855;
     border-radius: 50%;
     display: flex;
@@ -31,18 +30,37 @@ header {
 }
 
 .user {
-    width: 65px;
-    height: 65px;
+    width: 70px;
+    height: 70px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-right: 20px;
     cursor: pointer;
 }
 
 .user img {
-    width: 100%;
-    height: 100%;
+    width: 30px;
+    height: 30px;
+}
+
+.container_user_info {
+    display: flex;
+    align-items: center;
+}
+
+.user_name {
+    color: #3457D5;
+    font-weight: bold;
+    text-align: center;
+}
+
+.user_role {
+    text-align: center;
+    color: #002855;
+    font-size: 1.1rem;
+    font-weight: bold;
+    font-style: italic;
+    font-family: 'Vollkorn', serif;
 }
 
 @media screen and (min-width: 1000px) {
