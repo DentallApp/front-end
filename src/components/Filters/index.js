@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { BsSearch } from "react-icons/bs";
 import styles from './Filters.module.css';
 
-const Filters = ({startDate, endDate, searchAppointments}) => {
+const Filters = ({startDate, endDate, searchAppointments, minDate=''}) => {
 
     const { register, handleSubmit, setValue, watch, setError,  formState: {errors} } = useForm({
         defaultValues: {
@@ -37,6 +37,7 @@ const Filters = ({startDate, endDate, searchAppointments}) => {
                                 <Form.Label className={styles.label_input}>Desde</Form.Label>
                                 <Form.Control 
                                 type="date"
+                                min={minDate}
                                 value={startDateValue}
                                 onChange={startDateChange}
                                 {...register("startDate", {required: 'Fecha es requerida'})}
@@ -47,6 +48,7 @@ const Filters = ({startDate, endDate, searchAppointments}) => {
                                 <Form.Label className={styles.label_input}>Hasta</Form.Label>
                                 <Form.Control 
                                 type="date"
+                                min={minDate}
                                 value={endDateValue}
                                 onChange={endDateChange}
                                 {...register("endDate", {required: 'Fecha es requerida'})}

@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react';
-import {  Col, Spinner, Button  } from 'react-bootstrap';
+import { useState, useEffect, useRef } from 'react';
+import { Row, Col, Spinner, Button  } from 'react-bootstrap';
 import moment from 'moment';
-import { Filters, FilterComponent, FilterDentist, ModalLoading, AlertMessage  } from 'components';
+import Select from 'react-select';
+import { Filters, FilterComponent, ModalLoading, AlertMessage } from 'components';
 import { AppointmentTable, AppointmentModal, CancelModal } from './components';
 import { getDentists } from 'services/DentistScheduleService';
 import { getLocalUser } from 'services/UserService';
@@ -26,6 +27,7 @@ const CancelEmployeeAppointment = () => {
     const [selectDentist, setSelectDentist] = useState(0);
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
+    const dentistRef = useRef();
 
     // Estado para el modal de cancelación de citas 
     const [typeModal, setTypeModal] = useState('form');
@@ -70,10 +72,13 @@ const CancelEmployeeAppointment = () => {
 
     // Trae las citas de todos los odontologos dentro de un rango de fecha definido
     const getAppointments = (startDate, endDate) => {
+        setFilterAppointments(null);
 
         if(getLocalUser().roles.includes(ROLES.SECRETARY) || getLocalUser().roles.includes(ROLES.ADMIN)) {
             getScheduledAppointmentByOffice(moment(startDate).format('yyyy-MM-DD'), moment(endDate).format('yyyy-MM-DD'))
                 .then(res => {
+                    dentistRef.current.setValue({value: 0, label: 'Todos'});
+                    setSelectDentist(0);
                     setStoreAppointments(res.data);
                     setAppointments(res.data);
                     setFilterAppointments(res.data);
@@ -115,7 +120,6 @@ const CancelEmployeeAppointment = () => {
         
         if(parseInt(e.value) !== 0) {
             const result = filterAppointmentByDentist(parseInt(e.value), storeAppointments);
-            console.log()
             setAppointments(result);
             setFilterAppointments(result);
         }
@@ -151,7 +155,7 @@ const CancelEmployeeAppointment = () => {
         }
 
         setStartDate(data.startDate);
-        setEndDate(data.endDate);
+        setEndDate(data.endDate);        
         getAppointments(data.startDate, data.endDate);
     }
 
@@ -248,18 +252,37 @@ const CancelEmployeeAppointment = () => {
                dentists={dentists}
                handleSelectDentist={handleSelectDentist}
                searchAppointments={searchAppointments}
+               minDate={moment().format('yyyy-MM-DD')}
                />
             </div>
             <div className={styles.container_filters}>
                 {
                     getLocalUser().roles.includes(ROLES.SECRETARY) ||
                         getLocalUser().roles.includes(ROLES.ADMIN)  ? (
-                            <Col sm={12} lg={6} md>
-                                <FilterDentist
-                                dentists={dentists}
-                                handleSelectDentist={handleSelectDentist}
-                                /> 
-                            </Col>
+                            <Row style={{'width':'100%'}}>
+                                <Col sm={12} lg={6} md>
+                                    <Select
+                                    style={{"minWidth": "80% !important"}}
+                                    ref={dentistRef}
+                                    defaultValue={{
+                                        value: 0, 
+                                        label: 'Todos' 
+                                    }}
+                                    options={ 
+                                        dentists && [{value: 0, label: 'Todos'}, ...dentists.map(data => {
+                                            return {
+                                                value: data.employeeId, 
+                                                label: data.fullName
+                                            }
+                                    })] }
+                                    onChange={handleSelectDentist}
+                                    noOptionsMessage={'No hay datos'}
+                                    className="basic-single"
+                                    classNamePrefix="select"
+                                    />
+                                </Col>
+                            </Row>
+                            
                         ):(
                             <></>
                         )

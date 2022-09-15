@@ -1,16 +1,26 @@
-import { useState, useEffect, useContext } from 'react';
-import {  Col, Spinner  } from 'react-bootstrap';
+import { useState, useEffect, useContext, useRef } from 'react';
+import { Row, Col, Spinner  } from 'react-bootstrap';
+import Select from 'react-select';
 import moment from 'moment';
 import { Filters, ModalLoading, AlertMessage } from 'components';
-import { AppointmentModal, DescriptionStatus, MobileCalendar, WebCalendar } from './components';
+import { 
+    AppointmentModal, 
+    DescriptionStatus, 
+    MobileCalendar, 
+    WebCalendar 
+} from './components';
 import SideBarContext from 'context/SideBarContext';
 import { setEventClassNames } from './utils';
 import APPOINTMENT_STATUS from 'constants/AppointmentStatus';
 import { getAppointmentStatus } from 'services/AppointmentStatusService';
 import { getDentists } from 'services/DentistScheduleService';
 import { getLocalUser } from 'services/UserService';
-import { getAppointmentByOffice, updateStatusAppointment, getAllAppointmentByDentist } from 'services/AppointmentEmployeeService';
-import { FilterDentist, FilterComponent } from 'components';
+import { 
+    getAppointmentByOffice, 
+    updateStatusAppointment, 
+    getAllAppointmentByDentist 
+} from 'services/AppointmentEmployeeService';
+import { FilterComponent } from 'components';
 import ROLES from 'constants/Roles';
 import { mappingAppointments, filterAppointmentByDentist } from './AppointmentUtils';
 import { handleErrors, handleErrorLoading } from 'utils/handleErrors';
@@ -27,6 +37,7 @@ const EmployeeAppointmentView = () => {
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
     const { onlyWidth } = useContext(SideBarContext);
+    const dentistRef = useRef();
 
     // Estados para el filtro
     const [filterText, setFilterText] = useState('');
@@ -72,8 +83,11 @@ const EmployeeAppointmentView = () => {
     // Trae las citas de todos los odontologos dentro de un rango de fecha definido
     const getAppointments = (startDate, endDate) => {
         if(getLocalUser().roles.includes(ROLES.SECRETARY) || getLocalUser().roles.includes(ROLES.ADMIN)) {
+            
             getAppointmentByOffice(moment(startDate).format('yyyy-MM-DD'), moment(endDate).format('yyyy-MM-DD'))
                 .then(res => {
+                    dentistRef.current.setValue({value: 0, label: 'Todos'});
+                    setSelectDentist(0);
                     setStoreAppointments(mappingAppointments(res.data));
                     setAppointments(mappingAppointments(res.data));
                     setFilterAppointments(mappingAppointments(res.data));
@@ -244,12 +258,30 @@ const EmployeeAppointmentView = () => {
                 {
                     getLocalUser().roles.includes(ROLES.SECRETARY) ||
                         getLocalUser().roles.includes(ROLES.ADMIN)  ? (
-                            <Col sm={12} lg={6} md>
-                                <FilterDentist
-                                dentists={dentists}
-                                handleSelectDentist={handleSelectDentist}
-                                /> 
-                            </Col>
+                            <Row style={{'width':'100%'}}>
+                                <Col sm={12} lg={6} md>
+                                    <Select
+                                    style={{"minWidth": "80% !important"}}
+                                    ref={dentistRef}
+                                    defaultValue={{
+                                        value: 0, 
+                                        label: 'Todos' 
+                                    }}
+                                    options={ 
+                                        dentists && [{value: 0, label: 'Todos'}, ...dentists.map(data => {
+                                            return {
+                                                value: data.employeeId, 
+                                                label: data.fullName
+                                            }
+                                    })] }
+                                    onChange={handleSelectDentist}
+                                    noOptionsMessage={'No hay datos'}
+                                    className="basic-single"
+                                    classNamePrefix="select"
+                                    />
+                                </Col>
+                            </Row>
+                            
                         ):(
                             <></>
                         )

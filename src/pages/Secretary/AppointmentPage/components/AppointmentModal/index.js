@@ -6,7 +6,7 @@ import moment from 'moment';
 import { v4 as uuidv4 } from 'uuid';
 import ContainerAvailableHours from '../ContainerAvailableHours';
 import { getDentalServices, getDentistByOffice, getAvailabilityHours } from 'services/SchedulingService';
-import Select from 'react-select'
+import Select from 'react-select';
 import { AlertMessage } from 'components';
 import { UNEXPECTED_ERROR } from 'constants/InformationMessage';
 import { getLocalUser } from 'services/UserService';
