@@ -109,10 +109,12 @@ const AppointmentPage = () => {
             <div className="underline mx-auto"></div>
             { 
                 alert && 
-                <AlertMessage 
-                type={ alert.success === false ? 'danger' : 'success' }
-                message={ alert.message }
-                setError= { setAlert }  /> 
+                <div className={styles.container_alert}>
+                    <AlertMessage 
+                    type={ alert.success === false ? 'danger' : 'success' }
+                    message={ alert.message }
+                    setError= { setAlert }  /> 
+                </div>   
             }
             <div className={styles.container_header}>
                 <Button 
