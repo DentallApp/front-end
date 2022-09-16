@@ -33,7 +33,7 @@ const Chatbot = () => {
 
         let userId ="User-"+ parseInt(Math.random()* 1000000);
     
-        const res = await fetch('http://localhost:5000/v3/directline/tokens/generate', 
+        const res = await fetch(`${process.env.REACT_APP_DIRECTLINE_URL}v3/directline/tokens/generate`, 
         { 
           method: 'POST', 
           headers:{
@@ -55,7 +55,11 @@ const Chatbot = () => {
             
     }, []);
 
-    directline = useMemo(() => createDirectLine({domain:'http://localhost:5000/v3/directline',token: token}), [token]);
+    directline = useMemo(() => createDirectLine({
+						domain:`${process.env.REACT_APP_DIRECTLINE_URL}v3/directline`, 
+						token: token, 
+						webSocket: process.env.REACT_APP_DIRECTLINE_WEB_SOCKET
+					}), [token]);
 
     const store = useMemo(() => createStore({}, ({dispatch}) => next => action => {
         if(action.type === 'DIRECT_LINE/POST_ACTIVITY') {
