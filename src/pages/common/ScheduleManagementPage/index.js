@@ -12,6 +12,7 @@ import {
 import { getAllEmployee } from 'services/EmployeeService';    
 import { getLocalUser } from 'services/UserService';
 import { handleErrors, handleErrorLoading } from 'utils/handleErrors';
+import STATUS from 'constants/Status';
 import styles from './ScheduleManagementPage.module.css';
 
 const ScheduleManagementPage = () => {
@@ -93,7 +94,11 @@ const ScheduleManagementPage = () => {
         const result = await updateSchedule(data);
         if(result.success && result.success === true) {
             const newList = schedules.map(schedule => 
-                schedule.scheduleId === data.scheduleId ? { ...schedule, ...data} : schedule    
+                schedule.scheduleId === data.scheduleId ? { 
+                    ...schedule, 
+                    ...data,
+                    status: data.isDeleted === false ? STATUS[0].name.toUpperCase() : STATUS[1].name.toUpperCase(), 
+                } : schedule    
             );
             setSchedules(newList);
 
