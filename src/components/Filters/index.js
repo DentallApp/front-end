@@ -19,6 +19,8 @@ const Filters = ({startDate, endDate, searchAppointments, minDate=''}) => {
     useEffect(() => {
         setValue("startDate", startDate, true);
         setValue("endDate", endDate, true);
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const startDateChange = (e) => setValue('startDate', e.target.value, true);
