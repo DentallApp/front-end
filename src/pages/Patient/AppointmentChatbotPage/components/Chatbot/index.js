@@ -58,7 +58,7 @@ const Chatbot = () => {
     directline = useMemo(() => createDirectLine({
 						domain:`${process.env.REACT_APP_DIRECTLINE_URL}v3/directline`, 
 						token: token, 
-						webSocket: process.env.REACT_APP_DIRECTLINE_WEB_SOCKET
+						webSocket: parseInt(process.env.REACT_APP_DIRECTLINE_WEB_SOCKET)
 					}), [token]);
 
     const store = useMemo(() => createStore({}, ({dispatch}) => next => action => {
