@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import listPlugin from '@fullcalendar/list';
 import esLocale from '@fullcalendar/core/locales/es';

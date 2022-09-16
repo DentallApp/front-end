@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { getAppointmentStatus } from 'services/AppointmentStatusService';
 import APPOINTMENT_STATUS from 'constants/AppointmentStatus';
 import styles from './DescriptionStatus.module.css';
 
@@ -9,7 +8,8 @@ const DescriptionStatus = ({listStatus}) => {
     useEffect(() => {
         setStatusAppointment(listStatus.filter(status => status.id === APPOINTMENT_STATUS[0].id || 
             status.id === APPOINTMENT_STATUS[2].id || status.id === APPOINTMENT_STATUS[4].id || 
-            status.id === APPOINTMENT_STATUS[5].id)); 
+            status.id === APPOINTMENT_STATUS[5].id));
+        // eslint-disable-next-line react-hooks/exhaustive-deps     
     }, []);
 
     return (
