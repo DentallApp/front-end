@@ -30,6 +30,11 @@
     justify-content: space-between;
 }
 
+.label_input {
+    font-style: italic;
+    font-weight: bold;
+}
+
 .container_alert {
     width: 100%;
     display: flex;

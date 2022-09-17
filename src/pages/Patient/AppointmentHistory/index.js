@@ -5,6 +5,7 @@ import { Spinner } from 'react-bootstrap';
 import { getAppointments } from 'services/AppointmentBasicUserService';
 import { getAppointmentStatus } from 'services/AppointmentStatusService';
 import { handleErrorLoading } from 'utils/handleErrors';
+import APPOINTMENT_STATUS from 'constants/AppointmentStatus';
 import styles from './AppointmentHistory.module.css';
 
 const AppointmentHistory = () => {
@@ -29,7 +30,9 @@ const AppointmentHistory = () => {
     useEffect(() => {
         getAppointmentStatus()
         .then(res => {
-            setListStatus(res.data);
+            setListStatus(res.data.filter(status => status.id === APPOINTMENT_STATUS[0].id || 
+            status.id === APPOINTMENT_STATUS[2].id || status.id === APPOINTMENT_STATUS[4].id || 
+            status.id === APPOINTMENT_STATUS[5].id));
             setStatusSelected(res.data[0].id.toString());
         })
         .catch(err => err);

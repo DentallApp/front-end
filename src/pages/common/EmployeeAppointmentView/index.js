@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext, useRef } from 'react';
-import { Row, Col, Spinner  } from 'react-bootstrap';
+import { Form, Row, Col, Spinner  } from 'react-bootstrap';
 import Select from 'react-select';
 import moment from 'moment';
 import { Filters, ModalLoading, AlertMessage } from 'components';
@@ -260,6 +260,7 @@ const EmployeeAppointmentView = () => {
                         getLocalUser().roles.includes(ROLES.ADMIN)  ? (
                             <Row style={{'width':'100%'}}>
                                 <Col sm={12} lg={6} md>
+                                    <Form.Label className={styles.label_input}>Odontólogos</Form.Label>
                                     <Select
                                     style={{"minWidth": "80% !important"}}
                                     ref={dentistRef}
@@ -276,7 +277,7 @@ const EmployeeAppointmentView = () => {
                                     })] }
                                     onChange={handleSelectDentist}
                                     noOptionsMessage={'No hay datos'}
-                                    className="basic-single"
+                                    className="basic-single mb-3"
                                     classNamePrefix="select"
                                     />
                                 </Col>
@@ -287,7 +288,7 @@ const EmployeeAppointmentView = () => {
                         )
                 }
                 <FilterComponent 
-                inputText='Escriba el nombre o cedula del paciente'
+                inputText='Digite nombre o cedula a buscar'
                 onFilter={handleChange} 
                 onClear={handleClear} 
                 filterText={filterText}
