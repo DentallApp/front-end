@@ -21,7 +21,9 @@ const NavBarDashboard = () => {
                 ):<></> }
                 <div className={styles.container_user_info}>
                     <div style={{'width':'100%'}}>
-                        <p className={styles.user_name}>{`${getLocalUser().names.split(' ')[0]} ${getLocalUser().lastNames.split(' ')[0]}`}</p>
+                        <p className={styles.user_name}>
+                            {`${getLocalUser().names?.split(' ')[0] ?? ''} ${getLocalUser().lastNames?.split(' ')[0] ?? ''}`}
+                        </p>
                         <p className={styles.user_role}>{ `(${getLocalUser().roles[getLocalUser().roles.length - 1]})`}</p>
                     </div>
                     <div className={styles.user}>
