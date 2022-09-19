@@ -8,17 +8,19 @@ import { logo } from 'img';
 import { logout } from 'services/AuthService';
 import { getLocalUser } from 'services/UserService';
 import ROLES from 'constants/Roles';
-import styles from './SideBar.module.css';
 import SecretaryOptions from './SecretaryOptions';
 import SuperadminOptions from './SuperadminOptions';
 import SideBarContext from 'context/SideBarContext';
+import CurrentUserNameContext from 'context/CurrentUserNameContext'; 
 import CommonOptions from './CommonOptions';
+import styles from './SideBar.module.css';
 
 const SideBar = () => {
 
     const { handleSidebar } = useContext(SideBarContext);
     const [userData, setUserData] = useState(getLocalUser());
     const [loading, setLoading] = useState(false);
+    const { clearNames } = useContext(CurrentUserNameContext);
 
     useEffect(() => {
         setUserData(getLocalUser());
@@ -78,6 +80,7 @@ const SideBar = () => {
                                 handleSidebar();
                                 logout();
                                 setUserData(null);
+                                clearNames();
                                 window.scrollTo({ top: 0, behavior: 'smooth' })
                             }}>
                                 <ImExit className={styles.icon} /> 

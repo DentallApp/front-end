@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Form, Button, Container, Row, Col } from 'react-bootstrap';
+import { Form, Button, Container, Row, Col, InputGroup } from 'react-bootstrap';
 import { FaArrowCircleLeft } from 'react-icons/fa';
+import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 import { useForm } from 'react-hook-form';
+import moment from 'moment';
 import { AlertMessage, ModalLoading } from 'components';
 import { trimSpaces, capitalizeFirstLetter } from 'utils/stringUtils';
 import { 
@@ -11,14 +13,11 @@ import {
     formatNames, 
     formatPhone,
     formatSecurePassword } from 'utils/formatUtils';
-import { calculatePreviousYear } from 'utils/dateUtils';
 import { verifyIdentityDocument } from 'utils/validationIdentityDocument'; 
 import { UNEXPECTED_ERROR } from 'constants/InformationMessage';  
 import { registerBasicUser } from 'services/UserService';
 import { getGenders } from 'services/GenderService';
 import styles from 'pages/Public/LoginPage/components/FormLogin/FormLogin.module.css';
-
-const maxDate = calculatePreviousYear(1);
 
 const RegistrationForm = () => {
 
@@ -27,6 +26,7 @@ const RegistrationForm = () => {
     const { register, handleSubmit, reset, setError, formState: {errors} } = useForm();
     const [genders, setGenders] = useState(null);
     const [alert, setAlert] = useState(null);
+    const [passwordShow, setPasswordShow] = useState(false); // Estado para la acción de mostrar contraseña
 
     useEffect(() => {
         getGenders()
@@ -198,24 +198,38 @@ const RegistrationForm = () => {
 
                         <Col xs={12} md>
                             <Form.Group className="mb-3" controlId="formBasicPassword">
-                                <Form.Label className={styles.label_input}>Contraseña</Form.Label>
-                                <Form.Control 
-                                type="password" 
-                                placeholder="Ingrese contraseña"
-                                {...register("password", { 
-                                    required: "Contraseña es requerida",
-                                    pattern: {
-                                        value: formatSecurePassword,
-                                        message: "La contraseña debe de contener: " +
-                                        "Mínimo 5 caracteres, una letra mayúscula, una minúscula y un número"
-                                    },
-                                    minLength: {
-                                        value: 5,
-                                        message: "La contraseña debe de tener mínimo 5 carácteres"
+                                <Form.Label className={styles.label_input}>* Contraseña</Form.Label>
+                                <InputGroup className="mb-1">
+                                    <Form.Control 
+                                    type={passwordShow ? "text" : "password"} 
+                                    {...register("password", { 
+                                        required: "Contraseña es requerida",
+                                        pattern: {
+                                            value: formatSecurePassword,
+                                            message: "La contraseña debe de contener: " +
+                                                "Mínimo 5 caracteres, una letra mayúscula, una minúscula y un número"
+                                        },
+                                        minLength: {
+                                            value: 5,
+                                            message: "La contraseña debe de tener mínimo 5 carácteres"
+                                        }
+                                    })}
+                                    placeholder="Ingrese contraseña" />
+                                    <Button 
+                                    style={
+                                        {
+                                            'borderRadius': '0px', 
+                                            'backgroundColor': 'transparent', 
+                                            'color': '#000',
+                                            'borderColor': '#ced4da'
+                                        }
                                     }
-                                })} />
-                                { errors.password && <p className={styles.error_message}>{ errors.password.message }</p> }
-                            </Form.Group>
+                                    onClick={() => setPasswordShow(!passwordShow)}>
+                                        {passwordShow ? <MdVisibilityOff /> : <MdVisibility />}
+                                    </Button>   
+                                </InputGroup>
+                                { errors.password && <p className={styles.error_message}>{ errors.password.message }</p> } 
+                            </Form.Group> 
                         </Col>
                     </Row>
 
@@ -244,7 +258,7 @@ const RegistrationForm = () => {
                                 <Form.Label className={styles.label_input}>Fecha de nacimiento</Form.Label>
                                 <Form.Control 
                                 type="date"
-                                max={maxDate}
+                                max={moment().format('yyyy-MM-DD')}
                                 {...register("dateBirth", {
                                     required: "Fecha de nacimiento requerida"
                                 })} />

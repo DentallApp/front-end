@@ -8,12 +8,9 @@ import {
     formatIdentityDocument, 
     formatNames,  
     formatPhone } from 'utils/formatUtils';
-import { calculatePreviousYear } from 'utils/dateUtils';
 import { getGenders } from 'services/GenderService';
 import { getKinship } from 'services/KinshipService';
 import styles from './FormModal.module.css';
-
-const maxDate = calculatePreviousYear(1);
 
 const FormModal = ({show, handleClose, dependentSelect = null, saveDependent}) => {
     const [genders, setGenders] = useState(null); // Estado para los géneros
@@ -186,7 +183,7 @@ const FormModal = ({show, handleClose, dependentSelect = null, saveDependent}) =
                             <Form.Label className={styles.label_input}>* Fecha de nacimiento</Form.Label>
                             <Form.Control 
                             type="date"
-                            max={maxDate}
+                            max={moment().format('yyyy-MM-DD')}
                             {...register("dateBirth", {
                                 required: "Fecha de nacimiento requerida"
                             })} />

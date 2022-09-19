@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import moment from 'moment';
@@ -9,6 +9,7 @@ import {
     formatNames, 
     formatPhone } from 'utils/formatUtils';
 import { handleErrors } from 'utils/handleErrors';
+import CurrentUserNameContext from 'context/CurrentUserNameContext'; 
 import styles from './FormProfile.module.css';
 
 const FormProfile = ({user, setIsLoading, setAlert}) => {
@@ -16,7 +17,7 @@ const FormProfile = ({user, setIsLoading, setAlert}) => {
     const [genders, setGenders] = useState(null);
     const { register, handleSubmit, setValue, formState: {errors} } = useForm();
     const [profile, setProfile] = useState(null);
-    
+    const { handleNames } = useContext(CurrentUserNameContext);
         
     useEffect(() => {
         setProfile({
@@ -83,6 +84,8 @@ const FormProfile = ({user, setIsLoading, setAlert}) => {
             setLocalUser(user);
             setProfile(data);
         }
+
+        handleNames();
         setAlert(result);
         handleErrors(result, setAlert, setIsLoading);
     }
@@ -188,6 +191,7 @@ const FormProfile = ({user, setIsLoading, setAlert}) => {
                                 <Form.Label className={styles.label_input}>* Fecha de nacimiento</Form.Label>
                                 <Form.Control 
                                 type="date"
+                                max={moment().format('yyyy-MM-DD')}
                                 {...register("dateBirth", {
                                     required: "Fecha de nacimiento requerida"
                                 })} />
