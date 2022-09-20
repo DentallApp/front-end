@@ -1,7 +1,7 @@
 import DataTable from 'react-data-table-component';
 import { Button, Badge } from 'react-bootstrap';
 import { FaSearch } from "react-icons/fa";
-import APPOINTMENT_STATUS from '../../../../../constants/AppointmentStatus';
+import APPOINTMENT_STATUS from 'constants/AppointmentStatus';
 import styles from './AppointmentsTable.module.css';
 
 // Opciones de paginación
