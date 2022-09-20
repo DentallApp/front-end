@@ -129,3 +129,7 @@ export const updateProfileEmployee = (data) => {
         };
     })
 }
+
+export const getAllEmployeeByOfficeId = async(officeId) => {
+    return await api.get('/employee/dentist/' + officeId);
+} 
