@@ -10,3 +10,6 @@ export { default as ScheduleManagementPage } from './ScheduleManagementPage';
 export { default as SessionExpiredPage } from './SessionExpiredPage';
 export { default as EmployeeAppointmentView } from './EmployeeAppointmentView';
 export { default as CancelEmployeeAppointment } from './CancelEmployeeAppointment';
+export { default as ReportAppointmentsPage } from './ReportAppointmentsPage';
+export { default as ReportScheduledAppointments } from './ReportScheduledAppointments';
+export { default as ReportDentalService } from './ReportDentalService';

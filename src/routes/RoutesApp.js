@@ -24,7 +24,10 @@ import {
     OfficeSchedulePage,
     ScheduleManagementPage, 
     EmployeeAppointmentView,
-    CancelEmployeeAppointment} from 'pages/common';
+    CancelEmployeeAppointment,
+    ReportAppointmentsPage,
+    ReportScheduledAppointments,
+    ReportDentalService} from 'pages/common';
 import { 
     AppointmentChatbotPage, 
     AppointmentHistory, 
@@ -98,6 +101,9 @@ const RoutesApp = () => {
                     <Route element={<Dashboard />}>
                         <Route path={'/gestion-usuarios'} element={<UserManagementPage />} />
                         <Route path={'/consultorios/horarios'} element={<OfficeSchedulePage />} />
+                        <Route path={'reportes/citas'} element={<ReportAppointmentsPage />} />
+                        <Route path={'reportes/citas-agendadas'} element={<ReportScheduledAppointments />} />
+                        <Route path={'reportes/ranking-servicios-dentales'} element={<ReportDentalService />} />
                     </Route>
                 </Route>
 
@@ -108,7 +114,7 @@ const RoutesApp = () => {
                     </Route>
                 </Route>
 
-                {/* Rutas privadas para el odontólogo */}
+                {/* Rutas privadas para el odontólogo, secretaria y administrador */}
                 <Route element={<PrivateRoute role={[ROLES.DENTIST, ROLES.SECRETARY, ROLES.ADMIN]} />}>
                     <Route element={<Dashboard />}>
                         <Route path="citas/calendario" element={<EmployeeAppointmentView />} />
