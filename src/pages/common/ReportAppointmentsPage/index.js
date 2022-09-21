@@ -158,6 +158,15 @@ const ReportAppointmentsPage = () => {
                 </div>
             }
 
+            {
+                getLocalUser().roles.includes(ROLES.SUPERADMIN) === false && (
+                    <p className={styles.office_current}>
+                        <span style={{"fontWeight":"bold"}}>Consultorio actual: </span> 
+                        {getLocalUser()?.officeName}
+                    </p>
+                )
+            }
+
             <div className={styles.container_filters}>
                 <Filters
                 listStatus={status}

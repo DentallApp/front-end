@@ -36,6 +36,11 @@
     align-items: center;
 }
 
+.office_current {
+    margin-left: 30px;
+    margin-top: 20px;
+}
+
 .container_spinner {
     display: flex;
     flex-direction: column;

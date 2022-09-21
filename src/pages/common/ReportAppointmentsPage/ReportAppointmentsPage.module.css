@@ -9,7 +9,7 @@
 
 .container {
     margin-left: 30px;
-    margin-right: 20px;
+    margin-right: 30px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -34,6 +34,11 @@
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.office_current {
+    margin-left: 30px;
+    margin-top: 20px;
 }
 
 .container_spinner {
