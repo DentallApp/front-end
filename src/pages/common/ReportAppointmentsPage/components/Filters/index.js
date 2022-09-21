@@ -38,7 +38,7 @@ const Filters = ({listStatus, offices, searchAppointments, setStartDate, setEndD
         });
 
         setStartDate(fromValue);
-        setEndDate(toValue)
+        setEndDate(toValue);
 
         if(getLocalUser().roles.includes(ROLES.SUPERADMIN) === false) 
             setValue('officeId', getLocalUser().officeId, true);
@@ -65,7 +65,11 @@ const Filters = ({listStatus, offices, searchAppointments, setStartDate, setEndD
                     <Col 
                     lg={12}>
                         <Row style={{'width':'100%'}}>
-                            <Col xs={6} md={3} lg={3} className='mb-2'>
+                            <Col 
+                            xs={6} 
+                            md={3} 
+                            lg={getLocalUser().roles.includes(ROLES.SUPERADMIN) ? 3 : 4} 
+                            className='mb-2'>
                                 <Form.Label className={styles.label_input}>Desde</Form.Label>
                                 <Form.Control 
                                 type="date"
@@ -75,7 +79,11 @@ const Filters = ({listStatus, offices, searchAppointments, setStartDate, setEndD
                                 />
                                 { errors.from && <p className={styles.error_message}>{ errors.from.message }</p> }
                             </Col>
-                            <Col xs={6} md={3} lg={3} className='mb-2'>
+                            <Col 
+                            xs={6} 
+                            md={3} 
+                            lg={getLocalUser().roles.includes(ROLES.SUPERADMIN) ? 3 : 4} 
+                            className='mb-2'>
                                 <Form.Label className={styles.label_input}>Hasta</Form.Label>
                                 <Form.Control 
                                 type="date"
@@ -85,7 +93,11 @@ const Filters = ({listStatus, offices, searchAppointments, setStartDate, setEndD
                                 />
                                 { errors.to && <p className={styles.error_message}>{ errors.to.message }</p> }
                             </Col>
-                            <Col xs={6} md={3} lg={3} className='mb-2'>
+                            <Col 
+                            xs={6} 
+                            md={3} 
+                            lg={getLocalUser().roles.includes(ROLES.SUPERADMIN) ? 3 : 4} 
+                            className='mb-2'>
                                 <Form.Label className={styles.label_input}>Estado</Form.Label>
                                 <Select
                                 placeholder={'Seleccione'}
@@ -100,34 +112,29 @@ const Filters = ({listStatus, offices, searchAppointments, setStartDate, setEndD
                                 />
                                 { errors.appoinmentStatusId && <p className={styles.error_message}>{ errors.appoinmentStatusId.message }</p> }
                             </Col>
-                            <Col xs={6} md={3} lg={3} className='mb-2'>
-                                <Form.Label className={styles.label_input}>Consultorios</Form.Label>
+                            
                                 {
-                                    getLocalUser().roles.includes(ROLES.SUPERADMIN) ? (
+                                    getLocalUser().roles.includes(ROLES.SUPERADMIN) && (
                                         <>
-                                            <Select
-                                            placeholder={'Seleccione'}
-                                            onChange={handleOffice}
-                                            options={(offices !== null && offices !== undefined) && 
-                                                offices.map(office => {
-                                                    return {
-                                                        value: office.id,
-                                                        label: office.name
-                                                    }
-                                                })
-                                            }
-                                            />
-                                            { errors.officeId && <p className={styles.error_message}>{ errors.officeId.message }</p> }
+                                            <Col xs={6} md={3} lg={3} className='mb-2'>
+                                                <Form.Label className={styles.label_input}>Consultorios</Form.Label>
+                                                <Select
+                                                placeholder={'Seleccione'}
+                                                onChange={handleOffice}
+                                                options={(offices !== null && offices !== undefined) && 
+                                                    offices.map(office => {
+                                                        return {
+                                                            value: office.id,
+                                                            label: office.name
+                                                        }
+                                                    })
+                                                }
+                                                />
+                                                { errors.officeId && <p className={styles.error_message}>{ errors.officeId.message }</p> }
+                                            </Col>
                                         </>
-                                    ):(
-                                        <Form.Control 
-                                        type="text"
-                                        disabled={true}
-                                        value={getLocalUser().officeName}
-                                        />
                                     )
                                 }
-                            </Col>
                         </Row>
                     </Col>
                 </Row>

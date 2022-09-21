@@ -135,6 +135,8 @@ const ReportAppointmentsPage = () => {
         if(result.status === 200) {
             const blob = new Blob([result.data], { type: 'application/pdf' });
             saveAs(blob, "reporte-de-citas.pdf");
+
+            setAlert({succes: true, message: 'Reporte descargado con éxito'});
         }
 
         handleErrors(result, setAlert, setIsLoading);
@@ -143,7 +145,7 @@ const ReportAppointmentsPage = () => {
     return (
         <>
             { isLoading ? (isLoading.success === undefined ? <ModalLoading show={true} /> : "") : ""}
-            <h1 className={'page_title'}>Cita asistidas, no asistidas y canceladas</h1>
+            <h1 className={'page_title'}>Citas asistidas, no asistidas y canceladas</h1>
             <div className="underline mx-auto"></div>
 
             { /* Mensaje de alerta para mostrar información al usuario */
