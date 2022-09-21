@@ -8,7 +8,7 @@ import { getLocalUser } from 'services/UserService';
 import ROLES from 'constants/Roles';
 import styles from './Filters.module.css';
 
-const Filters = ({offices, searchServices, setStartDate, setEndDate}) => {
+const Filters = ({offices, searchServices, setStartDate, setEndDate, setSelectOffice}) => {
 
     const { register, handleSubmit, setValue, watch, setError,  formState: {errors} } = useForm({
         defaultValues: {
@@ -36,8 +36,10 @@ const Filters = ({offices, searchServices, setStartDate, setEndDate}) => {
         setStartDate(fromValue);
         setEndDate(toValue)
 
-        if(getLocalUser().roles.includes(ROLES.SUPERADMIN) === false) 
+        if(getLocalUser().roles.includes(ROLES.SUPERADMIN) === false) {
             setValue('officeId', getLocalUser().officeId, true);
+            setSelectOffice(getLocalUser().officeName);
+        }    
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -49,7 +51,10 @@ const Filters = ({offices, searchServices, setStartDate, setEndDate}) => {
         setValue('to', e.target.value, true);
         setEndDate(e.target.value);
     }    
-    const handleOffice = (e) => setValue('officeId', e.value, true);
+    const handleOffice = (e) => {
+        setValue('officeId', e.value, true);
+        setSelectOffice(e.label);
+    }    
 
     return (
         <>

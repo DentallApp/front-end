@@ -160,7 +160,7 @@ const CommonOptions = () => {
                             to="reportes/ranking-servicios-dentales"
                             onClick={() => {window.scrollTo({ top: 0, behavior: 'smooth' })} }>
                                 <BsFillCheckCircleFill className={styles.icon}/> 
-                                Servicios dentales por citas atendidas
+                                Servicios dentales más solicitados
                             </NavLink>         
                         </ul>
                     ) }

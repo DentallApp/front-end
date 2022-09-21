@@ -9,7 +9,7 @@ import { handleErrors, handleErrorLoading } from 'utils/handleErrors';
 import { getLocalUser } from 'services/UserService';
 import ROLES from 'constants/Roles';
 import { getRankingDentalService } from 'services/ReportsService';
-import { downloadReportAppointment } from 'services/DownloadReportService';
+import { downloadReportMostRequestServices } from 'services/DownloadReportService';
 import styles from './ReportDentalService.module.css';
 
 const ReportDentalService = () => {
@@ -27,6 +27,7 @@ const ReportDentalService = () => {
 
     const [startDate, setStartDate] = useState(null);
     const [endDate, setEndDate] = useState(null);
+    const [selectOffice, setSelectOffice] = useState(null);
 
     // Estado para el mensaje de alerta
     const [alert, setAlert] = useState(null);
@@ -67,30 +68,21 @@ const ReportDentalService = () => {
     const downloadPDF = async() => {
         setIsLoading({success: undefined});
         
-        const appointments = filterServices.map(appointment => {
-            return {
-                appoinmentDate: appointment.appoinmentDate,
-                startHour: appointment.startHour,
-                patientName: appointment.patientName,
-                dentalServiceName: appointment.dentalServiceName,
-                dentistName: appointment.dentistName,
-                officeName: appointment.officeName,
-                status: appointment.appoinmentStatus
-            }
-        });
-
         const data = {
             from: startDate,
             to: endDate,
-            appoinments: appointments
+            officeName: selectOffice,
+            services: filterServices
         };
 
-        const result = await downloadReportAppointment(data);
+        const result = await downloadReportMostRequestServices(data);
         setIsLoading({success: result.status});
 
         if(result.status === 200) {
             const blob = new Blob([result.data], { type: 'application/pdf' });
-            saveAs(blob, "reporte-de-citas.pdf");
+            saveAs(blob, "reporte-de-servicios-mas-solicitados.pdf");
+
+            setAlert({succes: true, message: 'Reporte descargado con éxito'});
         }
 
         handleErrors(result, setAlert, setIsLoading);
@@ -99,7 +91,7 @@ const ReportDentalService = () => {
     return (
         <>
             { isLoading ? (isLoading.success === undefined ? <ModalLoading show={true} /> : "") : ""}
-            <h1 className={'page_title'}>Cita asistidas, no asistidas y canceladas</h1>
+            <h1 className={'page_title'}>Reporte de servicios dentales más solicitados</h1>
             <div className="underline mx-auto"></div>
 
             { /* Mensaje de alerta para mostrar información al usuario */
@@ -118,6 +110,7 @@ const ReportDentalService = () => {
                 searchServices={searchServices}
                 setStartDate={setStartDate}
                 setEndDate={setEndDate}
+                setSelectOffice={setSelectOffice}
                 />
             </div>
 
