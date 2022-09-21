@@ -144,7 +144,7 @@ const FormModal = ({show, handleClose, dependentSelect = null, saveDependent}) =
 
                     <Col xs={12} md>
                         <Form.Group className="mb-3" controlId="formBasicId">
-                            <Form.Label className={styles.label_input}>Cedula</Form.Label>
+                            <Form.Label className={styles.label_input}>* Cedula</Form.Label>
                             <Form.Control
                             disabled={dependentSelect !== null ? true : false}
                             type="number" 

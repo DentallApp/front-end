@@ -9,7 +9,7 @@ import { getAllEmployee, getAllEmployeeByOfficeId } from 'services/EmployeeServi
 import ROLES from 'constants/Roles';
 import styles from './Filters.module.css';
 
-const Filters = ({offices, searchAppointments}) => {
+const Filters = ({offices, searchAppointments, setStartDate, setEndDate, setSelectDentist}) => {
 
     const { register, handleSubmit, setValue, watch, setError,  formState: {errors} } = useForm({
         defaultValues: {
@@ -41,6 +41,9 @@ const Filters = ({offices, searchAppointments}) => {
             required: 'Fecha final es requerida'
         });
 
+        setStartDate(fromValue);
+        setEndDate(toValue);
+
         if(getLocalUser().roles.includes(ROLES.SUPERADMIN) === false) {
             setValue('officeId', parseInt(getLocalUser().officeId), true);
 
@@ -69,10 +72,21 @@ const Filters = ({offices, searchAppointments}) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps  
     }, [selectOffice]);
 
-    const fromChange = (e) => setValue('from', e.target.value, true);
-    const toChange = (e) => setValue('to', e.target.value, true);
+    const fromChange = (e) => {
+        setStartDate(e.target.value);
+        setValue('from', e.target.value, true);
+    }    
+
+    const toChange = (e) => {
+        setValue('to', e.target.value, true);
+        setEndDate(e.target.value);
+    }
+    
     const handleDentist = (e) => {
-        if(e !== null && e !== undefined) setValue('dentistId', e.value, true);
+        if(e !== null && e !== undefined) {
+            setSelectDentist(e);
+            setValue('dentistId', e.value, true);
+        }    
     }    
     const handleOffice = (e) => setValue('officeId', e.value, true);
 
