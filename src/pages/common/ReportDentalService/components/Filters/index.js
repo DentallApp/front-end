@@ -65,7 +65,11 @@ const Filters = ({offices, searchServices, setStartDate, setEndDate, setSelectOf
                     <Col 
                     lg={12}>
                         <Row style={{'width':'100%'}}>
-                            <Col xs={6} md={4} lg={4} className='mb-2'>
+                            <Col 
+                            xs={6} 
+                            md={getLocalUser().roles.includes(ROLES.SUPERADMIN) ? 4 : 6} 
+                            lg={getLocalUser().roles.includes(ROLES.SUPERADMIN) ? 4 : 6} 
+                            className='mb-2'>
                                 <Form.Label className={styles.label_input}>Desde</Form.Label>
                                 <Form.Control 
                                 type="date"
@@ -75,7 +79,11 @@ const Filters = ({offices, searchServices, setStartDate, setEndDate, setSelectOf
                                 />
                                 { errors.from && <p className={styles.error_message}>{ errors.from.message }</p> }
                             </Col>
-                            <Col xs={6} md={4} lg={4} className='mb-2'>
+                            <Col 
+                            xs={6} 
+                            md={getLocalUser().roles.includes(ROLES.SUPERADMIN) ? 4 : 6} 
+                            lg={getLocalUser().roles.includes(ROLES.SUPERADMIN) ? 4 : 6} 
+                            className='mb-2'>
                                 <Form.Label className={styles.label_input}>Hasta</Form.Label>
                                 <Form.Control 
                                 type="date"
@@ -85,34 +93,28 @@ const Filters = ({offices, searchServices, setStartDate, setEndDate, setSelectOf
                                 />
                                 { errors.to && <p className={styles.error_message}>{ errors.to.message }</p> }
                             </Col>
-                            <Col xs={6} md={4} lg={4} className='mb-2'>
-                                <Form.Label className={styles.label_input}>Consultorios</Form.Label>
                                 {
-                                    getLocalUser().roles.includes(ROLES.SUPERADMIN) ? (
+                                    getLocalUser().roles.includes(ROLES.SUPERADMIN) && (
                                         <>
-                                            <Select
-                                            placeholder={'Seleccione'}
-                                            onChange={handleOffice}
-                                            options={(offices !== null && offices !== undefined) && 
-                                                offices.map(office => {
-                                                    return {
-                                                        value: office.id,
-                                                        label: office.name
-                                                    }
-                                                })
-                                            }
-                                            />
-                                            { errors.officeId && <p className={styles.error_message}>{ errors.officeId.message }</p> }
+                                            <Col xs={6} md={4} lg={4} className='mb-2'>
+                                                <Form.Label className={styles.label_input}>Consultorios</Form.Label>
+                                                <Select
+                                                placeholder={'Seleccione'}
+                                                onChange={handleOffice}
+                                                options={(offices !== null && offices !== undefined) && 
+                                                    offices.map(office => {
+                                                        return {
+                                                            value: office.id,
+                                                            label: office.name
+                                                        }
+                                                    })
+                                                }
+                                                />
+                                                { errors.officeId && <p className={styles.error_message}>{ errors.officeId.message }</p> }
+                                            </Col>    
                                         </>
-                                    ):(
-                                        <Form.Control 
-                                        type="text"
-                                        disabled={true}
-                                        value={getLocalUser().officeName}
-                                        />
                                     )
                                 }
-                            </Col>
                         </Row>
                     </Col>
                 </Row>

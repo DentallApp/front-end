@@ -67,7 +67,7 @@ const Filters = ({listStatus, offices, searchAppointments, setStartDate, setEndD
                         <Row style={{'width':'100%'}}>
                             <Col 
                             xs={6} 
-                            md={3} 
+                            md={getLocalUser().roles.includes(ROLES.SUPERADMIN) ? 3 : 4} 
                             lg={getLocalUser().roles.includes(ROLES.SUPERADMIN) ? 3 : 4} 
                             className='mb-2'>
                                 <Form.Label className={styles.label_input}>Desde</Form.Label>
@@ -81,7 +81,7 @@ const Filters = ({listStatus, offices, searchAppointments, setStartDate, setEndD
                             </Col>
                             <Col 
                             xs={6} 
-                            md={3} 
+                            md={getLocalUser().roles.includes(ROLES.SUPERADMIN) ? 3 : 4} 
                             lg={getLocalUser().roles.includes(ROLES.SUPERADMIN) ? 3 : 4} 
                             className='mb-2'>
                                 <Form.Label className={styles.label_input}>Hasta</Form.Label>
@@ -95,7 +95,7 @@ const Filters = ({listStatus, offices, searchAppointments, setStartDate, setEndD
                             </Col>
                             <Col 
                             xs={6} 
-                            md={3} 
+                            md={getLocalUser().roles.includes(ROLES.SUPERADMIN) ? 3 : 4} 
                             lg={getLocalUser().roles.includes(ROLES.SUPERADMIN) ? 3 : 4} 
                             className='mb-2'>
                                 <Form.Label className={styles.label_input}>Estado</Form.Label>
