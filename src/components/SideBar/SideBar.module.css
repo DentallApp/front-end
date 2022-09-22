@@ -77,12 +77,16 @@
     color: #000 !important;
 }
 
-.navlink .icon {
+.navlink .icon, .navlink .bigIcon {
     margin-left: 5px !important;
     margin-right: 10px !important;
     font-size: 18px !important;
     /*color: rgba(75,73,172,255) !important;*/
     color: #002855 !important;
+}
+
+.navlink .bigIcon {
+    font-size: 25px !important;
 }
 
 .navlink .iconRight {
@@ -97,7 +101,7 @@
     margin-bottom: 5px !important;
 }
 
-.navlink:hover .icon {
+.navlink:hover .icon, .navlink:hover .bigIcon {
     color: #fff !important;
 }
 
@@ -146,5 +150,9 @@
 @media screen and (max-width: 400px) {
     .sidebar {
         width: 220px;
+    }
+
+    .submenu {
+        font-size: .8rem;
     }
 }

@@ -234,7 +234,7 @@ const CancelEmployeeAppointment = () => {
                     )
                 ):<></>
             }
-            <h1 className={styles.page_title}>Cancelar citas</h1>
+            <h1 className={'page_title'}>Cancelar citas</h1>
             <div className="underline mx-auto"></div>
             {/* Mensaje de alerta para mostrar información al usuario */
                 alert && 
