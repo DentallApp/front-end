@@ -30,8 +30,6 @@ const ReportScheduledAppointments = () => {
     // Estado para el mensaje de alerta
     const [alert, setAlert] = useState(null);
 
-    const [selectDentist, setSelectDentist] = useState(null);
-
     useEffect(() => {
         if(getLocalUser().roles.includes(ROLES.SUPERADMIN)) {
             getOfficesActiveAndInactive()
@@ -55,7 +53,6 @@ const ReportScheduledAppointments = () => {
 
         setIsLoading({success: undefined});
         data.officeId = parseInt(data.officeId);
-        data.dentistId = parseInt(data.dentistId);
 
         getScheduledAppointments(data).then(res => {
             setAppointments(res.data);
@@ -67,23 +64,11 @@ const ReportScheduledAppointments = () => {
 
     const downloadPDF = async() => {
         setIsLoading({success: undefined});
-        
-        const appointments = filterAppointments.map(appointment => {
-            return {
-                appoinmentDate: appointment.appoinmentDate,
-                startHour: appointment.startHour,
-                patientName: appointment.patientName,
-                dentalServiceName: appointment.dentalServiceName,
-                dentistName: selectDentist.label,
-                officeName: appointment.officeName,
-                status: appointment.appoinmentStatus
-            }
-        });
 
         const data = {
             from: startDate,
             to: endDate,
-            appoinments: appointments
+            appoinments: filterAppointments
         };
 
         const result = await downloadReportScheduledAppointment(data);
@@ -130,7 +115,6 @@ const ReportScheduledAppointments = () => {
                 searchAppointments={searchAppointments}
                 setStartDate={setStartDate}
                 setEndDate={setEndDate}
-                setSelectDentist={setSelectDentist}
                 />
             </div>
 
