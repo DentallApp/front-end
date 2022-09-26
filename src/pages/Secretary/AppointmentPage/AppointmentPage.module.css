@@ -26,8 +26,14 @@
     justify-content: space-between;
 }
 
-.filter{
+.text_search {
+    width: 50%;
     margin-right: 20px;
+}
+
+.button_search {
+    background-color: #002855 !important;
+    border-style: none;
 }
 
 .container_alert {
@@ -59,13 +65,15 @@
     margin-left: 20px;
 }
 
-@media screen and (max-width: 450px) {
+@media screen and (max-width: 500px) {
     .container_header {
         flex-direction: column;
         align-items: flex-start;
+        margin-right: 20px;
     }
 
-    .filter{
+    .text_search {
+        width: 100%;
         margin-top: 20px;
     }
 }

@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button, Spinner } from 'react-bootstrap';
+import { Button, Spinner, InputGroup, Form } from 'react-bootstrap';
 import { IoAddCircle } from "react-icons/io5";
-import { AlertMessage, ModalLoading, FilterComponent } from 'components';
+import { FaSearch } from "react-icons/fa";
+import { AlertMessage, ModalLoading } from 'components';
 import { PatientTable, AppointmentModal } from './components';
 import { handleErrors, handleErrorLoading } from 'utils/handleErrors';
 import { searchPerson } from 'services/PersonService';
@@ -31,11 +32,6 @@ const AppointmentPage = () => {
 
     // Estado para el modal de carga 
     const [isLoading, setIsLoading] = useState(null);
-    
-    useEffect(() => {
-        filterData();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [filterText]);
 
     const filterData = () => {
         if(filterText !== '')
@@ -51,13 +47,6 @@ const AppointmentPage = () => {
             setPatients(null);
         }
     }
-
-    // Función que limpia los campos del input y resetea la tabla
-    const handleClear = () => {
-        setResetPaginationToggle(!resetPaginationToggle);
-        setPatients(null);
-        setFilterText('');
-    };
 
     // Funciones para cerrar y mostrar el modal
     const handleClose = () => { 
@@ -122,18 +111,22 @@ const AppointmentPage = () => {
                 onClick={() => navigate('/registrar-paciente')}> 
                     <IoAddCircle className={styles.icon} /> Nuevo paciente
                 </Button>
-                <FilterComponent 
-                onFilter={handleChange} 
-                onClear={handleClear} 
-                filterText={filterText}
-                setFilterText={setFilterText}
-                inputText="Ingrese nombre o cedula de paciente a buscar"
-                className={styles.filter} />
+                <InputGroup className={styles.text_search}>
+                    <Form.Control 
+                    type="text"
+                    onChange={handleChange} 
+                    placeholder="Ingrese nombre o cédula a buscar" />
+                    <Button 
+                    className={styles.button_search}
+                    onClick={filterData}>
+                        <FaSearch />      
+                    </Button>   
+                </InputGroup>
             </div>
 
             {
                 errorLoading.success === false ? (
-                    filterText !== '' ? (
+                    (patients !== '' && patients !== null) ? (
                         patients ? (
                             <PatientTable
                             patients={patients}
@@ -150,7 +143,7 @@ const AppointmentPage = () => {
                         <h4 className={styles.text_error}>
                             No hay pacientes por mostrar
                         </h4>
-                    ) 
+                    )
                 ): 
                 (
                     <h4 className={styles.text_error}>
