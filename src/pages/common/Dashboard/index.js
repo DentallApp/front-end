@@ -16,7 +16,7 @@ const Dashboard = () => {
                 <NavBarDashboard />
                 <div className={styles.contain}
                 onClick={() => {
-                    if(display === true) handleSidebar()
+                    if(display === true) handleSidebar(false)
                 }}>
                     <Outlet />
                 </div>

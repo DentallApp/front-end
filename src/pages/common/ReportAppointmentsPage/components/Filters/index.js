@@ -1,14 +1,22 @@
-import { useEffect } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Form, Button, Row, Col } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import Select from 'react-select';
 import moment from 'moment';
 import { BsSearch } from "react-icons/bs";
 import { getLocalUser } from 'services/UserService';
+import { getAllEmployee, getAllEmployeeByOfficeId } from 'services/EmployeeService';
 import ROLES from 'constants/Roles';
 import styles from './Filters.module.css';
 
-const Filters = ({listStatus, offices, searchAppointments, setStartDate, setEndDate}) => {
+const Filters = ({
+    offices, 
+    searchAppointments, 
+    setStartDate, 
+    setEndDate, 
+    setSelectOffice, 
+    setSelectDentist
+}) => {
 
     const { register, handleSubmit, setValue, watch, setError,  formState: {errors} } = useForm({
         defaultValues: {
@@ -17,16 +25,20 @@ const Filters = ({listStatus, offices, searchAppointments, setStartDate, setEndD
         }
     });
 
+    const selectDentistRef = useRef();
+    const [dentists, setDentists] = useState(null);
+
     const fromValue = watch("from");
     const toValue = watch("to");
+    const selectOffice = watch("officeId");
 
     useEffect(() => {
-        register('appoinmentStatusId', {
-            required: 'El estado es requerido'
-        });
-
         register('officeId', {
             required: 'Consultorio es requerido'
+        });
+
+        register('dentistId', {
+            required: 'El odontólogo es requerido'
         });
 
         register('from', {
@@ -40,10 +52,35 @@ const Filters = ({listStatus, offices, searchAppointments, setStartDate, setEndD
         setStartDate(fromValue);
         setEndDate(toValue);
 
-        if(getLocalUser().roles.includes(ROLES.SUPERADMIN) === false) 
+        if(getLocalUser().roles.includes(ROLES.SUPERADMIN) === false) { 
             setValue('officeId', getLocalUser().officeId, true);
+
+            setSelectOffice({value: getLocalUser().officeId, label: getLocalUser().officeName});
+
+            getAllEmployee()
+                .then(res => setDentists(res.data))
+                .catch(err => err);
+        }        
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    // Se invoca cada vez que se cambia la selección hecha en el combobox de consultorio
+    useEffect(() => {
+        if(selectOffice !== '' && selectOffice !== undefined && getLocalUser().roles.includes(ROLES.SUPERADMIN)) {
+            
+            // Se verifica si ya había seleccionado un odontologo en su respectivo combobox
+            // de ser así se resetea el combobox
+            if(selectDentistRef.current !== null && selectDentistRef.current !== undefined) {
+                setValue('dentistId', 0, true);
+                selectDentistRef.current.setValue({value: 0, label: 'Todos'});
+            }
+            
+            if(selectOffice !== 0)
+                getAllEmployeeByOfficeId(selectOffice).then(res => setDentists(res.data))
+                    .catch(err => err);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps  
+    }, [selectOffice]);
 
     const fromChange = (e) => {
         setValue('from', e.target.value, true);
@@ -53,8 +90,18 @@ const Filters = ({listStatus, offices, searchAppointments, setStartDate, setEndD
         setValue('to', e.target.value, true);
         setEndDate(e.target.value);
     }    
-    const handleStatus = (e) => setValue('appoinmentStatusId', e.value, true);
-    const handleOffice = (e) => setValue('officeId', e.value, true);
+
+    const handleOffice = (e) => {
+        setValue('officeId', parseInt(e.value), true);
+        setSelectOffice(e);
+    }    
+
+    const handleDentist = (e) => {
+        if(e !== null && e !== undefined) {
+            setSelectDentist(e);
+            setValue('dentistId', parseInt(e.value), true);
+        }    
+    } 
 
     return (
         <>
@@ -66,7 +113,8 @@ const Filters = ({listStatus, offices, searchAppointments, setStartDate, setEndD
                     lg={12}>
                         <Row style={{'width':'100%'}}>
                             <Col 
-                            xs={6} 
+                            xs={12}
+                            sm={6} 
                             md={getLocalUser().roles.includes(ROLES.SUPERADMIN) ? 3 : 4} 
                             lg={getLocalUser().roles.includes(ROLES.SUPERADMIN) ? 3 : 4} 
                             className='mb-2'>
@@ -80,7 +128,8 @@ const Filters = ({listStatus, offices, searchAppointments, setStartDate, setEndD
                                 { errors.from && <p className={styles.error_message}>{ errors.from.message }</p> }
                             </Col>
                             <Col 
-                            xs={6} 
+                            xs={12}
+                            sm={6} 
                             md={getLocalUser().roles.includes(ROLES.SUPERADMIN) ? 3 : 4} 
                             lg={getLocalUser().roles.includes(ROLES.SUPERADMIN) ? 3 : 4} 
                             className='mb-2'>
@@ -93,41 +142,27 @@ const Filters = ({listStatus, offices, searchAppointments, setStartDate, setEndD
                                 />
                                 { errors.to && <p className={styles.error_message}>{ errors.to.message }</p> }
                             </Col>
-                            <Col 
-                            xs={6} 
-                            md={getLocalUser().roles.includes(ROLES.SUPERADMIN) ? 3 : 4} 
-                            lg={getLocalUser().roles.includes(ROLES.SUPERADMIN) ? 3 : 4} 
-                            className='mb-2'>
-                                <Form.Label className={styles.label_input}>Estado</Form.Label>
-                                <Select
-                                placeholder={'Seleccione'}
-                                onChange={handleStatus}
-                                options={(listStatus !== null && listStatus !== undefined) && 
-                                    listStatus.map(status => {
-                                        return {
-                                            value: status.id,
-                                            label: status.name
-                                        }
-                                })}
-                                />
-                                { errors.appoinmentStatusId && <p className={styles.error_message}>{ errors.appoinmentStatusId.message }</p> }
-                            </Col>
                             
                                 {
                                     getLocalUser().roles.includes(ROLES.SUPERADMIN) && (
                                         <>
-                                            <Col xs={6} md={3} lg={3} className='mb-2'>
+                                            <Col 
+                                            xs={12}
+                                            sm={6} 
+                                            md={3} 
+                                            lg={3} 
+                                            className='mb-2'>
                                                 <Form.Label className={styles.label_input}>Consultorios</Form.Label>
                                                 <Select
                                                 placeholder={'Seleccione'}
                                                 onChange={handleOffice}
                                                 options={(offices !== null && offices !== undefined) && 
-                                                    offices.map(office => {
+                                                    [{value: 0, label: 'Todos'}, ...offices.map(office => {
                                                         return {
                                                             value: office.id,
                                                             label: office.name
                                                         }
-                                                    })
+                                                    })]
                                                 }
                                                 />
                                                 { errors.officeId && <p className={styles.error_message}>{ errors.officeId.message }</p> }
@@ -135,6 +170,68 @@ const Filters = ({listStatus, offices, searchAppointments, setStartDate, setEndD
                                         </>
                                     )
                                 }
+                            <Col 
+                            xs={12}
+                            sm={6}  
+                            md={getLocalUser().roles.includes(ROLES.SUPERADMIN) ? 3 : 4} 
+                            lg={getLocalUser().roles.includes(ROLES.SUPERADMIN) ? 3 : 4} 
+                            className='mb-2'>
+                                <Form.Label className={styles.label_input}>Odontólogos</Form.Label>
+                                {
+                                    selectOffice === '' || selectOffice === undefined ? (
+                                        <Select 
+                                        placeholder={'Seleccione'}
+                                        isDisabled={true}
+                                        />
+                                    ):(
+                                        <>
+                                            { 
+                                                selectOffice !== 0 ? (
+                                                    dentists ? (
+                                                        <>
+                                                            <Select
+                                                            ref={selectDentistRef}
+                                                            options={dentists !== null && [
+                                                                {value: 0, label: 'Todos'}, ...dentists.map(dentist => {
+                                                                return {
+                                                                    value: dentist.employeeId,
+                                                                    label: dentist.fullName
+                                                                }
+                                                            })]}
+                                                            placeholder={'Seleccione'}
+                                                            onChange={handleDentist}
+                                                            isDisabled={selectOffice === '' ? true : false}
+                                                            components={<p>No hay opciones disponibles</p>}
+                                                            className="basic-single"
+                                                            classNamePrefix="select"
+                                                            />
+                                                            { 
+                                                                errors.dentistId && <p className={styles.error_message}>
+                                                                    { errors.dentistId.message }
+                                                                </p> 
+                                                            }
+                                                        </>
+                                                    ): (
+                                                        <p style={{'textAlign': 'center'}}>Cargando...</p>
+                                                    )
+                                                ):(
+                                                    <Select
+                                                    ref={selectDentistRef}
+                                                    options={[
+                                                        {value: 0, label: 'Todos'}]}
+                                                    placeholder={'Seleccione'}
+                                                    onChange={handleDentist}
+                                                    isDisabled={selectOffice === '' ? true : false}
+                                                    components={<p>No hay opciones disponibles</p>}
+                                                    className="basic-single"
+                                                    classNamePrefix="select"
+                                                    />
+                                                )
+                                            }
+                                        </>
+                                    )
+                                }
+                            </Col>
                         </Row>
                     </Col>
                 </Row>
