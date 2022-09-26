@@ -52,7 +52,6 @@
 }
 
 .center .navlink_active {
-    /*background-color: rgba(75,73,172,255) !important;*/
     background-color: #002855;
     color: #fff !important;
 }
@@ -77,16 +76,12 @@
     color: #000 !important;
 }
 
-.navlink .icon, .navlink .bigIcon {
+.navlink .icon {
     margin-left: 5px !important;
     margin-right: 10px !important;
     font-size: 18px !important;
     /*color: rgba(75,73,172,255) !important;*/
     color: #002855 !important;
-}
-
-.navlink .bigIcon {
-    font-size: 25px !important;
 }
 
 .navlink .iconRight {
@@ -135,6 +130,10 @@
     background-color: rgba(75,73,172,255);
     border-radius: 20px;
     border: 2px solid #f1f2f3;
+}
+
+.navlink .icon_report {
+    font-size: 32px !important;
 }
 
 .sidebar::-webkit-scrollbar-track {

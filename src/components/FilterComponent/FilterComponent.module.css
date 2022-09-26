@@ -18,7 +18,7 @@
 }
 
 .button_clear {
-    background-color: #FFF !important;
+    background-color: transparent !important;
     color: #000 !important;
     border-top-style: none;
     border-left-style: none;
@@ -31,6 +31,12 @@
 
 .filterFullWidth {
     width: 100% !important;
+}
+
+@media screen and (max-width: 767px) {
+    .filter{
+        width: 60% !important;
+    }
 }
 
 @media screen and (max-width: 450px) {

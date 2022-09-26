@@ -17,7 +17,7 @@ const NavBarDashboard = () => {
         <header>
             <nav className={styles.navbar}>
                 { onlyWidth <= 1000 ? (
-                    <div className={styles.toggle} onClick={() => handleSidebar() }>
+                    <div className={styles.toggle} onClick={() => handleSidebar(true) }>
                         <ImMenu className={styles.icon} />
                     </div>
                 ):<></> }
@@ -39,7 +39,7 @@ const NavBarDashboard = () => {
                                 </NavDropdown.Item>
                             <NavDropdown.Item 
                             as={Link} to="/login" onClick={() => {
-                            handleSidebar();
+                            handleSidebar(false);
                             logout();
                             clearNames();
                             window.scrollTo({ top: 0, behavior: 'smooth' })
