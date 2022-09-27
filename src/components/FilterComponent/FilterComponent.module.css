@@ -1,6 +1,6 @@
 .filter{
     margin-right: 20px;
-    width: 40% !important;
+    width: 40%;
 }
 
 .filter_input {
@@ -35,13 +35,12 @@
 
 @media screen and (max-width: 767px) {
     .filter{
-        width: 60% !important;
+        width: 60%;
     }
 }
 
 @media screen and (max-width: 450px) {
     .filter{
-        margin-top: 20px;
         width: 90% !important;
     }
 }

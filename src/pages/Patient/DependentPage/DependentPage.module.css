@@ -59,13 +59,13 @@
     margin-left: 20px;
 }
 
-@media screen and (max-width: 450px) {
+@media screen and (max-width: 550px) {
     .container_header {
         flex-direction: column;
         align-items: flex-start;
     }
 
-    .filter{
-        margin-top: 20px;
+    .button_add {
+        margin-bottom: 20px;
     }
 }
