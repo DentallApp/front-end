@@ -1,6 +1,4 @@
 import DataTable from 'react-data-table-component';
-import { getLocalUser } from 'services/UserService';
-import ROLES from 'constants/Roles';
 import styles from './AppointmentsTable.module.css';
 
 // Opciones de paginación
@@ -30,42 +28,26 @@ const AppointmentsTable = ({appointments}) => {
     // Columnas de la tabla
     const columns = [
         {
-            name: <div className={styles.container_table_header}><h6>Fecha</h6></div>,
-            selector: row => row.appoinmentDate,
+            name: <div className={styles.container_table_header}><h6>Odontólogo</h6></div>,
+            selector: row => row.dentistName,
             center: true,
             wrap: true,
-            width: "150px"
-        },
-        {
-            name: <div className={styles.container_table_header}><h6>Hora</h6></div>,
-            selector: row => row.startHour,
-            center: true,
-            wrap: true,
-            width: "150px"
-        },
-        {
-            name: <div className={styles.container_table_header}><h6>Paciente</h6></div>,
-            selector: row => row.patientName,
-            center: true,
-            wrap: true,
-            width: "250px"
-        },
-        {
-            name: <div className={styles.container_table_header}><h6>Servicio</h6></div>,
-            selector: row => row.dentalServiceName,
-            center: true,
-            wrap: true,
-            width: "200px"
+            width: "37,50%"
         },
         {
             name: <div className={styles.container_table_header}><h6>Consultorio</h6></div>,
-            selector: row =>  getLocalUser().roles.includes(ROLES.SUPERADMIN)  ?
-                row.officeName :
-                getLocalUser().officeName,
+            selector: row => row.officeName,
             center: true,
             wrap: true,
-            width: "200px"
-        }
+            width: "37,50%"
+        },
+        {
+            name: <div className={styles.container_table_header}><h6>Total</h6></div>,
+            selector: row => row.total,
+            center: true,
+            wrap: true,
+            width: "25%"
+        },
     ];
 
 

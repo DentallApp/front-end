@@ -63,6 +63,10 @@
     margin-left: 20px;
 }
 
+.no_data {
+    text-align: center;
+}
+
 @media screen and (max-width: 450px) {
     .container {
         flex-direction: column;

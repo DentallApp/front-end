@@ -4,7 +4,9 @@ export const downloadReportAppointment = (data) => {
     return api.post('/pdf/report/appoinment', {
         from: data.from,
         to: data.to,
-        appoinments: data.appoinments
+        officeName: data.officeName,
+        dentistName: data.dentistName,
+        totals: data.totals
     }, {responseType: 'blob'})
     .then(res => {
         if(res.status === 200) {

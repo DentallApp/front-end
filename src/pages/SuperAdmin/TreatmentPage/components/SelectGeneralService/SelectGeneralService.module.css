@@ -7,3 +7,9 @@
     font-style: italic;
     font-weight: bold;
 }
+
+@media screen and (max-width: 750px) {
+    .container_form{
+        margin-right: 50px;
+    }
+}

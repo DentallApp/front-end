@@ -13,7 +13,6 @@ import { getLocalUser } from 'services/UserService';
 import styles from './AppointmentModal.module.css';
 
 const AppointmentModal = ({show, handleClose, createNewAppointment}) => {
-    
     const [dentists, setDentists] = useState(null);
     const [services, setServices] = useState(null);
     const [availableHours, setAvailableHours] = useState(null);
@@ -293,6 +292,11 @@ const AppointmentModal = ({show, handleClose, createNewAppointment}) => {
                                                 ref={selectDateRef} 
                                                 type="date"
                                                 min={moment(new Date()).format('yyyy-MM-DD')}
+                                                max={
+                                                    moment(new Date())
+                                                    .add(parseInt(process.env.REACT_APP_MAX_DATE_IN_DATE_INPUT), "days")
+                                                    .format('yyyy-MM-DD')
+                                                }
                                                 onChange={handleSelectDate} />
                                                 { 
                                                     errors.appointmentDate&& <p className={styles.error_message}>

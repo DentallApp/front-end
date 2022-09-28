@@ -1,6 +1,6 @@
 .filter{
     margin-right: 20px;
-    width: 40% !important;
+    width: 40%;
 }
 
 .filter_input {
@@ -18,7 +18,7 @@
 }
 
 .button_clear {
-    background-color: #FFF !important;
+    background-color: transparent !important;
     color: #000 !important;
     border-top-style: none;
     border-left-style: none;
@@ -33,9 +33,14 @@
     width: 100% !important;
 }
 
+@media screen and (max-width: 767px) {
+    .filter{
+        width: 60%;
+    }
+}
+
 @media screen and (max-width: 450px) {
     .filter{
-        margin-top: 20px;
         width: 90% !important;
     }
 }

@@ -47,7 +47,10 @@ const SideBar = () => {
                             <NavLink 
                             className={({ isActive }) => isActive ? styles.navlink_active : styles.navlink } 
                             to={'/inicio'}
-                            onClick={() => {window.scrollTo({ top: 0, behavior: 'smooth' })} }> 
+                            onClick={() => {
+                                handleSidebar(false);
+                                window.scrollTo({ top: 0, behavior: 'smooth' })
+                            }}> 
                                 <AiFillHome className={styles.icon} /> 
                                 Inicio
                             </NavLink>
@@ -62,14 +65,20 @@ const SideBar = () => {
 
                             <NavLink className={({ isActive }) => isActive ? styles.navlink_active : styles.navlink } 
                             to="cambio-contrasena"
-                            onClick={() => {window.scrollTo({ top: 0, behavior: 'smooth' })} }>
+                            onClick={() => {
+                                handleSidebar(false);
+                                window.scrollTo({ top: 0, behavior: 'smooth' })
+                            }}>
                                 <MdPassword className={styles.icon} /> 
                                 Cambiar contraseña
                             </NavLink>
 
                             <NavLink className={({ isActive }) => isActive ? styles.navlink_active : styles.navlink } 
                             to="perfil"
-                            onClick={() => {window.scrollTo({ top: 0, behavior: 'smooth' })} }>
+                            onClick={() => {
+                                handleSidebar(false);
+                                window.scrollTo({ top: 0, behavior: 'smooth' })
+                            }}>
                                 <MdManageAccounts className={styles.icon} /> 
                                 Editar perfil
                             </NavLink>
@@ -77,7 +86,7 @@ const SideBar = () => {
                             <NavLink className={({ isActive }) => isActive ? styles.navlink_active : styles.navlink } 
                             to="/login"
                             onClick={() => {
-                                handleSidebar();
+                                handleSidebar(false);
                                 logout();
                                 setUserData(null);
                                 clearNames();

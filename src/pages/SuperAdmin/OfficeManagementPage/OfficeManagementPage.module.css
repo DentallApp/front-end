@@ -65,7 +65,7 @@
         align-items: flex-start;
     }
 
-    .filter{
-        margin-top: 20px;
+    .button_add  {
+        margin-bottom: 20px;
     }
 }

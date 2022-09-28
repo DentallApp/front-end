@@ -7,7 +7,7 @@ const SideBarProvider = ({ children }) => {
     const [display, setDisplay] = useState(false);
     const onlyWidth = useWindowWidth();
 
-    const handleSidebar = () => setDisplay(!display);
+    const handleSidebar = (state) => setDisplay(state);
 
     return (
         <SideBarContext.Provider
