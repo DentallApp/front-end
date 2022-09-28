@@ -30,7 +30,7 @@ const CommonOptions = () => {
         <>
             {
                 (user.roles.includes(ROLES.DENTIST) || user.roles.includes(ROLES.SECRETARY) || 
-                user.roles.includes(ROLES.ADMIN)) &&
+                user.roles.includes(ROLES.ADMIN) || user.roles.includes(ROLES.SUPERADMIN)) &&
                 <>
                     <NavLink className={styles.navlink }
                     to="#"
