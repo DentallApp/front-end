@@ -6,9 +6,7 @@ const DescriptionStatus = ({listStatus}) => {
     const [statusAppointment, setStatusAppointment] = useState(listStatus);
 
     useEffect(() => {
-        setStatusAppointment(listStatus.filter(status => status.id === APPOINTMENT_STATUS[0].id || 
-            status.id === APPOINTMENT_STATUS[2].id || status.id === APPOINTMENT_STATUS[4].id || 
-            status.id === APPOINTMENT_STATUS[5].id));
+        setStatusAppointment(listStatus);
         // eslint-disable-next-line react-hooks/exhaustive-deps     
     }, []);
 

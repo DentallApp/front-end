@@ -1,43 +1,43 @@
-import { useState, useEffect, useContext, useRef } from 'react';
-import { Form, Row, Col, Spinner  } from 'react-bootstrap';
-import Select from 'react-select';
+import { useState, useEffect, useContext } from 'react';
+import { Spinner  } from 'react-bootstrap';
 import moment from 'moment';
-import { Filters, ModalLoading, AlertMessage } from 'components';
+import { ModalLoading, AlertMessage } from 'components';
 import { 
     AppointmentModal, 
     DescriptionStatus, 
     MobileCalendar, 
-    WebCalendar 
+    WebCalendar,
+    Filters 
 } from './components';
 import SideBarContext from 'context/SideBarContext';
 import { setEventClassNames } from './utils';
 import APPOINTMENT_STATUS from 'constants/AppointmentStatus';
 import { getAppointmentStatus } from 'services/AppointmentStatusService';
-import { getDentists } from 'services/DentistScheduleService';
 import { getLocalUser } from 'services/UserService';
 import { 
-    getAppointmentByOffice, 
-    updateStatusAppointment, 
-    getAllAppointmentByDentist 
+    getAppointmentDentist, 
+    updateStatusAppointment
 } from 'services/AppointmentEmployeeService';
 import { FilterComponent } from 'components';
 import ROLES from 'constants/Roles';
-import { mappingAppointments, filterAppointmentByDentist } from './AppointmentUtils';
+import { mappingAppointments } from './AppointmentUtils';
 import { handleErrors, handleErrorLoading } from 'utils/handleErrors';
 import styles from './EmployeeAppointmentView.module.css';
 
 const EmployeeAppointmentView = () => {
     const [show, setShow] = useState(false);
     const [appointmentSelect, setAppointmentSelect] = useState(null);
-    const [storeAppointments, setStoreAppointments] = useState(null);
     const [appointments, setAppointments] = useState(null);
-    const [dentists, setDentists] = useState(null);
-    const [selectDentist, setSelectDentist] = useState(0);
     const [listStatus, setListStatus] = useState(null);
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
+    const [selectStatus, setSelectStatus] = useState(0);
+    const [selectDentist, setSelectDentist] = useState(
+        (!getLocalUser().roles.includes(ROLES.SUPERADMIN) && 
+        !getLocalUser().roles.includes(ROLES.ADMIN) && 
+        !getLocalUser().roles.includes(ROLES.SECRETARY)) ? getLocalUser().employeeId : 0);
+    const [selectOffice, setSelectOffice] = useState(getLocalUser().roles.includes(ROLES.SUPERADMIN) ? 0 : getLocalUser().officeId);
     const { onlyWidth } = useContext(SideBarContext);
-    const dentistRef = useRef();
 
     // Estados para el filtro
     const [filterText, setFilterText] = useState('');
@@ -52,92 +52,60 @@ const EmployeeAppointmentView = () => {
     const [errorLoading, setErrorLoading] = useState({success: false, message: ''});
 
     useEffect(() => {
-        if(getLocalUser().roles.includes(ROLES.SECRETARY) || getLocalUser().roles.includes(ROLES.ADMIN))
-            getDentists().then(res => setDentists(res.data))
-                .catch(err => err)
-        
-        getAppointments(startDate, endDate);
+        getAppointments(startDate, endDate, selectOffice, selectDentist, selectStatus);
 
-        getAppointmentStatus().then(res => setListStatus(res.data))
+        getAppointmentStatus().then(res => {
+            setListStatus(res.data.filter(status => status.id === APPOINTMENT_STATUS[0].id || 
+                status.id === APPOINTMENT_STATUS[2].id || status.id === APPOINTMENT_STATUS[4].id ||
+                status.id === APPOINTMENT_STATUS[5].id))
+        })
             .catch(err => err);
+            
         // eslint-disable-next-line react-hooks/exhaustive-deps    
     }, []);
 
     useEffect(() => {
         if(filterAppointments?.length > 0 && filterText !== '') filterData();
-       
-        if((filterAppointments?.length <= 0 || filterText === '') && selectDentist === 0 ) setFilterAppointments(storeAppointments);
         
-        if((filterAppointments?.length <= 0 || filterText === '') && selectDentist !== 0 ) setFilterAppointments(appointments);
+        if(filterAppointments?.length <= 0 || filterText === '') setFilterAppointments(appointments);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [filterText]);
 
     const filterData = () => {
         const data = appointments.filter(appointment => 
-            appointment.document.toString().includes(filterText.toLocaleLowerCase()) === true || 
-                appointment.patientName.toString().toLocaleLowerCase().includes(filterText.toLocaleLowerCase()) === true 
+            appointment.document?.toString().includes(filterText.toLocaleLowerCase()) === true || 
+            appointment.patientName?.toString().toLocaleLowerCase().includes(filterText.toLocaleLowerCase()) === true
         );
         setFilterAppointments(data);
     }
 
-    // Trae las citas de todos los odontologos dentro de un rango de fecha definido
-    const getAppointments = (startDate, endDate) => {
-        if(getLocalUser().roles.includes(ROLES.SECRETARY) || getLocalUser().roles.includes(ROLES.ADMIN)) {
-            
-            getAppointmentByOffice(moment(startDate).format('yyyy-MM-DD'), moment(endDate).format('yyyy-MM-DD'))
-                .then(res => {
-                    dentistRef.current.setValue({value: 0, label: 'Todos'});
-                    setSelectDentist(0);
-                    setStoreAppointments(mappingAppointments(res.data));
-                    setAppointments(mappingAppointments(res.data));
-                    setFilterAppointments(mappingAppointments(res.data));
-                })
-                .catch(err => handleErrorLoading(err, setErrorLoading)); 
-        }
-        else {
-            getAllAppointmentByDentist(moment(startDate).format('yyyy-MM-DD'), moment(endDate).format('yyyy-MM-DD'))
-                .then(res => {
-                    setStoreAppointments(mappingAppointments(res.data));
-                    setAppointments(mappingAppointments(res.data));
-                    setFilterAppointments(mappingAppointments(res.data));
-                })
-                .catch(err => handleErrorLoading(err, setErrorLoading)); 
-        }   
+    // Trae las citas filtradas por rango de fecha, consultorio, dentista y estado de la cita
+    const getAppointments = (startDate, endDate, selectOffice, selectDentist, selectStatus) => {
+        getAppointmentDentist(
+            moment(startDate).format('yyyy-MM-DD'), 
+            moment(endDate).format('yyyy-MM-DD'),
+            selectOffice, selectDentist, selectStatus)
+            .then(res => {
+                setAppointments(mappingAppointments(res.data.data));
+                setFilterAppointments(mappingAppointments(res.data.data));
+            })
+            .catch(err => handleErrorLoading(err, setErrorLoading));    
     }
 
     // Función que capta los datos que se ingresa en el input y realiza el filtro de la tabla 
     const handleChange = (e) => {
         setFilterText(e.target.value.toString());
-        if((filterText === '' || filterAppointments.length <= 0) && selectDentist === 0) 
-            setFilterAppointments(storeAppointments);
-        
-        if((filterText === '' || filterAppointments.length <= 0) && selectDentist !== 0)
-            setFilterAppointments(appointments)
+        if(filterText === '' || filterAppointments?.length <= 0) {
+            setFilterAppointments(appointments);
+        }
     }
 
     // Función que limpia los campos del input y resetea la tabla
     const handleClear = () => {
-        if(selectDentist !== 0) setFilterAppointments(appointments);
-        
-        if(selectDentist === 0) setFilterAppointments(storeAppointments);
+        setFilterAppointments(appointments);
         setFilterText('');
     };
-
-    // Se encarga de manejar el estado del Select de los odontologos
-    const handleSelectDentist = (e) => {
-        setSelectDentist(parseInt(e.value));
-        
-        if(parseInt(e.value) !== 0) {
-            const result = filterAppointmentByDentist(parseInt(e.value), storeAppointments);
-            setAppointments(result);
-            setFilterAppointments(result);
-        }
-        else {
-            setAppointments(storeAppointments);
-            setFilterAppointments(storeAppointments);
-        }
-    }
-
+    
     // Funciones para cerrar y mostrar el modal
     const handleClose = () => { 
         setShow(false);
@@ -148,25 +116,24 @@ const EmployeeAppointmentView = () => {
     // Función que se llama al dar clic en el boton consultar
     const searchAppointments = (data, setError) => {
         
-        if(data.startDate > data.endDate) {
-            setError('startDate', {
+        if(data.from > data.to) {
+            setError('from', {
                 type: 'custom',
                 message: 'La fecha inicial no puede ser mayor a la final'
             });
             return;
         }
 
-        if(data.startDate > data.endDate) {
-            setError('endDate', {
+        if(data.from > data.to) {
+            setError('to', {
                 type: 'custom',
                 message: 'La fecha final no puede ser menor a la inicial'
             });
             return;
         }
-        
-        setStartDate(data.startDate);
-        setEndDate(data.endDate);
-        getAppointments(data.startDate, data.endDate);
+        setStartDate(data.from);
+        setEndDate(data.to);
+        getAppointments(data.from, data.to, data.officeId, data.dentistId, data.statusId);
     }
 
     const updateStatus = async(statusId) => {
@@ -185,7 +152,7 @@ const EmployeeAppointmentView = () => {
     const updateLocalDataAppointment = (id) => {
         const status = APPOINTMENT_STATUS.filter(status => status.id === id)[0];
 
-        setStoreAppointments(storeAppointments.map(appointment => 
+        setAppointments(appointments.map(appointment => 
             appointment.appoinmentId === parseInt(appointmentSelect.event.extendedProps.appoinmentId)   ? { 
                 ...appointment, 
                 statusId: status.id, 
@@ -194,16 +161,7 @@ const EmployeeAppointmentView = () => {
             } : appointment 
         ));
 
-        setAppointments(storeAppointments.map(appointment => 
-            appointment.appoinmentId === parseInt(appointmentSelect.event.extendedProps.appoinmentId)   ? { 
-                ...appointment, 
-                statusId: status.id, 
-                status: status.name,
-                color: status.colorHex
-            } : appointment 
-        ));
-
-        setFilterAppointments(storeAppointments.map(appointment => 
+        setFilterAppointments(filterAppointments.map(appointment => 
             appointment.appoinmentId === parseInt(appointmentSelect.event.extendedProps.appoinmentId)   ? { 
                 ...appointment, 
                 statusId: status.id, 
@@ -245,55 +203,24 @@ const EmployeeAppointmentView = () => {
             <div className="underline mx-auto"></div>
             <div className={styles.container_header}>
               <Filters
-               startDate={moment(startDate).format('yyyy-MM-DD')}
-               endDate={moment(endDate).format('yyyy-MM-DD')} 
-               dentists={dentists}
-               handleSelectDentist={handleSelectDentist}
+               setStartDate={setStartDate}
+               setEndDate={setEndDate} 
+               listStatus={listStatus}
                searchAppointments={searchAppointments}
+               setSelectStatus={setSelectStatus}
+               setSelectOffice={setSelectOffice}
+               setSelectDentist={setSelectDentist}
                />
             </div>
             
-            <div className={styles.container_filters} >
-  
-                {
-                    getLocalUser().roles.includes(ROLES.SECRETARY) ||
-                        getLocalUser().roles.includes(ROLES.ADMIN)  ? (
-                            <Row style={{'width':'100%'}}>
-                                <Col sm={12} lg={6} md>
-                                    <Form.Label className={styles.label_input}>Odontólogos</Form.Label>
-                                    <Select
-                                    style={{"minWidth": "80% !important"}}
-                                    ref={dentistRef}
-                                    defaultValue={{
-                                        value: 0, 
-                                        label: 'Todos' 
-                                    }}
-                                    options={ 
-                                        dentists && [{value: 0, label: 'Todos'}, ...dentists.map(data => {
-                                            return {
-                                                value: data.employeeId, 
-                                                label: data.fullName
-                                            }
-                                    })] }
-                                    onChange={handleSelectDentist}
-                                    noOptionsMessage={'No hay datos'}
-                                    className="basic-single mb-3"
-                                    classNamePrefix="select"
-                                    />
-                                </Col>
-                            </Row>
-                            
-                        ):(
-                            <></>
-                        )
-                }
-                <FilterComponent 
+            <div style={{'marginLeft': '20px'}} >
+                <FilterComponent
                 inputText='Digite nombre o cedula a buscar'
                 onFilter={handleChange} 
                 onClear={handleClear} 
                 filterText={filterText}
                 setFilterText={setFilterText}
-                />                
+                />
             </div>
             
             <hr style={{"marginTop": "30px"}}/>
