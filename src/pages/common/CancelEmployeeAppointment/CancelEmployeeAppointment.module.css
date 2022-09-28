@@ -8,7 +8,7 @@
 
 .container_header {
     margin-top: 40px;
-    margin-left: 20px;
+    margin-left: 10px;
     margin-bottom: 20px;
     display: flex;
     align-items: center;
@@ -22,16 +22,6 @@
     background: #d62828 !important;
     color: #FFF !important;
     border: none;
-}
-
-.container_filters {
-    margin-top: 40px;
-    margin-left: 20px;
-    margin-right: 20px;
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
 }
 
 .container_alert {
