@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Button, Spinner } from 'react-bootstrap';
 import { IoAddCircle } from "react-icons/io5";
-import { UsersTable, FormModal, EliminationModal } from './components';
+import { UsersTable, FormModal, EliminationModal, OfficeFilter } from './components';
 import { AlertMessage, ModalLoading, FilterComponent } from 'components';
 import { trimSpaces, capitalizeFirstLetter } from 'utils/stringUtils';
 import { getLocalUser } from 'services/UserService';
@@ -15,11 +15,13 @@ const UserManagementPage = () => {
     const user = getLocalUser();
 
     const [errorLoading, setErrorLoading] = useState({success: false, message: ''});
+    const [valueSelected, setValueSelected] = useState(null);
     // Estados para el filtro
     const [filterText, setFilterText] = useState('');
     const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
 
     // Estado para los datos de la tabla
+    const [storeUsers, setStoreUsers] = useState(null);
     const [dataUsers, setDataUsers] = useState(null);
     const [isChange, setIsChange] = useState(false);
     const [filterUsers, setFilterUsers] = useState([]);
@@ -39,6 +41,7 @@ const UserManagementPage = () => {
 
     useEffect(() => {
         getEmployee().then(res => {
+            setStoreUsers(res.data);
             setDataUsers(res.data);
             setFilterUsers(res.data);
         })
@@ -50,7 +53,9 @@ const UserManagementPage = () => {
     useEffect(() => {
         if(filterUsers?.length > 0 && filterText !== '') filterData();
         
-        if(filterUsers?.length <= 0 || filterText === '') setFilterUsers(dataUsers);
+        if((filterUsers?.length <= 0 || filterText === '') && valueSelected === 0) setFilterUsers(storeUsers);
+
+        if((filterUsers?.length <= 0 || filterText === '') && valueSelected !== 0) setFilterUsers(dataUsers);
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [filterText]);
@@ -69,16 +74,20 @@ const UserManagementPage = () => {
     // Función que capta los datos que se ingresa en el input y realiza el filtro de la tabla 
     const handleChange = (e) => {
         setFilterText(e.target.value.toString());
-        if(filterText === '' || filterUsers.length <= 0) {
-            setResetPaginationToggle(!resetPaginationToggle);
-            setFilterUsers(dataUsers);
-        }
+        if((filterText === '' || filterUsers.length <= 0) && valueSelected === 0) 
+            setFilterUsers(storeUsers);
+        
+        if((filterText === '' || filterUsers.length <= 0) && valueSelected !== 0)
+            setFilterUsers(dataUsers)
     }
 
     // Función que limpia los campos del input y resetea la tabla
     const handleClear = () => {
         setResetPaginationToggle(!resetPaginationToggle);
-        setFilterUsers(dataUsers);
+        if(valueSelected !== 0) setFilterUsers(dataUsers);
+        
+        if(valueSelected === 0) setFilterUsers(storeUsers);
+        
         setFilterText('');
     };
 
@@ -88,6 +97,18 @@ const UserManagementPage = () => {
         setRowSelect(null);
     }
     const handleShow = () => setShow(true);
+
+    const handleChangeOffice = (e) => {
+        setValueSelected(parseInt(e.value));
+        if(parseInt(e.value) !== 0) {
+            const filterData = storeUsers.filter(user => user.officeId === parseInt(e.value));
+            setFilterUsers(filterData);
+            setDataUsers(filterData);
+            return;
+        }
+        setDataUsers(storeUsers);
+        setFilterUsers(storeUsers);
+    }
 
     const create = async(data) => {
         const result = await createEmployee(data);
@@ -213,16 +234,43 @@ const UserManagementPage = () => {
                 }}> 
                     <IoAddCircle className={styles.icon} /> Nuevo
                 </Button>
-                {errorLoading.success === false && (
-                    <FilterComponent 
-                    onFilter={handleChange} 
-                    onClear={handleClear} 
-                    filterText={filterText}
-                    setFilterText={setFilterText}
-                    inputText="Ingrese usuario a buscar"
-                    className={styles.filter} />
-                )}       
+
+                {   
+                    getLocalUser().roles.includes(ROLES.SUPERADMIN) ? (
+                        <OfficeFilter 
+                        setValueSelected={setValueSelected}
+                        handleChangeOffice={handleChangeOffice}
+                        />
+                    ):(
+                        errorLoading.success === false && (
+                            <FilterComponent 
+                            onFilter={handleChange} 
+                            onClear={handleClear} 
+                            filterText={filterText}
+                            setFilterText={setFilterText}
+                            inputText="Ingrese usuario a buscar"
+                            className={styles.filter_text} />
+                        )
+                    )
+                }        
             </div>
+
+            <div style={{'marginLeft': '20px', 'marginBottom': '20px'}}>
+                {
+                    getLocalUser().roles.includes(ROLES.SUPERADMIN) && (
+                        errorLoading.success === false && (
+                            <FilterComponent 
+                            onFilter={handleChange} 
+                            onClear={handleClear} 
+                            filterText={filterText}
+                            setFilterText={setFilterText}
+                            inputText="Ingrese usuario a buscar"
+                            className={styles.filter} />
+                        )
+                    )
+                }
+            </div>
+            
             {
                 errorLoading.success === false ?  (
                     filterUsers ? (
