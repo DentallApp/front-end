@@ -7,9 +7,9 @@ const FilterDentist = ({dentists, handleSelectDentist }) => {
     return (
         <>
             <Row>
-            <Form.Label className={styles.label_input}>Odontólogos</Form.Label>
+                <Form.Label className={styles.label_input}>Odontólogos</Form.Label>
                     <Select
-                    style={{"minWidth": "80% !important"}}
+                    style={{'maxWidth': '80%'}}
                     defaultValue={{
                         value: 0, 
                         label: 'Todos' 
@@ -21,7 +21,8 @@ const FilterDentist = ({dentists, handleSelectDentist }) => {
                                 value: data.employeeId, 
                                 label: data.fullName
                             }
-                    })] }
+                        })] 
+                    }
                     onChange={handleSelectDentist}
                     />
             </Row>             

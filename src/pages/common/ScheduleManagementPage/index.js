@@ -9,7 +9,7 @@ import {
     createSchedule, 
     updateSchedule,
     getAllSchedule } from 'services/DentistScheduleService';
-import { getAllEmployee } from 'services/EmployeeService';    
+import { getDentistByOffice } from 'services/EmployeeService';    
 import { getLocalUser } from 'services/UserService';
 import { handleErrors, handleErrorLoading } from 'utils/handleErrors';
 import STATUS from 'constants/Status';
@@ -36,7 +36,7 @@ const ScheduleManagementPage = () => {
     const [isLoading, setIsLoading] = useState(null);
 
     useEffect(() => {
-        getAllEmployee().then(res => setDentists(res.data))
+        getDentistByOffice(getLocalUser().officeId, null).then(res => setDentists(res.data))
             .catch(err => err);
             
         getAllSchedule().then(res => setAllSchedules(res.data))
