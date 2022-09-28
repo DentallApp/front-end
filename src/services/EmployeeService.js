@@ -4,10 +4,6 @@ export const getEmployee = async () => {
     return await api.get('/employee');
 }
 
-export const getAllEmployee = async () => {
-    return await api.get('/employee/dentist/all');
-}
-
 export const createEmployee = (data) => {
     return api.post('/register/employee', {
         document: data.document,
@@ -130,6 +126,9 @@ export const updateProfileEmployee = (data) => {
     })
 }
 
-export const getAllEmployeeByOfficeId = async(officeId) => {
-    return await api.get('/employee/dentist/' + officeId);
-} 
+export const getDentistByOffice = async(officeId, isDentistDeleted) => {
+    return await api.post('/employee/dentist', {
+        officeId,
+        isDentistDeleted
+    });
+}
