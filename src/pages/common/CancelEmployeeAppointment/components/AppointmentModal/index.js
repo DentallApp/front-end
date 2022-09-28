@@ -67,7 +67,8 @@ const AppointmentModal = ({
                                     <Form.Group className="mb-3" controlId="formBasicDentist">
                                         <Form.Label className={styles.label_input}>Dentista</Form.Label>
                                         <p>{
-                                        (getLocalUser().roles.includes(ROLES.SECRETARY) || getLocalUser().roles.includes(ROLES.ADMIN)) ?
+                                        (getLocalUser().roles.includes(ROLES.SECRETARY) || getLocalUser().roles.includes(ROLES.ADMIN) ||
+                                        getLocalUser().roles.includes(ROLES.SUPERADMIN)) ?
                                             appointmentSelect.dentistName :
                                             getLocalUser().fullName
                                         }</p>
@@ -84,13 +85,9 @@ const AppointmentModal = ({
 
                             <Row>
                                 <Col sm={12} md>
-                                    <Form.Group className="mb-3" controlId="formBasicDate">
-                                        <Form.Label className={styles.label_input}>Fecha y Hora de la Cita</Form.Label>
-                                        <p style={{"fontWeight": "bold"}}>
-                                            {appointmentSelect.startHour} - 
-                                            {appointmentSelect.endHour}
-                                        </p>
-                                        <p>{appointmentSelect.appointmentDate}</p>
+                                    <Form.Group className="mb-3" controlId="formBasicOffice">
+                                        <Form.Label className={styles.label_input}>Consultorio</Form.Label>
+                                        <p>{appointmentSelect.officeName}</p>
                                     </Form.Group>
                                 </Col>
                                 <Col xs={12} md>
@@ -102,6 +99,18 @@ const AppointmentModal = ({
                                                 {APPOINTMENT_STATUS[0].name.toUpperCase()}
                                             </Badge>
                                         </div>
+                                    </Form.Group>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col sm={12} md>
+                                    <Form.Group className="mb-3" controlId="formBasicDate">
+                                        <Form.Label className={styles.label_input}>Fecha y Hora de la Cita</Form.Label>
+                                        <p style={{"fontWeight": "bold"}}>
+                                            {appointmentSelect.startHour} - 
+                                            {appointmentSelect.endHour}
+                                        </p>
+                                        <p>{appointmentSelect.appointmentDate}</p>
                                     </Form.Group>
                                 </Col>
                             </Row> 
