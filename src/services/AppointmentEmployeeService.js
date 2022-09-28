@@ -1,75 +1,12 @@
 import api from './Api';
 
-export const getAppointmentByOffice = async(startDate, endDate) => {
-    return await api.post('/appoinment/office', {
-        from: startDate,
-        to: endDate
-    })
-    .then(res => {
-        return {
-            data: res.data,
-            status: res.status
-        }
-    })
-    .catch(err => {
-        if(err.response.status === 0) return {status: err.response.status,}
-
-        return {
-            status: err.response.status,
-            success: err.response.data.success,
-            message: err.response.data.message
-        }
-    })
-}
-
-export const getAllAppointmentByDentist = async(startDate, endDate) => {
+export const getAppointmentDentist = async(startDate, endDate, office, dentist, status) => {
     return await api.post('/appoinment/dentist', {
         from: startDate,
-        to: endDate
-    })
-    .then(res => {
-        return {
-            data: res.data,
-            status: res.status
-        }
-    })
-    .catch(err => {
-        if(err.response.status === 0) return {status: err.response.status,}
-
-        return {
-            status: err.response.status,
-            success: err.response.data.success,
-            message: err.response.data.message
-        }
-    })
-}
-
-export const getScheduledAppointmentByOffice = async(startDate, endDate) => {
-    return await api.post('/appoinment/scheduled/office', {
-        from: startDate,
-        to: endDate
-    })
-    .then(res => {
-        return {
-            data: res.data,
-            status: res.status
-        }
-    })
-    .catch(err => {
-        if(err.response.status === 0) return {status: err.response.status,}
-
-        return {
-            status: err.response.status,
-            success: err.response.data.success,
-            message: err.response.data.message
-        }
-    })
-}
-
-export const getScheduledAppointmentByDentist = async(startDate, endDate) => {
-    return await api.post('/appoinment/scheduled/dentist', {
-        from: startDate,
-        to: endDate
+        to: endDate,
+        officeId: office,
+        dentistId: dentist,
+        statusId: status
     })
     .then(res => {
         return {
