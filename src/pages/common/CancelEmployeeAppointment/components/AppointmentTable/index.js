@@ -54,7 +54,8 @@ const AppointmentTable = ({
         {
             name: <div className={styles.container_table_header}><h6>Odontologo</h6></div>,
             selector: row => (getLocalUser().roles.includes(ROLES.SECRETARY) || 
-                getLocalUser().roles.includes(ROLES.ADMIN)) ?
+                getLocalUser().roles.includes(ROLES.ADMIN) || 
+                getLocalUser().roles.includes(ROLES.SUPERADMIN)) ?
                 row.dentistName :
                 getLocalUser().fullName,
             center: true,

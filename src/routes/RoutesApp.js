@@ -115,7 +115,7 @@ const RoutesApp = () => {
                 </Route>
 
                 {/* Rutas privadas para el odontólogo, secretaria y administrador */}
-                <Route element={<PrivateRoute role={[ROLES.DENTIST, ROLES.SECRETARY, ROLES.ADMIN]} />}>
+                <Route element={<PrivateRoute role={[ROLES.DENTIST, ROLES.SECRETARY, ROLES.ADMIN, ROLES.SUPERADMIN]} />}>
                     <Route element={<Dashboard />}>
                         <Route path="citas/calendario" element={<EmployeeAppointmentView />} />
                         <Route path="citas/cancelacion" element={<CancelEmployeeAppointment />} />

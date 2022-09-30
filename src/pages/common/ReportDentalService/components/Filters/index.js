@@ -102,12 +102,12 @@ const Filters = ({offices, searchServices, setStartDate, setEndDate, setSelectOf
                                                 placeholder={'Seleccione'}
                                                 onChange={handleOffice}
                                                 options={(offices !== null && offices !== undefined) && 
-                                                    offices.map(office => {
+                                                    [{value: 0, label: 'Todos'}, ...offices.map(office => {
                                                         return {
                                                             value: office.id,
                                                             label: office.name
                                                         }
-                                                    })
+                                                    })]
                                                 }
                                                 />
                                                 { errors.officeId && <p className={styles.error_message}>{ errors.officeId.message }</p> }

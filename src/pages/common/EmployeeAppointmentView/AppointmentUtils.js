@@ -2,7 +2,6 @@ import moment from 'moment';
 import APPOINTMENT_STATUS from 'constants/AppointmentStatus';
 
 export const mappingAppointments = (data) => {
-    
     const newList = data.map(appointment => {
         return {
             id: appointment.appoinmentId,
@@ -27,6 +26,17 @@ const getDateWithHour = (date, hour) => {
     return testDate.format('yyyy-MM-DD HH:mm').toString();
 }
 
-export const filterAppointmentByDentist = (dentistId, appointments) => {
-    return appointments.filter(appointment => appointment.dentistId === dentistId);
+export const filterAppointmentByDentist = (dentistId, statusId, appointments) => {
+
+    if(dentistId === 0 && statusId === 0)
+        return appointments;
+    
+    if(dentistId === 0 && statusId !== 0) 
+        return appointments.filter(appointment => appointment.statusId === statusId);
+    
+    if(dentistId !== 0 && statusId === 0)
+        return appointments.filter(appointment => appointment.dentistId === dentistId);
+    
+    if(dentistId !== 0 && statusId !== 0)
+        return appointments.filter(appointment => appointment.dentistId === dentistId && appointment.statusId === statusId);
 }

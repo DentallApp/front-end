@@ -5,7 +5,7 @@ import Select from 'react-select';
 import moment from 'moment';
 import { BsSearch } from "react-icons/bs";
 import { getLocalUser } from 'services/UserService';
-import { getAllEmployee, getAllEmployeeByOfficeId } from 'services/EmployeeService';
+import { getDentistByOffice } from 'services/EmployeeService';
 import ROLES from 'constants/Roles';
 import styles from './Filters.module.css';
 
@@ -57,7 +57,7 @@ const Filters = ({
 
             setSelectOffice({value: getLocalUser().officeId, label: getLocalUser().officeName});
 
-            getAllEmployee()
+            getDentistByOffice(getLocalUser().officeId, null)
                 .then(res => setDentists(res.data))
                 .catch(err => err);
         }        
@@ -75,9 +75,8 @@ const Filters = ({
                 selectDentistRef.current.setValue({value: 0, label: 'Todos'});
             }
             
-            if(selectOffice !== 0)
-                getAllEmployeeByOfficeId(selectOffice).then(res => setDentists(res.data))
-                    .catch(err => err);
+            getDentistByOffice(selectOffice, null).then(res => setDentists(res.data))
+                .catch(err => err);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps  
     }, [selectOffice]);
@@ -186,46 +185,32 @@ const Filters = ({
                                     ):(
                                         <>
                                             { 
-                                                selectOffice !== 0 ? (
-                                                    dentists ? (
-                                                        <>
-                                                            <Select
-                                                            ref={selectDentistRef}
-                                                            options={dentists !== null && [
-                                                                {value: 0, label: 'Todos'}, ...dentists.map(dentist => {
-                                                                return {
-                                                                    value: dentist.employeeId,
-                                                                    label: dentist.fullName
-                                                                }
-                                                            })]}
-                                                            placeholder={'Seleccione'}
-                                                            onChange={handleDentist}
-                                                            isDisabled={selectOffice === '' ? true : false}
-                                                            components={<p>No hay opciones disponibles</p>}
-                                                            className="basic-single"
-                                                            classNamePrefix="select"
-                                                            />
-                                                            { 
-                                                                errors.dentistId && <p className={styles.error_message}>
-                                                                    { errors.dentistId.message }
-                                                                </p> 
+                                                dentists ? (
+                                                    <>
+                                                        <Select
+                                                        ref={selectDentistRef}
+                                                        options={dentists !== null && [
+                                                            {value: 0, label: 'Todos'}, ...dentists.map(dentist => {
+                                                            return {
+                                                                value: dentist.employeeId,
+                                                                label: dentist.fullName
                                                             }
-                                                        </>
-                                                    ): (
-                                                        <p style={{'textAlign': 'center'}}>Cargando...</p>
-                                                    )
-                                                ):(
-                                                    <Select
-                                                    ref={selectDentistRef}
-                                                    options={[
-                                                        {value: 0, label: 'Todos'}]}
-                                                    placeholder={'Seleccione'}
-                                                    onChange={handleDentist}
-                                                    isDisabled={selectOffice === '' ? true : false}
-                                                    components={<p>No hay opciones disponibles</p>}
-                                                    className="basic-single"
-                                                    classNamePrefix="select"
-                                                    />
+                                                        })]}
+                                                        placeholder={'Seleccione'}
+                                                        onChange={handleDentist}
+                                                        isDisabled={selectOffice === '' ? true : false}
+                                                        components={<p>No hay opciones disponibles</p>}
+                                                        className="basic-single"
+                                                        classNamePrefix="select"
+                                                        />
+                                                        { 
+                                                            errors.dentistId && <p className={styles.error_message}>
+                                                                { errors.dentistId.message }
+                                                            </p> 
+                                                        }
+                                                    </>
+                                                ): (
+                                                    <p style={{'textAlign': 'center'}}>Cargando...</p>
                                                 )
                                             }
                                         </>
