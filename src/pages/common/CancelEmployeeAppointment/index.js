@@ -42,6 +42,8 @@ const CancelEmployeeAppointment = () => {
 
     useEffect(() => {
         getAppointments(moment().format('yyyy-MM-DD'), moment().format('yyyy-MM-DD'), selectOffice, selectDentist);
+        
+        setAppointmentsForCancel(null);
         // eslint-disable-next-line react-hooks/exhaustive-deps 
     }, []);
 
@@ -71,6 +73,7 @@ const CancelEmployeeAppointment = () => {
                 .then(res => {
                     setAppointments(res.data.data);
                     setFilterAppointments(res.data.data);
+                    setAppointmentsForCancel(null);
                 })
                 .catch(err => handleErrorLoading(err, setErrorLoading));  
     }
@@ -113,22 +116,42 @@ const CancelEmployeeAppointment = () => {
                 message: 'La fecha final no puede ser menor a la inicial'
             });
             return;
-        }        
+        }
+        
         getAppointments(data.from, data.to, data.officeId, data.dentistId);
     }
 
-    const updateLocalAppointments = (appointmentsCancelled) => {
-        setAppointments(
-            appointments.filter(appointment => 
-                !appointmentsCancelled.appoinments.some(cancel => 
-                    cancel.appoinmentId === appointment.appoinmentId)    
-        ));
+    const updateLocalAppointments = (appointmentsCancelled, appointmentsNotCancelled = null) => {
 
-        setFilterAppointments(
-            filterAppointments.filter(appointment => 
-                !appointmentsCancelled.appoinments.some(cancel => 
-                    cancel.appoinmentId === appointment.appoinmentId)    
-        ));
+        if(appointmentsNotCancelled !== null) {
+
+            setAppointments(
+                appointments.filter(appointment => 
+                    !appointmentsCancelled.appoinments.some(cancel => 
+                        cancel.appoinmentId === appointment.appoinmentId && appointmentsNotCancelled.includes(cancel.appoinmentId) === false)    
+            
+            ));
+
+            setFilterAppointments(
+                filterAppointments.filter(appointment => 
+                    !appointmentsCancelled.appoinments.some(cancel => 
+                        cancel.appoinmentId === appointment.appoinmentId && appointmentsNotCancelled.includes(cancel.appoinmentId) === false)    
+            ));
+        }
+        else {
+            setAppointments(
+                appointments.filter(appointment => 
+                    !appointmentsCancelled.appoinments.some(cancel => 
+                        cancel.appoinmentId === appointment.appoinmentId)    
+            
+            ));
+
+            setFilterAppointments(
+                filterAppointments.filter(appointment => 
+                    !appointmentsCancelled.appoinments.some(cancel => 
+                        cancel.appoinmentId === appointment.appoinmentId)    
+            ));
+        }
     }
 
     // Cancela citas
@@ -152,16 +175,28 @@ const CancelEmployeeAppointment = () => {
         }
 
         const result = await cancelAppointments(newData);
+        
         if(result.success && result.success === true) {
             result.message = newData.appoinments.length > 1 ? 'Citas canceladas con éxito' : 'Cita cancelada con éxito';
             updateLocalAppointments(newData);
         }
         
         setIsLoading({success: result.success});
+
         setAlert(result);
 
         handleErrors(result, setAlert, setIsLoading);
         handleClose();
+        
+
+        if(result.status === 400 && (result.data !== null &&  result.data !== undefined)) {
+            updateLocalAppointments(newData, result.data.appoinmentsId);
+            setAppointmentsForCancel(appointmentsForCancel.filter(
+                appointment => result.data.appoinmentsId.some(id => id === appointment.appoinmentId))); 
+            return;      
+        }
+
+        
         setAppointmentsForCancel(null);
     }
 

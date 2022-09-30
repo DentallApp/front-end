@@ -29,7 +29,7 @@ const customStyles = {
 }
 
 const AppointmentTable = ({ 
-    data, 
+    data,
     setAppointmentSelect,
     setAppointmentsForCancel, 
     handleShow,
@@ -102,7 +102,12 @@ const AppointmentTable = ({
     ];
 
     const handleChange = (selectedRows) => {
-        setAppointmentsForCancel(mappingAppointmentsForCancel([...selectedRows.selectedRows]));
+        if(data.filter(a => selectedRows.selectedRows.some(row => a.appoinmentId === row.appoinmentId)).length > 0) {
+            setAppointmentsForCancel(mappingAppointmentsForCancel(data.filter(a => selectedRows.selectedRows.some(row => a.appoinmentId === row.appoinmentId))));
+        }
+        else {
+            setAppointmentsForCancel(null);
+        }
     }
     
     return (
