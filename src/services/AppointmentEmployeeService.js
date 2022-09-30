@@ -65,7 +65,8 @@ export const cancelAppointments = (data) => {
         return {
             status: err.response.status,
             success: err.response.data.success,
-            message: err.response.data.message
+            message: err.response.data.message,
+            data: err.response.status ? err.response.data.data : null
         }
     })
 }

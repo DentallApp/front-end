@@ -7,7 +7,7 @@ const Banner = () => {
     return (
         <div className={styles.container_baner_diagonal}>
             <div className={styles.container_baner_text}>
-                <h1>BIENVENIDO A WORLD DENTAL</h1>
+                <h1>BIENVENIDO A {process.env.REACT_APP_BUSINESS_NAME.toUpperCase()}</h1>
                 <h5>Contamos con profesionales que te ayudarán a cuidar tu sonrisa</h5>
                 <a href="#services"><Button className={styles.button_explore}> <FaArrowRight /> Conozca nuestros servicios</Button></a>
             </div>
