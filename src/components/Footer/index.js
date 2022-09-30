@@ -39,7 +39,7 @@ const Footer = () => {
             </div>
           </div>
           <div className={styles.footer_bottom}>
-              <p>All right reserved by &copy;World Dental {currentDate.getFullYear()} </p>
+              <p>All right reserved by &copy;{process.env.REACT_APP_BUSINESS_NAME} {currentDate.getFullYear()} </p>
           </div>
         </footer>
     );

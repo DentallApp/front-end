@@ -12,7 +12,7 @@ const AboutPage = () => {
                 </div>
                 <div className={styles.container_text}>
                     <p className={styles.text}>
-                        Consultorio Odontológico WorldDental ofrece todo tipo de tratamiento de ortodoncia, endodoncias, 
+                        Consultorio Odontológico {process.env.REACT_APP_BUSINESS_NAME} ofrece todo tipo de tratamiento de ortodoncia, endodoncias, 
                         extracciones, curaciones, limpiezas, prótesis(placas). Brindamos una atención tanto para adultos 
                         como para niños.
                     </p>
