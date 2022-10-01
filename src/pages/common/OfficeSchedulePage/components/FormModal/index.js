@@ -107,6 +107,8 @@ const FormModal = ({show, handleClose, scheduleSelect=null, saveSchedule, schedu
                                                 <Form.Label className={styles.label_input}>* Hora inicio</Form.Label>
                                                 <Form.Control 
                                                 type="time"
+                                                min={process.env.REACT_APP_START_HOUR_OFFICE}
+                                                max={process.env.REACT_APP_END_HOUR_OFFICE}
                                                 {...register("startHour", {
                                                     required: "Hora de inicio es requerida"
                                                 })} />
@@ -121,6 +123,8 @@ const FormModal = ({show, handleClose, scheduleSelect=null, saveSchedule, schedu
                                                 <Form.Label className={styles.label_input}>* Hora fin</Form.Label>
                                                 <Form.Control 
                                                 type="time"
+                                                min={process.env.REACT_APP_START_HOUR_OFFICE}
+                                                max={process.env.REACT_APP_END_HOUR_OFFICE}
                                                 {...register("endHour", {
                                                     required: "Hora fin es requerida"
                                                 })} />
