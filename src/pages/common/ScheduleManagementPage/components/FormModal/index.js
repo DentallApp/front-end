@@ -109,6 +109,8 @@ const FormModal = ({show, handleClose, scheduleSelect=null, saveSchedule, schedu
                                                 <Form.Label className={styles.label_input}>* Hora inicio</Form.Label>
                                                 <Form.Control 
                                                 type="time"
+                                                min={process.env.REACT_APP_START_HOUR_MORNING}
+                                                max={process.env.REACT_APP_END_HOUR_MORNING}
                                                 {...register("morningStartHour")} />
                                                 { errors.morningStartHour && 
                                                 <p className={styles.error_message}>
@@ -121,6 +123,8 @@ const FormModal = ({show, handleClose, scheduleSelect=null, saveSchedule, schedu
                                                 <Form.Label className={styles.label_input}>* Hora fin</Form.Label>
                                                 <Form.Control 
                                                 type="time"
+                                                min={process.env.REACT_APP_START_HOUR_MORNING}
+                                                max={process.env.REACT_APP_END_HOUR_MORNING}
                                                 {...register("morningEndHour")} />
                                                 { errors.morningEndHour && 
                                                 <p className={styles.error_message}>
@@ -143,6 +147,8 @@ const FormModal = ({show, handleClose, scheduleSelect=null, saveSchedule, schedu
                                                 <Form.Label className={styles.label_input}>* Hora inicio</Form.Label>
                                                 <Form.Control 
                                                 type="time"
+                                                min={process.env.REACT_APP_START_HOUR_AFTERNOON}
+                                                max={process.env.REACT_APP_END_HOUR_AFTERNOON}
                                                 {...register("afternoonStartHour")} />
                                                 { errors.afternoonStartHour && 
                                                 <p className={styles.error_message}>
@@ -155,6 +161,8 @@ const FormModal = ({show, handleClose, scheduleSelect=null, saveSchedule, schedu
                                                 <Form.Label className={styles.label_input}>* Hora fin</Form.Label>
                                                 <Form.Control 
                                                 type="time"
+                                                min={process.env.REACT_APP_START_HOUR_AFTERNOON}
+                                                max={process.env.REACT_APP_END_HOUR_AFTERNOON}
                                                 {...register("afternoonEndHour")} />
                                                 { errors.afternoonEndHour && 
                                                 <p className={styles.error_message}>
