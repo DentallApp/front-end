@@ -1,7 +1,9 @@
+import { useContext } from 'react';
 import DataTable from 'react-data-table-component';
 import { Button, Badge } from 'react-bootstrap';
 import { FaEdit } from "react-icons/fa";
 import { INFORMATION_NOT_AVAILABLE } from 'constants/InformationMessage';
+import SideBarContext from 'context/SideBarContext';
 import styles from './ScheduleTable.module.css';
 
 // Opciones de paginación
@@ -22,6 +24,9 @@ const customStyles = {
 }
 
 const ScheduleTable = ({schedules, setSelectedSchedule, handleShow}) => {
+
+    const { onlyWidth } = useContext(SideBarContext);
+
     // Columnas de la tabla
     const columns = [
         {
@@ -29,7 +34,7 @@ const ScheduleTable = ({schedules, setSelectedSchedule, handleShow}) => {
             selector: row => row.weekDayName,
             center: true,
             wrap: true,
-            width: "100px"
+            width: onlyWidth >= 1300 ? "15%" : "100px"
         },
         {
             name: <div className={styles.container_table_header}><h6>Estado</h6></div>,
@@ -41,35 +46,35 @@ const ScheduleTable = ({schedules, setSelectedSchedule, handleShow}) => {
                 </div>,
             center: true,
             wrap: true,
-            minWidth: "100px",
+            width: onlyWidth >= 1300 ? "15%" : "100px",
         },
         {
             name: <div className={styles.container_table_header}><h6>Hora inicio (Mañana)</h6></div>,
             selector: row => row.morningStartHour !== null ? row.morningStartHour : INFORMATION_NOT_AVAILABLE,
             center: true,
             wrap: true,
-            width: "150px",
+            width: onlyWidth >= 1300 ? "15%" : "150px",
         },
         {
             name: <div className={styles.container_table_header}><h6>Hora fin (Mañana)</h6></div>,
             selector: row => row.morningEndHour !== null ? row.morningEndHour : INFORMATION_NOT_AVAILABLE,
             center: true,
             wrap: true,
-            width: "150px"
+            width: onlyWidth >= 1300 ? "15%" : "150px"
         },
         {
             name: <div className={styles.container_table_header}><h6>Hora inicio (Tarde)</h6></div>,
             selector: row => row.afternoonStartHour !== null ? row.afternoonStartHour : INFORMATION_NOT_AVAILABLE,
             center: true,
             wrap: true,
-            width: "150px"
+            width: onlyWidth >= 1300 ? "15%" : "150px"
         },
         {
             name: <div className={styles.container_table_header}><h6>Hora fin (Tarde)</h6></div>,
             selector: row => row.afternoonEndHour !== null ? row.afternoonEndHour : INFORMATION_NOT_AVAILABLE,
             center: true,
             wrap: true,
-            width: "150px"
+            width: onlyWidth >= 1300 ? "15%" : "150px"
         },
         {
             name: <div className={styles.container_table_header}><h6>Acciones</h6></div>,
@@ -91,7 +96,7 @@ const ScheduleTable = ({schedules, setSelectedSchedule, handleShow}) => {
             allowOverflow: true,
             button: true,
             center: true,
-            minWidth: "120px"
+            width: onlyWidth >= 1300 ? "10%" : "120px"
         }
     ];
 

@@ -1,6 +1,8 @@
+import { useContext } from 'react';
 import DataTable from 'react-data-table-component';
 import { Button, Badge } from 'react-bootstrap';
 import { FaSearch } from "react-icons/fa";
+import SideBarContext from 'context/SideBarContext';
 import APPOINTMENT_STATUS from 'constants/AppointmentStatus';
 import styles from './AppointmentsTable.module.css';
 
@@ -22,33 +24,35 @@ const customStyles = {
 }
 
 const AppointmentsTable = ({appointments, handleShow, setAppointmentSelect}) => {
+    const { onlyWidth } = useContext(SideBarContext);
+
     // Columnas de la tabla
     const columns = [
         {
             name: <div className={styles.container_table_header}><h6>Paciente</h6></div>,
             selector: row => row.patientName,
             wrap: true,
-            width: "170px"
+            width: onlyWidth >= 1400 ? "20%" : "170px"
         },
         {
             name: <div className={styles.container_table_header}><h6>Servicio Dental</h6></div>,
             selector: row => row.dentalServiceName,
             wrap: true,
-            minWidth: "170px",
+            width: onlyWidth >= 1400 ? "20%" : "170px",
         },
         {
             name: <div className={styles.container_table_header}><h6>Fecha de la Cita</h6></div>,
             selector: row => row.appointmentDate,
             center: true,
             wrap: true,
-            width: "150px",
+            width: onlyWidth >= 1400 ? "20%" : "150px",
         },
         {
             name: <div className={styles.container_table_header}><h6>Hora de la Cita</h6></div>,
             selector: row => row.startHour ,
             center: true,
             wrap: true,
-            width: "150px"
+            width: onlyWidth >= 1400 ? "10%" : "150px"
         },
         {
             name: <div className={styles.container_table_header}><h6>Estado</h6></div>,
@@ -62,7 +66,7 @@ const AppointmentsTable = ({appointments, handleShow, setAppointmentSelect}) => 
             sortable: true,
             center: true,
             wrap: true,
-            width: "150px"
+            width: onlyWidth >= 1400 ? "10%" : "150px"
         },
         {
             name: <div className={styles.container_table_header}><h6>Acciones</h6></div>,
@@ -85,7 +89,7 @@ const AppointmentsTable = ({appointments, handleShow, setAppointmentSelect}) => 
             allowOverflow: true,
             button: true,
             center: true,
-            minWidth: "200px"
+            width: onlyWidth >= 1400 ? "20%" : "200px"
         }
     ];
 

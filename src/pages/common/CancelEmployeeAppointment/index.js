@@ -196,7 +196,6 @@ const CancelEmployeeAppointment = () => {
             return;      
         }
 
-        
         setAppointmentsForCancel(null);
     }
 
@@ -238,7 +237,7 @@ const CancelEmployeeAppointment = () => {
                 setSelectDentist={setSelectDentist}
                 />
             </div>
-            <div style={{'marginLeft': '20px'}}>
+            <div className={styles.filter_text}>
                 <FilterComponent 
                 inputText='Digite nombre o cedula a buscar'
                 onFilter={handleChange} 

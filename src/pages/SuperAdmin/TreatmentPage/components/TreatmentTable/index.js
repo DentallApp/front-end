@@ -1,7 +1,9 @@
+import { useContext } from 'react';
 import DataTable from 'react-data-table-component';
 import { Button } from 'react-bootstrap';
 import { FaEdit } from "react-icons/fa";
 import { AiFillDelete } from "react-icons/ai";
+import SideBarContext from 'context/SideBarContext';
 import styles from './GeneralServiceTable.module.css';
 
 // Opciones de paginación
@@ -40,6 +42,8 @@ const TreatmentTable = (
         handleShow 
     }) => {
     
+    const { onlyWidth } = useContext(SideBarContext);
+
     // Columnas de la tabla
     const columns = [
         {
@@ -48,7 +52,7 @@ const TreatmentTable = (
             sortable: true,
             center: true,
             wrap: true,
-            minWidth: "100px"
+            width: onlyWidth >= 1200 ? "20%" : "100px"
         },
         {
             name: <div className={styles.container_table_header}><h6>Tratamiento dental</h6></div>,
@@ -57,7 +61,7 @@ const TreatmentTable = (
             center: true,
             cell: row => <div style={{"width": "100%", "textAlign":"center"}}>{row.specificTreatmentName}</div>,
             wrap: true,
-            minWidth: '150px'
+            width: onlyWidth >= 1200 ? "20%" : '170px'
         },
         {
             name: <div className={styles.container_table_header}><h6>Servicio dental</h6></div>,
@@ -66,7 +70,7 @@ const TreatmentTable = (
             center: true,
             cell: row => <div style={{"width": "100%", "textAlign":"center"}}>{row.generalTreatmentName}</div>,
             wrap: true,
-            minWidth: '150px'
+            width: onlyWidth >= 1200 ? "20%" : '150px'
             
         },
         {
@@ -75,7 +79,7 @@ const TreatmentTable = (
             sortable: true,
             center: true,
             wrap: true,
-            width: "100px"
+            width: onlyWidth >= 1200 ? "20%" : "100px"
         },
         {
             name: <div className={styles.container_table_header}><h6>Acciones</h6></div>,
@@ -107,7 +111,7 @@ const TreatmentTable = (
             allowOverflow: true,
             button: true,
             center: true,
-            minWidth: "150px"
+            width: onlyWidth >= 1200 ? "20%" : "150px"
         }
     ];
 

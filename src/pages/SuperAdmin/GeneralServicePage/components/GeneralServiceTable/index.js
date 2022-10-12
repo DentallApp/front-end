@@ -1,8 +1,10 @@
+import { useContext } from 'react';
 import DataTable from 'react-data-table-component';
 import { Button } from 'react-bootstrap';
 import { FaEdit } from "react-icons/fa";
 import { AiFillDelete } from "react-icons/ai";
 import { MinutesToHours } from 'utils/timeUtils';
+import SideBarContext from 'context/SideBarContext';
 import styles from './GeneralServiceTable.module.css';
 
 // Opciones de paginación
@@ -35,6 +37,8 @@ const GeneralServiceTable = (
         setTypeModal,
         handleShow 
     }) => {
+
+    const { onlyWidth } = useContext(SideBarContext);
     
     // Columnas de la tabla
     const columns = [
@@ -44,14 +48,14 @@ const GeneralServiceTable = (
             sortable: true,
             center: true,
             wrap: true,
-            width: "col col-2"
+            width: onlyWidth >= 600 ? "33.33%" : "170px"
         },
         {
             name: <div className={styles.container_table_header}><h6>Duración (horas)</h6></div>,
             selector: row => MinutesToHours(row.duration),
             wrap: true,
             center: true,
-            width: "col col-2"
+            width: onlyWidth >= 600 ? "33.33%" : "170px"
         },
         {
             name: <div className={styles.container_table_header}><h6>Acciones</h6></div>,
@@ -83,7 +87,7 @@ const GeneralServiceTable = (
             allowOverflow: true,
             button: true,
             center: true,
-            minWidth: "150px"
+            width: onlyWidth >= 600 ? "33.33%" : "150px"
         }
     ];
 

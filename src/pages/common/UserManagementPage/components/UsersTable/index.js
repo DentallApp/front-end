@@ -1,6 +1,8 @@
+import { useContext } from 'react';
 import DataTable from 'react-data-table-component';
 import { Button, Badge } from 'react-bootstrap';
 import { FaEdit } from "react-icons/fa";
+import SideBarContext from 'context/SideBarContext';
 import styles from './UsersTable.module.css';
 
 // Opciones de paginación
@@ -34,6 +36,8 @@ const UsersTable = (
         setTypeModal
     }) => {
 
+    const { onlyWidth } = useContext(SideBarContext);
+
     // Columnas de la tabla
     const columns = [
         {
@@ -42,40 +46,41 @@ const UsersTable = (
             sortable: true,
             center: true,
             wrap: true,
-            width: "col col-lg-1"
+            width: onlyWidth >= 1800 ? "15%" : "col col-lg-1"
         },
         {
             name: <div className={styles.container_table_header}><h6>Apellidos</h6></div>,
             selector: row => row.lastNames,
             sortable: true,
             wrap: true,
-            width: "col col-lg-1"
+            width: onlyWidth >= 1800 ? "10%" : "col col-lg-1"
         },
         {
             name: <div className={styles.container_table_header}><h6>Correo</h6></div>,
             selector: row => row.email,
             wrap: true,
-            minWidth: "170px",
+            width: onlyWidth >= 1800 ? "15%" : "170px",
         },
         {
             name: <div className={styles.container_table_header}><h6>Cedula</h6></div>,
             selector: row => row.document,
             center: true,
-            minWidth: "auto"
+            wrap: true,
+            width: onlyWidth >= 1800 ? "15%" : "150px"
         },
         {
             name: <div className={styles.container_table_header}><h6>Consultorio</h6></div>,
             selector: row => row.officeName,
             center: true,
             wrap: true,
-            width: "150px"
+            width: onlyWidth >= 1800 ? "15%" : "150px"
         },
         {
             name: <div className={styles.container_table_header}><h6>Roles</h6></div>,
             selector: row => row.roles.map(role => role.name).toString().replaceAll(",", "\n"),
             center: true,
             wrap: true,
-            width: "150px"
+            width: onlyWidth >= 1800 ? "10%" : "150px"
         },
         {
             name: <div className={styles.container_table_header}><h6>Estado</h6></div>,
@@ -86,7 +91,7 @@ const UsersTable = (
             sortable: true,
             center: true,
             wrap: true,
-            minWidth: "120px",
+            width: onlyWidth >= 1800 ? "10%" : "120px",
         },
         {
             name: <div className={styles.container_table_header}><h6>Acciones</h6></div>,
@@ -109,7 +114,7 @@ const UsersTable = (
             allowOverflow: true,
             button: true,
             center: true,
-            minWidth: "120px"
+            width: onlyWidth >= 1800 ? "10%" : "120px"
         }
     ];
     

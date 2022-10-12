@@ -259,13 +259,15 @@ const UserManagementPage = () => {
                 {
                     getLocalUser().roles.includes(ROLES.SUPERADMIN) && (
                         errorLoading.success === false && (
-                            <FilterComponent 
-                            onFilter={handleChange} 
-                            onClear={handleClear} 
-                            filterText={filterText}
-                            setFilterText={setFilterText}
-                            inputText="Ingrese usuario a buscar"
-                            className={styles.filter} />
+                            <div className={styles.filter_text}>
+                                <FilterComponent 
+                                onFilter={handleChange} 
+                                onClear={handleClear} 
+                                filterText={filterText}
+                                setFilterText={setFilterText}
+                                inputText="Ingrese usuario a buscar"
+                                className={styles.filter} />
+                            </div>
                         )
                     )
                 }

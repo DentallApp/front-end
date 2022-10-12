@@ -25,3 +25,10 @@
     align-items: center;
     background-color: #21a4f1 !important;
 }
+
+@media  screen and (min-width: 2000px) {
+    .container_datable {
+        margin-left: 100px;
+        margin-right: 100px;
+    }
+}
