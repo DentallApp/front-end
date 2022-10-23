@@ -1,6 +1,8 @@
+import { useContext } from 'react';
 import DataTable from 'react-data-table-component';
 import { Button } from 'react-bootstrap';
 import { FaEdit } from "react-icons/fa";
+import SideBarContext from 'context/SideBarContext';
 import styles from './PatientTable.module.css';
 
 // Opciones de paginación
@@ -32,6 +34,8 @@ const PatientTable = (
         setPatientSelect, 
         handleShow 
     }) => {
+
+    const { onlyWidth } = useContext(SideBarContext);    
     
     // Columnas de la tabla
     const columns = [
@@ -41,7 +45,7 @@ const PatientTable = (
             sortable: true,
             center: true,
             wrap: true,
-            width: "col col-2"
+            width: onlyWidth >= 1300 ? "17.5%" : "col col-2"
         },
         {
             name: <div className={styles.container_table_header}><h6>Apellidos</h6></div>,
@@ -49,28 +53,28 @@ const PatientTable = (
             sortable: true,
             wrap: true,
             center: true,
-            width: "col col-2"
+            width: onlyWidth >= 1300 ? "17.5%" : "col col-2"
         },
         {
             name: <div className={styles.container_table_header}><h6>Cedula</h6></div>,
             selector: row => row.document,
             wrap: true,
             center: true,
-            width: "150px"
+            width: onlyWidth >= 1300 ? "15%" : "150px"
         },
         {
             name: <div className={styles.container_table_header}><h6>Telefono</h6></div>,
             selector: row => row.cellPhone,
             wrap: true,
             center: true,
-            width: "150px"
+            width: onlyWidth >= 1300 ? "15%" : "150px"
         },
         {
             name: <div className={styles.container_table_header}><h6>Correo</h6></div>,
             selector: row => row.email,
             wrap: true,
             center: true,
-            width: "150px"
+            width: onlyWidth >= 1300 ? "20%" : "150px"
         },
         {
             name: <div className={styles.container_table_header}><h6>Acciones</h6></div>,
@@ -92,7 +96,7 @@ const PatientTable = (
             allowOverflow: true,
             button: true,
             center: true,
-            minWidth: "150px"
+            width: onlyWidth >= 1300 ? "15%" : "150px"
         }
     ];
 

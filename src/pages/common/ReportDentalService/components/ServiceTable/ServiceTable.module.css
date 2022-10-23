@@ -10,3 +10,10 @@
     color: #FFF;
     
 }
+
+@media  screen and (min-width: 2000px) {
+    .container_datable {
+        margin-left: 100px;
+        margin-right: 100px;
+    }
+}

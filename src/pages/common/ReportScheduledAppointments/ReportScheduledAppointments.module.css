@@ -73,3 +73,18 @@
         margin-top: 10px;
     }
 }
+
+@media  screen and (min-width: 2000px) {
+    .container_filters {
+        margin-left: 100px;
+        margin-right: 100px;
+    }
+
+    .office_current {
+        margin-left: 100px;
+    }
+
+    .button_download {
+        margin-left: 80px;
+    }
+}

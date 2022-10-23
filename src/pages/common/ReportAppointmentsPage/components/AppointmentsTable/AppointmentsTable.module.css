@@ -36,3 +36,10 @@
     font-weight: bold;
     margin-right: 20px;
 }
+
+@media  screen and (min-width: 2000px) {
+    .container_datatable {
+        margin-left: 100px;
+        margin-right: 100px;
+    }
+}

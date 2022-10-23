@@ -43,3 +43,10 @@
         grid-template-columns: 90%;
     }
 }
+
+@media (min-width: 1450px) {
+    .container_card {
+        display: grid;
+        grid-template-columns: repeat(3, 330px);
+    }
+}

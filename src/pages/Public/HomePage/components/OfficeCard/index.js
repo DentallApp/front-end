@@ -18,7 +18,9 @@ const OfficeCard = ({office}) => {
         >
             <FrontSide style={{"boxShadow": "none"}} >
                 <Card className={`${styles.card_office}`}>
-                    <ImOffice className={styles.icon}/>
+                    <div className={styles.header}>
+                        <ImOffice className={styles.icon}/>
+                    </div>
                     <h5>{office.name}</h5>
                     <br></br>
                     <div style={{"height":"120px"}}>
@@ -37,7 +39,9 @@ const OfficeCard = ({office}) => {
             </FrontSide>
             <BackSide style={{"boxShadow": "none"}} >
                 <Card className={`${styles.card_office}`}>
-                    <ImOffice className={styles.icon}/>
+                    <div className={styles.header}>
+                        <ImOffice className={styles.icon}/>
+                    </div>
                     <h5>{office.name}</h5>
                     <br></br>
                     <h6><FaCalendarAlt /> Horarios</h6><br/>

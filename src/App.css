@@ -89,6 +89,7 @@
   .fc-button:nth-child(2) {
     display: none;
   }
+
 }
 
 @media screen and (max-width: 1024px) {

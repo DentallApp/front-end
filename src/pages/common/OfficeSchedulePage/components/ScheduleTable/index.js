@@ -1,6 +1,8 @@
+import { useContext } from 'react';
 import DataTable from 'react-data-table-component';
 import { Button, Badge } from 'react-bootstrap';
 import { FaEdit } from "react-icons/fa";
+import SideBarContext from 'context/SideBarContext';
 import styles from './ScheduleTable.module.css';
 
 // Opciones de paginación
@@ -21,6 +23,9 @@ const customStyles = {
 }
 
 const ScheduleTable = ({schedules, setSelectedSchedule, handleShow}) => {
+
+    const { onlyWidth } = useContext(SideBarContext);
+
     // Columnas de la tabla
     const columns = [
         {
@@ -28,7 +33,7 @@ const ScheduleTable = ({schedules, setSelectedSchedule, handleShow}) => {
             selector: row => row.weekDayName,
             center: true,
             wrap: true,
-            width: "150px"
+            width: onlyWidth >= 1300 ? "20%" : "150px"
         },
         {
             name: <div className={styles.container_table_header}><h6>Estado</h6></div>,
@@ -40,21 +45,21 @@ const ScheduleTable = ({schedules, setSelectedSchedule, handleShow}) => {
                 </div>,
             center: true,
             wrap: true,
-            Width: "100px",
+            width: onlyWidth >= 1300 ? "20%" : "100px",
         },
         {
             name: <div className={styles.container_table_header}><h6>Hora de Apertura</h6></div>,
             selector: row => row.startHour,
             center: true,
             wrap: true,
-            width: "200px",
+            width: onlyWidth >= 1300 ? "20%" : "200px",
         },
         {
             name: <div className={styles.container_table_header}><h6>Hora de Cierre</h6></div>,
             selector: row => row.endHour,
             center: true,
             wrap: true,
-            width: "200px"
+            width: onlyWidth >= 1300 ? "20%" : "200px"
         },
         {
             name: <div className={styles.container_table_header}><h6>Acciones</h6></div>,
@@ -76,7 +81,7 @@ const ScheduleTable = ({schedules, setSelectedSchedule, handleShow}) => {
             allowOverflow: true,
             button: true,
             center: true,
-            minWidth: "120px"
+            width: onlyWidth >= 1300 ? "20%" : "120px"
         }
     ];
 

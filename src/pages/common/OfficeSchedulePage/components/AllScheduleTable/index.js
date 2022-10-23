@@ -1,7 +1,9 @@
+import { useContext } from 'react';
 import DataTable from 'react-data-table-component';
 import { Badge } from 'react-bootstrap';
 import { INFORMATION_NOT_AVAILABLE } from 'constants/InformationMessage';
 import WEEKDAYS from 'constants/WeekDays';
+import SideBarContext from 'context/SideBarContext';
 import styles from './AllScheduleTable.module.css';
 
 // Opciones de paginación
@@ -46,6 +48,9 @@ const showSchedule = (schedule) => {
 }
 
 const AllScheduleTable = ({allSchedules}) => {
+
+    const { onlyWidth } = useContext(SideBarContext);
+
     // Columnas de la tabla
     const columns = [
         {
@@ -53,7 +58,7 @@ const AllScheduleTable = ({allSchedules}) => {
             selector: row => row.name,
             center: true,
             wrap: true,
-            width: "200px"
+            width: onlyWidth >= 1600 ? "15%" : "200px"
         },
         {
             name: <div className={styles.container_table_header}><h6>Estado</h6></div>,
@@ -65,7 +70,7 @@ const AllScheduleTable = ({allSchedules}) => {
                 </div>,
             center: true,
             wrap: true,
-            minWidth: "100px",
+            width: onlyWidth >= 1600 ? "10%" : "100px",
         },
         {
             name: <div className={styles.container_table_header}><h6>Lunes</h6></div>,
@@ -76,7 +81,7 @@ const AllScheduleTable = ({allSchedules}) => {
             },
             center: true,
             wrap: true,
-            width: "200px",
+            width: onlyWidth >= 1600 ? "12.5%" : "200px",
         },
         {
             name: <div className={styles.container_table_header}><h6>Martes</h6></div>,
@@ -86,7 +91,7 @@ const AllScheduleTable = ({allSchedules}) => {
             },
             center: true,
             wrap: true,
-            width: "200px",
+            width: onlyWidth >= 1600 ? "12.5%" : "200px",
         },
         {
             name: <div className={styles.container_table_header}><h6>Miercoles</h6></div>,
@@ -96,7 +101,7 @@ const AllScheduleTable = ({allSchedules}) => {
             },
             center: true,
             wrap: true,
-            width: "200px"
+            width: onlyWidth >= 1600 ? "12.5%" : "200px"
         },
         {
             name: <div className={styles.container_table_header}><h6>Jueves</h6></div>,
@@ -106,7 +111,7 @@ const AllScheduleTable = ({allSchedules}) => {
             },
             center: true,
             wrap: true,
-            width: "150px"
+            width: onlyWidth >= 1600 ? "12.5%" : "150px"
         },
         {
             name: <div className={styles.container_table_header}><h6>Viernes</h6></div>,
@@ -116,7 +121,7 @@ const AllScheduleTable = ({allSchedules}) => {
             },
             center: true,
             wrap: true,
-            width: "150px"
+            width: onlyWidth >= 1600 ? "12.5%" : "150px"
         },
         {
             name: <div className={styles.container_table_header}><h6>Sabado</h6></div>,
@@ -126,7 +131,7 @@ const AllScheduleTable = ({allSchedules}) => {
             },
             center: true,
             wrap: true,
-            width: "150px"
+            width: onlyWidth >= 1600 ? "12.5%" : "150px"
         },
     ];
 

@@ -4,11 +4,9 @@
     width: 100%;
     min-height: 200px;
     max-height: 500px;  
-    /*background: #023e8a;
-    background-image: linear-gradient(to right, #4facfe 0%, #00f2fe 100%);*/
     background-color: #f0ffff;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
 }
 
 .container_baner_diagonal::before {
@@ -126,5 +124,15 @@
 
     .button_explore {
         font-size: .5rem !important;
+    }
+}
+
+@media  screen and (min-width: 1800px) {
+    .baner_image {
+        height: 100%;
+    }
+
+    .container_baner_diagonal {
+        justify-content: flex-end;
     }
 }

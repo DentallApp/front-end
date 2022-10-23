@@ -15,6 +15,10 @@
     justify-content: space-between;
 }
 
+.filter_text {
+    margin-left: 20px;
+}
+
 .btn_cancel {
     margin-left: 20px;
     margin-bottom: 10px;
@@ -65,3 +69,18 @@
         align-items: flex-start;
     }
 }
+
+@media  screen and (min-width: 2000px) {
+    .container_header {
+        margin-left: 100px;
+        margin-right: 100px;
+    }
+
+    .filter_text {
+        margin-left: 100px;
+    }
+
+    .btn_cancel {
+        margin-left: 100px;
+    }
+}    

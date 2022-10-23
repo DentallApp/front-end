@@ -1,7 +1,9 @@
+import { useContext } from 'react';
 import DataTable from 'react-data-table-component';
 import { Button, Badge } from 'react-bootstrap';
 import { FaEdit } from "react-icons/fa";
 import { INFORMATION_NOT_AVAILABLE } from 'constants/InformationMessage';
+import SideBarContext from 'context/SideBarContext';
 import styles from './OfficeTable.module.css';
 
 // Opciones de paginación
@@ -27,6 +29,9 @@ const customStyles = {
 }
 
 const OfficeTable = ({offices, setOfficeSelect, handleShow, paginationResetDefaultPage}) => {
+
+    const { onlyWidth } = useContext(SideBarContext);
+
     // Columnas de la tabla
     const columns = [
         {
@@ -35,21 +40,21 @@ const OfficeTable = ({offices, setOfficeSelect, handleShow, paginationResetDefau
             sortable: true,
             center: true,
             wrap: true,
-            width: "150px"
+            width: onlyWidth >= 1300 ? "20%" : "150px"
         },
         {
             name: <div className={styles.container_table_header}><h6>Dirección</h6></div>,
             selector: row => row.address,
             wrap: true,
             center: true,
-            width: "250px"
+            width: onlyWidth >= 1300 ? "20%" : "270px"
         },
         {
             name: <div className={styles.container_table_header}><h6>Teléfono</h6></div>,
             selector: row => row.contactNumber ? row.contactNumber : INFORMATION_NOT_AVAILABLE,
             wrap: true,
             center: true,
-            Width: "100px",
+            width: onlyWidth >= 1300 ? "20%" : "200px",
         },
         {
             name: <div className={styles.container_table_header}><h6>Estado</h6></div>,
@@ -61,7 +66,7 @@ const OfficeTable = ({offices, setOfficeSelect, handleShow, paginationResetDefau
                 </div>,
             center: true,
             wrap: true,
-            Width: "120px",
+            width: onlyWidth >= 1300 ? "20%" : "120px",
         },
         {
             name: <div className={styles.container_table_header}><h6>Acciones</h6></div>,
@@ -83,7 +88,7 @@ const OfficeTable = ({offices, setOfficeSelect, handleShow, paginationResetDefau
             allowOverflow: true,
             button: true,
             center: true,
-            Width: "120px"
+            width: onlyWidth >= 1300 ? "20%" : "120px"
         }
     ];
 
