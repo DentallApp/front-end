@@ -294,7 +294,7 @@ const AppointmentModal = ({show, handleClose, createNewAppointment}) => {
                                                 min={moment(new Date()).format('yyyy-MM-DD')}
                                                 max={
                                                     moment(new Date())
-                                                    .add(parseInt(process.env.REACT_APP_MAX_DATE_IN_DATE_INPUT), "days")
+                                                    .add(parseInt(process.env.REACT_APP_MAX_DAYS_IN_CALENDAR), "days")
                                                     .format('yyyy-MM-DD')
                                                 }
                                                 onChange={handleSelectDate} />
