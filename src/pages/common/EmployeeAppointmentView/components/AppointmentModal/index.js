@@ -26,8 +26,7 @@ const AppointmentModal = ({
         register("statusId", { required: "Estado de la cita es requerido" });
         setValue("statusId", appointmentSelect.event.extendedProps.statusId, true);
         
-        setStatusAppointment(listStatus.filter(status => status.id === APPOINTMENT_STATUS[0].id || 
-            status.id === APPOINTMENT_STATUS[2].id || status.id === APPOINTMENT_STATUS[4].id));
+        setStatusAppointment(listStatus.filter(status => status.id !== APPOINTMENT_STATUS[3].id));
         // eslint-disable-next-line react-hooks/exhaustive-deps    
     }, []);
 
@@ -118,7 +117,7 @@ const AppointmentModal = ({
                                         <Form.Label className={styles.label_input}>Estado</Form.Label>
                                         {
                                             (appointmentSelect.event.extendedProps.statusId !== 
-                                            APPOINTMENT_STATUS[5].id && 
+                                            APPOINTMENT_STATUS[3].id && 
                                             moment(appointmentSelect.event.extendedProps.appointmentDate).format('yyyy-MM-DD') === moment().format('yyyy-MM-DD')) ? (
                                                 <Form.Select
                                                 name="statusId"
@@ -140,7 +139,7 @@ const AppointmentModal = ({
                                                     <Badge pill 
                                                     bg={
                                                         APPOINTMENT_STATUS.filter(status => 
-                                                        status.id === appointmentSelect.event.extendedProps.statusId)[0].colorName
+                                                        status.name === appointmentSelect.event.extendedProps.status)[0].colorName
                                                     }>
                                                         {appointmentSelect.event.extendedProps.status.toUpperCase()}
                                                     </Badge>
@@ -167,7 +166,7 @@ const AppointmentModal = ({
                         <Modal.Footer className={styles.container_footer}>
                             {
                                 (appointmentSelect.event.extendedProps.statusId !== 
-                                APPOINTMENT_STATUS[5].id &&
+                                APPOINTMENT_STATUS[3].id &&
                                 moment(appointmentSelect.event.extendedProps.appointmentDate).format('yyyy-MM-DD') === moment().format('yyyy-MM-DD')) 
                                 && (
                                     <Button 

@@ -55,11 +55,9 @@ const EmployeeAppointmentView = () => {
         getAppointments(startDate, endDate, selectOffice, selectDentist, selectStatus);
 
         getAppointmentStatus().then(res => {
-            setListStatus(res.data.filter(status => status.id === APPOINTMENT_STATUS[0].id || 
-                status.id === APPOINTMENT_STATUS[2].id || status.id === APPOINTMENT_STATUS[4].id ||
-                status.id === APPOINTMENT_STATUS[5].id))
+            setListStatus(res.data);
         })
-            .catch(err => err);
+        .catch(err => err);
             
         // eslint-disable-next-line react-hooks/exhaustive-deps    
     }, []);
@@ -140,7 +138,7 @@ const EmployeeAppointmentView = () => {
         const id = appointmentSelect.event.extendedProps.appoinmentId;
         const result = await updateStatusAppointment(statusId, id);
         if(result.success && result.success === true) {
-            updateLocalDataAppointment(statusId, parseInt(appointmentSelect.event.extendedProps.appoinmentId));
+            updateLocalDataAppointment(statusId);
             result.message = 'Estado de la cita actualizado con éxito';
         }
             
@@ -150,8 +148,9 @@ const EmployeeAppointmentView = () => {
     }
 
     const updateLocalDataAppointment = (id) => {
-        const status = APPOINTMENT_STATUS.filter(status => status.id === id)[0];
-
+        const tempStatus = listStatus.filter(status => status.id === id);
+        const status = APPOINTMENT_STATUS.filter(status => status.name === tempStatus[0].name)[0];
+        
         setAppointments(appointments.map(appointment => 
             appointment.appoinmentId === parseInt(appointmentSelect.event.extendedProps.appoinmentId)   ? { 
                 ...appointment, 
@@ -162,7 +161,7 @@ const EmployeeAppointmentView = () => {
         ));
 
         setFilterAppointments(filterAppointments.map(appointment => 
-            appointment.appoinmentId === parseInt(appointmentSelect.event.extendedProps.appoinmentId)   ? { 
+            appointment.appoinmentId === parseInt(appointmentSelect.event.extendedProps.appoinmentId) ? { 
                 ...appointment, 
                 statusId: status.id, 
                 status: status.name,
