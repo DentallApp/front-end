@@ -1,0 +1,51 @@
+.container_datable {
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.container_table_header {
+    width: 100%;
+    text-align: center;
+    color: #FFF;
+    
+}
+
+.container_actions {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.button_edit {
+    margin-right: 5px;
+    border-radius: 100%;
+    background-color: #FFC23C !important;
+    border-style: none;
+}
+
+.button_cancel {
+    border-radius: 100%;
+    border-style: none;
+    background-color: #D61C4E !important;
+}
+
+.button_edit:hover {
+    background-color: #FFC23C !important;
+}
+
+.button_cancel:hover {
+    background-color: #D61C4E !important;
+}
+
+.button_edit:active, .button_cancel:active {
+    box-shadow: 0 5px #666 !important;
+    transform: translateY(4px) !important;
+}
+
+@media  screen and (min-width: 2000px) {
+    .container_datable {
+        margin-left: 100px;
+        margin-right: 100px;
+    }
+}
