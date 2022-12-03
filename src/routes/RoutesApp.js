@@ -38,7 +38,7 @@ import {
 import { AppointmentCalendarPage } from 'pages/Dentist';
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
-import { GeneralServicePage, TreatmentPage, OfficeManagementPage } from 'pages/SuperAdmin';
+import { GeneralServicePage, TreatmentPage, OfficeManagementPage, HoliDaysPage } from 'pages/SuperAdmin';
 import { AppointmentPage, NewPatientRegistrationPage } from 'pages/Secretary';
 
 const RoutesApp = () => {
@@ -92,6 +92,7 @@ const RoutesApp = () => {
                         <Route path="/gestion-servicio" element={<GeneralServicePage />} />
                         <Route path="/gestion-tratamientos" element={<TreatmentPage />} />
                         <Route path={'/consultorios/gestion'} element={<OfficeManagementPage />} />
+                        <Route path="/configuracion-feriados" element={<HoliDaysPage />} />
                     </Route>
                 </Route>}
 
