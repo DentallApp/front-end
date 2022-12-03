@@ -1,6 +1,8 @@
+import { useContext } from 'react';
 import DataTable from 'react-data-table-component';
 import FavoriteButton from '../FavoriteButton';
 import { INFORMATION_NOT_AVAILABLE } from 'constants/InformationMessage';
+import SideBarContext from 'context/SideBarContext';
 import styles from './DentistTable.module.css';
 
 const paginationOptions = {
@@ -20,6 +22,9 @@ const customStyles = {
 }
 
 const DentistTable = ({filterDentists, setAlert, setIsLoading}) => {
+
+    const { onlyWidth } = useContext(SideBarContext);
+
     // Columnas de la tabla
     const columns = [
         {
@@ -28,7 +33,7 @@ const DentistTable = ({filterDentists, setAlert, setIsLoading}) => {
             center: true,
             wrap: true,
             cell: row => <p style={{'textAlign': 'center'}}>{row.fullName}</p>,
-            width: "250px"
+            width: onlyWidth >= 1300 ? "20%" : "250px"
         },
         {
             name: <div className={styles.container_table_header}><h6>Pregrado</h6></div>,
@@ -39,8 +44,7 @@ const DentistTable = ({filterDentists, setAlert, setIsLoading}) => {
             cell: row => <p style={{'textAlign': 'center'}}>{
                 row.pregradeUniversity === null || row.pregradeUniversity === '' ? 
                 INFORMATION_NOT_AVAILABLE : row.pregradeUniversity}</p>,
-            width: '200px'
-            
+            width: onlyWidth >= 1300 ? "20%" : '200px'
         },
         {
             name: <div className={styles.container_table_header}><h6>Posgrado</h6></div>,
@@ -51,14 +55,14 @@ const DentistTable = ({filterDentists, setAlert, setIsLoading}) => {
             cell: row => <p style={{'textAlign': 'center'}}>{
                 row.postgradeUniversity === null || row.postgradeUniversity === '' ? 
                 INFORMATION_NOT_AVAILABLE : row.postgradeUniversity}</p>,
-            width: "200px",
+            width: onlyWidth >= 1300 ? "20%" : "200px",
         },
         {
             name: <div className={styles.container_table_header}><h6>Consultorio</h6></div>,
             selector: row => row.officeName,
             center: true,
             wrap: true,
-            width: "200px",
+            width: onlyWidth >= 1300 ? "20%" : "200px",
         },
         {
             name: <div className={styles.container_table_header}><h6>Acciones</h6></div>,
@@ -77,7 +81,7 @@ const DentistTable = ({filterDentists, setAlert, setIsLoading}) => {
             allowOverflow: true,
             button: true,
             center: true,
-            maxWidth: "200px"
+            width: onlyWidth >= 1300 ? "20%" : "200px"
         }
     ];
     return (
