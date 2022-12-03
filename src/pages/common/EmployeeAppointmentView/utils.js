@@ -10,7 +10,7 @@ export const setEventClassNames = (arg, styles) => {
             return stylesAppointments.concat(styles.scheduled);
         case 'Asistida':
             return stylesAppointments.concat(styles.assisted);
-        case 'No asistida':
+        case 'No Asistida':
             return stylesAppointments.concat(styles.unassisted);
         case 'Cancelada':
             return stylesAppointments.concat(styles.cancel);                
