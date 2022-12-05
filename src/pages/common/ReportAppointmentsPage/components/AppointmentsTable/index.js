@@ -17,19 +17,19 @@ const AppointmentsTable = ({appointmentReport}) => {
                                 <tbody>
                                     <tr>
                                         <td>Asistida</td>
-                                        <td>{appointmentReport.totalAppoinmentsAssisted}</td>
+                                        <td>{appointmentReport.totalAppointmentsAssisted}</td>
                                     </tr>
                                     <tr>
                                         <td>No Asistida</td>
-                                        <td>{appointmentReport.totalAppoinmentsNotAssisted}</td>
+                                        <td>{appointmentReport.totalAppointmentsNotAssisted}</td>
                                     </tr>
                                     <tr>
                                         <td>Cancelada por Paciente</td>
-                                        <td>{appointmentReport.totalAppoinmentsCancelledByPatient}</td>
+                                        <td>{appointmentReport.totalAppointmentsCancelledByPatient}</td>
                                     </tr>
                                     <tr>
                                         <td>Cancelada por Empleado</td>
-                                        <td>{appointmentReport.totalAppoinmentsCancelledByEmployee}</td>
+                                        <td>{appointmentReport.totalAppointmentsCancelledByEmployee}</td>
                                     </tr>
                                 </tbody>
                             </table>

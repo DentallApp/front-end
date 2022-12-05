@@ -45,9 +45,9 @@ const AppointmentHistory = () => {
             return;
         }    
 
-        const data = appointments?.filter(appoinment => 
+        const data = appointments?.filter(appointment => 
             listStatus?.some(status => 
-                status.id === parseInt(statusSelected) && status.name === appoinment.status));
+                status.id === parseInt(statusSelected) && status.name === appointment.status));
         
         setFilterAppointments(data);        
     }, [appointmentSelect, statusSelected, appointments, listStatus]);

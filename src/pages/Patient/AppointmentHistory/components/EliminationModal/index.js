@@ -18,7 +18,7 @@ const EliminationModal = ({show, handleClose, appointmentSelect, cancelAppointme
                 <Button variant="secondary" onClick={handleClose}>
                     Cerrar
                 </Button>
-                <Button variant="primary" onClick={() => cancelAppointment(appointmentSelect.appoinmentId)}>
+                <Button variant="primary" onClick={() => cancelAppointment(appointmentSelect.appointmentId)}>
                     Eliminar
                 </Button>
             </Modal.Footer>

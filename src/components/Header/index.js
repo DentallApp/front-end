@@ -50,7 +50,7 @@ const Header = () => {
                                 </NavDropdown.Item>
                             ))}
                         </NavDropdown>
-                        <Button className={styles.button_appoinment} onClick={() => navigate('/login')}> 
+                        <Button className={styles.button_appointment} onClick={() => navigate('/login')}> 
                             <FaCalendarAlt /> Agenda tu cita
                         </Button>
                     </Nav>

@@ -64,7 +64,7 @@ const AppointmentPage = () => {
             dentistId: data.dentistId,
             generalTreatmentId: data.generalTreatmentId,
             officeId: data.officeId,
-            appoinmentDate: data.appointmentDate,
+            appointmentDate: data.appointmentDate,
             startHour: data.hours.startHour,
             endHour: data.hours.endHour
         }

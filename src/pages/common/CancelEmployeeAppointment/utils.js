@@ -5,10 +5,10 @@ export const filterAppointmentByDentist = (dentistId, appointments) => {
 export const mappingAppointmentsForCancel = (appointments) => {
     return appointments.map(appointment => {
         return {
-            appoinmentId: appointment.appoinmentId,
+            appointmentId: appointment.appointmentId,
             patientName: appointment.patientName,
             patientCellPhone: appointment.cellPhone,
-            appoinmentDate: appointment.appointmentDate,
+            appointmentDate: appointment.appointmentDate,
             startHour: appointment.startHour
         }
     })

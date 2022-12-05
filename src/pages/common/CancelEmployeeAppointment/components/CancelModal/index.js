@@ -18,7 +18,7 @@ const CancelModal = ({show, handleClose, appointmentsForCancel, cancel}) => {
                 Esta a punto de cancelar las citas de los siguientes pacientes:<br /> 
                 {
                     appointmentsForCancel.map(appointment => (
-                        <p key={appointment.appoinmentId}>📋 {appointment.patientName}</p>
+                        <p key={appointment.appointmentId}>📋 {appointment.patientName}</p>
                     ))
                 }
                 <br/>

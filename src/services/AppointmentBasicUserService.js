@@ -1,11 +1,11 @@
 import api from './Api';
 
 export const getAppointments = async () => {
-    return await api.get('/appoinment/basic-user');
+    return await api.get('/appointment/basic-user');
 }
 
 export const deleteAppointment = (id) => {
-    return api.delete(`/appoinment/${id}/basic-user`)
+    return api.delete(`/appointment/${id}/basic-user`)
     .then(res => {
         return {
             status: res.status,

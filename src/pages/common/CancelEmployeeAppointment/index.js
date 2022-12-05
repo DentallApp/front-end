@@ -127,29 +127,29 @@ const CancelEmployeeAppointment = () => {
 
             setAppointments(
                 appointments.filter(appointment => 
-                    !appointmentsCancelled.appoinments.some(cancel => 
-                        cancel.appoinmentId === appointment.appoinmentId && appointmentsNotCancelled.includes(cancel.appoinmentId) === false)    
+                    !appointmentsCancelled.appointments.some(cancel => 
+                        cancel.appointmentId === appointment.appointmentId && appointmentsNotCancelled.includes(cancel.appointmentId) === false)    
             
             ));
 
             setFilterAppointments(
                 filterAppointments.filter(appointment => 
-                    !appointmentsCancelled.appoinments.some(cancel => 
-                        cancel.appoinmentId === appointment.appoinmentId && appointmentsNotCancelled.includes(cancel.appoinmentId) === false)    
+                    !appointmentsCancelled.appointments.some(cancel => 
+                        cancel.appointmentId === appointment.appointmentId && appointmentsNotCancelled.includes(cancel.appointmentId) === false)    
             ));
         }
         else {
             setAppointments(
                 appointments.filter(appointment => 
-                    !appointmentsCancelled.appoinments.some(cancel => 
-                        cancel.appoinmentId === appointment.appoinmentId)    
+                    !appointmentsCancelled.appointments.some(cancel => 
+                        cancel.appointmentId === appointment.appointmentId)    
             
             ));
 
             setFilterAppointments(
                 filterAppointments.filter(appointment => 
-                    !appointmentsCancelled.appoinments.some(cancel => 
-                        cancel.appoinmentId === appointment.appoinmentId)    
+                    !appointmentsCancelled.appointments.some(cancel => 
+                        cancel.appointmentId === appointment.appointmentId)    
             ));
         }
     }
@@ -171,13 +171,13 @@ const CancelEmployeeAppointment = () => {
 
         const newData = {
             reason: data.reason,
-            appoinments: appointmentsForCancel
+            appointments: appointmentsForCancel
         }
 
         const result = await cancelAppointments(newData);
         
         if(result.success && result.success === true) {
-            result.message = newData.appoinments.length > 1 ? 'Citas canceladas con éxito' : 'Cita cancelada con éxito';
+            result.message = newData.appointments.length > 1 ? 'Citas canceladas con éxito' : 'Cita cancelada con éxito';
             updateLocalAppointments(newData);
         }
         
@@ -190,9 +190,9 @@ const CancelEmployeeAppointment = () => {
         
 
         if(result.status === 400 && (result.data !== null &&  result.data !== undefined)) {
-            updateLocalAppointments(newData, result.data.appoinmentsId);
+            updateLocalAppointments(newData, result.data.appointmentsId);
             setAppointmentsForCancel(appointmentsForCancel.filter(
-                appointment => result.data.appoinmentsId.some(id => id === appointment.appoinmentId))); 
+                appointment => result.data.appointmentsId.some(id => id === appointment.appointmentId))); 
             return;      
         }
 

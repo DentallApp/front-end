@@ -4,7 +4,7 @@ import APPOINTMENT_STATUS from 'constants/AppointmentStatus';
 export const mappingAppointments = (data) => {
     const newList = data.map(appointment => {
         return {
-            id: appointment.appoinmentId,
+            id: appointment.appointmentId,
             title: appointment.patientName.split(' ')[0] + ' ' + 
             appointment.patientName.split(' ')[appointment.patientName.split(' ').length === 4 ? 
             appointment.patientName.split(' ').length - 2 : appointment.patientName.split(' ').length - 1],

@@ -68,7 +68,7 @@ const ReportScheduledAppointments = () => {
         const data = {
             from: startDate,
             to: endDate,
-            appoinments: filterAppointments
+            appointments: filterAppointments
         };
 
         const result = await downloadReportScheduledAppointment(data);
