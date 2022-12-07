@@ -1,7 +1,7 @@
 import api from './Api';
 
 export const downloadReportAppointment = (data) => {
-    return api.post('/pdf/report/appoinment', {
+    return api.post('/pdf/report/appointment', {
         from: data.from,
         to: data.to,
         officeName: data.officeName,
@@ -24,10 +24,10 @@ export const downloadReportAppointment = (data) => {
 }
 
 export const downloadReportScheduledAppointment = (data) => {
-    return api.post('/pdf/report/appoinment/scheduled', {
+    return api.post('/pdf/report/appointment/scheduled', {
         from: data.from,
         to: data.to,
-        appoinments: data.appoinments
+        appointments: data.appointments
     }, {responseType: 'blob'})
     .then(res => {
         if(res.status === 200) {

@@ -135,7 +135,7 @@ const EmployeeAppointmentView = () => {
     }
 
     const updateStatus = async(statusId) => {
-        const id = appointmentSelect.event.extendedProps.appoinmentId;
+        const id = appointmentSelect.event.extendedProps.appointmentId;
         const result = await updateStatusAppointment(statusId, id);
         if(result.success && result.success === true) {
             updateLocalDataAppointment(statusId);
@@ -152,7 +152,7 @@ const EmployeeAppointmentView = () => {
         const status = APPOINTMENT_STATUS.filter(status => status.name === tempStatus[0].name)[0];
         
         setAppointments(appointments.map(appointment => 
-            appointment.appoinmentId === parseInt(appointmentSelect.event.extendedProps.appoinmentId)   ? { 
+            appointment.appointmentId === parseInt(appointmentSelect.event.extendedProps.appointmentId)   ? { 
                 ...appointment, 
                 statusId: status.id, 
                 status: status.name,
@@ -161,7 +161,7 @@ const EmployeeAppointmentView = () => {
         ));
 
         setFilterAppointments(filterAppointments.map(appointment => 
-            appointment.appoinmentId === parseInt(appointmentSelect.event.extendedProps.appoinmentId) ? { 
+            appointment.appointmentId === parseInt(appointmentSelect.event.extendedProps.appointmentId) ? { 
                 ...appointment, 
                 statusId: status.id, 
                 status: status.name,

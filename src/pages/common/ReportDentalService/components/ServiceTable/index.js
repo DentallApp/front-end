@@ -36,7 +36,7 @@ const ServiceTable = ({services}) => {
         },
         {
             name: <div className={styles.container_table_header}><h6>Total de citas atendidas</h6></div>,
-            selector: row => row.totalAppoinmentsAssisted,
+            selector: row => row.totalAppointmentsAssisted,
             center: true,
             wrap: true,
             width: "50%"

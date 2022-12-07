@@ -107,8 +107,8 @@ const AppointmentTable = ({
     ];
 
     const handleChange = (selectedRows) => {
-        if(data.filter(a => selectedRows.selectedRows.some(row => a.appoinmentId === row.appoinmentId)).length > 0) {
-            setAppointmentsForCancel(mappingAppointmentsForCancel(data.filter(a => selectedRows.selectedRows.some(row => a.appoinmentId === row.appoinmentId))));
+        if(data.filter(a => selectedRows.selectedRows.some(row => a.appointmentId === row.appointmentId)).length > 0) {
+            setAppointmentsForCancel(mappingAppointmentsForCancel(data.filter(a => selectedRows.selectedRows.some(row => a.appointmentId === row.appointmentId))));
         }
         else {
             setAppointmentsForCancel(null);

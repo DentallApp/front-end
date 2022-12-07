@@ -37,13 +37,13 @@ export const getAvailabilityHours = (data) => {
 }
 
 export const createAppointment = (data) => {
-    return api.post('/appoinment', {
+    return api.post('/appointment', {
         userId: data.userId,
         personId: data.personId,
         dentistId: data.dentistId,
         generalTreatmentId: data.generalTreatmentId,
         officeId: data.officeId,
-        appoinmentDate: data.appoinmentDate,
+        appointmentDate: data.appointmentDate,
         startHour: data.startHour,
         endHour: data.endHour
     })

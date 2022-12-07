@@ -2,7 +2,7 @@
     font-size: 1rem;
 }
 
-.button_appoinment {
+s.button_appointment {
     color: #000000 !important;
     background: #80ed99 !important;
     border-radius: 30px !important;
@@ -17,13 +17,13 @@
     border-color: transparent !important;
 }
 
-.button_appoinment:active, .button_navigation_action:active {
+.button_appointment:active, .button_navigation_action:active {
     box-shadow: 0 5px #666;
     transform: translateY(4px);
 }
 
 @media screen and (max-width: 991px) {
-    .button_appoinment {
+    .button_appointment {
         margin-bottom: 5px;
     }
 }
@@ -36,7 +36,7 @@
 }
 
 @media screen and (max-width: 500px) {
-    .navigation, .button_appoinment, .button_navigation_action {
+    .navigation, .button_appointment, .button_navigation_action {
         font-size: .8rem !important;
     }
 
