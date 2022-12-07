@@ -35,7 +35,6 @@ import {
     MedicalDirectoryPage, 
     DependentPage, 
     QuotationPage } from 'pages/Patient';
-import { AppointmentCalendarPage } from 'pages/Dentist';
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
 import { GeneralServicePage, TreatmentPage, OfficeManagementPage } from 'pages/SuperAdmin';
@@ -68,13 +67,6 @@ const RoutesApp = () => {
                         <Route path="/odontologos/lista" element={<MedicalDirectoryPage />} />
                         <Route path="/odontologos/favoritos" element={<FavoriteDentistPage />} />
                         <Route path={'/cotizacion'} element={<QuotationPage />} />
-                    </Route>
-                </Route>
-
-                {/* Rutas privadas para el odontólogo */}
-                <Route element={<PrivateRoute role={[ROLES.DENTIST]} />}>
-                    <Route element={<Dashboard />}>
-                        <Route path="/calendario-de-citas" element={<AppointmentCalendarPage />} />
                     </Route>
                 </Route>
 
