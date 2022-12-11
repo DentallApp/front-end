@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Button, Spinner } from 'react-bootstrap';
 import { IoAddCircle } from "react-icons/io5";
 import { AlertMessage, ModalLoading } from 'components';
-import { HoliDaysTable, FormModal, EliminationModal } from './components';
+import { HoliDaysTable, FormModal, EliminationModal, OfficeFilter } from './components';
 import listHolidays from './data';
 import styles from './HoliDaysPage.module.css';
 
@@ -11,7 +11,9 @@ const HoliDaysPage = () => {
     const [errorLoading, setErrorLoading] = useState({success: false, message: ''});
 
     const [holidays, setHolidays] = useState(listHolidays);
+    const [filterHolidays, setFilterHolidays] = useState(listHolidays);
     const [holidaySelect, setHolidaySelect] = useState(null);
+    const [valueSelected, setValueSelected] = useState(null);
 
     // Estado para el modal de creación y actualización de información de los días de feriados
     const [show, setShow] = useState(false);
@@ -32,6 +34,16 @@ const HoliDaysPage = () => {
     }
     
     const handleShow = () => setShow(true);
+
+    const handleChangeOffice = (e) => {
+        setValueSelected(parseInt(e.value));
+        if(parseInt(e.value) !== 0) {
+            const filterData = holidays.filter(holiday => holiday.officeId === parseInt(e.value));
+            setFilterHolidays(filterData);
+            return;
+        }
+        setFilterHolidays(listHolidays);
+    }
 
     const saveHoliday = (date, reset, type) => {
         console.log(date);
@@ -86,7 +98,11 @@ const HoliDaysPage = () => {
                     handleShow();
                 }}>
                     <IoAddCircle className={styles.icon} /> Nuevo
-                </Button>    
+                </Button>
+                <OfficeFilter 
+                setValueSelected={setValueSelected}
+                handleChangeOffice={handleChangeOffice}
+                />    
             </div>
 
             {
@@ -94,7 +110,7 @@ const HoliDaysPage = () => {
                     holidays ? (
                         <HoliDaysTable 
                             styles="margin-bottom: 40px;" 
-                            holidays={holidays} 
+                            holidays={filterHolidays} 
                             handleShow={handleShow}
                             setTypeModal={setTypeModal}
                             setHolidaySelect={setHolidaySelect} />
