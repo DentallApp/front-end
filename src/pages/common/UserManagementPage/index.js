@@ -124,6 +124,8 @@ const UserManagementPage = () => {
     }
     
     const edit = async(data) => {
+        if(data.password.length === 0) data.password = null;
+        
         data.isDeleted = parseInt(data.statusId) === 1 ? false : true;
 
         const result = await updateEmployee(data);

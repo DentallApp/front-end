@@ -1,8 +1,10 @@
+import { useContext } from 'react';
 import DataTable from 'react-data-table-component';
 import { Button } from 'react-bootstrap';
 import moment from 'moment';
 import { FaEdit } from "react-icons/fa";
 import { AiFillDelete } from "react-icons/ai";
+import SideBarContext from 'context/SideBarContext';
 import styles from './DependentTable.module.css';
 
 // Opciones de paginación
@@ -31,6 +33,8 @@ const DependentTable = (
         setTypeModal
     }) => {
 
+    const { onlyWidth } = useContext(SideBarContext);
+    
     // Columnas de la tabla
     const columns = [
         {
@@ -38,14 +42,14 @@ const DependentTable = (
             selector: row => row.names,
             sortable: true,
             wrap: true,
-            width: "col col-lg-2"
+            width: onlyWidth >= 1400 ? "15%" : "col col-lg-2"
         },
         {
             name: <div className={styles.container_table_header}><h6>Apellidos</h6></div>,
             selector: row => row.lastNames,
             sortable: true,
             wrap: true,
-            width: "col col-lg-2"
+            width: onlyWidth >= 1400 ? "15%" : "col col-lg-2"
         },
         {
             name: <div className={styles.container_table_header}><h6>Fecha Nacimiento</h6></div>,
@@ -53,18 +57,18 @@ const DependentTable = (
             sortable: true,
             center: true,
             wrap: true,
-            width: "auto"
+            width: onlyWidth >= 1400 ? "15%" : "auto"
         },
         {
             name: <div className={styles.container_table_header}><h6>Correo</h6></div>,
             selector: row => row.email,
             wrap: true,
-            minWidth: "170px",
+            width: onlyWidth >= 1400 ? "20%" : "170px",
         },
         {
             name: <div className={styles.container_table_header}><h6>Cedula</h6></div>,
             selector: row => row.document,
-            minWidth: "auto"
+            width: onlyWidth >= 1400 ? "10%" : "auto"
         },
         {
             name: <div className={styles.container_table_header}><h6>Parentesco</h6></div>,
@@ -72,7 +76,7 @@ const DependentTable = (
             sortable: true,
             center: true,
             wrap: true,
-            width: "150px"
+            width: onlyWidth >= 1400 ? "10%" : "150px"
         },
         {
             name: <div className={styles.container_table_header}><h6>Acciones</h6></div>,
@@ -104,7 +108,7 @@ const DependentTable = (
             allowOverflow: true,
             button: true,
             center: true,
-            minWidth: "200px"
+            width: onlyWidth >= 1400 ? "15%" : "200px"
         }
     ];
     

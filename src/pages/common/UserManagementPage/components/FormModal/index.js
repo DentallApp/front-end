@@ -42,6 +42,7 @@ const FormModal = ({show, handleClose, userSelect = null, saveUser}) => {
     const [roles, setRoles] = useState(null); // Estado para los roles
     const [type, setType] = useState(userSelect === null ? 'create' : 'edit'); // Estado para tipo de modal
     const [status, setStatus] = useState(null);
+    const [changePassword, setChangePassword] = useState(false);
     const onlyWidth = useWindowWidth(); // Se obtiene ancho y altura de pantalla para colocar el modal
 
     const { register, handleSubmit, reset, setValue, watch, setError, formState: {errors} } = useForm({
@@ -52,7 +53,7 @@ const FormModal = ({show, handleClose, userSelect = null, saveUser}) => {
             cellPhone: `${ userSelect !== null ? userSelect.cellPhone : ""}`,
             document: `${ userSelect !== null ? userSelect.document : ""}`,
             email: `${ userSelect !== null ? userSelect.email : ""}`,
-            password: `${ userSelect !== null ? userSelect.password : ""}`,
+            password: '',
             dateBirth: `${ userSelect !== null ? moment(userSelect.dateBirth).format('yyyy-MM-DD') : ""}`,
             genderId: `${ userSelect !== null ? userSelect.genderId : ""}`,
             officeId: `${ userSelect !== null ? userSelect.officeId : ""}`,
@@ -64,6 +65,7 @@ const FormModal = ({show, handleClose, userSelect = null, saveUser}) => {
 
     const selectValue = watch("officeId");
     const selectStatusValue = watch("statusId");
+    const passwordValue = watch("password");
 
     useEffect(() => {
         getGenders().then(response => setGenders(response.data))
@@ -81,6 +83,7 @@ const FormModal = ({show, handleClose, userSelect = null, saveUser}) => {
                 }
             }
             else {
+                register("officeId", { required: "Consultorio requerido" });
                 setRoles(response.data);
             }
         })
@@ -99,6 +102,32 @@ const FormModal = ({show, handleClose, userSelect = null, saveUser}) => {
             setValue("roleId", userSelect.roles.map(role => role.id ), true);
             setValue("statusId", userSelect.isDeleted === false ? STATUS[0].id : STATUS[1].id, true);
             setType('edit');
+
+            register("password", {
+                pattern: {
+                    value: formatSecurePassword,
+                    message: "La contraseña debe de contener: " +
+                            "Mínimo 5 caracteres, una letra mayúscula, una minúscula y un número"
+                },
+                minLength: {
+                    value: 5,
+                    message: "La contraseña debe de tener mínimo 5 carácteres"
+                }
+            })
+        }
+        else {
+            register("password", {
+                required: "Contraseña es requerida",
+                pattern: {
+                    value: formatSecurePassword,
+                    message: "La contraseña debe de contener: " +
+                            "Mínimo 5 caracteres, una letra mayúscula, una minúscula y un número"
+                },
+                minLength: {
+                    value: 5,
+                    message: "La contraseña debe de tener mínimo 5 carácteres"
+                }
+            })
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -129,7 +158,19 @@ const FormModal = ({show, handleClose, userSelect = null, saveUser}) => {
           }
         setValue("roleId", e.map(role => role.value ), true);
     }  
-    const handleStatusChange = (e) => setValue("statusId", e.target.value, true);    
+    const handleStatusChange = (e) => setValue("statusId", e.target.value, true);
+    
+    const handleCheck = (e) => {
+        setChangePassword(e.target.checked);
+
+        if(e.target.checked === false) {
+            setPasswordShow(false);
+            setValue("password", '', true);
+        }    
+    }
+    
+    const handleChangePassword = (e) => setValue("password", e.target.value, true);
+
     
     return (
         <Modal 
@@ -251,55 +292,19 @@ const FormModal = ({show, handleClose, userSelect = null, saveUser}) => {
                                     { errors.email && <p className={styles.error_message}>{ errors.email.message }</p> }  
                                 </Form.Group>
                             </Col>
-                            
-                            {
-                                type !== 'edit' ? (
-                                    <Col xs={12} md>
-                                        <Form.Group className="mb-3" controlId="formBasicPassword">
-                                            <Form.Label className={styles.label_input}>* Contraseña</Form.Label>
-                                            <InputGroup className="mb-1">
-                                                <Form.Control 
-                                                className={`${styles.form_control} ${styles.form_control_password}`} 
-                                                disabled={userSelect !== null ? true : false}
-                                                type={passwordShow ? "text" : "password"} 
-                                                {...register("password", { 
-                                                    required: "Contraseña es requerida",
-                                                    pattern: {
-                                                        value: formatSecurePassword,
-                                                        message: "La contraseña debe de contener: " +
-                                                            "Mínimo 5 caracteres, una letra mayúscula, una minúscula y un número"
-                                                    },
-                                                    minLength: {
-                                                        value: 5,
-                                                        message: "La contraseña debe de tener mínimo 5 carácteres"
-                                                    }
-                                                })}
-                                                placeholder="Ingrese contraseña" />
-                                                <Button 
-                                                className={styles.button_visible}
-                                                disabled={userSelect !== null ? true : false}
-                                                onClick={() => setPasswordShow(!passwordShow)}>
-                                                    {passwordShow ? <MdVisibilityOff /> : <MdVisibility />}
-                                                </Button>   
-                                            </InputGroup>
-                                            { errors.password && <p className={styles.error_message}>{ errors.password.message }</p> } 
-                                        </Form.Group> 
-                                    </Col>
-                                ):(
-                                    <Col xs={12} md>
-                                        <Form.Group className="mb-3" controlId="formBasicDate">
-                                            <Form.Label className={styles.label_input}>* Fecha de nacimiento</Form.Label>
-                                            <Form.Control 
-                                            type="date"
-                                            max={moment().format('yyyy-MM-DD')}
-                                            {...register("dateBirth", {
-                                                required: "Fecha de nacimiento requerida"
-                                            })} />
-                                            { errors.dateBirth && <p className={styles.error_message}>{ errors.dateBirth.message }</p> }
-                                        </Form.Group>
-                                    </Col>
-                                )
-                            }
+
+                            <Col xs={12} md>
+                                <Form.Group className="mb-3" controlId="formBasicDate">
+                                    <Form.Label className={styles.label_input}>* Fecha de nacimiento</Form.Label>
+                                    <Form.Control 
+                                    type="date"
+                                    max={moment().format('yyyy-MM-DD')}
+                                    {...register("dateBirth", {
+                                        required: "Fecha de nacimiento requerida"
+                                    })} />
+                                    { errors.dateBirth && <p className={styles.error_message}>{ errors.dateBirth.message }</p> }
+                                </Form.Group>
+                            </Col>
                         </Row>
 
                         <Row>
@@ -321,19 +326,47 @@ const FormModal = ({show, handleClose, userSelect = null, saveUser}) => {
                                     { errors.genderId && <p className={styles.error_message}>{ errors.genderId.message }</p> }
                                 </Form.Group>
                             </Col>
-                            
+                        </Row>
+
+                        <Row>
+                            <Col lg={12} md>
+                                <Form.Group className="mb-3" controlId="formBasicPassword">
+                                    <Form.Label className={styles.label_input}>* Contraseña</Form.Label>
+                                    <InputGroup className="mb-1">
+                                        <Form.Control 
+                                        className={`${styles.form_control} ${styles.form_control_password}`} 
+                                        disabled={
+                                            userSelect === null ? false : (
+                                                changePassword === true ? false : true
+                                            )
+                                        }
+                                        value={passwordValue}
+                                        onChange={handleChangePassword}
+                                        type={passwordShow ? "text" : "password"}
+                                        placeholder="Ingrese contraseña" />
+                                        <Button 
+                                        className={styles.button_visible}
+                                        disabled={
+                                            userSelect === null ? false : (
+                                                changePassword === true ? false : true
+                                            )
+                                        }
+                                        onClick={() => setPasswordShow(!passwordShow)}>
+                                            {passwordShow ? <MdVisibilityOff /> : <MdVisibility />}
+                                        </Button>   
+                                    </InputGroup>
+                                    { errors.password && <p className={styles.error_message}>{ errors.password.message }</p> } 
+                                </Form.Group> 
+                            </Col>
                             {
-                                type !== 'edit' && (
-                                    <Col xs={12} md>
-                                        <Form.Group className="mb-3" controlId="formBasicDate">
-                                            <Form.Label className={styles.label_input}>* Fecha de nacimiento</Form.Label>
-                                            <Form.Control 
-                                            type="date"
-                                            max={moment().format('yyyy-MM-DD')}
-                                            {...register("dateBirth", {
-                                                required: "Fecha de nacimiento requerida"
-                                            })} />
-                                            { errors.dateBirth && <p className={styles.error_message}>{ errors.dateBirth.message }</p> }
+                                type === 'edit' && (
+                                    <Col lg={12} md>
+                                        <Form.Group className="mb-3" controlId="formBasicChangePassword">
+                                            <Form.Check
+                                            type='checkbox'
+                                            label='Cambiar contraseña'
+                                            onChange={handleCheck}
+                                            />
                                         </Form.Group>
                                     </Col>
                                 )

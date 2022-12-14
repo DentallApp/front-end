@@ -48,6 +48,7 @@ export const updateEmployee = (data) => {
         dateBirth: data.dateBirth,
         genderId: data.genderId,
         email: data.email,
+        password: data.password,
         officeId: data.officeId,
         isDeleted: data.isDeleted,
         pregradeUniversity: data.pregradeUniversity,

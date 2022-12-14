@@ -31,7 +31,7 @@ const FilterOffice = ({
     return (
         <Form className={styles.container_form}>
             <Row>
-                <Col sm={12} lg={5}>
+                <Col sm={12} md={5} lg={5} xl={3} xxl={3}>
                     <Form.Group className="mb-3" controlId="formBasicOffice">
                         <Form.Label className={styles.label_input}>Consultorios</Form.Label>
                         <Form.Select
