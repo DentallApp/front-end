@@ -1,6 +1,8 @@
+import { useContext } from 'react';
 import DataTable from 'react-data-table-component';
 import { Button } from 'react-bootstrap';
 import { AiFillDelete } from "react-icons/ai";
+import SideBarContext from 'context/SideBarContext';
 import styles from './SelectedTreatmentsTable.module.css';
 
 const paginationOptions = {
@@ -21,6 +23,8 @@ const customStyles = {
 
 const SelectedTreamentsTable = ({selectedTreatments, deleteSelected}) => {
 
+    const { onlyWidth } = useContext(SideBarContext);
+
     // Columnas de la tabla
     const columns = [
     {
@@ -29,7 +33,7 @@ const SelectedTreamentsTable = ({selectedTreatments, deleteSelected}) => {
         sortable: true,
         center: true,
         wrap: true,
-        minWidth: "100px"
+        width: onlyWidth >= 1300 ? "20%" : "100px"
     },
     {
         name: <div className={styles.container_table_header}><h6>Tratamiento dental</h6></div>,
@@ -38,7 +42,7 @@ const SelectedTreamentsTable = ({selectedTreatments, deleteSelected}) => {
         center: true,
         cell: row => <div style={{"width": "100%", "textAlign":"center"}}>{row.specificTreatmentName}</div>,
         wrap: true,
-        minWidth: '150px'
+        width: onlyWidth >= 1300 ? "20%" : '200px'
     },
     {
         name: <div className={styles.container_table_header}><h6>Servicio dental</h6></div>,
@@ -47,7 +51,7 @@ const SelectedTreamentsTable = ({selectedTreatments, deleteSelected}) => {
         center: true,
         cell: row => <div style={{"width": "100%", "textAlign":"center"}}>{row.generalTreatmentName}</div>,
         wrap: true,
-        minWidth: '150px'
+        width: onlyWidth >= 1300 ? "20%" : '150px'
         
     },
     {
@@ -56,7 +60,7 @@ const SelectedTreamentsTable = ({selectedTreatments, deleteSelected}) => {
         sortable: true,
         center: true,
         wrap: true,
-        width: "100px",
+        width: onlyWidth >= 1300 ? "20%" : "100px",
         sortFunction: (a, b) => a.price - b.price
     },
     {
@@ -78,7 +82,7 @@ const SelectedTreamentsTable = ({selectedTreatments, deleteSelected}) => {
         allowOverflow: true,
         button: true,
         center: true,
-        minWidth: "150px"
+        width: onlyWidth >= 1300 ? "20%" : "150px"
     }
 ];
 
