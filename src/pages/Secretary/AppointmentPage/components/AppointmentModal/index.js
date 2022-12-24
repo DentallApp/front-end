@@ -102,6 +102,7 @@ const AppointmentModal = ({show, handleClose, createNewAppointment}) => {
     const handleSelectDate = async (e) => {
         setValue('appointmentDate', e.target.value, true);
         const data = {
+            officeId: selectOffice,
             dentistId: selectDentist,
             dentalServiceId: selectService,
             appointmentDate: e.target.value
