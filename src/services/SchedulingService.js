@@ -14,6 +14,7 @@ export const getDentistByOffice = async(officeId) => {
 
 export const getAvailabilityHours = (data) => {
     return api.post('/availability/available-hours', {
+        officeId: data.officeId,
         dentistId: data.dentistId,
         dentalServiceId: data.dentalServiceId,
         appointmentDate: data.appointmentDate
