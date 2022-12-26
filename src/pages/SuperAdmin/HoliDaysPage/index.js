@@ -104,11 +104,13 @@ const HoliDaysPage = () => {
     const saveHoliday = async(date, reset, type, setError) => {
         date.officeId = date.officeId.map(id => parseInt(id));
 
-        if(holidays.some(
+        if(
+            holidays.some(
             holiday => holiday.day === parseInt(date.date.split('-')[0])
             && holiday.month === parseInt(date.date.split('-')[1])
             && holiday.offices.some(office => date.officeId.includes(office.id))
-            )) {
+            )) 
+        {
             setError("date", {
                 type: 'custom',
                 message: 'Ya existe un feriado registrado en la fecha seleccionada'
