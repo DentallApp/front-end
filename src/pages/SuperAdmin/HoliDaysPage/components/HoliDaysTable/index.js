@@ -42,7 +42,7 @@ const HoliDaysTable = (
     const columns = [
         {
             name: <div className={styles.container_table_header}><h6>Fecha</h6></div>,
-            selector: row => `${new Date().getFullYear()}-${row.date}`,
+            selector: row => `${new Date().getFullYear()}-${row.month}-${row.day}`,
             sortable: true,
             center: true,
             wrap: true,
@@ -57,7 +57,7 @@ const HoliDaysTable = (
         },
         {
             name: <div className={styles.container_table_header}><h6>Consultorio</h6></div>,
-            selector: row => row.office,
+            selector: row => row.offices.map(office => <p key={office.id}>{office.name}</p>),
             wrap: true,
             center: true,
             width: onlyWidth >= 600 ? "25%" : "170px"
