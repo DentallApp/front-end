@@ -12,7 +12,7 @@ const EliminationModal = ({show, handleClose, holidaySelect, eliminateHoliday}) 
             </Modal.Header>
              <Modal.Body>
                 Estás seguro que quieres eliminar el feriado del día:<br /> 
-                {`${new Date().getFullYear()}-${holidaySelect.date}`}
+                {`${new Date().getFullYear()}-${holidaySelect.month}-${holidaySelect.day}`}
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={handleClose}>
