@@ -22,6 +22,7 @@
     "react-big-calendar": "^1.5.0",
     "react-bootstrap": "^2.4.0",
     "react-data-table-component": "^7.5.2",
+    "react-datepicker": "^4.8.0",
     "react-dom": "^18.2.0",
     "react-elastic-carousel": "^0.11.5",
     "react-flippy": "^1.1.0",
