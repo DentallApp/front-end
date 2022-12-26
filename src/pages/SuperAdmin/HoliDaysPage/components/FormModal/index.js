@@ -34,7 +34,7 @@ const FormModal = ({
         }
     }
 
-    const { register, handleSubmit, reset, setValue, setError, formState: {errors} } = useForm({
+    const { register, handleSubmit, reset, setValue, setError, clearErrors, formState: {errors} } = useForm({
         defaultValues: {
             id: `${ holidaySelect !== null ? holidaySelect.id : ""}`,
             day: `${ holidaySelect !== null ? holidaySelect.day : ""}`,
@@ -59,7 +59,10 @@ const FormModal = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps      
     }, []);
 
-    const handleSelectOffice = (e) => setValue("officeId", e.map(office => office.value ), true);
+    const handleSelectOffice = (e) => {
+        clearErrors('date'); 
+        setValue("officeId", e.map(office => office.value ), true);
+    }
 
     const handleDate = (date) => {
         setStartDate(date);
@@ -146,35 +149,39 @@ const FormModal = ({
                                 </Form.Group>
                             </Col>
                             
-                            <Col xs={12} md>
-                                <Form.Group className="mb-3" controlId="formBasicOffice">
-                                    <Form.Label className={styles.label_input}>* Consultorio</Form.Label>
-                                    <Select
-                                    name="office"
-                                    placeholder="Seleccione"
-                                    defaultValue={
-                                        holidaySelect !== null && 
-                                        holidaySelect.offices.map(office => {
-                                            return {
-                                                value: office.id, 
-                                                label: office.name
+                            {
+                                type === 'create' && (
+                                    <Col xs={12} md>
+                                        <Form.Group className="mb-3" controlId="formBasicOffice">
+                                            <Form.Label className={styles.label_input}>* Consultorio</Form.Label>
+                                            <Select
+                                            name="office"
+                                            placeholder="Seleccione"
+                                            defaultValue={
+                                                holidaySelect !== null && 
+                                                holidaySelect.offices.map(office => {
+                                                    return {
+                                                        value: office.id, 
+                                                        label: office.name
+                                                    }
+                                                })
                                             }
-                                        })
-                                    }
-                                    options={ 
-                                        offices && offices.map(data => {
-                                            return {
-                                                value: data.id, 
-                                                label: data.name
+                                            options={ 
+                                                offices !==  null && offices.map(data => {
+                                                    return {
+                                                        value: data.id, 
+                                                        label: data.name
+                                                    }
+                                                })
                                             }
-                                        })
-                                    }
-                                    isMulti
-                                    onChange={handleSelectOffice}
-                                    />
-                                    { errors.officeId && <p className={styles.error_message}>{ errors.officeId.message }</p> }
-                                </Form.Group>
-                            </Col>
+                                            isMulti
+                                            onChange={handleSelectOffice}
+                                            />
+                                            { errors.officeId && <p className={styles.error_message}>{ errors.officeId.message }</p> }
+                                        </Form.Group>
+                                    </Col>
+                                )
+                            }
                         </Row>
                         
                         <Row>
