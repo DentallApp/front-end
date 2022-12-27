@@ -1,6 +1,8 @@
+import { parseBool } from 'utils/parseUtils'
+
 //eslint-disable-next-line
 export const formatNames = /^[ÁÉÍÓÚA-Za-záéíóúñÑ]+([\s]{0,}[ÁÉÍÓÚA-ZÑ]?[a-záéíóúñ]+[\s]{0,}){0,}$/;
-export const formatIdentityDocument = /^[0-9]{10}$/;
+export const formatIdentityDocument = parseBool(process.env.REACT_APP_DISABLE_IDENTITY_VALIDATION) ? "" : /^[0-9]{10}$/;
 //eslint-disable-next-line
 export const formatEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 //eslint-disable-next-line

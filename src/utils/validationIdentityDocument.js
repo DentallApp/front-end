@@ -1,3 +1,5 @@
+import { parseBool } from 'utils/parseUtils'
+
 const verifyProvinceNumber = (ced) => {
     // Obtenemos el digito de la region que sonlos dos primeros digitos
     let digito_region = parseInt(ced.substring(0, 2));
@@ -10,6 +12,9 @@ const verifyProvinceNumber = (ced) => {
 };
   
 export const verifyIdentityDocument = (ced) => {
+    if(parseBool(process.env.REACT_APP_DISABLE_IDENTITY_VALIDATION)) 
+      return true;
+
     const result = verifyProvinceNumber(ced);
   
     if (result === false) return false;
