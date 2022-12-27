@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import ReactWebChat, { createDirectLine, createStore } from 'botframework-webchat';
 import simpleUpdateIn from 'simple-update-in';
 import { getLocalUser } from 'services/UserService'
+import { parseBool } from 'utils/parseUtils'
 
 const Chatbot = () => {
 
@@ -58,7 +59,7 @@ const Chatbot = () => {
     directline = useMemo(() => createDirectLine({
 						domain:`${process.env.REACT_APP_DIRECTLINE_URL}v3/directline`, 
 						token: token, 
-						webSocket: parseInt(process.env.REACT_APP_DIRECTLINE_WEB_SOCKET)
+						webSocket: parseBool(process.env.REACT_APP_DIRECTLINE_WEB_SOCKET)
 					}), [token]);
 
     const store = useMemo(() => createStore({}, ({dispatch}) => next => action => {
