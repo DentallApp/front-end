@@ -149,39 +149,35 @@ const FormModal = ({
                                 </Form.Group>
                             </Col>
                             
-                            {
-                                type === 'create' && (
-                                    <Col xs={12} md>
-                                        <Form.Group className="mb-3" controlId="formBasicOffice">
-                                            <Form.Label className={styles.label_input}>* Consultorio</Form.Label>
-                                            <Select
-                                            name="office"
-                                            placeholder="Seleccione"
-                                            defaultValue={
-                                                holidaySelect !== null && 
-                                                holidaySelect.offices.map(office => {
-                                                    return {
-                                                        value: office.id, 
-                                                        label: office.name
-                                                    }
-                                                })
+                            <Col xs={12} md>
+                                <Form.Group className="mb-3" controlId="formBasicOffice">
+                                    <Form.Label className={styles.label_input}>* Consultorio</Form.Label>
+                                    <Select
+                                    name="office"
+                                    placeholder="Seleccione"
+                                    defaultValue={
+                                        holidaySelect !== null && 
+                                        holidaySelect.offices.map(office => {
+                                            return {
+                                                value: office.id, 
+                                                label: office.name
                                             }
-                                            options={ 
-                                                offices !==  null && offices.map(data => {
-                                                    return {
-                                                        value: data.id, 
-                                                        label: data.name
-                                                    }
-                                                })
+                                        })
+                                    }
+                                    options={ 
+                                        offices !==  null && offices.map(data => {
+                                            return {
+                                                value: data.id, 
+                                                label: data.name
                                             }
-                                            isMulti
-                                            onChange={handleSelectOffice}
-                                            />
-                                            { errors.officeId && <p className={styles.error_message}>{ errors.officeId.message }</p> }
-                                        </Form.Group>
-                                    </Col>
-                                )
-                            }
+                                        })
+                                    }
+                                    isMulti
+                                    onChange={handleSelectOffice}
+                                    />
+                                    { errors.officeId && <p className={styles.error_message}>{ errors.officeId.message }</p> }
+                                </Form.Group>
+                            </Col>
                         </Row>
                         
                         <Row>
