@@ -163,6 +163,11 @@ const UserManagementPage = () => {
         data.genderId = parseInt(data.genderId);
         data.officeId = user.roles.includes(ROLES.SUPERADMIN) ? parseInt(data.officeId) : user.officeId;
         data.roles = data.roleId.map(role => parseInt(role));
+        
+        if(data.isDentist && data.specialtiesId?.length > 0)
+            data.specialtiesId = data.specialtiesId.map(specialty => parseInt(specialty));
+        else 
+            data.specialtiesId = null;
 
         let result = null;
         setIsLoading({success: undefined});
