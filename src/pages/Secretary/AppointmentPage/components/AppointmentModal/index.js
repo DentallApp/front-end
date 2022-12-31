@@ -5,7 +5,7 @@ import { useWindowWidth } from '@react-hook/window-size';
 import moment from 'moment';
 import { v4 as uuidv4 } from 'uuid';
 import ContainerAvailableHours from '../ContainerAvailableHours';
-import { getDentalServices, getDentistByOffice, getAvailabilityHours } from 'services/SchedulingService';
+import { getDentalServices, getDentistByOfficeAndService, getAvailabilityHours } from 'services/SchedulingService';
 import Select from 'react-select';
 import { AlertMessage } from 'components';
 import { UNEXPECTED_ERROR } from 'constants/InformationMessage';
@@ -46,8 +46,7 @@ const AppointmentModal = ({show, handleClose, createNewAppointment}) => {
 
         setValue('officeId', getLocalUser().officeId, true);
         
-        getDentistByOffice(getLocalUser().officeId).then(res => setDentists(res.data))
-            .catch(err => handleErrorLoading(err));
+        
         
         getDentalServices().then(res => setServices(res.data))
             .catch(err => handleErrorLoading(err));    
@@ -67,6 +66,12 @@ const AppointmentModal = ({show, handleClose, createNewAppointment}) => {
                 setValue('hours', '', true);
                 setAvailableHours(null);
                 setAreSchedulesAvailable(false);
+            }
+
+            if(selectDentist !== null && selectDentist !== '') {
+                selectDentistRef.current.value = null;
+                setValue('dentistId', null, true);
+                setDentists(null);
             }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps  
@@ -92,10 +97,26 @@ const AppointmentModal = ({show, handleClose, createNewAppointment}) => {
         setAreSchedulesAvailable(false);
     }, [selectDate]);
 
-    const handleSelectService = (e) => 
+    const handleSelectService = (e) => {
+        clearErrors('generalTreatmentId');
         setValue('generalTreatmentId', parseInt(e.value), true);
+
+        getDentistByOfficeAndService(getLocalUser().officeId, e.value)
+            .then(res => {
+                setDentists(res.data);
+
+                if(res.data.length === 0) {
+                    setError('generalTreatmentId', {
+                        type: 'custom',
+                        message: 'No hay odontólogos que puedan atender el servicio dental escogido'
+                    })
+                }
+            })
+            .catch(err => handleErrorLoading(err));
+    }
     
     const handleSelectDentist = (e) => {
+        clearErrors('dentistId');
         if(e !== null && e !== undefined) setValue('dentistId', parseInt(e.value), true);
     }
 
@@ -107,7 +128,7 @@ const AppointmentModal = ({show, handleClose, createNewAppointment}) => {
             dentalServiceId: selectService,
             appointmentDate: e.target.value
         }
-
+        
         const result = await getHoursAppointment(data);
         if(result.success === true) {
             clearErrors('appointmentDate');
@@ -121,7 +142,7 @@ const AppointmentModal = ({show, handleClose, createNewAppointment}) => {
             setError('appointmentDate', {
                 type: 'custom',
                 message: 'Escoja otra fecha'
-            })
+            });
         }   
 
         setAlert({success: result.success, message: result.message});
@@ -239,14 +260,21 @@ const AppointmentModal = ({show, handleClose, createNewAppointment}) => {
                                 <Form.Group className="mb-3" controlId="formBasicDentist">
                                     <Form.Label className={styles.label_input}>* Odontólogos</Form.Label><br />
                                     {
-                                        selectService === '' ? (
-                                            <Select 
-                                            placeholder={'Seleccione'}
-                                            isDisabled={true}
-                                            />
+                                        (selectService === '' || dentists?.length === 0) ? (
+                                            <>
+                                                <Select 
+                                                placeholder={'Seleccione'}
+                                                isDisabled={true}
+                                                />
+                                                { 
+                                                    errors.dentistId && <p className={styles.error_message}>
+                                                        { errors.dentistId.message }
+                                                    </p> 
+                                                }
+                                            </>
                                         ):(
                                             <>
-                                                { dentists ? (
+                                                { (dentists && dentists?.length > 0) ? (
                                                     <>
                                                         <Select
                                                         ref={selectDentistRef}
@@ -259,7 +287,7 @@ const AppointmentModal = ({show, handleClose, createNewAppointment}) => {
                                                         placeholder={'Seleccione'}
                                                         onChange={handleSelectDentist}
                                                         isDisabled={selectService === '' ? true : false}
-                                                        noOptionsMessage={'No hay datos'}
+                                                        noOptionsMessage='No hay datos'
                                                         className="basic-single"
                                                         classNamePrefix="select"
                                                         />
@@ -282,11 +310,18 @@ const AppointmentModal = ({show, handleClose, createNewAppointment}) => {
                                 <Form.Group className="mb-3" controlId="formBasicDentist">
                                     <Form.Label className={styles.label_input}>* Fecha</Form.Label><br />
                                     {
-                                        selectDentist === '' ? (
-                                            <Form.Control 
-                                            type="date"
-                                            disabled
-                                            />
+                                        (selectDentist === '' || selectDentist === null) ? (
+                                            <>
+                                                <Form.Control 
+                                                type="date"
+                                                disabled
+                                                />
+                                                { 
+                                                    errors.appointmentDate&& <p className={styles.error_message}>
+                                                        { errors.appointmentDate.message }
+                                                    </p> 
+                                                }
+                                            </>
                                         ):(
                                             <>
                                                 <Form.Control
