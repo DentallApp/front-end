@@ -17,7 +17,8 @@ export const createEmployee = (data) => {
         officeId: data.officeId,
         pregradeUniversity: data.pregradeUniversity,
         postgradeUniversity: data.postgradeUniversity,
-        roles: data.roles
+        roles: data.roles,
+        specialtiesId: data.specialtiesId
     })
     .then(res => {
         if(res.data.success === true) {
@@ -53,7 +54,8 @@ export const updateEmployee = (data) => {
         isDeleted: data.isDeleted,
         pregradeUniversity: data.pregradeUniversity,
         postgradeUniversity: data.postgradeUniversity,
-        roles: data.roles
+        roles: data.roles,
+        specialtiesId: data.specialtiesId
     })
     .then(res => {
         if(res.data.success === true) {

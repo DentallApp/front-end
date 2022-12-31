@@ -48,6 +48,11 @@
     border-color: #ced4da;
 }
 
+.text_warning {
+    color: #002855;
+    font-style: italic;
+}
+
 .error_message {
     color: #ec5990;
     font-size: 12px;

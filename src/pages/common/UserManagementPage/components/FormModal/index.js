@@ -15,6 +15,7 @@ import { getGenders } from 'services/GenderService';
 import { getLocalUser } from 'services/UserService';
 import { getRoles } from 'services/RoleService';
 import { getOffices } from 'services/OfficeService'; 
+import { getGeneralTreatmentName } from 'services/GeneralTreatments'; 
 import ROLES from 'constants/Roles';
 import STATUS from 'constants/Status';
 import styles from './FormModal.module.css';
@@ -40,6 +41,7 @@ const FormModal = ({show, handleClose, userSelect = null, saveUser}) => {
     const [genders, setGenders] = useState(null); // Estado para los géneros
     const [office, setOffice] = useState(null); // Estado para los consultorios
     const [roles, setRoles] = useState(null); // Estado para los roles
+    const [services, setServices] = useState(null); // Estado para los servicios
     const [type, setType] = useState(userSelect === null ? 'create' : 'edit'); // Estado para tipo de modal
     const [status, setStatus] = useState(null);
     const [changePassword, setChangePassword] = useState(false);
@@ -57,6 +59,7 @@ const FormModal = ({show, handleClose, userSelect = null, saveUser}) => {
             dateBirth: `${ userSelect !== null ? moment(userSelect.dateBirth).format('yyyy-MM-DD') : ""}`,
             genderId: `${ userSelect !== null ? userSelect.genderId : ""}`,
             officeId: `${ userSelect !== null ? userSelect.officeId : ""}`,
+            isDentist: false,
             statusId: `${ userSelect !== null ? (userSelect.isDeleted === false ? STATUS[0].id : STATUS[1].id) : ""}`,
             pregradeUniversity: `${ userSelect !== null ? (userSelect.pregradeUniversity !== null ? userSelect.pregradeUniversity : "") : ""}`,
             postgradeUniversity: `${ userSelect !== null ? (userSelect.postgradeUniversity !== null ? userSelect.postgradeUniversity : "") : ""}`,
@@ -66,6 +69,8 @@ const FormModal = ({show, handleClose, userSelect = null, saveUser}) => {
     const selectValue = watch("officeId");
     const selectStatusValue = watch("statusId");
     const passwordValue = watch("password");
+    const isDentistValue = watch("isDentist");
+    const specialtiesValue = watch("specialtiesId");
 
     useEffect(() => {
         getGenders().then(response => setGenders(response.data))
@@ -89,19 +94,33 @@ const FormModal = ({show, handleClose, userSelect = null, saveUser}) => {
         })
         .catch(error => error);    
 
-        getOffices().then(response => setOffice(response.data))
+        getOffices().then(response => {
+            setOffice(response.data);
+            if(type === 'create') setValue("officeId", response.data[0].id, true);
+        })
             .catch(error => error);    
 
         setStatus(STATUS);
+        
+
         register("officeId", { required: "Consultorio requerido" });
         register("roleId", { required: "Rol es requerido" });
         register("statusId", { required: "Estado es requerido" });
+        register("specialtiesId");
         
         if(userSelect !== null) {
             setValue("officeId", userSelect.officeId, true);
             setValue("roleId", userSelect.roles.map(role => role.id ), true);
             setValue("statusId", userSelect.isDeleted === false ? STATUS[0].id : STATUS[1].id, true);
             setType('edit');
+
+            const dentistRole = userSelect.roles.filter(role => role.name === ROLES.DENTIST);
+            
+            if(dentistRole.length > 0) {
+                loadDentalServices();
+                setValue("isDentist", true, true);
+                setValue("specialtiesId", userSelect.specialties.map(specialty => specialty.id), true);
+            }    
 
             register("password", {
                 pattern: {
@@ -116,6 +135,7 @@ const FormModal = ({show, handleClose, userSelect = null, saveUser}) => {
             })
         }
         else {
+            setValue("statusId", STATUS[0].id, true);
             register("password", {
                 required: "Contraseña es requerida",
                 pattern: {
@@ -132,17 +152,8 @@ const FormModal = ({show, handleClose, userSelect = null, saveUser}) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    useEffect(() => {
-        if(office !== null && selectValue === '') setValue("officeId", office[0].id, true);
-         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [office]);
-
-    useEffect(() => {
-        if(status !== null && selectStatusValue === '') setValue("statusId", STATUS[0].id, true);
-         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [status]);
-
     const handleChange = (e) => setValue("officeId", e.target.value, true);
+
     const handleSelectRole = (e, option) => {
         switch (option.action) {
             case 'remove-value':
@@ -155,8 +166,10 @@ const FormModal = ({show, handleClose, userSelect = null, saveUser}) => {
                 e = option.removedValues.filter(role => role.isFixed);
               break;
             default: break;  
-          }
+        }
+
         setValue("roleId", e.map(role => role.value ), true);
+        showDentalServices(e, option);
     }  
     const handleStatusChange = (e) => setValue("statusId", e.target.value, true);
     
@@ -171,7 +184,34 @@ const FormModal = ({show, handleClose, userSelect = null, saveUser}) => {
     
     const handleChangePassword = (e) => setValue("password", e.target.value, true);
 
+    const handleSelectServices = (e) => setValue("specialtiesId", e.map(service => service.value ), true);
+
+    // Esta función se encarga de cargar los servicios dentales siempre y cuando
+    // el usuario tenga rol de odontólogo
+    const showDentalServices = (roles, option) => {
+        let isDentist = roles.filter(role => role.label === ROLES.DENTIST);
+        
+        if((option.action === 'remove-value' || option.action === 'pop-value') && isDentist.length <= 0) {
+            setValue('isDentist', false, true); 
+            return;
+        }
+
+        if(isDentist.length > 0) {
+            services === null && loadDentalServices();
+            setValue('isDentist', true, true);    
+        }
+        else {
+            setValue('specialtiesId', null, true);
+            setValue('isDentist', false, true);
+        }
+    }
     
+    const loadDentalServices = () => {
+        getGeneralTreatmentName()
+            .then(res => setServices(res.data))
+            .catch(err => err);
+    }
+
     return (
         <Modal 
         show={show} 
@@ -406,6 +446,7 @@ const FormModal = ({show, handleClose, userSelect = null, saveUser}) => {
                                 <Form.Group className="mb-3" controlId="formBasicRole">
                                     <Form.Label className={styles.label_input}>* Roles</Form.Label><br />
                                     <Select
+                                    placeholder="Seleccione"
                                     defaultValue={
                                         userSelect !== null && userSelect.roles.map(r => {
                                             return {
@@ -438,6 +479,55 @@ const FormModal = ({show, handleClose, userSelect = null, saveUser}) => {
                                 </Form.Group>
                             </Col>
                         </Row>
+
+                        {
+                            isDentistValue === true && services !== null && (
+                                services.length > 0 && (
+                                    <Row>
+                                        <Col lg={12} md>
+                                            <Form.Group className="mb-3" controlId="formBasicServices">
+                                                <Form.Label className={styles.label_input}>Servicios Dentales</Form.Label><br />
+                                                <Select
+                                                placeholder="Seleccione"
+                                                defaultValue={
+                                                    userSelect !== null && userSelect.specialties.map(s => {
+                                                        return {
+                                                            value: s.id, 
+                                                            label: s.name
+                                                        }
+                                                    })
+                                                }
+                                                isMulti
+                                                name="services"
+                                                options={ 
+                                                    services.map(service => {
+                                                    return {
+                                                        value: service.id, 
+                                                        label: service.name
+                                                    }
+                                                })}
+                                                onChange={handleSelectServices}
+                                                isClearable={false}
+                                                className="basic-multi-select"
+                                                classNamePrefix="select"
+                                                styles={stylesSelect}
+                                                />
+                                                {
+                                                    (specialtiesValue === null || specialtiesValue === undefined || 
+                                                    specialtiesValue?.length === 0) && (
+                                                        <p className={styles.text_warning}>
+                                                            Si no selecciona ninguna opción, 
+                                                            el sistema asumirá que el odontólogo es 
+                                                            especialista en todos los servicios
+                                                        </p>
+                                                    )
+                                                }
+                                            </Form.Group>
+                                        </Col>
+                                    </Row>
+                                )
+                            )
+                        }
 
                         {
                             type === 'edit' && (
