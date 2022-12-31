@@ -105,15 +105,22 @@ const HoliDaysPage = () => {
         date.officeId = date.officeId.map(id => parseInt(id));
 
         if(
-            holidays.some(
+            (type === 'create' && holidays.some(
             holiday => holiday.day === parseInt(date.date.split('-')[0])
             && holiday.month === parseInt(date.date.split('-')[1])
             && holiday.offices.some(office => date.officeId.includes(office.id))
+            )) ||
+            (type !== 'create' && holidays.some(
+                holiday => parseInt(holiday.id) !== parseInt(date.id) &&
+                holiday.day === parseInt(date.date.split('-')[0])
+                && holiday.month === parseInt(date.date.split('-')[1])
+                && holiday.offices.some(office => date.officeId.includes(office.id))
+                )
             )) 
         {
             setError("date", {
                 type: 'custom',
-                message: 'Ya existe un feriado registrado en la fecha seleccionada'
+                message: 'Ya existe un feriado registrado en la fecha seleccionada para los consultorios seleccionados'
             });
             return;
         }
