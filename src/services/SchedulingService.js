@@ -8,8 +8,13 @@ export const getDentalServices = async() => {
     return await api.get('/scheduling/dental-service');
 }
 
-export const getDentistByOffice = async(officeId) => {
-    return await api.get(`/scheduling/dentist/${officeId}`);
+export const getDentistByOfficeAndService = async(officeId, dentalServiceId) => {
+    return await api.get('/scheduling/dentist', {
+        params: {
+            officeId,
+            dentalServiceId
+        }
+    });
 }
 
 export const getAvailabilityHours = (data) => {
