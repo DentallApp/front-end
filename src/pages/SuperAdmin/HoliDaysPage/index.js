@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Button, Spinner } from 'react-bootstrap';
 import { IoAddCircle } from "react-icons/io5";
 import { AlertMessage, ModalLoading } from 'components';
-import { HoliDaysTable, FormModal, EliminationModal, OfficeFilter } from './components';
+import { HoliDaysTable, FormModal, EliminationModal } from './components';
 import { getHolidays, createHoliday, editHoliday, deleteHoliday } from 'services/HolidayService';
 import { handleErrors, handleErrorLoading } from 'utils/handleErrors';
 import styles from './HoliDaysPage.module.css';
@@ -196,11 +196,7 @@ const HoliDaysPage = () => {
                     handleShow();
                 }}>
                     <IoAddCircle className={styles.icon} /> Nuevo
-                </Button>
-                <OfficeFilter 
-                setValueSelected={setValueSelected}
-                handleChangeOffice={handleChangeOffice}
-                />    
+                </Button>   
             </div>
 
             {
