@@ -41,7 +41,7 @@ const HoliDaysTable = (
     // Columnas de la tabla
     const columns = [
         {
-            name: <div className={styles.container_table_header}><h6>Consultorio</h6></div>,
+            name: <div className={styles.container_table_header}><h6>Id</h6></div>,
             selector: row => row.id,
             wrap: true,
             center: true,
