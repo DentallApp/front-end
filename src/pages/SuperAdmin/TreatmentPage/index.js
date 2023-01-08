@@ -22,7 +22,6 @@ const TreatmentPage = () => {
     // Estado para los datos de la tabla
     const [storeTreatments, setStoreTreatments] = useState(null);
     const [dataTreatments, setDataTreatments] = useState(null);
-    const [isChange, setIsChange] = useState(false);
     const [filterTreatments, setFilterTreatments] = useState([]);
 
     // Estado para el modal de creación y actualización de información de los servicios
@@ -48,8 +47,9 @@ const TreatmentPage = () => {
         .catch(err => {
             handleErrorLoading(err, setErrorLoading);
         });
-        
-    }, [isChange]);
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     useEffect(() => {
         if(filterTreatments?.length > 0 && filterText !== '') filterData();
@@ -63,7 +63,7 @@ const TreatmentPage = () => {
 
     const filterData = () => {
         const data = dataTreatments.filter(treatment => 
-            treatment.specificTreatmentName.toString().toLocaleLowerCase().includes(filterText.toLocaleLowerCase()) === true 
+            treatment.specificTreatmentName.toLocaleLowerCase().includes(filterText.toLocaleLowerCase()) === true 
         );
         setFilterTreatments(data);
     }
@@ -100,7 +100,8 @@ const TreatmentPage = () => {
         const result = await createSpecificTreatment(data);
         if(result.success && result.success === true) {
             result.message = 'Tratamiento creado con éxito';
-            setIsChange(!isChange);
+            addNewTreatment(data, parseInt(result.data.id))
+            setFilterText('');
         }
 
         setIsLoading({success: result.success});
@@ -110,10 +111,13 @@ const TreatmentPage = () => {
     }
 
     const edit = async(data) => {
+        data.specificTreatmentId = parseInt(data.specificTreatmentId);
+
         const result = await updateSpecificTreatment(data);
         if(result.success && result.success === true) {
             result.message = 'Tratamiento actualizado exitosamente';
-            setIsChange(!isChange);
+            updateLocalData(data);
+            setFilterText('');
         }
 
         setIsLoading({success: result.success});
@@ -143,13 +147,16 @@ const TreatmentPage = () => {
         setRowSelect(null);
     }
 
-    const eliminateService = async(data) => {
+    const eliminateService = async(id) => {
         setIsLoading({success: undefined});
-        const result = await deleteSpecificTreatment(data);
+        const result = await deleteSpecificTreatment(id);
 
         if(result.success && result.success === true) {
             result.message = 'Tratamiento eliminado con éxito';
-            setIsChange(!isChange);
+            setStoreTreatments(storeTreatments.filter(treatment => treatment.specificTreatmentId !== id))
+            setDataTreatments(dataTreatments.filter(treatment => treatment.specificTreatmentId !== id));
+            setFilterTreatments(filterTreatments.filter(treatment => treatment.specificTreatmentId !== id));
+            setFilterText('');
         }
 
         setIsLoading({success: result.success});
@@ -158,6 +165,35 @@ const TreatmentPage = () => {
         
         handleClose();
         setRowSelect(null);
+    }
+
+    const addNewTreatment = (data, newTreatmentId) => {
+        data.specificTreatmentName = data.name;
+        data.specificTreatmentId = newTreatmentId;
+
+        setStoreTreatments([...storeTreatments, data]);
+        setDataTreatments([...storeTreatments, data]);
+        setFilterTreatments([...storeTreatments, data]);
+    }
+
+    const updateLocalData = (data) => {
+        data.specificTreatmentId = parseInt(data.specificTreatmentId);
+        data.specificTreatmentName = data.name;
+
+        setStoreTreatments(storeTreatments.map(treatment => 
+            treatment.specificTreatmentId === data.specificTreatmentId ? {
+                ...data
+            } : treatment));
+        
+        setDataTreatments(storeTreatments.map(treatment => 
+            treatment.specificTreatmentId === data.specificTreatmentId ? {
+                ...data
+            } : treatment));
+            
+        setFilterTreatments(storeTreatments.map(treatment => 
+            treatment.specificTreatmentId === data.specificTreatmentId ? {
+                ...data
+            } : treatment));
     }
 
     return (
