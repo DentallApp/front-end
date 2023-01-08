@@ -50,28 +50,32 @@ const ScheduleTable = ({schedules, setSelectedSchedule, handleShow}) => {
         },
         {
             name: <div className={styles.container_table_header}><h6>Hora inicio (Mañana)</h6></div>,
-            selector: row => row.morningStartHour !== null ? row.morningStartHour : INFORMATION_NOT_AVAILABLE,
+            selector: row => (row.morningStartHour !== null || row.morningStartHour === "") 
+                ? row.morningStartHour : INFORMATION_NOT_AVAILABLE,
             center: true,
             wrap: true,
             width: onlyWidth >= 1300 ? "15%" : "150px",
         },
         {
             name: <div className={styles.container_table_header}><h6>Hora fin (Mañana)</h6></div>,
-            selector: row => row.morningEndHour !== null ? row.morningEndHour : INFORMATION_NOT_AVAILABLE,
+            selector: row => (row.morningEndHour !== null || row.morningStartHour === "") 
+                ? row.morningEndHour : INFORMATION_NOT_AVAILABLE,
             center: true,
             wrap: true,
             width: onlyWidth >= 1300 ? "15%" : "150px"
         },
         {
             name: <div className={styles.container_table_header}><h6>Hora inicio (Tarde)</h6></div>,
-            selector: row => row.afternoonStartHour !== null ? row.afternoonStartHour : INFORMATION_NOT_AVAILABLE,
+            selector: row => (row.afternoonStartHour !== null|| row.morningStartHour === "") 
+                ? row.afternoonStartHour : INFORMATION_NOT_AVAILABLE,
             center: true,
             wrap: true,
             width: onlyWidth >= 1300 ? "15%" : "150px"
         },
         {
             name: <div className={styles.container_table_header}><h6>Hora fin (Tarde)</h6></div>,
-            selector: row => row.afternoonEndHour !== null ? row.afternoonEndHour : INFORMATION_NOT_AVAILABLE,
+            selector: row => (row.afternoonEndHour !== null || row.morningStartHour === "") 
+                ? row.afternoonEndHour : INFORMATION_NOT_AVAILABLE,
             center: true,
             wrap: true,
             width: onlyWidth >= 1300 ? "15%" : "150px"
