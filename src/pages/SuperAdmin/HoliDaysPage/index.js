@@ -12,9 +12,7 @@ const HoliDaysPage = () => {
     const [errorLoading, setErrorLoading] = useState({success: false, message: ''});
 
     const [holidays, setHolidays] = useState([]);
-    const [filterHolidays, setFilterHolidays] = useState([]);
     const [holidaySelect, setHolidaySelect] = useState(null);
-    const [valueSelected, setValueSelected] = useState(null);
 
     // Estado para el modal de creación y actualización de información de los días de feriados
     const [show, setShow] = useState(false);
@@ -29,7 +27,11 @@ const HoliDaysPage = () => {
     const [isLoading, setIsLoading] = useState(null);
 
     useEffect(() => {
-        showHolidays();
+        getHolidays()
+            .then(res => {
+                setHolidays(res.data);
+            })
+            .catch(err => handleErrorLoading(err, setErrorLoading));
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -41,29 +43,10 @@ const HoliDaysPage = () => {
     
     const handleShow = () => setShow(true);
 
-    const showHolidays = (officeId) => {
-        getHolidays()
-            .then(res => {
-                setHolidays(res.data);
-                setFilterHolidays(res.data);
-            })
-            .catch(err => handleErrorLoading(err, setErrorLoading));
-    }
-
-    const handleChangeOffice = (e) => {
-        setValueSelected(parseInt(e.value));
-        if(parseInt(e.value) !== 0) {
-            const filterData = holidays.filter(holiday => holiday.offices.some(office => office.id === parseInt(e.value)));
-            setFilterHolidays(filterData);
-            return;
-        }
-        setFilterHolidays(holidays);
-    }
-
     const create = async(holiday) => {
         const data = {
-            day: holiday.date.split('-')[0],
-            month: holiday.date.split('-')[1],
+            day: holiday.day,
+            month: holiday.month,
             description: holiday.description,
             officesId: holiday.officeId
         }
@@ -71,7 +54,7 @@ const HoliDaysPage = () => {
         const result = await createHoliday(data);
         if(result.success && result.success === true) {
             result.message = 'Feriado registrado con éxito';
-            showHolidays();
+            addNewHoliday(holiday, parseInt(result.data.id));
         }
 
         setIsLoading({success: result.success});
@@ -81,10 +64,12 @@ const HoliDaysPage = () => {
     }
 
     const edit = async(holiday) => {
+        holiday.id = parseInt(holiday.id);
+
         const data = {
-            id: parseInt(holiday.id),
-            day: holiday.date.split('-')[0],
-            month: holiday.date.split('-')[1],
+            id: holiday.id,
+            day: holiday.day,
+            month: holiday.month,
             description: holiday.description,
             officesId: holiday.officeId
         }
@@ -92,7 +77,7 @@ const HoliDaysPage = () => {
         const result = await editHoliday(data);
         if(result.success && result.success === true) {
             result.message = 'Datos actualizados con éxito';
-            showHolidays();
+            updateLocalData(holiday);
         }
 
         setIsLoading({success: result.success});
@@ -102,7 +87,8 @@ const HoliDaysPage = () => {
     }
 
     const saveHoliday = async(date, reset, type, setError) => {
-        date.officeId = date.officeId.map(id => parseInt(id));
+        date.offices = date.officeId;
+        date.officeId = date.officeId.map(office => parseInt(office.id));
 
         if(
             (type === 'create' && holidays.some(
@@ -128,6 +114,9 @@ const HoliDaysPage = () => {
         setIsLoading({success: undefined});
         let result = null;
 
+        date.day = parseInt(date.date.split('-')[0]);
+        date.month = parseInt(date.date.split('-')[1]);
+
         if(type === 'create') result = await create(date);
         else result = await edit(date);
 
@@ -143,7 +132,7 @@ const HoliDaysPage = () => {
 
         if(result.success && result.success === true) {
             result.message = 'Feriado eliminado con éxito';
-            showHolidays();
+            setHolidays(holidays.filter(holiday => holiday.id !== id));
         }
 
         setIsLoading({success: result.success});
@@ -152,6 +141,17 @@ const HoliDaysPage = () => {
         
         handleClose();
         setHolidaySelect(null);
+    }
+
+    const addNewHoliday = (data, newHolidayId) => {
+        data.id = newHolidayId;
+        setHolidays([...holidays, data]);
+    }
+
+    const updateLocalData = (data) => {
+        setHolidays(holidays.map(holiday => holiday.id === data.id ? {
+            ...data
+        }: holiday));
     }
 
     return (
@@ -204,7 +204,7 @@ const HoliDaysPage = () => {
                     holidays ? (
                         <HoliDaysTable 
                             styles="margin-bottom: 40px;" 
-                            holidays={filterHolidays} 
+                            holidays={holidays} 
                             handleShow={handleShow}
                             setTypeModal={setTypeModal}
                             setHolidaySelect={setHolidaySelect} />
