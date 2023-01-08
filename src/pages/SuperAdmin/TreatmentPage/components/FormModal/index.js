@@ -23,16 +23,19 @@ const FormModal = ({show, handleClose, specificTreatmentSelect = null, saveTreat
             name: `${ specificTreatmentSelect !== null ? specificTreatmentSelect.specificTreatmentName : ""}`,
             price: `${ specificTreatmentSelect !== null ? formatter.format(specificTreatmentSelect.price) : ""}`,
             generalTreatmentId: `${ specificTreatmentSelect !== null ? specificTreatmentSelect.generalTreatmentId : ""}`,
+            generalTreatmentName: `${ specificTreatmentSelect !== null ? specificTreatmentSelect.generalTreatmentName : ""}`
         }
     });
 
     const selectValue = watch("generalTreatmentId");
 
     useEffect(() => {
-        register("generalTreatmentId", { required: "Consultorio requerido" });   
+        register("generalTreatmentId", { required: "Servicio dental es requerido" });   
 
         getGeneralTreatmentName().then(res => {
             setServices(res.data);
+
+            if(specificTreatmentSelect === null) setValue("generalTreatmentId", res.data[0].id, true);
         })
         .catch(err => err); 
 
@@ -43,12 +46,10 @@ const FormModal = ({show, handleClose, specificTreatmentSelect = null, saveTreat
         // eslint-disable-next-line react-hooks/exhaustive-deps      
     }, []);
 
-    useEffect(() => {
-        if(services !== null && selectValue === '') setValue("generalTreatmentId", services[0].id, true);
-         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [services]);
-
-    const handleChange = (e) => setValue("generalTreatmentId", e.target.value, true);
+    const handleChange = (e) => {
+        setValue("generalTreatmentName", e.target.options[e.target.selectedIndex].text, true);
+        setValue("generalTreatmentId", parseInt(e.target.value), true);
+    }
 
     return (
         <Modal 

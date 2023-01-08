@@ -20,7 +20,7 @@ const FormModal = ({
     const [type, setType] = useState('create');
     const [offices, setOffices] = useState(null);
     const [startDate, setStartDate] = useState(holidaySelect !== null ? 
-        moment(`2022-${holidaySelect.month}-${holidaySelect.day}`).toDate() : 
+        moment(`${new Date().getFullYear()}-${holidaySelect.month}-${holidaySelect.day}`).toDate() : 
         new Date());
     const days = ['D', 'L', 'M', 'X', 'J', 'V', 'S'];
     const months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
@@ -40,7 +40,7 @@ const FormModal = ({
             day: `${ holidaySelect !== null ? holidaySelect.day : ""}`,
             month: `${ holidaySelect !== null ? holidaySelect.month : ""}`,
             description: `${ holidaySelect !== null ? holidaySelect.description : ""}`,
-            officeId: `${ holidaySelect !== null ? holidaySelect.offices.map(office => office.id) : ""}`,
+            officeId: `${ holidaySelect !== null ? holidaySelect.offices : ""}`,
         }
     });
 
@@ -53,7 +53,7 @@ const FormModal = ({
 
         if(holidaySelect !== null) {
             setValue("date", moment(`2022-${holidaySelect.month}-${holidaySelect.day}`).format('DD-MM', true), true);
-            setValue("officeId", holidaySelect.offices.map(office => office.id), true);
+            setValue("officeId", holidaySelect.offices, true);
             setType('edit');
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps      
@@ -61,7 +61,10 @@ const FormModal = ({
 
     const handleSelectOffice = (e) => {
         clearErrors('date'); 
-        setValue("officeId", e.map(office => office.value ), true);
+        setValue("officeId", e.map(office => {return {
+            id: parseInt(e.value),
+            name: e.label
+        }}), true);
     }
 
     const handleDate = (date) => {
@@ -102,48 +105,7 @@ const FormModal = ({
                                     dateFormat="dd/MM"
                                     minDate={new Date(`01-01-${new Date().getFullYear()}`)}
                                     maxDate={new Date(`12-31-${new Date().getFullYear()}`)}
-                                    renderCustomHeader={({
-                                        date,
-                                        decreaseMonth,
-                                        increaseMonth,
-                                        prevMonthButtonDisabled,
-                                        nextMonthButtonDisabled,
-                                      }) => (
-                                        <div
-                                          style={{
-                                            margin: 10,
-                                          }}
-                                        >
-                                          <Button
-                                          className="react-datepicker__navigation react-datepicker__navigation--previous" 
-                                          style={{
-                                            marginTop: 15
-                                          }}
-                                          onClick={decreaseMonth} 
-                                          disabled={prevMonthButtonDisabled}>
-                                            <span className="react-datepicker__navigation-icon react-datepicker__navigation-icon--previous">
-                                                Previous Month
-                                            </span>
-                                          </Button>
-                                          
-                                          <div className="react-datepicker__current-month">
-                                            { months[date.getMonth()]}
-                                          </div>
-                                
-                                          <button 
-                                          className="react-datepicker__navigation react-datepicker__navigation--next"
-                                          style={{
-                                            marginTop: 15
-                                          }}
-                                          onClick={increaseMonth} 
-                                          disabled={nextMonthButtonDisabled}>
-                                            <span 
-                                            className='react-datepicker__navigation-icon react-datepicker__navigation-icon--next'>
-                                                Next Month
-                                            </span>
-                                          </button>
-                                        </div>
-                                      )}
+                                    
                                     />
                                     { errors.date && <p className={styles.error_message}>{ errors.date.message }</p> } 
                                 </Form.Group>

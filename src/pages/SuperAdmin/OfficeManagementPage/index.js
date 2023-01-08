@@ -15,7 +15,6 @@ const OfficeManagementPage = () => {
 
     // Estado para los datos de la tabla
     const [offices, setOffices] = useState(null);
-    const [isChange, setIsChange] = useState(false);
     const [filterOffices, setFilterOffices] = useState([]);
 
     // Estado para el modal de creación y actualización de información de usuarios
@@ -34,7 +33,8 @@ const OfficeManagementPage = () => {
             setFilterOffices(res.data);
         })
             .catch(err => handleErrorLoading(err, setErrorLoading))
-    }, [isChange]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps    
+    }, []);
      
     useEffect(() => {
         if(filterOffices?.length > 0 && filterText !== '') filterData();
@@ -82,7 +82,8 @@ const OfficeManagementPage = () => {
         const result = await createOffice(data);
         if(result.success && result.success === true) {
             result.message = 'Consultorio creado con éxito';
-            setIsChange(!isChange);
+            addNewOffice(data, parseInt(result.data.id));
+            setFilterText('');
         }
 
         setIsLoading({success: result.success});
@@ -92,8 +93,6 @@ const OfficeManagementPage = () => {
     }
 
     const edit = async(data) => {
-        data.isCheckboxTicked = data.isDeleted === false ? true : data.isCheckboxTicked;
-        
         const result = await updateOffice(data);
         if(result.success && result.success === true) {
             result.message = 'Consultorio actualizado exitosamente';
@@ -111,6 +110,7 @@ const OfficeManagementPage = () => {
     }
 
     const saveOffice = async(data, reset, type) => {
+
         // Se elimina espacios innecesarios
         const sanitizedName = data.name.trim();
         const sanitizedAddress = data.address.trim();
@@ -121,6 +121,7 @@ const OfficeManagementPage = () => {
 
         data.id = parseInt(data.id);
         data.isDeleted = parseInt(data.isDeleted) === 1 ? false : true;
+        data.isCheckboxTicked = data.isDeleted === false ? true : data.isCheckboxTicked;
         
         let result = null;
         setIsLoading({success: undefined});
@@ -132,6 +133,20 @@ const OfficeManagementPage = () => {
         handleClose();
         reset();
         setRowSelect(null);
+    }
+
+    const addNewOffice = (data, newOfficeId) => {
+        data.id = newOfficeId;
+
+        setOffices([
+            ...offices,
+            data
+        ]);
+
+        setFilterOffices([
+            ...offices,
+            data
+        ]);
     }
 
     return (

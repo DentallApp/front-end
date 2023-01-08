@@ -8,13 +8,9 @@ import {
     formatIdentityDocument, 
     formatNames,  
     formatPhone } from 'utils/formatUtils';
-import { getGenders } from 'services/GenderService';
-import { getKinship } from 'services/KinshipService';
 import styles from './FormModal.module.css';
 
-const FormModal = ({show, handleClose, dependentSelect = null, saveDependent}) => {
-    const [genders, setGenders] = useState(null); // Estado para los géneros
-    const [kinship, setKinship] = useState(null); // Estado para el parentesco
+const FormModal = ({show, handleClose, genders, kinship, dependentSelect = null, saveDependent}) => {
     const [type, setType] = useState('create'); // Estado para tipo de modal
     const onlyWidth = useWindowWidth(); // Se obtiene ancho y altura de pantalla para colocar el modal
 
@@ -35,27 +31,22 @@ const FormModal = ({show, handleClose, dependentSelect = null, saveDependent}) =
     const selectValue = watch("kinshipId");
 
     useEffect(() => {
-        getGenders().then(response => setGenders(response.data))
-            .catch(error => console.error(error));
-
-        getKinship().then(response => setKinship(response.data))
-            .catch(error => console.log(error));
-
         register("kinshipId", { required: "Parentesco requerido" });
 
         if(dependentSelect !== null) {
             setValue("kinshipId", dependentSelect.kinshipId, true);
             setType('edit');
         }
+        else {
+            if(kinship !== null) setValue("kinshipId", kinship[0].id,true);
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    useEffect(() => {
-        if(kinship !== null && selectValue === '') setValue("kinshipId", kinship[0].id,true);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [kinship]);
-
-    const handleChange = (e) => setValue("kinshipId", e.target.value, true);
+    const handleChange = (e) => {
+        setValue("kinshipId", e.target.value, true);
+        
+    }    
     
     return (
         <Modal 

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Button, Spinner } from 'react-bootstrap';
+import moment from 'moment';
 import { IoAddCircle } from "react-icons/io5";
 import { AlertMessage, ModalLoading, FilterComponent } from 'components';
 import { DependentTable, FormModal, EliminationModal } from './components';
@@ -9,11 +10,16 @@ import {
     createDependent, 
     updateDependent, 
     deleteDependent } from 'services/DependentService';
+import { getGenders } from 'services/GenderService';
+import { getKinship } from 'services/KinshipService';
 import { handleErrors, handleErrorLoading } from 'utils/handleErrors';
 import { verifyIdentityDocument } from 'utils/validationIdentityDocument';
 import styles from './DependentPage.module.css';
 
 const DependentPage = () => {
+
+    const [genders, setGenders] = useState(null); // Estado para los géneros
+    const [kinship, setKinship] = useState(null); // Estado para el parentesco
 
     const [errorLoading, setErrorLoading] = useState({success: false, message: ''});
 
@@ -23,7 +29,6 @@ const DependentPage = () => {
 
     // Estado para los datos de la tabla
     const [dataDependents, setDataDependents] = useState(null);
-    const [isChange, setIsChange] = useState(false);
     const [filterDependents, setFilterDependents] = useState([]);
 
     // Estado para el modal de creación y actualización de información de dependientes
@@ -43,18 +48,26 @@ const DependentPage = () => {
         getDependents()
         .then(res => {
             setDataDependents(res.data);
-            setFilterDependents(res.data)
+            setFilterDependents(res.data);
         })
         .catch(err => {
             handleErrorLoading(err, setErrorLoading);
         });
-    }, [isChange]);
+
+        getGenders().then(response => setGenders(response.data))
+            .catch(error => console.error(error));
+
+        getKinship().then(response => setKinship(response.data))
+            .catch(error => console.log(error));
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps    
+    }, []);
      
     useEffect(() => {
         if(filterDependents?.length > 0 && filterText !== '') filterData();
        
         if(filterDependents?.length <= 0 || filterText === '') setFilterDependents(dataDependents);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps 
     }, [filterText]);
 
     const filterData = () => {
@@ -93,7 +106,8 @@ const DependentPage = () => {
         const result = await createDependent(data);
         if(result.success && result.success === true) {
             result.message = 'Dependiente creado exitosamente';
-            setIsChange(!isChange);
+            addNewLocalData(data, parseInt(result.data.id));
+            setFilterText('');
         }    
 
         setIsLoading({success: result.success});
@@ -106,7 +120,7 @@ const DependentPage = () => {
         const result = await updateDependent(data);
         if(result.success && result.success === true) {
             result.message = 'Dependiente actualizado exitosamente';
-            setIsChange(!isChange);
+            updateLocalData(data);
         }    
             
         setIsLoading({success: result.success});
@@ -153,13 +167,14 @@ const DependentPage = () => {
         setDependentSelect(null);
     }
 
-    const eliminateDependent = async(data) => {
+    const eliminateDependent = async(id) => {
         setIsLoading({success: undefined});
-        const result = await deleteDependent(data);
+        const result = await deleteDependent(id);
         
         if(result.success && result.success === true) {
             result.message = 'Dependiente eliminado con éxito';
-            setIsChange(!isChange);  
+            setDataDependents(dataDependents.filter(dependent => dependent.dependentId !== id));
+            setFilterDependents(filterDependents.filter(dependent => dependent.dependentId !== id));
         }
 
         setIsLoading({success: result.success});
@@ -168,6 +183,60 @@ const DependentPage = () => {
         handleErrors(result, setAlert, setIsLoading);
         handleClose();
         setDependentSelect(null);
+    }
+
+    const addNewLocalData = (data, newDependentId) => {
+
+        const newDependent = {
+            dependentId: newDependentId,
+            cellPhone: data.cellPhone,
+            names: data.names,
+            lastNames: data.lastNames,
+            fullName: data.names + ' ' + data.lastNames,
+            dateBirth: moment(data.dateBirth).format('DD/MM/YYYY'),
+            document: data.document,
+            email: data.email,
+            genderId: data.genderId,
+            genderName: genders.filter(gender => gender.id === data.genderId)[0].name,
+            kinshipId: data.kinshipId,
+            kinshipName: kinship.filter(k => k.id === data.kinshipId)[0].name
+        }
+
+        setDataDependents([
+            ...dataDependents, 
+            newDependent
+        ]);
+        
+        setFilterDependents([
+            ...dataDependents,
+            newDependent
+        ]);
+    }
+
+    const updateLocalData = (data) => {
+
+        data.fullName = data.names + ' ' + data.lastNames;
+        data.genderName = genders.filter(gender => gender.id === data.genderId)[0].name;
+        data.kinshipName = kinship.filter(k => k.id === data.kinshipId)[0].name;
+
+        setDataDependents(
+            dataDependents.map(
+                dependent => dependent.dependentId === data.dependentId ? {
+                    ...data
+                }:
+                dependent
+            )
+        );
+
+        setFilterDependents(
+            filterDependents.map(
+                dependent => dependent.dependentId === data.dependentId ? {
+                    ...data
+                }:
+                dependent
+            )
+        );
+        
     }
 
     return (
@@ -179,6 +248,8 @@ const DependentPage = () => {
                         <FormModal 
                         handleClose={handleClose} 
                         show={show}
+                        genders={genders}
+                        kinship={kinship} 
                         saveDependent={saveDependent}
                         dependentSelect={dependentSelect} /> 
                     ):(

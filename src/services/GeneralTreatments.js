@@ -18,6 +18,7 @@ export const createTreatment = (data) => {
     return api.post('/general-treatment', data, { headers: {"Content-Type": "multipart/form-data"} })
     .then(res => {
         return {
+            data: res.data.data,
             status: res.status,
             success: res.data.success,
             message: res.data.message

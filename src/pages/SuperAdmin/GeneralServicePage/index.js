@@ -18,7 +18,6 @@ const GeneralServicePage = () => {
 
     // Estado para los datos de la tabla
     const [dataServices, setDataServices] = useState(null);
-    const [isChange, setIsChange] = useState(false);
     const [filterServices, setFilterServices] = useState([]);
 
     // Estado para el modal de creación y actualización de información de los servicios
@@ -43,7 +42,7 @@ const GeneralServicePage = () => {
             handleErrorLoading(err, setErrorLoading);
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isChange]);
+    }, []);
 
     useEffect(() => {
         if(filterServices?.length > 0 && filterText !== '') filterData();
@@ -84,11 +83,12 @@ const GeneralServicePage = () => {
     }
     const handleShow = () => setShow(true);
 
-    const create = async(form) => {
+    const create = async(form, data) => {
         const result = await createTreatment(form);
         if(result.success && result.success === true) {
             result.message = 'Servicio creado con éxito';
-            setIsChange(!isChange);
+            addNewService(data, parseInt(result.data.id, 10));
+            setFilterText('');
         }
 
         setIsLoading({success: result.success});
@@ -101,13 +101,54 @@ const GeneralServicePage = () => {
         const result = await updateTreatment(form, data.id);
         if(result.success && result.success === true) {
             result.message = 'Servicio actualizado exitosamente';
-            setIsChange(!isChange);
+            updateLocalData(data);
         }
 
         setIsLoading({success: result.success});
         setAlert(result);
 
         return result;
+    }
+
+    const addNewService = (data, newServiceId) => {
+        const newService = {
+            id: newServiceId,
+            name: data.name,
+            duration: data.duration,
+            description: data.description
+        }
+
+        setDataServices([
+            ...dataServices,
+            newService
+        ]);
+
+        setFilterServices([
+            ...dataServices,
+            newService
+        ]);
+    }
+
+    const updateLocalData = (data) => {
+
+        const updateService = {
+            id: parseInt(data.id),
+            name: data.name,
+            duration: data.duration,
+            description: data.description
+        }
+
+        setDataServices(dataServices.map(
+            service => service.id === updateService.id ? {
+                ...updateService
+            }: service
+        ));
+
+        setFilterServices(filterServices.map(
+            service => service.id === updateService.id ? {
+                ...updateService
+            }: service
+        ));
     }
 
     // Función guardar y actualizar datos de los servicios
@@ -130,7 +171,7 @@ const GeneralServicePage = () => {
         let result = null;
         setIsLoading({success: undefined});
 
-        if(type === 'create') result = await create(form);
+        if(type === 'create') result = await create(form, data);
         else result = await edit(form, data);
 
         if(result.success === false && result.errors !== null) {
@@ -148,13 +189,14 @@ const GeneralServicePage = () => {
         setRowSelect(null);
     }
 
-    const eliminateService = async(data) => {
+    const eliminateService = async(id) => {
         setIsLoading({success: undefined});
-        const result = await deleteTreatment(data);
+        const result = await deleteTreatment(id);
         
         if(result.success && result.success === true) {
             result.message = 'Servicio eliminado exitosamente';
-            setIsChange(!isChange);
+            setDataServices(dataServices.filter(service => service.id !== id));
+            setFilterServices(filterServices.filter(service => service.id !== id));
         }
 
         setIsLoading({success: result.success});

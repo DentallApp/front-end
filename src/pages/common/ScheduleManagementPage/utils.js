@@ -1,9 +1,9 @@
 export const validationScheduleMorning = (data, setError) => {
     let validation = true;
 
-    if((data.afternoonStartHour === '' && data.afternoonEndHour === '') && (
-        data.morningStartHour === '' && data.morningEndHour === ''
-    )) {
+    if(((data.afternoonStartHour === '' && data.afternoonEndHour === '') || (data.afternoonStartHour === 'null' && data.afternoonEndHour === 'null')) 
+    && ((data.morningStartHour === '' && data.morningEndHour === '') || (data.morningStartHour === 'null' && data.morningEndHour === 'null'))
+    ) {
         setError("morningStartHour", {
             type: 'custom',
             message: 'Hora de inicio es requerida'
@@ -29,7 +29,8 @@ export const validationScheduleMorning = (data, setError) => {
         validation = false;
     }
 
-    if(data.morningStartHour !== '' && data.morningEndHour === '') {
+    if((data.morningStartHour !== '' && data.morningStartHour !== 'null') && data.morningEndHour === '')
+    {
         setError("morningEndHour", {
             type: 'custom',
             message: 'Hora de fin es requerida'
@@ -37,7 +38,7 @@ export const validationScheduleMorning = (data, setError) => {
         return false;
     }
 
-    if(data.morningStartHour === '' && data.morningEndHour !== '') {
+    if(data.morningStartHour === '' && (data.morningEndHour !== '' && data.morningEndHour !== 'null')) {
         setError("morningStartHour", {
             type: 'custom',
             message: 'Hora de inicio es requerida'
@@ -45,8 +46,11 @@ export const validationScheduleMorning = (data, setError) => {
         return false;
     }
 
-    if((data.afternoonStartHour !== '' && data.afternoonEndHour !== '') && (
-        data.morningStartHour > data.afternoonStartHour || data.morningStartHour > data.afternoonEndHour
+    if((data.afternoonStartHour !== '' && data.afternoonEndHour !== '') && 
+    (data.morningStartHour !== 'null' && data.morningEndHour !== 'null' && 
+    data.afternoonStartHour !== 'null' && data.afternoonEndHour !== 'null') &&
+    (data.morningStartHour > data.afternoonStartHour || 
+        data.morningStartHour > data.afternoonEndHour
     )) {
         setError("morningStartHour", {
             type: 'custom',
@@ -55,8 +59,11 @@ export const validationScheduleMorning = (data, setError) => {
         validation = false;
     }
 
-    if((data.afternoonStartHour !== '' && data.afternoonEndHour !== '') && (
-        data.morningEndHour > data.afternoonStartHour || data.morningEndHour > data.afternoonEndHour
+    if((data.afternoonStartHour !== '' && data.afternoonEndHour !== '') && 
+    (data.morningStartHour !== 'null' && data.morningEndHour !== 'null' && 
+    data.afternoonStartHour !== 'null' && data.afternoonEndHour !== 'null') &&
+    (data.morningEndHour > data.afternoonStartHour || 
+        data.morningEndHour > data.afternoonEndHour
     )) {
         setError("morningEndHour", {
             type: 'custom',
@@ -71,7 +78,7 @@ export const validationScheduleMorning = (data, setError) => {
 export const validationScheduleAfternoon = (data, setError) => {
     let validation = true;
 
-    if(data.afternoonStartHour !== '' && data.afternoonEndHour === '') {
+    if((data.afternoonStartHour !== '' && data.afternoonStartHour !== 'null') && data.afternoonEndHour === '') {
         setError("afternoonEndHour", {
             type: 'custom',
             message: 'Hora de fin es requerida'
@@ -79,7 +86,7 @@ export const validationScheduleAfternoon = (data, setError) => {
         return false;
     }
 
-    if(data.afternoonStartHour === '' && data.afternoonEndHour !== '') {
+    if(data.afternoonStartHour === '' && (data.afternoonEndHour !== '' && data.afternoonEndHour !== 'null')) {
         setError("afternoonStartHour", {
             type: 'custom',
             message: 'Hora de inicio es requerida'
@@ -100,8 +107,10 @@ export const validationScheduleAfternoon = (data, setError) => {
         validation = false;
     }
 
-    if((data.morningStartHour !== '' && data.morningEndtHour !== '' && data.afternoonStartHour !== '' && data.afternoonEndtHour !== '') && (
-        data.afternoonStartHour < data.morningStartHour || data.afternoonStartHour < data.endTimeMorning)) {
+    if((data.morningStartHour !== '' && data.morningEndtHour !== '' && data.afternoonStartHour !== '' && 
+    data.afternoonEndtHour !== '') && 
+    (data.morningStartHour !== 'null' && data.morningEndHour !== 'null' && data.afternoonStartHour !== 'null' && data.afternoonEndHour !== 'null') 
+    && (data.afternoonStartHour < data.morningStartHour || data.afternoonStartHour < data.endTimeMorning)) {
         setError("afternoonStartHour", {
             type: 'custom',
             message: 'Hora de inicio de la tarde no puede ser menor al horario de la mañana'
@@ -109,8 +118,10 @@ export const validationScheduleAfternoon = (data, setError) => {
         validation = false;
     }
 
-    if((data.morningStartHour !== '' && data.morningEndtHour !== '' && data.afternoonStartHour !== '' && data.afternoonEndtHour !== '') && (
-        data.afternoonEndHour < data.morningStartHour || data.afternoonEndHour < data.endTimeMorning)) {
+    if((data.morningStartHour !== '' && data.morningEndtHour !== '' && data.afternoonStartHour !== '' && 
+    data.afternoonEndtHour !== '') && 
+    (data.morningStartHour !== 'null' && data.morningEndHour !== 'null' && data.afternoonStartHour !== 'null' && data.afternoonEndHour !== 'null') 
+    && (data.afternoonEndHour < data.morningStartHour || data.afternoonEndHour < data.endTimeMorning)) {
         setError("afternoonEndHour", {
             type: 'custom',
             message: 'Hora fin de la tarde no puede ser menor al horario de la mañana'

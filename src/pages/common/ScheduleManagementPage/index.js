@@ -12,7 +12,6 @@ import {
 import { getDentistByOffice } from 'services/EmployeeService';    
 import { getLocalUser } from 'services/UserService';
 import { handleErrors, handleErrorLoading } from 'utils/handleErrors';
-import STATUS from 'constants/Status';
 import styles from './ScheduleManagementPage.module.css';
 
 const ScheduleManagementPage = () => {
@@ -68,11 +67,9 @@ const ScheduleManagementPage = () => {
     }
 
     const create = async (data) => {
-        data.employeeId = parseInt(selectedDentist);
-
         const result = await createSchedule(data);
         if(result.success && result.success === true) {
-            showSchedules(data.employeeId);
+            addNewSchedule(data, parseInt(result.data.id))
             result.message = 'Horario creado con éxito';
         }    
 
@@ -83,25 +80,14 @@ const ScheduleManagementPage = () => {
     }
 
     const update = async (data) => {
-        data.scheduleId = parseInt(data.scheduleId);
-        data.employeeId = parseInt(selectedDentist);
         data.morningStartHour = data.morningStartHour === 'null' ? null : data.morningStartHour;
         data.morningEndHour = data.morningEndHour === 'null' ? null : data.morningEndHour;
         data.afternoonStartHour = data.afternoonStartHour === 'null' ? null : data.afternoonStartHour;
         data.afternoonEndHour = data.afternoonEndHour === 'null' ? null : data.afternoonEndHour;
-        data.isDeleted = parseInt(data.statusId) === 1 ? false : true;
-        
+
         const result = await updateSchedule(data);
         if(result.success && result.success === true) {
-            const newList = schedules.map(schedule => 
-                schedule.scheduleId === data.scheduleId ? { 
-                    ...schedule, 
-                    ...data,
-                    status: data.isDeleted === false ? STATUS[0].name.toUpperCase() : STATUS[1].name.toUpperCase(), 
-                } : schedule    
-            );
-            setSchedules(newList);
-
+            updateLocalData(data);
             result.message = 'Horario actualizado exitosamente';
         }    
 
@@ -127,6 +113,10 @@ const ScheduleManagementPage = () => {
         if(validationMorning === false) return;
         if(validationAfternoon === false) return;
         
+        data.scheduleId = parseInt(data.scheduleId);
+        data.employeeId = parseInt(selectedDentist);
+        data.isDeleted = parseInt(data.statusId) === 1 ? false : true;
+
         let result = null;
         setIsLoading({success: undefined});
 
@@ -137,6 +127,48 @@ const ScheduleManagementPage = () => {
         handleClose();
         reset();
         setSelectedSchedule(null);
+    }
+
+    const addNewSchedule = (data, newScheduleId) => {
+        data.scheduleId = newScheduleId;
+        data.morningStartHour = (data.morningStartHour === '' || data.morningStartHour === null) 
+            ? null : data.morningStartHour;
+        data.morningEndHour = (data.morningEndHour === '' || data.morningEndHour === null) ? 
+            null : data.morningEndHour;
+        data.afternoonStartHour = (data.afternoonStartHour === '' || data.afternoonStartHour === null) 
+            ? null : data.afternoonStartHour;
+        data.afternoonEndHour = (data.afternoonEndHour === '' || data.afternoonEndHour === null) 
+            ? null : data.afternoonEndHour;
+
+        const newList = [...schedules, data];
+        const newListSort = newList.sort((a, b) => {
+            if(a.weekDayId > b.weekDayId) return 1;
+
+            if(a.weekDayId < b.weekDayId) return -1;
+
+            return 0;
+        });
+
+        setSchedules(newListSort);
+    }
+
+    const updateLocalData = (data) => {
+        data.morningStartHour = (data.morningStartHour === '' || data.morningStartHour === null) 
+            ? null : data.morningStartHour;
+        data.morningEndHour = (data.morningEndHour === '' || data.morningEndHour === null) ? 
+            null : data.morningEndHour;
+        data.afternoonStartHour = (data.afternoonStartHour === '' || data.afternoonStartHour === null) 
+            ? null : data.afternoonStartHour;
+        data.afternoonEndHour = (data.afternoonEndHour === '' || data.afternoonEndHour === null) 
+            ? null : data.afternoonEndHour;
+        
+        const newList = schedules.map(schedule => 
+            schedule.scheduleId === data.scheduleId ? { 
+                ...schedule, 
+                ...data, 
+            } : schedule    
+        );
+        setSchedules(newList);
     }
 
     return (

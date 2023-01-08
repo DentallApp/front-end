@@ -74,7 +74,7 @@ const OfficeSchedulePage = () => {
 
         const result = await createSchedule(data);
         if(result.success && result.success === true) {
-            showSchedules(data.officeId);
+            addNewSchedule(data, result.data.id);
         }    
 
         setIsLoading({success: result.success});
@@ -84,13 +84,6 @@ const OfficeSchedulePage = () => {
     }
 
     const update = async(data) => {
-        data.scheduleId = parseInt(data.scheduleId);
-        data.officeId = parseInt(selectOffice);
-        data.startHour = data.startHour === 'null' ? null : data.startHour;
-        data.endHour = data.morningEndHour === 'null' ? null : data.endHour;
-        data.isDeleted = parseInt(data.isDeleted) === 1 ? false : true;
-        data.status = data.isDeleted === false ? "ACTIVO" : "INACTIVO";
-        
         const result = await updateSchedule(data);
         if(result.success && result.success === true) {
             const newList = schedules.map(schedule => 
@@ -120,6 +113,12 @@ const OfficeSchedulePage = () => {
         setIsLoading({success: undefined});
         let result = null;
 
+        data.scheduleId = parseInt(data.scheduleId);
+        data.officeId = parseInt(selectOffice);
+        data.startHour = data.startHour === 'null' ? null : data.startHour;
+        data.endHour = data.morningEndHour === 'null' ? null : data.endHour;
+        data.isDeleted = parseInt(data.isDeleted) === 1 ? false : true;
+
         if(type === 'create') result = await create(data);
         else result = await update(data); 
 
@@ -127,6 +126,21 @@ const OfficeSchedulePage = () => {
         handleClose();
         reset();
         setSelectedSchedule(null);
+    }
+
+    const addNewSchedule = (data, newScheduleId) => {
+        data.scheduleId = newScheduleId;
+
+        const newList = [...schedules, data];
+        const newListSort = newList.sort((a, b) => {
+            if(a.weekDayId > b.weekDayId) return 1;
+
+            if(a.weekDayId < b.weekDayId) return -1;
+
+            return 0;
+        });
+
+        setSchedules(newListSort);
     }
 
     return (

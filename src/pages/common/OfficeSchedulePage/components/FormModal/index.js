@@ -19,7 +19,13 @@ const FormModal = ({show, handleClose, scheduleSelect=null, saveSchedule, schedu
             weekDayId: `${ scheduleSelect !== null ? scheduleSelect.weekDayId : ""}`,
             startHour: `${ scheduleSelect !== null ? scheduleSelect.startHour : ""}`,
             endHour: `${ scheduleSelect !== null ? scheduleSelect.endHour : ""}`,
-            isDeleted: `${ scheduleSelect !== null ? (scheduleSelect.isDeleted === false ? STATUS[0].id : STATUS[1].id): ""}`
+            isDeleted: `${ scheduleSelect !== null ? (scheduleSelect.isDeleted === false ? STATUS[0].id : STATUS[1].id): ""}`,
+            status: `${ 
+                scheduleSelect !== null ? 
+                (scheduleSelect.isDeleted === false ? STATUS[0].name.toUpperCase() : STATUS[1].name.toUpperCase())
+                : ""
+            }`,
+            weekDayName: `${ scheduleSelect !== null ? scheduleSelect.weekDayName : ""}`
         }
     });
 
@@ -30,6 +36,8 @@ const FormModal = ({show, handleClose, scheduleSelect=null, saveSchedule, schedu
         setStatus(STATUS);
         const filterDays = WEEKDAYS.filter(day => !schedules.some(schedule => schedule.weekDayId === day.id ));
         
+        register('weekDayId', {required: 'Debe seleccionar un día'});
+
         if(scheduleSelect !== null) {
             const daySelect = WEEKDAYS.filter(day => day.id === scheduleSelect.weekDayId);
             const daysResult = [...filterDays, ...daySelect];
@@ -44,12 +52,20 @@ const FormModal = ({show, handleClose, scheduleSelect=null, saveSchedule, schedu
             setDays(filterDays);
             setValue("weekDayId", 0, true);
             setValue("isDeleted", STATUS[0].id, true);
+            setValue("status", STATUS[0].name.toUpperCase(), true);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const handleDayChange = (e) => setValue("weekDayId", e.target.value, true);
-    const handleStatusChange = (e) => setValue("isDeleted", e.target.value, true);  
+    const handleDayChange = (e) => {
+        setValue("weekDayName", e.target.options[e.target.selectedIndex].text, true);
+        setValue("weekDayId", parseInt(e.target.value), true);
+    }
+    
+    const handleStatusChange = (e) => {
+        setValue("isDeleted", e.target.value, true);  
+        setValue("status", e.target.options[e.target.selectedIndex].text.toUpperCase(), true);
+    }
 
     return (
         <Modal 
@@ -78,9 +94,6 @@ const FormModal = ({show, handleClose, scheduleSelect=null, saveSchedule, schedu
                                     name="weekDayId"
                                     value={selectDayValue} 
                                     onChange={handleDayChange}
-                                    {...register("weekDayId", {
-                                        required: "Debe de seleccionar un día"
-                                    })}
                                     >
                                         <option value="0">Seleccione</option>
                                         { days && (
