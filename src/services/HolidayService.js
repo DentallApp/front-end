@@ -12,6 +12,7 @@ export const createHoliday = (data) => {
     .then(res => {
         if(res.data.success === true) {
             return {
+                data: res.data.data,
                 status: res.status,
                 success: res.data.success,
                 message: res.data.message

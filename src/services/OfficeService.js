@@ -16,6 +16,7 @@ export const createOffice = (data) => {
     })
     .then(res => {
         return {
+            data: res.data.data,
             status: res.status,
             success: res.data.success,
             message: res.data.message
