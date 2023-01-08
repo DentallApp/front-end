@@ -5,6 +5,8 @@ import { UsersTable, FormModal, EliminationModal, OfficeFilter } from './compone
 import { AlertMessage, ModalLoading, FilterComponent } from 'components';
 import { trimSpaces, capitalizeFirstLetter } from 'utils/stringUtils';
 import { getLocalUser } from 'services/UserService';
+import { getGenders } from 'services/GenderService';
+import STATUS from 'constants/Status';
 import ROLES from 'constants/Roles';
 import { createEmployee, getEmployee, updateEmployee, deleteEmployee } from 'services/EmployeeService';
 import { handleErrors, handleErrorLoading } from 'utils/handleErrors';
@@ -13,6 +15,8 @@ import styles from './UserManagementPage.module.css';
 
 const UserManagementPage = () => {
     const user = getLocalUser();
+
+    const [genders, setGenders] = useState(null); // Estado para los géneros
 
     const [errorLoading, setErrorLoading] = useState({success: false, message: ''});
     const [valueSelected, setValueSelected] = useState(null);
@@ -23,7 +27,6 @@ const UserManagementPage = () => {
     // Estado para los datos de la tabla
     const [storeUsers, setStoreUsers] = useState(null);
     const [dataUsers, setDataUsers] = useState(null);
-    const [isChange, setIsChange] = useState(false);
     const [filterUsers, setFilterUsers] = useState([]);
 
     // Estado para el modal de creación y actualización de información de usuarios
@@ -40,6 +43,9 @@ const UserManagementPage = () => {
     const [isLoading, setIsLoading] = useState(null);
 
     useEffect(() => {
+        getGenders().then(response => setGenders(response.data))
+            .catch(error => error);
+
         getEmployee().then(res => {
             setStoreUsers(res.data);
             setDataUsers(res.data);
@@ -48,7 +54,9 @@ const UserManagementPage = () => {
         .catch(err => {
             handleErrorLoading(err, setErrorLoading);
         });
-    }, [isChange]);
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
      
     useEffect(() => {
         if(filterUsers?.length > 0 && filterText !== '') filterData();
@@ -111,10 +119,16 @@ const UserManagementPage = () => {
     }
 
     const create = async(data) => {
-        const result = await createEmployee(data);
+        const newEmployee = {
+            ...data
+        };
+        newEmployee.roles = data.roles.map(role => parseInt(role.id));
+
+        const result = await createEmployee(newEmployee);
         if(result.success && result.success === true) {
             result.message = 'Usuario creado con éxito';
-            setIsChange(!isChange);
+            addNewEmployee(data, parseInt(result.data.id));
+            setFilterText('');
         }    
         
         setIsLoading({success: result.success});
@@ -125,13 +139,17 @@ const UserManagementPage = () => {
     
     const edit = async(data) => {
         if(data.password.length === 0) data.password = null;
-        
-        data.isDeleted = parseInt(data.statusId) === 1 ? false : true;
 
-        const result = await updateEmployee(data);
+        const updateDataEmployee = {
+            ...data
+        };
+        updateDataEmployee.roles = data.roles.map(role => parseInt(role.id));
+
+        const result = await updateEmployee(updateDataEmployee);
         if(result.success && result.success === true) {
             result.message = 'Usuario actualizado exitosamente';
-            setIsChange(!isChange);
+            updateLocalData(data);
+            setFilterText('');
         }
 
         setIsLoading({success: result.success});
@@ -161,13 +179,19 @@ const UserManagementPage = () => {
         data.lastNames = capitalizeFirstLetter(sanitizedLastName);
         
         data.genderId = parseInt(data.genderId);
+        data.genderName = genders.filter(gender => gender.id === data.genderId)[0].name;
         data.officeId = user.roles.includes(ROLES.SUPERADMIN) ? parseInt(data.officeId) : user.officeId;
-        data.roles = data.roleId.map(role => parseInt(role));
-        
-        if(data.isDentist && data.specialtiesId?.length > 0)
-            data.specialtiesId = data.specialtiesId.map(specialty => parseInt(specialty));
-        else 
+        data.status = STATUS.filter(status => status.id === parseInt(data.statusId))[0].name.toUpperCase();
+        data.isDeleted = parseInt(data.statusId) === 1 ? false : true;
+
+        if(data.isDentist && data.specialties?.length > 0) {
+            data.specialtiesId = data.specialties.map(specialty => parseInt(specialty.id));
+        }
+        else {
             data.specialtiesId = null;
+            data.specialties = []
+        }
+            
 
         let result = null;
         setIsLoading({success: undefined});
@@ -186,11 +210,15 @@ const UserManagementPage = () => {
         setRowSelect(null);
     }
 
-    const eliminateUser = async(data) => {
+    const eliminateUser = async(id) => {
         setIsLoading({success: undefined});
-        const result = await deleteEmployee(data);
+        const result = await deleteEmployee(id);
         
-        if(result.success && result.success === true) setIsChange(!isChange);
+        if(result.success && result.success === true) {
+            setStoreUsers(storeUsers.filter(user => user.employeeId !== id));
+            setDataUsers(dataUsers.filter(user => user.employeeId !== id));
+            setFilterUsers(filterUsers.filter(user => user.employeeId !== id));
+        }
         
         setIsLoading({success: result.success});
         setAlert(result);
@@ -198,6 +226,33 @@ const UserManagementPage = () => {
         handleErrors(result);
         handleClose();
         setRowSelect(null);
+    }
+
+    const addNewEmployee = (data, newEmployeeId) => {
+        data.employeeId = newEmployeeId;
+
+        setStoreUsers([...storeUsers, data]);
+        setDataUsers([...storeUsers, data]);
+        setFilterUsers([...storeUsers, data]);
+    }
+
+    const updateLocalData = (data) => {
+
+        setStoreUsers(storeUsers.map(user => 
+            user.employeeId === data.employeeId ? {
+                ...data
+            }: user));
+        
+        setDataUsers(storeUsers.map(user => 
+            user.employeeId === data.employeeId ? {
+                ...data
+            }: user));
+        
+        setFilterUsers(storeUsers.map(user => 
+            user.employeeId === data.employeeId ? {
+                ...data
+            }: user));
+
     }
 
     return (
@@ -209,6 +264,7 @@ const UserManagementPage = () => {
                         <FormModal 
                         handleClose={handleClose} 
                         show={show}
+                        genders={genders}
                         saveUser={saveUser}
                         userSelect={rowSelect} /> 
                     ):(
