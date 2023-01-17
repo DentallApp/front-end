@@ -7,8 +7,8 @@ const SelectGeneralService = (
     {
         storeTreatments, 
         setFilterTreatments, 
-        valueSelected, 
-        setValueSelected,
+        serviceSelected, 
+        setServiceSelected,
         setDataTreatments
     }) => {
 
@@ -18,12 +18,12 @@ const SelectGeneralService = (
         getGeneralTreatmentName()
             .then(res => setGeneralTreatments(res.data))
             .catch(err => err);
-        setValueSelected(0);  
+        setServiceSelected(0);  
         // eslint-disable-next-line react-hooks/exhaustive-deps      
     }, []);
 
     const handleChange = (e) => {
-        setValueSelected(e.target.value);
+        setServiceSelected(e.target.value);
         if(parseInt(e.target.value) !== 0) {
             const filterData = storeTreatments.filter(treatment => treatment.generalTreatmentId === parseInt(e.target.value));
             setFilterTreatments(filterData);
@@ -43,7 +43,7 @@ const SelectGeneralService = (
                         <Form.Select
                         name="serviceId"
                         onChange={handleChange}
-                        value={valueSelected !== null && valueSelected}
+                        value={serviceSelected !== null && serviceSelected}
                         >
                         <option  
                         value='0'>
