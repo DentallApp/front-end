@@ -377,8 +377,8 @@ const FormModal = ({show, handleClose, genders, userSelect = null, saveUser}) =>
                         </Row>
 
                         <Row>
-                            <Col lg={12} md>
-                                <Form.Group className="mb-3" controlId="formBasicPassword">
+                            <Col lg={12} md={12}>
+                                <Form.Group className={`${type !== 'edit' && 'mb-3'}`} controlId="formBasicPassword">
                                     <Form.Label className={styles.label_input}>* Contraseña</Form.Label>
                                     <InputGroup className="mb-1">
                                         <Form.Control 
@@ -409,7 +409,7 @@ const FormModal = ({show, handleClose, genders, userSelect = null, saveUser}) =>
                             {
                                 type === 'edit' && (
                                     <Col lg={12} md>
-                                        <Form.Group className="mb-3" controlId="formBasicChangePassword">
+                                        <Form.Group className="mb-4" controlId="formBasicChangePassword">
                                             <Form.Check
                                             type='checkbox'
                                             label='Cambiar contraseña'

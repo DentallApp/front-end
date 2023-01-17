@@ -13,7 +13,7 @@ import styles from './TreatmentPage.module.css';
 
 const TreatmentPage = () => {
     const [errorLoading, setErrorLoading] = useState({success: false, message: ''});
-    const [valueSelected, setValueSelected] = useState(null);
+    const [serviceSelected, setServiceSelected] = useState(null);
     
     // Estados para el filtro
     const [filterText, setFilterText] = useState('');
@@ -54,9 +54,9 @@ const TreatmentPage = () => {
     useEffect(() => {
         if(filterTreatments?.length > 0 && filterText !== '') filterData();
         
-        if((filterTreatments?.length <= 0 || filterText === '') && valueSelected === 0) setFilterTreatments(storeTreatments);
+        if((filterTreatments?.length <= 0 || filterText === '') && serviceSelected === 0) setFilterTreatments(storeTreatments);
 
-        if((filterTreatments?.length <= 0 || filterText === '') && valueSelected !== 0) setFilterTreatments(dataTreatments);
+        if((filterTreatments?.length <= 0 || filterText === '') && serviceSelected !== 0) setFilterTreatments(dataTreatments);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [filterText]);
 
@@ -71,19 +71,19 @@ const TreatmentPage = () => {
     // Función que capta los datos que se ingresa en el input y realiza el filtro de la tabla 
     const handleChange = (e) => {
         setFilterText(e.target.value.toString());
-        if((filterText === '' || filterTreatments.length <= 0) && valueSelected === 0) 
+        if((filterText === '' || filterTreatments.length <= 0) && serviceSelected === 0) 
             setFilterTreatments(storeTreatments);
         
-        if((filterText === '' || filterTreatments.length <= 0) && valueSelected !== 0)
+        if((filterText === '' || filterTreatments.length <= 0) && serviceSelected !== 0)
             setFilterTreatments(dataTreatments)
     }
 
     // Función que limpia los campos del input y resetea la tabla
     const handleClear = () => {
         setResetPaginationToggle(!resetPaginationToggle);
-        if(valueSelected !== 0) setFilterTreatments(dataTreatments);
+        if(serviceSelected !== 0) setFilterTreatments(dataTreatments);
         
-        if(valueSelected === 0) setFilterTreatments(storeTreatments);
+        if(serviceSelected === 0) setFilterTreatments(storeTreatments);
         
         setFilterText('');
     };
@@ -92,7 +92,6 @@ const TreatmentPage = () => {
     const handleClose = () => { 
         setShow(false);
         setRowSelect(null);
-        setValueSelected(0);
     }
     const handleShow = () => setShow(true);
 
@@ -102,6 +101,7 @@ const TreatmentPage = () => {
             result.message = 'Tratamiento creado con éxito';
             addNewTreatment(data, parseInt(result.data.id))
             setFilterText('');
+            setServiceSelected(0);
         }
 
         setIsLoading({success: result.success});
@@ -118,6 +118,7 @@ const TreatmentPage = () => {
             result.message = 'Tratamiento actualizado exitosamente';
             updateLocalData(data);
             setFilterText('');
+            setServiceSelected(0);
         }
 
         setIsLoading({success: result.success});
@@ -157,6 +158,7 @@ const TreatmentPage = () => {
             setDataTreatments(dataTreatments.filter(treatment => treatment.specificTreatmentId !== id));
             setFilterTreatments(filterTreatments.filter(treatment => treatment.specificTreatmentId !== id));
             setFilterText('');
+            setServiceSelected(0);
         }
 
         setIsLoading({success: result.success});
@@ -235,8 +237,8 @@ const TreatmentPage = () => {
                     <SelectGeneralService
                     storeTreatments={storeTreatments} 
                     setFilterTreatments={setFilterTreatments}
-                    valueSelected={valueSelected}
-                    setValueSelected={setValueSelected}
+                    serviceSelected={serviceSelected}
+                    setServiceSelected={setServiceSelected}
                     setDataTreatments={setDataTreatments} />
 
                     <FilterComponent 

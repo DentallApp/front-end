@@ -20,7 +20,7 @@ const DescriptionStatus = ({listStatus}) => {
                             className={styles.color_status} 
                             style={
                                 {'backgroundColor': 
-                                APPOINTMENT_STATUS.filter(status => status.id === data.id)[0].colorHex}
+                                APPOINTMENT_STATUS.filter(status => status.name === data.name)[0].colorHex}
                             }>
                             </div>
                             <p>{data.name}</p>

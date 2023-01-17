@@ -19,7 +19,8 @@ const UserManagementPage = () => {
     const [genders, setGenders] = useState(null); // Estado para los géneros
 
     const [errorLoading, setErrorLoading] = useState({success: false, message: ''});
-    const [valueSelected, setValueSelected] = useState(null);
+    const [officeSelected, setOfficeSelected] = useState({value: 0, label: 'Todos'});
+
     // Estados para el filtro
     const [filterText, setFilterText] = useState('');
     const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
@@ -61,9 +62,9 @@ const UserManagementPage = () => {
     useEffect(() => {
         if(filterUsers?.length > 0 && filterText !== '') filterData();
         
-        if((filterUsers?.length <= 0 || filterText === '') && valueSelected === 0) setFilterUsers(storeUsers);
+        if((filterUsers?.length <= 0 || filterText === '') && officeSelected?.value === 0) setFilterUsers(storeUsers);
 
-        if((filterUsers?.length <= 0 || filterText === '') && valueSelected !== 0) setFilterUsers(dataUsers);
+        if((filterUsers?.length <= 0 || filterText === '') && officeSelected?.value !== 0) setFilterUsers(dataUsers);
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [filterText]);
@@ -82,19 +83,19 @@ const UserManagementPage = () => {
     // Función que capta los datos que se ingresa en el input y realiza el filtro de la tabla 
     const handleChange = (e) => {
         setFilterText(e.target.value.toString());
-        if((filterText === '' || filterUsers.length <= 0) && valueSelected === 0) 
+        if((filterText === '' || filterUsers.length <= 0) && officeSelected?.value === 0) 
             setFilterUsers(storeUsers);
         
-        if((filterText === '' || filterUsers.length <= 0) && valueSelected !== 0)
+        if((filterText === '' || filterUsers.length <= 0) && officeSelected?.value !== 0)
             setFilterUsers(dataUsers)
     }
 
     // Función que limpia los campos del input y resetea la tabla
     const handleClear = () => {
         setResetPaginationToggle(!resetPaginationToggle);
-        if(valueSelected !== 0) setFilterUsers(dataUsers);
+        if(officeSelected?.value !== 0) setFilterUsers(dataUsers);
         
-        if(valueSelected === 0) setFilterUsers(storeUsers);
+        if(officeSelected?.value === 0) setFilterUsers(storeUsers);
         
         setFilterText('');
     };
@@ -107,7 +108,7 @@ const UserManagementPage = () => {
     const handleShow = () => setShow(true);
 
     const handleChangeOffice = (e) => {
-        setValueSelected(parseInt(e.value));
+        setOfficeSelected(e);
         if(parseInt(e.value) !== 0) {
             const filterData = storeUsers.filter(user => user.officeId === parseInt(e.value));
             setFilterUsers(filterData);
@@ -129,6 +130,7 @@ const UserManagementPage = () => {
             result.message = 'Usuario creado con éxito';
             addNewEmployee(data, parseInt(result.data.id));
             setFilterText('');
+            setOfficeSelected({value: 0, label: 'Todos'});
         }    
         
         setIsLoading({success: result.success});
@@ -150,6 +152,7 @@ const UserManagementPage = () => {
             result.message = 'Usuario actualizado exitosamente';
             updateLocalData(data);
             setFilterText('');
+            setOfficeSelected({value: 0, label: 'Todos'});
         }
 
         setIsLoading({success: result.success});
@@ -300,8 +303,9 @@ const UserManagementPage = () => {
 
                 {   
                     getLocalUser().roles.includes(ROLES.SUPERADMIN) ? (
-                        <OfficeFilter 
-                        setValueSelected={setValueSelected}
+                        <OfficeFilter
+                        officeSelected={officeSelected}
+                        setOfficeSelected={setOfficeSelected}
                         handleChangeOffice={handleChangeOffice}
                         />
                     ):(

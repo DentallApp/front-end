@@ -9,7 +9,7 @@ import { getDentistByOffice } from 'services/EmployeeService';
 import { getOfficesActiveAndInactive  } from 'services/OfficeService';
 import ROLES from 'constants/Roles';
 import styles from './Filters.module.css';
-
+ 
 const Filters = ({
     listStatus, 
     searchAppointments,
@@ -60,7 +60,10 @@ const Filters = ({
         setValue('dentistId', 0, true);
         setSelectStatus(0);
 
-        if(getLocalUser().roles.includes(ROLES.SUPERADMIN) === false) { 
+        if(
+            getLocalUser().roles.includes(ROLES.ADMIN) || 
+            getLocalUser().roles.includes(ROLES.SECRETARY) 
+        ) { 
             
             setValue('officeId', getLocalUser().officeId, true);
             setSelectOffice(getLocalUser().officeId);
