@@ -6,7 +6,8 @@ import styles from './OfficeFilter.module.css';
 
 const OfficeFilter = (
     {
-        setValueSelected,
+        officeSelected,
+        setOfficeSelected,
         handleChangeOffice
     }) => {
 
@@ -15,8 +16,7 @@ const OfficeFilter = (
     useEffect(() => {
         getOffices()
             .then(res => setOffices(res.data))
-            .catch(err => err);
-        setValueSelected(0);  
+            .catch(err => err); 
         // eslint-disable-next-line react-hooks/exhaustive-deps      
     }, []);
 
@@ -38,6 +38,7 @@ const OfficeFilter = (
                             label: data.name
                         }
                 })]}
+                value={officeSelected}
                 onChange={handleChangeOffice} />
             </Row>
         </Form>
