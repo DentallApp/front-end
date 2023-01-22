@@ -13,7 +13,7 @@
 }
 
 .container_header {
-    background-color: #002855 !important;
+    background-color: var(--bg-dark-blue) !important;
     color: #FFF !important;
 }
 
@@ -49,12 +49,12 @@
 }
 
 .text_warning {
-    color: #002855;
+    color: var(--bg-dark-blue);
     font-style: italic;
 }
 
 .error_message {
-    color: #ec5990;
+    color: var(--bg-error);
     font-size: 12px;
 }
 

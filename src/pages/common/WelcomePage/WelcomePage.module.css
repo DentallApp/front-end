@@ -10,7 +10,7 @@
     text-align: center;
     font-weight: bold;
     font-style: italic;
-    color: #002855;
+    color: var(--bg-dark-blue);
 }
 
 .fullname_user {

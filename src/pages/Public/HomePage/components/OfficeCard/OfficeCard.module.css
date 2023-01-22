@@ -33,7 +33,7 @@
 }
 
 .card_office h6 {
-    color: #002855;
+    color: var(--bg-dark-blue);
 }
 
 .button_view_schedule, .button_back {
