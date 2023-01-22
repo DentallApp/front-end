@@ -1,5 +1,5 @@
 .modal_info {
-    background-color: #002855;
+    background-color: var(--bg-dark-blue);
     color: #FFFFFF;
 }
 
