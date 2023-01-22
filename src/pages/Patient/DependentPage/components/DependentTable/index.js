@@ -5,7 +5,6 @@ import moment from 'moment';
 import { FaEdit } from "react-icons/fa";
 import { AiFillDelete } from "react-icons/ai";
 import SideBarContext from 'context/SideBarContext';
-import styles from './DependentTable.module.css';
 
 // Opciones de paginación
 const paginationOptions = {
@@ -38,21 +37,21 @@ const DependentTable = (
     // Columnas de la tabla
     const columns = [
         {
-            name: <div className={styles.container_table_header}><h6>Nombre</h6></div>,
+            name: <div className='container_table_header'><h6>Nombre</h6></div>,
             selector: row => row.names,
             sortable: true,
             wrap: true,
             width: onlyWidth >= 1400 ? "15%" : "col col-lg-2"
         },
         {
-            name: <div className={styles.container_table_header}><h6>Apellidos</h6></div>,
+            name: <div className='container_table_header'><h6>Apellidos</h6></div>,
             selector: row => row.lastNames,
             sortable: true,
             wrap: true,
             width: onlyWidth >= 1400 ? "15%" : "col col-lg-2"
         },
         {
-            name: <div className={styles.container_table_header}><h6>Fecha Nacimiento</h6></div>,
+            name: <div className='container_table_header'><h6>Fecha Nacimiento</h6></div>,
             selector: row => moment(row.dateBirth).format('DD/MM/YYYY'),
             sortable: true,
             center: true,
@@ -60,18 +59,18 @@ const DependentTable = (
             width: onlyWidth >= 1400 ? "15%" : "auto"
         },
         {
-            name: <div className={styles.container_table_header}><h6>Correo</h6></div>,
+            name: <div className='container_table_header'><h6>Correo</h6></div>,
             selector: row => row.email,
             wrap: true,
             width: onlyWidth >= 1400 ? "20%" : "170px",
         },
         {
-            name: <div className={styles.container_table_header}><h6>Cedula</h6></div>,
+            name: <div className='container_table_header'><h6>Cedula</h6></div>,
             selector: row => row.document,
             width: onlyWidth >= 1400 ? "10%" : "auto"
         },
         {
-            name: <div className={styles.container_table_header}><h6>Parentesco</h6></div>,
+            name: <div className='container_table_header'><h6>Parentesco</h6></div>,
             selector: row => row.kinshipName,
             sortable: true,
             center: true,
@@ -79,12 +78,12 @@ const DependentTable = (
             width: onlyWidth >= 1400 ? "10%" : "150px"
         },
         {
-            name: <div className={styles.container_table_header}><h6>Acciones</h6></div>,
+            name: <div className='container_table_header'><h6>Acciones</h6></div>,
             cell: (row) => {
                 return (
-                    <div className={styles.container_actions}>
+                    <div className='container_actions'>
                         <Button 
-                        className={styles.button_edit} 
+                        className='button_edit' 
                         onClick={() => {
                             setDependentSelect(row);
                             setTypeModal('form');
@@ -93,7 +92,7 @@ const DependentTable = (
                             <FaEdit />
                         </Button>
                         <Button 
-                        className={styles.button_cancel} 
+                        className='button_cancel' 
                         onClick={() => {
                             setDependentSelect(row);
                             setTypeModal('warning');
@@ -113,9 +112,9 @@ const DependentTable = (
     ];
     
     return (
-        <div className={styles.container_datable}>
+        <div className='container_datable'>
             <DataTable
-            className={styles.rdt_TableHeadRow}
+            className='rdt_TableHeadRow'
             columns={columns}
             data={dependents}
             pagination

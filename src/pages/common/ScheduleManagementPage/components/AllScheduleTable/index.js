@@ -66,14 +66,14 @@ const AllScheduleTable = ({allSchedules}) => {
     // Columnas de la tabla
     const columns = [
         {
-            name: <div className={styles.container_table_header}><h6>Odontólogo</h6></div>,
+            name: <div className='container_table_header'><h6>Odontólogo</h6></div>,
             selector: row => row.fullName,
             center: true,
             wrap: true,
             width: onlyWidth >= 1600 ? "15%" : "200px"
         },
         {
-            name: <div className={styles.container_table_header}><h6>Estado</h6></div>,
+            name: <div className='container_table_header'><h6>Estado</h6></div>,
             selector: row => 
                 <div className={styles.badge_text}>
                     <Badge pill bg={row.isEmployeeDeleted === false ? 'success' : 'danger'}>
@@ -85,7 +85,7 @@ const AllScheduleTable = ({allSchedules}) => {
             width: onlyWidth >= 1600 ? "10%" : "100px",
         },
         {
-            name: <div className={styles.container_table_header}><h6>Lunes</h6></div>,
+            name: <div className='container_table_header'><h6>Lunes</h6></div>,
             selector: row => {
                 const result = getScheduleByDayId(row.schedules, WEEKDAYS[0].id);
                 
@@ -96,7 +96,7 @@ const AllScheduleTable = ({allSchedules}) => {
             width: onlyWidth >= 1600 ? "12.5%" : "200px",
         },
         {
-            name: <div className={styles.container_table_header}><h6>Martes</h6></div>,
+            name: <div className='container_table_header'><h6>Martes</h6></div>,
             selector: row => {
                 const result = getScheduleByDayId(row.schedules, WEEKDAYS[1].id);
                 return showSchedule(result);
@@ -106,7 +106,7 @@ const AllScheduleTable = ({allSchedules}) => {
             width: onlyWidth >= 1600 ? "12.5%" : "200px",
         },
         {
-            name: <div className={styles.container_table_header}><h6>Miercoles</h6></div>,
+            name: <div className='container_table_header'><h6>Miercoles</h6></div>,
             selector: row => {
                 const result = getScheduleByDayId(row.schedules, WEEKDAYS[2].id);
                 return showSchedule(result);
@@ -116,7 +116,7 @@ const AllScheduleTable = ({allSchedules}) => {
             width: onlyWidth >= 1600 ? "12.5%" : "200px"
         },
         {
-            name: <div className={styles.container_table_header}><h6>Jueves</h6></div>,
+            name: <div className='container_table_header'><h6>Jueves</h6></div>,
             selector: row => {
                 const result = getScheduleByDayId(row.schedules, WEEKDAYS[3].id);
                 return showSchedule(result);
@@ -126,7 +126,7 @@ const AllScheduleTable = ({allSchedules}) => {
             width: onlyWidth >= 1600 ? "12.5%" : "150px"
         },
         {
-            name: <div className={styles.container_table_header}><h6>Viernes</h6></div>,
+            name: <div className='container_table_header'><h6>Viernes</h6></div>,
             selector: row => {
                 const result = getScheduleByDayId(row.schedules, WEEKDAYS[4].id);
                 return showSchedule(result);
@@ -136,7 +136,7 @@ const AllScheduleTable = ({allSchedules}) => {
             width: onlyWidth >= 1600 ? "12.5%" : "150px"
         },
         {
-            name: <div className={styles.container_table_header}><h6>Sabado</h6></div>,
+            name: <div className='container_table_header'><h6>Sabado</h6></div>,
             selector: row => {
                 const result = getScheduleByDayId(row.schedules, WEEKDAYS[5].id);
                 return showSchedule(result);

@@ -41,7 +41,7 @@ const UsersTable = (
     // Columnas de la tabla
     const columns = [
         {
-            name: <div className={styles.container_table_header}><h6>Nombre</h6></div>,
+            name: <div className='container_table_header'><h6>Nombre</h6></div>,
             selector: row => row.names,
             sortable: true,
             center: true,
@@ -49,41 +49,41 @@ const UsersTable = (
             width: onlyWidth >= 1800 ? "15%" : "col col-lg-1"
         },
         {
-            name: <div className={styles.container_table_header}><h6>Apellidos</h6></div>,
+            name: <div className='container_table_header'><h6>Apellidos</h6></div>,
             selector: row => row.lastNames,
             sortable: true,
             wrap: true,
             width: onlyWidth >= 1800 ? "10%" : "col col-lg-1"
         },
         {
-            name: <div className={styles.container_table_header}><h6>Correo</h6></div>,
+            name: <div className='container_table_header'><h6>Correo</h6></div>,
             selector: row => row.email,
             wrap: true,
             width: onlyWidth >= 1800 ? "15%" : "170px",
         },
         {
-            name: <div className={styles.container_table_header}><h6>Cedula</h6></div>,
+            name: <div className='container_table_header'><h6>Cedula</h6></div>,
             selector: row => row.document,
             center: true,
             wrap: true,
             width: onlyWidth >= 1800 ? "15%" : "150px"
         },
         {
-            name: <div className={styles.container_table_header}><h6>Consultorio</h6></div>,
+            name: <div className='container_table_header'><h6>Consultorio</h6></div>,
             selector: row => row.officeName,
             center: true,
             wrap: true,
             width: onlyWidth >= 1800 ? "15%" : "150px"
         },
         {
-            name: <div className={styles.container_table_header}><h6>Roles</h6></div>,
+            name: <div className='container_table_header'><h6>Roles</h6></div>,
             selector: row => row.roles.map(role => role.name).toString().replaceAll(",", "\n"),
             center: true,
             wrap: true,
             width: onlyWidth >= 1800 ? "10%" : "150px"
         },
         {
-            name: <div className={styles.container_table_header}><h6>Estado</h6></div>,
+            name: <div className='container_table_header'><h6>Estado</h6></div>,
             selector: row => 
                 <div className={styles.badge_text}>
                     <Badge pill bg={row.isDeleted === false ? 'success' : 'danger'}>{row.status}</Badge>
@@ -94,12 +94,12 @@ const UsersTable = (
             width: onlyWidth >= 1800 ? "10%" : "120px",
         },
         {
-            name: <div className={styles.container_table_header}><h6>Acciones</h6></div>,
+            name: <div className='container_table_header'><h6>Acciones</h6></div>,
             cell: (row) => {
                 return (
-                    <div className={styles.container_actions}>
+                    <div className='container_actions'>
                         <Button 
-                        className={styles.button_edit} 
+                        className='button_edit' 
                         onClick={() => {
                             setUserSelect(row);
                             setTypeModal('form');

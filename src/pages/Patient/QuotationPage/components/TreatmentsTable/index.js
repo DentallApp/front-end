@@ -27,7 +27,7 @@ const customStyles = {
 // Columnas de la tabla
 const columns = [
     {
-        name: <div className={styles.container_table_header}><h6>Codigo</h6></div>,
+        name: <div className='container_table_header'><h6>Codigo</h6></div>,
         selector: row => row.specificTreatmentId,
         sortable: true,
         center: true,
@@ -35,7 +35,7 @@ const columns = [
         minWidth: "100px"
     },
     {
-        name: <div className={styles.container_table_header}><h6>Tratamiento dental</h6></div>,
+        name: <div className='container_table_header'><h6>Tratamiento dental</h6></div>,
         selector: row => row.specificTreatmentName,
         sortable: true,
         center: true,
@@ -44,7 +44,7 @@ const columns = [
         minWidth: '150px'
     },
     {
-        name: <div className={styles.container_table_header}><h6>Servicio dental</h6></div>,
+        name: <div className='container_table_header'><h6>Servicio dental</h6></div>,
         selector: row => row.generalTreatmentName,
         sortable: true,
         center: true,
@@ -54,7 +54,7 @@ const columns = [
         
     },
     {
-        name: <div className={styles.container_table_header}><h6>Precio</h6></div>,
+        name: <div className='container_table_header'><h6>Precio</h6></div>,
         selector: row => '$' + row.price,
         sortable: true,
         center: true,

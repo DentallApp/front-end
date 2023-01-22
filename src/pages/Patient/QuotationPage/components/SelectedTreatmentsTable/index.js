@@ -3,7 +3,6 @@ import DataTable from 'react-data-table-component';
 import { Button } from 'react-bootstrap';
 import { AiFillDelete } from "react-icons/ai";
 import SideBarContext from 'context/SideBarContext';
-import styles from './SelectedTreatmentsTable.module.css';
 
 const paginationOptions = {
     rowsPerPageText: 'Filas por página',
@@ -28,7 +27,7 @@ const SelectedTreamentsTable = ({selectedTreatments, deleteSelected}) => {
     // Columnas de la tabla
     const columns = [
     {
-        name: <div className={styles.container_table_header}><h6>Codigo</h6></div>,
+        name: <div className='container_table_header'><h6>Codigo</h6></div>,
         selector: row => row.specificTreatmentId,
         sortable: true,
         center: true,
@@ -36,7 +35,7 @@ const SelectedTreamentsTable = ({selectedTreatments, deleteSelected}) => {
         width: onlyWidth >= 1300 ? "20%" : "100px"
     },
     {
-        name: <div className={styles.container_table_header}><h6>Tratamiento dental</h6></div>,
+        name: <div className='container_table_header'><h6>Tratamiento dental</h6></div>,
         selector: row => row.specificTreatmentName,
         sortable: true,
         center: true,
@@ -45,7 +44,7 @@ const SelectedTreamentsTable = ({selectedTreatments, deleteSelected}) => {
         width: onlyWidth >= 1300 ? "20%" : '200px'
     },
     {
-        name: <div className={styles.container_table_header}><h6>Servicio dental</h6></div>,
+        name: <div className='container_table_header'><h6>Servicio dental</h6></div>,
         selector: row => row.generalTreatmentName,
         sortable: true,
         center: true,
@@ -55,7 +54,7 @@ const SelectedTreamentsTable = ({selectedTreatments, deleteSelected}) => {
         
     },
     {
-        name: <div className={styles.container_table_header}><h6>Precio</h6></div>,
+        name: <div className='container_table_header'><h6>Precio</h6></div>,
         selector: row => '$' + row.price,
         sortable: true,
         center: true,
@@ -64,12 +63,12 @@ const SelectedTreamentsTable = ({selectedTreatments, deleteSelected}) => {
         sortFunction: (a, b) => a.price - b.price
     },
     {
-        name: <div className={styles.container_table_header}><h6>Acciones</h6></div>,
+        name: <div className='container_table_header'><h6>Acciones</h6></div>,
         cell: (row) => {
             return (
-                <div className={styles.container_actions}>
+                <div className='container_actions'>
                     <Button 
-                    className={styles.button_cancel} 
+                    className='button_cancel' 
                     onClick={() => {
                         deleteSelected(row);
                     }}>
@@ -87,9 +86,9 @@ const SelectedTreamentsTable = ({selectedTreatments, deleteSelected}) => {
 ];
 
     return (
-        <div className={styles.container_datable}>
+        <div className='container_datable'>
             <DataTable
-            className={styles.rdt_TableHeadRow}
+            className='rdt_TableHeadRow'
             columns={columns}
             data={selectedTreatments}
             pagination

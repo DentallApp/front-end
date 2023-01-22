@@ -43,21 +43,21 @@ const AppointmentTable = ({
     // Columnas de la tabla
     const columns = [
         {
-            name: <div className={styles.container_table_header}><h6>Fecha</h6></div>,
+            name: <div className='container_table_header'><h6>Fecha</h6></div>,
             selector: row => row.appointmentDate,
             center: true,
             wrap: true,
             width: onlyWidth >= 1300 ? "15%" : "180px"
         },
         {
-            name: <div className={styles.container_table_header}><h6>Hora</h6></div>,
+            name: <div className='container_table_header'><h6>Hora</h6></div>,
             selector: row => `${row.startHour} - ${row.endHour}`,
             center: true,
             wrap: true,
             width: onlyWidth >= 1300 ? "15%" : "120px"
         },
         {
-            name: <div className={styles.container_table_header}><h6>Odontologo</h6></div>,
+            name: <div className='container_table_header'><h6>Odontologo</h6></div>,
             selector: row => (getLocalUser().roles.includes(ROLES.SECRETARY) || 
                 getLocalUser().roles.includes(ROLES.ADMIN) || 
                 getLocalUser().roles.includes(ROLES.SUPERADMIN)) ?
@@ -68,24 +68,24 @@ const AppointmentTable = ({
             width: onlyWidth >= 1300 ? "15%" : "170px",
         },
         {
-            name: <div className={styles.container_table_header}><h6>Paciente</h6></div>,
+            name: <div className='container_table_header'><h6>Paciente</h6></div>,
             selector: row => row.patientName,
             center: true,
             wrap: true,
             width: onlyWidth >= 1300 ? "15%" : "170px"
         },
         {
-            name: <div className={styles.container_table_header}><h6>Servicio</h6></div>,
+            name: <div className='container_table_header'><h6>Servicio</h6></div>,
             selector: row => row.dentalServiceName,
             center: true,
             wrap: true,
             width: onlyWidth >= 1300 ? "20%" : "170px"
         },
         {
-            name: <div className={styles.container_table_header}><h6>Acciones</h6></div>,
+            name: <div className='container_table_header'><h6>Acciones</h6></div>,
             cell: (row) => {
                 return (
-                    <div className={styles.container_actions}>
+                    <div className='container_actions'>
                         <Button 
                         className={styles.button_view} 
                         onClick={() => {
@@ -116,7 +116,7 @@ const AppointmentTable = ({
     }
     
     return (
-        <div className={styles.container_datable}>
+        <div className='container_datable'>
             <DataTable
             className={styles.rdt_TableHeadRow}
             columns={columns}

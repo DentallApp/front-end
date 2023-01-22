@@ -4,7 +4,6 @@ import { Button } from 'react-bootstrap';
 import { AiFillDelete } from "react-icons/ai";
 import { INFORMATION_NOT_AVAILABLE } from 'constants/InformationMessage';
 import SideBarContext from 'context/SideBarContext';
-import styles from './FavoriteDentistTable.module.css';
 
 const paginationOptions = {
     rowsPerPageText: 'Filas por página',
@@ -29,7 +28,7 @@ const FavoriteDentistTable = ({dentists, setDentistSelect, handleShow}) => {
     // Columnas de la tabla
     const columns = [
         {
-            name: <div className={styles.container_table_header}><h6>Odontologo</h6></div>,
+            name: <div className='container_table_header'><h6>Odontologo</h6></div>,
             selector: row => row.fullName,
             center: true,
             wrap: true,
@@ -37,7 +36,7 @@ const FavoriteDentistTable = ({dentists, setDentistSelect, handleShow}) => {
             width: onlyWidth >= 1300 ? "20%" : "200px"
         },
         {
-            name: <div className={styles.container_table_header}><h6>Pregrado</h6></div>,
+            name: <div className='container_table_header'><h6>Pregrado</h6></div>,
             selector: row => row.pregradeUniversity === null || row.pregradeUniversity === '' ? 
                 INFORMATION_NOT_AVAILABLE : row.pregradeUniversity,
             center: true,
@@ -49,7 +48,7 @@ const FavoriteDentistTable = ({dentists, setDentistSelect, handleShow}) => {
             
         },
         {
-            name: <div className={styles.container_table_header}><h6>Posgrado</h6></div>,
+            name: <div className='container_table_header'><h6>Posgrado</h6></div>,
             selector: row => row.postgradeUniversity === null || row.pregradeUniversity === '' ? 
                 INFORMATION_NOT_AVAILABLE : row.postgradeUniversity,
             center: true,
@@ -60,19 +59,19 @@ const FavoriteDentistTable = ({dentists, setDentistSelect, handleShow}) => {
             width: onlyWidth >= 1300 ? "20%" : "200px",
         },
         {
-            name: <div className={styles.container_table_header}><h6>Consultorio</h6></div>,
+            name: <div className='container_table_header'><h6>Consultorio</h6></div>,
             selector: row => row.officeName,
             center: true,
             wrap: true,
             width: onlyWidth >= 1300 ? "20%" : "200px",
         },
         {
-            name: <div className={styles.container_table_header}><h6>Acciones</h6></div>,
+            name: <div className='container_table_header'><h6>Acciones</h6></div>,
             cell: (row) => {
                 return (
-                    <div className={styles.container_actions}>
+                    <div className='container_actions'>
                         <Button 
-                        className={styles.button_cancel} 
+                        className='button_cancel' 
                         onClick={() => {
                             setDentistSelect(row);
                             handleShow();
@@ -90,9 +89,9 @@ const FavoriteDentistTable = ({dentists, setDentistSelect, handleShow}) => {
         }
     ];
     return (
-        <div className={styles.container_datable}>
+        <div className='container_datable'>
             <DataTable
-            className={styles.rdt_TableHeadRow}
+            className='rdt_TableHeadRow'
             columns={columns}
             data={dentists}
             pagination

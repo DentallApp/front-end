@@ -29,14 +29,14 @@ const ScheduleTable = ({schedules, setSelectedSchedule, handleShow}) => {
     // Columnas de la tabla
     const columns = [
         {
-            name: <div className={styles.container_table_header}><h6>Día</h6></div>,
+            name: <div className='container_table_header'><h6>Día</h6></div>,
             selector: row => row.weekDayName,
             center: true,
             wrap: true,
             width: onlyWidth >= 1300 ? "20%" : "150px"
         },
         {
-            name: <div className={styles.container_table_header}><h6>Estado</h6></div>,
+            name: <div className='container_table_header'><h6>Estado</h6></div>,
             selector: row => 
                 <div className={styles.badge_text}>
                     <Badge pill bg={row.isDeleted === false ? 'success' : 'danger'}>
@@ -48,26 +48,26 @@ const ScheduleTable = ({schedules, setSelectedSchedule, handleShow}) => {
             width: onlyWidth >= 1300 ? "20%" : "100px",
         },
         {
-            name: <div className={styles.container_table_header}><h6>Hora de Apertura</h6></div>,
+            name: <div className='container_table_header'><h6>Hora de Apertura</h6></div>,
             selector: row => row.startHour,
             center: true,
             wrap: true,
             width: onlyWidth >= 1300 ? "20%" : "200px",
         },
         {
-            name: <div className={styles.container_table_header}><h6>Hora de Cierre</h6></div>,
+            name: <div className='container_table_header'><h6>Hora de Cierre</h6></div>,
             selector: row => row.endHour,
             center: true,
             wrap: true,
             width: onlyWidth >= 1300 ? "20%" : "200px"
         },
         {
-            name: <div className={styles.container_table_header}><h6>Acciones</h6></div>,
+            name: <div className='container_table_header'><h6>Acciones</h6></div>,
             cell: (row) => {
                 return (
-                    <div className={styles.container_actions}>
+                    <div className='container_actions'>
                         <Button 
-                        className={styles.button_edit} 
+                        className='button_edit'
                         onClick={() => {
                             setSelectedSchedule(row);
                             handleShow();
@@ -89,7 +89,7 @@ const ScheduleTable = ({schedules, setSelectedSchedule, handleShow}) => {
     return (
         <div className={styles.container_datable}>
             <DataTable
-            className={styles.rdt_TableHeadRow}
+            className='rdt_TableHeadRow'
             columns={columns}
             data={schedules}
             pagination
