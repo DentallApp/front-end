@@ -5,7 +5,6 @@ import { FaEdit } from "react-icons/fa";
 import { AiFillDelete } from "react-icons/ai";
 import { MinutesToHours } from 'utils/timeUtils';
 import SideBarContext from 'context/SideBarContext';
-import styles from './GeneralServiceTable.module.css';
 
 // Opciones de paginación
 const paginationOptions = {
@@ -43,7 +42,7 @@ const GeneralServiceTable = (
     // Columnas de la tabla
     const columns = [
         {
-            name: <div className={styles.container_table_header}><h6>Servicio Dental</h6></div>,
+            name: <div className='container_table_header'><h6>Servicio Dental</h6></div>,
             selector: row => row.name,
             sortable: true,
             center: true,
@@ -51,19 +50,19 @@ const GeneralServiceTable = (
             width: onlyWidth >= 600 ? "33.33%" : "170px"
         },
         {
-            name: <div className={styles.container_table_header}><h6>Duración (horas)</h6></div>,
+            name: <div className='container_table_header'><h6>Duración (horas)</h6></div>,
             selector: row => MinutesToHours(row.duration),
             wrap: true,
             center: true,
             width: onlyWidth >= 600 ? "33.33%" : "170px"
         },
         {
-            name: <div className={styles.container_table_header}><h6>Acciones</h6></div>,
+            name: <div className='container_table_header'><h6>Acciones</h6></div>,
             cell: (row) => {
                 return (
-                    <div className={styles.container_actions}>
+                    <div className='container_actions'>
                         <Button 
-                        className={styles.button_edit} 
+                        className='button_edit' 
                         onClick={() => {
                             setServiceSelect(row);
                             setTypeModal('form');
@@ -72,7 +71,7 @@ const GeneralServiceTable = (
                             <FaEdit />
                         </Button>
                         <Button 
-                        className={styles.button_cancel} 
+                        className='button_cancel' 
                         onClick={() => {
                             setServiceSelect(row);
                             setTypeModal('warning');
@@ -92,9 +91,9 @@ const GeneralServiceTable = (
     ];
 
     return (
-        <div className={styles.container_datable}>
+        <div className='container_datable'>
             <DataTable
-            className={styles.rdt_TableHeadRow}
+            className='rdt_TableHeadRow'
             columns={columns}
             data={services}
             pagination

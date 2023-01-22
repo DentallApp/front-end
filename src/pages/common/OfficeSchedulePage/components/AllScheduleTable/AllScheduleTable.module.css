@@ -4,22 +4,8 @@
     position: sticky;
 }
 
-.container_table_header {
-    width: 100%;
-    text-align: center;
-    color: #FFF;
-    
-}
-
 .badge_text {
     width: 100%;
     text-align: center;
     font-size: .9rem;
-}
-
-@media  screen and (min-width: 2000px) {
-    .container_datable {
-        margin-left: 100px;
-        margin-right: 100px;
-    }
 }

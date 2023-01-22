@@ -4,7 +4,7 @@
 }
 
 .section_title {
-    color: #023e8a;
+    color: var(--bg-light-blue);
     text-align: center;
     font-style: italic;
     font-weight: bold;
@@ -47,7 +47,7 @@
 
 .text_error {
     text-align: center;
-    color: #023e8a;
+    color: var(--bg-light-blue);
 }
 
 @media screen and (max-width: 768px) {

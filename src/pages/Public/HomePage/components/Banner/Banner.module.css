@@ -50,7 +50,7 @@
 
 .button_explore {
     color: #fff !important;
-    background-color: #002855 !important;
+    background-color: var(--bg-dark-blue) !important;
     border-radius: 30px !important;
     border-color: transparent !important;
 }

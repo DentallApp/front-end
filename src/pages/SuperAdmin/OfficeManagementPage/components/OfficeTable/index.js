@@ -35,7 +35,7 @@ const OfficeTable = ({offices, setOfficeSelect, handleShow, paginationResetDefau
     // Columnas de la tabla
     const columns = [
         {
-            name: <div className={styles.container_table_header}><h6>Consultorio</h6></div>,
+            name: <div className='container_table_header'><h6>Consultorio</h6></div>,
             selector: row => row.name,
             sortable: true,
             center: true,
@@ -43,21 +43,21 @@ const OfficeTable = ({offices, setOfficeSelect, handleShow, paginationResetDefau
             width: onlyWidth >= 1300 ? "20%" : "150px"
         },
         {
-            name: <div className={styles.container_table_header}><h6>Dirección</h6></div>,
+            name: <div className='container_table_header'><h6>Dirección</h6></div>,
             selector: row => row.address,
             wrap: true,
             center: true,
             width: onlyWidth >= 1300 ? "20%" : "270px"
         },
         {
-            name: <div className={styles.container_table_header}><h6>Teléfono</h6></div>,
+            name: <div className='container_table_header'><h6>Teléfono</h6></div>,
             selector: row => row.contactNumber ? row.contactNumber : INFORMATION_NOT_AVAILABLE,
             wrap: true,
             center: true,
             width: onlyWidth >= 1300 ? "20%" : "200px",
         },
         {
-            name: <div className={styles.container_table_header}><h6>Estado</h6></div>,
+            name: <div className='container_table_header'><h6>Estado</h6></div>,
             selector: row => 
                 <div className={styles.badge_text}>
                     <Badge pill bg={row.isDeleted === false ? 'success' : 'danger'}>
@@ -69,12 +69,12 @@ const OfficeTable = ({offices, setOfficeSelect, handleShow, paginationResetDefau
             width: onlyWidth >= 1300 ? "20%" : "120px",
         },
         {
-            name: <div className={styles.container_table_header}><h6>Acciones</h6></div>,
+            name: <div className='container_table_header'><h6>Acciones</h6></div>,
             cell: (row) => {
                 return (
-                    <div className={styles.container_actions}>
+                    <div className='container_actions'>
                         <Button 
-                        className={styles.button_edit} 
+                        className='button_edit' 
                         onClick={() => {
                             setOfficeSelect(row);
                             handleShow();
@@ -93,9 +93,9 @@ const OfficeTable = ({offices, setOfficeSelect, handleShow, paginationResetDefau
     ];
 
     return (
-        <div className={styles.container_datable}>
+        <div className='container_datable'>
             <DataTable
-            className={styles.rdt_TableHeadRow}
+            className='rdt_TableHeadRow'
             columns={columns}
             data={offices}
             pagination

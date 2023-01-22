@@ -4,7 +4,7 @@
 
 .button_appointment {
     color: #000000 !important;
-    background: #80ed99 !important;
+    background: var(--bg-light-green) !important;
     border-radius: 30px !important;
     border-color: transparent !important;
 }

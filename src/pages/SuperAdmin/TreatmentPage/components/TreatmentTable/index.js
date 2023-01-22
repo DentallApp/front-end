@@ -4,7 +4,6 @@ import { Button } from 'react-bootstrap';
 import { FaEdit } from "react-icons/fa";
 import { AiFillDelete } from "react-icons/ai";
 import SideBarContext from 'context/SideBarContext';
-import styles from './GeneralServiceTable.module.css';
 
 // Opciones de paginación
 const paginationOptions = {
@@ -47,7 +46,7 @@ const TreatmentTable = (
     // Columnas de la tabla
     const columns = [
         {
-            name: <div className={styles.container_table_header}><h6>Codigo</h6></div>,
+            name: <div className='container_table_header'><h6>Codigo</h6></div>,
             selector: row => row.specificTreatmentId,
             sortable: true,
             center: true,
@@ -55,7 +54,7 @@ const TreatmentTable = (
             width: onlyWidth >= 1200 ? "20%" : "100px"
         },
         {
-            name: <div className={styles.container_table_header}><h6>Tratamiento dental</h6></div>,
+            name: <div className='container_table_header'><h6>Tratamiento dental</h6></div>,
             selector: row => row.specificTreatmentName,
             sortable: true,
             center: true,
@@ -64,7 +63,7 @@ const TreatmentTable = (
             width: onlyWidth >= 1200 ? "20%" : '170px'
         },
         {
-            name: <div className={styles.container_table_header}><h6>Servicio dental</h6></div>,
+            name: <div className='container_table_header'><h6>Servicio dental</h6></div>,
             selector: row => row.generalTreatmentName,
             sortable: true,
             center: true,
@@ -74,7 +73,7 @@ const TreatmentTable = (
             
         },
         {
-            name: <div className={styles.container_table_header}><h6>Precio</h6></div>,
+            name: <div className='container_table_header'><h6>Precio</h6></div>,
             selector: row => '$ ' + formatter.format(row.price),
             sortable: true,
             center: true,
@@ -82,12 +81,12 @@ const TreatmentTable = (
             width: onlyWidth >= 1200 ? "20%" : "100px"
         },
         {
-            name: <div className={styles.container_table_header}><h6>Acciones</h6></div>,
+            name: <div className='container_table_header'><h6>Acciones</h6></div>,
             cell: (row) => {
                 return (
-                    <div className={styles.container_actions}>
+                    <div className='container_actions'>
                         <Button 
-                        className={styles.button_edit} 
+                        className='button_edit' 
                         onClick={() => {
                             setServiceSelect(row);
                             setTypeModal('form');
@@ -96,7 +95,7 @@ const TreatmentTable = (
                             <FaEdit />
                         </Button>
                         <Button 
-                        className={styles.button_cancel} 
+                        className='button_cancel' 
                         onClick={() => {
                             setServiceSelect(row);
                             setTypeModal('warning');
@@ -116,9 +115,9 @@ const TreatmentTable = (
     ];
 
     return (
-        <div className={styles.container_datable}>
+        <div className='container_datable'>
             <DataTable
-            className={styles.rdt_TableHeadRow}
+            className='rdt_TableHeadRow'
             columns={columns}
             data={services}
             pagination

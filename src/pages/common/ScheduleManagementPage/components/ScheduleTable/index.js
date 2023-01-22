@@ -30,14 +30,14 @@ const ScheduleTable = ({schedules, setSelectedSchedule, handleShow}) => {
     // Columnas de la tabla
     const columns = [
         {
-            name: <div className={styles.container_table_header}><h6>Día</h6></div>,
+            name: <div className='container_table_header'><h6>Día</h6></div>,
             selector: row => row.weekDayName,
             center: true,
             wrap: true,
             width: onlyWidth >= 1300 ? "15%" : "100px"
         },
         {
-            name: <div className={styles.container_table_header}><h6>Estado</h6></div>,
+            name: <div className='container_table_header'><h6>Estado</h6></div>,
             selector: row => 
                 <div className={styles.badge_text}>
                     <Badge pill bg={row.isDeleted === false ? 'success' : 'danger'}>
@@ -49,7 +49,7 @@ const ScheduleTable = ({schedules, setSelectedSchedule, handleShow}) => {
             width: onlyWidth >= 1300 ? "15%" : "100px",
         },
         {
-            name: <div className={styles.container_table_header}><h6>Hora inicio (Mañana)</h6></div>,
+            name: <div className='container_table_header'><h6>Hora inicio (Mañana)</h6></div>,
             selector: row => (row.morningStartHour !== null || row.morningStartHour === "") 
                 ? row.morningStartHour : INFORMATION_NOT_AVAILABLE,
             center: true,
@@ -57,7 +57,7 @@ const ScheduleTable = ({schedules, setSelectedSchedule, handleShow}) => {
             width: onlyWidth >= 1300 ? "15%" : "150px",
         },
         {
-            name: <div className={styles.container_table_header}><h6>Hora fin (Mañana)</h6></div>,
+            name: <div className='container_table_header'><h6>Hora fin (Mañana)</h6></div>,
             selector: row => (row.morningEndHour !== null || row.morningStartHour === "") 
                 ? row.morningEndHour : INFORMATION_NOT_AVAILABLE,
             center: true,
@@ -65,7 +65,7 @@ const ScheduleTable = ({schedules, setSelectedSchedule, handleShow}) => {
             width: onlyWidth >= 1300 ? "15%" : "150px"
         },
         {
-            name: <div className={styles.container_table_header}><h6>Hora inicio (Tarde)</h6></div>,
+            name: <div className='container_table_header'><h6>Hora inicio (Tarde)</h6></div>,
             selector: row => (row.afternoonStartHour !== null|| row.morningStartHour === "") 
                 ? row.afternoonStartHour : INFORMATION_NOT_AVAILABLE,
             center: true,
@@ -73,7 +73,7 @@ const ScheduleTable = ({schedules, setSelectedSchedule, handleShow}) => {
             width: onlyWidth >= 1300 ? "15%" : "150px"
         },
         {
-            name: <div className={styles.container_table_header}><h6>Hora fin (Tarde)</h6></div>,
+            name: <div className='container_table_header'><h6>Hora fin (Tarde)</h6></div>,
             selector: row => (row.afternoonEndHour !== null || row.morningStartHour === "") 
                 ? row.afternoonEndHour : INFORMATION_NOT_AVAILABLE,
             center: true,
@@ -81,12 +81,12 @@ const ScheduleTable = ({schedules, setSelectedSchedule, handleShow}) => {
             width: onlyWidth >= 1300 ? "15%" : "150px"
         },
         {
-            name: <div className={styles.container_table_header}><h6>Acciones</h6></div>,
+            name: <div className='container_table_header'><h6>Acciones</h6></div>,
             cell: (row) => {
                 return (
-                    <div className={styles.container_actions}>
+                    <div className='container_actions'>
                         <Button 
-                        className={styles.button_edit} 
+                        className='button_edit'
                         onClick={() => {
                             setSelectedSchedule(row);
                             handleShow();

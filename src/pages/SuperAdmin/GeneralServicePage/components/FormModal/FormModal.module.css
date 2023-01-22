@@ -38,7 +38,7 @@
 }
 
 .error_message {
-    color: #ec5990;
+    color: var(--bg-error);
     font-size: 12px;
 }
 

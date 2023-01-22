@@ -4,7 +4,6 @@ import { Button } from 'react-bootstrap';
 import { FaEdit } from "react-icons/fa";
 import { AiFillDelete } from "react-icons/ai";
 import SideBarContext from 'context/SideBarContext';
-import styles from './HoliDaysTable.module.css';
 
 // Opciones de paginación
 const paginationOptions = {
@@ -41,14 +40,14 @@ const HoliDaysTable = (
     // Columnas de la tabla
     const columns = [
         {
-            name: <div className={styles.container_table_header}><h6>Id</h6></div>,
+            name: <div className='container_table_header'><h6>Id</h6></div>,
             selector: row => row.id,
             wrap: true,
             center: true,
             width: onlyWidth >= 600 ? "25%" : "170px"
         },
         {
-            name: <div className={styles.container_table_header}><h6>Fecha</h6></div>,
+            name: <div className='container_table_header'><h6>Fecha</h6></div>,
             selector: row => `${new Date().getFullYear()}-${row.month}-${row.day}`,
             sortable: true,
             center: true,
@@ -56,19 +55,19 @@ const HoliDaysTable = (
             width: onlyWidth >= 600 ? "25%" : "170px"
         },
         {
-            name: <div className={styles.container_table_header}><h6>Descripción</h6></div>,
+            name: <div className='container_table_header'><h6>Descripción</h6></div>,
             selector: row => row.description,
             wrap: true,
             center: true,
             width: onlyWidth >= 600 ? "25%" : "170px"
         },
         {
-            name: <div className={styles.container_table_header}><h6>Acciones</h6></div>,
+            name: <div className='container_table_header'><h6>Acciones</h6></div>,
             cell: (row) => {
                 return (
-                    <div className={styles.container_actions}>
+                    <div className='container_actions'>
                         <Button 
-                        className={styles.button_edit} 
+                        className='button_edit' 
                         onClick={() => {
                             setHolidaySelect(row);
                             setTypeModal('form');
@@ -77,7 +76,7 @@ const HoliDaysTable = (
                             <FaEdit />
                         </Button>
                         <Button 
-                        className={styles.button_cancel} 
+                        className='button_cancel' 
                         onClick={() => {
                             setHolidaySelect(row);
                             setTypeModal('warning');
@@ -97,9 +96,9 @@ const HoliDaysTable = (
     ];
 
     return (
-        <div className={styles.container_datable}>
+        <div className='container_datable'>
             <DataTable
-            className={styles.rdt_TableHeadRow}
+            className='rdt_TableHeadRow'
             columns={columns}
             data={holidays}
             pagination

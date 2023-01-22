@@ -52,7 +52,7 @@
 }
 
 .center .navlink_active {
-    background-color: #002855;
+    background-color: var(--bg-dark-blue);
     color: #fff !important;
 }
 
@@ -80,8 +80,7 @@
     margin-left: 5px !important;
     margin-right: 10px !important;
     font-size: 18px !important;
-    /*color: rgba(75,73,172,255) !important;*/
-    color: #002855 !important;
+    color: var(--bg-dark-blue) !important;
 }
 
 .navlink .iconRight {
@@ -89,8 +88,7 @@
 }
 
 .navlink:hover {
-    /*background-color: rgba(75,73,172,255) !important;*/
-    background-color: #002855 !important;
+    background-color: var(--bg-dark-blue) !important;
     color: #fff !important;
     margin-top: 5px !important;
     margin-bottom: 5px !important;

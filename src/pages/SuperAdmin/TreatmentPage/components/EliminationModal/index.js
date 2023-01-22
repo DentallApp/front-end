@@ -1,13 +1,12 @@
 import { Button, Modal } from 'react-bootstrap';
-import styles from '../FormModal/FormModal.module.css';
 
 const EliminationModal = ({show, handleClose, specificTreatmentSelect, eliminateService}) => {
     return (
         <Modal 
         show={show} 
         onHide={handleClose} 
-        dialogClassName={styles.container_modal}>
-            <Modal.Header className={styles.container_header} closeButton>
+        dialogClassName='container_modal'>
+            <Modal.Header className='container_header' closeButton>
                 <Modal.Title>Eliminar tratamiento</Modal.Title>
             </Modal.Header>
              <Modal.Body>

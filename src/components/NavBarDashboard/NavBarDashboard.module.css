@@ -16,7 +16,7 @@ header {
 .toggle {
     width: 40px;
     height: 40px;
-    background-color: #002855;
+    background-color: var(--bg-dark-blue);
     border-radius: 50%;
     display: flex;
     justify-content: center;
@@ -56,7 +56,7 @@ header {
 
 .user_role {
     text-align: center;
-    color: #002855;
+    color: var(--bg-dark-blue);
     font-size: 1.1rem;
     font-weight: bold;
     font-style: italic;

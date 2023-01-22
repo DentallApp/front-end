@@ -61,7 +61,7 @@
     border-radius: 30px !important;
     box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.4);
     border-style: none;
-    background-color: #002855 !important;
+    background-color: var(--bg-dark-blue) !important;
 }
 
 .container_button Button:active {
@@ -70,7 +70,7 @@
 }
 
 .error_message {
-    color: #ec5990;
+    color: var(--bg-error);
     font-size: 12px;
 }
 

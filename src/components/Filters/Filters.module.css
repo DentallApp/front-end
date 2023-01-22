@@ -1,5 +1,5 @@
 .label_input {
-    color: #002855;
+    color: var(--bg-dark-blue);
     font-style: italic;
     font-weight: bold;
 }
@@ -10,7 +10,7 @@
 }
 
 .btn_search {
-    background-color: #002855 !important;
+    background-color: var(--bg-dark-blue) !important;
     border-radius: 30px !important;
     box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.4);
     border-style: none;
@@ -22,6 +22,6 @@
 }
 
 .error_message {
-    color: #ec5990;
+    color: var(--bg-error);
     font-size: 12px;
 }

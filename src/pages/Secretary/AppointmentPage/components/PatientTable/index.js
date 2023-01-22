@@ -40,7 +40,7 @@ const PatientTable = (
     // Columnas de la tabla
     const columns = [
         {
-            name: <div className={styles.container_table_header}><h6>Nombres</h6></div>,
+            name: <div className='container_table_header'><h6>Nombres</h6></div>,
             selector: row => row.names,
             sortable: true,
             center: true,
@@ -48,7 +48,7 @@ const PatientTable = (
             width: onlyWidth >= 1300 ? "17.5%" : "col col-2"
         },
         {
-            name: <div className={styles.container_table_header}><h6>Apellidos</h6></div>,
+            name: <div className='container_table_header'><h6>Apellidos</h6></div>,
             selector: row => row.lastNames,
             sortable: true,
             wrap: true,
@@ -56,31 +56,31 @@ const PatientTable = (
             width: onlyWidth >= 1300 ? "17.5%" : "col col-2"
         },
         {
-            name: <div className={styles.container_table_header}><h6>Cedula</h6></div>,
+            name: <div className='container_table_header'><h6>Cedula</h6></div>,
             selector: row => row.document,
             wrap: true,
             center: true,
             width: onlyWidth >= 1300 ? "15%" : "150px"
         },
         {
-            name: <div className={styles.container_table_header}><h6>Telefono</h6></div>,
+            name: <div className='container_table_header'><h6>Telefono</h6></div>,
             selector: row => row.cellPhone,
             wrap: true,
             center: true,
             width: onlyWidth >= 1300 ? "15%" : "150px"
         },
         {
-            name: <div className={styles.container_table_header}><h6>Correo</h6></div>,
+            name: <div className='container_table_header'><h6>Correo</h6></div>,
             selector: row => row.email,
             wrap: true,
             center: true,
             width: onlyWidth >= 1300 ? "20%" : "150px"
         },
         {
-            name: <div className={styles.container_table_header}><h6>Acciones</h6></div>,
+            name: <div className='container_table_header'><h6>Acciones</h6></div>,
             cell: (row) => {
                 return (
-                    <div className={styles.container_actions}>
+                    <div className='container_actions'>
                         <Button 
                         className={styles.button_appointment} 
                         onClick={() => {
@@ -101,7 +101,7 @@ const PatientTable = (
     ];
 
     return (
-        <div className={styles.container_datable}>
+        <div className='container_datable'>
             <DataTable
             className={styles.rdt_TableHeadRow}
             columns={columns}

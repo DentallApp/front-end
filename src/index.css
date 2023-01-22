@@ -3,6 +3,16 @@
   
 }
 
+:root {
+  --bg-dark-blue: #002855;
+  --bg-light-blue: #023e8a;
+  --bg-green: #048058;
+  --bg-light-green: #80ed99;
+  --bg-error: #ec5990;
+  --bg-edit: #FFC23C;
+  --bg-cancel: #D61C4E;
+}
+
 body {
   margin: 0;
   height: 100%;
@@ -23,6 +33,7 @@ code {
   height: 100%;
 }
 
+/* Clases globales para el calendario */
 .dlpOvc {
   color: #FFF !important;
 }
@@ -33,4 +44,111 @@ code {
 
 .ejaRkF {
   color: #FFF !important;
+}
+
+
+/* Clases globales para el datatable */
+.container_datable {
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.container_table_header {
+  width: 100%;
+  text-align: center;
+  color: #FFF; 
+}
+
+.container_actions {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.button_edit {
+  margin-right: 5px;
+  border-radius: 100%;
+  background-color: var(--bg-edit) !important;
+  border-style: none;
+}
+
+.button_cancel {
+  border-radius: 100%;
+  border-style: none;
+  background-color: var(--bg-cancel) !important;
+}
+
+.button_edit:hover {
+  background-color: var(--bg-edit) !important;
+}
+
+.button_cancel:hover {
+  background-color: var(--bg-cancel) !important;
+}
+
+.button_edit:active, .button_cancel:active {
+  box-shadow: 0 5px #666 !important;
+  transform: translateY(4px) !important;
+}
+
+@media  screen and (min-width: 2000px) {
+  .container_datable {
+      margin-left: 100px;
+      margin-right: 100px;
+  }
+}
+
+/* Clases globales para el modal de eliminación*/
+.container_form {
+  width: 100%;
+  padding: 20px;
+}
+
+.container_form h2 {
+  text-align: center;
+  font-weight: 700;
+}
+
+.container_header {
+  background-color: var(--bg-dark-blue) !important;
+  color: #FFF !important;
+}
+
+.container_header Button {
+  background: transparent url('img/cancel.png') center/1.5em auto no-repeat !important;
+}
+
+.container_form .text_information {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  text-align: center;
+  color: #999;
+}
+
+.label_input {
+  font-style: italic;
+  font-weight: bold;
+}
+
+.error_message {
+  color: var(--bg-error);
+  font-size: 12px;
+}
+
+.container_modal {
+  max-width: 600px;
+}
+
+@media screen and (max-width: 580px) {
+  
+  .container_form {
+      padding: 5px;
+  }
+}
+
+@media screen and (max-width: 768px) and (orientation: landscape) {
+  .container_modal {
+      max-width: 100%;
+  }
 }
