@@ -5,11 +5,8 @@ import { getLocalUser } from 'services/UserService'
 import { parseBool } from 'utils/parseUtils'
 
 const Chatbot = () => {
-
-    let directline = null;
-    const [token, setToken] = useState(null);
+    const [directLine, setDirectLine] = useState(null);
     const user = getLocalUser();
-    
     const styleOptions = {
         botAvatarImage: require('img/bot.png'),
         botAvatarInitials: 'BF',
@@ -48,20 +45,18 @@ const Chatbot = () => {
     }
 
     useEffect(() => {
-        async function fetchMyAPI() {
-          const response = await getToken();
-          setToken(response);
+        async function fetchDirectLineToken() {
+            const token = await getToken();
+            const directLineObject = createDirectLine({
+                domain:`${process.env.REACT_APP_DIRECTLINE_URL}v3/directline`, 
+                token: token, 
+                webSocket: parseBool(process.env.REACT_APP_DIRECTLINE_WEB_SOCKET)
+            });
+            setDirectLine(directLineObject);
         }
-        fetchMyAPI();
-            
+        fetchDirectLineToken();
     }, []);
-
-    directline = useMemo(() => createDirectLine({
-						domain:`${process.env.REACT_APP_DIRECTLINE_URL}v3/directline`, 
-						token: token, 
-						webSocket: parseBool(process.env.REACT_APP_DIRECTLINE_WEB_SOCKET)
-					}), [token]);
-
+    
     const store = useMemo(() => createStore({}, ({dispatch}) => next => action => {
         if(action.type === 'DIRECT_LINE/POST_ACTIVITY') {
             action = simpleUpdateIn(
@@ -84,21 +79,21 @@ const Chatbot = () => {
         }
         return next(action);
     }), [user]);
-
+    
     return (
         <>
             {
-                directline ? 
+                directLine ? 
                 <ReactWebChat 
                 className="webchat" 
-                directLine={directline} 
+                directLine={directLine} 
                 userID={user.userId.toString()} 
                 userName={user.userName}
                 styleOptions={styleOptions}
                 store={store}
                 /> 
                 : 
-                <p>Cargando</p>
+                <p>Cargando...</p>
             }
         </>
     );
