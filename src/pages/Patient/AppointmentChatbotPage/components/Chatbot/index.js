@@ -3,6 +3,7 @@ import ReactWebChat, { createDirectLine, createStore } from 'botframework-webcha
 import simpleUpdateIn from 'simple-update-in';
 import { getLocalUser } from 'services/UserService'
 import { parseBool } from 'utils/parseUtils'
+import { getDirectLineToken } from 'services/DirectLineService'
 
 const Chatbot = () => {
     const [directLine, setDirectLine] = useState(null);
@@ -27,26 +28,9 @@ const Chatbot = () => {
         sendBoxBorderTop: '1px solid #9FC9F3'
     };
 
-    const getToken = async () => {
-
-        let userId ="User-"+ parseInt(Math.random()* 1000000);
-    
-        const res = await fetch(`${process.env.REACT_APP_DIRECTLINE_URL}v3/directline/tokens/generate`, 
-        { 
-          method: 'POST', 
-          headers:{
-            "Content-Type":"application/json",
-          },
-          body: JSON.stringify({ userId: userId, password: ""}) 
-        });
-        const { token } = await res.json();
-        
-        return token;
-    }
-
     useEffect(() => {
         async function fetchDirectLineToken() {
-            const token = await getToken();
+            const { data: { token } } = await getDirectLineToken();
             const directLineObject = createDirectLine({
                 domain:`${process.env.REACT_APP_DIRECTLINE_URL}v3/directline`, 
                 token: token, 
