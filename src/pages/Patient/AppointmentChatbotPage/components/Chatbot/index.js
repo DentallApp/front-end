@@ -63,7 +63,10 @@ const Chatbot = () => {
         }
         return next(action);
     }), [user]);
-    
+
+    // When using 'InDirectLine', it is necessary to pass the userID to the 'ReactWebChat' component and 
+    // this is because it does not attach the userID to the token.
+    // See https://github.com/newbienewbie/InDirectLine
     return (
         <>
             {
