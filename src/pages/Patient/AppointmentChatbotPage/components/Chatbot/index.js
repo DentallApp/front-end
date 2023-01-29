@@ -3,13 +3,11 @@ import ReactWebChat, { createDirectLine, createStore } from 'botframework-webcha
 import simpleUpdateIn from 'simple-update-in';
 import { getLocalUser } from 'services/UserService'
 import { parseBool } from 'utils/parseUtils'
+import { getDirectLineToken } from 'services/DirectLineService'
 
 const Chatbot = () => {
-
-    let directline = null;
-    const [token, setToken] = useState(null);
+    const [directLine, setDirectLine] = useState(null);
     const user = getLocalUser();
-    
     const styleOptions = {
         botAvatarImage: require('img/bot.png'),
         botAvatarInitials: 'BF',
@@ -30,38 +28,19 @@ const Chatbot = () => {
         sendBoxBorderTop: '1px solid #9FC9F3'
     };
 
-    const getToken = async () => {
-
-        let userId ="User-"+ parseInt(Math.random()* 1000000);
-    
-        const res = await fetch(`${process.env.REACT_APP_DIRECTLINE_URL}v3/directline/tokens/generate`, 
-        { 
-          method: 'POST', 
-          headers:{
-            "Content-Type":"application/json",
-          },
-          body: JSON.stringify({ userId: userId, password: ""}) 
-        });
-        const { token } = await res.json();
-        
-        return token;
-    }
-
     useEffect(() => {
-        async function fetchMyAPI() {
-          const response = await getToken();
-          setToken(response);
+        async function fetchDirectLineToken() {
+            const { data: { token } } = await getDirectLineToken();
+            const directLineObject = createDirectLine({
+                domain:`${process.env.REACT_APP_DIRECTLINE_URL}v3/directline`, 
+                token: token, 
+                webSocket: parseBool(process.env.REACT_APP_DIRECTLINE_WEB_SOCKET)
+            });
+            setDirectLine(directLineObject);
         }
-        fetchMyAPI();
-            
+        fetchDirectLineToken();
     }, []);
-
-    directline = useMemo(() => createDirectLine({
-						domain:`${process.env.REACT_APP_DIRECTLINE_URL}v3/directline`, 
-						token: token, 
-						webSocket: parseBool(process.env.REACT_APP_DIRECTLINE_WEB_SOCKET)
-					}), [token]);
-
+    
     const store = useMemo(() => createStore({}, ({dispatch}) => next => action => {
         if(action.type === 'DIRECT_LINE/POST_ACTIVITY') {
             action = simpleUpdateIn(
@@ -85,20 +64,23 @@ const Chatbot = () => {
         return next(action);
     }), [user]);
 
+    // When using 'InDirectLine', it is necessary to pass the userID to the 'ReactWebChat' component and 
+    // this is because it does not attach the userID to the token.
+    // See https://github.com/newbienewbie/InDirectLine
     return (
         <>
             {
-                directline ? 
+                directLine ? 
                 <ReactWebChat 
                 className="webchat" 
-                directLine={directline} 
+                directLine={directLine} 
                 userID={user.userId.toString()} 
                 userName={user.userName}
                 styleOptions={styleOptions}
                 store={store}
                 /> 
                 : 
-                <p>Cargando</p>
+                <p>Cargando...</p>
             }
         </>
     );
