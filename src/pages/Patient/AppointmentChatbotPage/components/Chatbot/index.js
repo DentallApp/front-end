@@ -45,37 +45,20 @@ const Chatbot = () => {
         if(action.type === 'DIRECT_LINE/POST_ACTIVITY') {
             action = simpleUpdateIn(
                 action,
-                ['payload', 'activity', 'channelData', 'personId'],
-                () => user.personId
-            );
-
-            action = simpleUpdateIn(
-                action,
                 ['payload', 'activity', 'channelData', 'fullName'],
-                () => user.names + ' ' + user.lastNames
+                () => user.fullName
             );
-
-            /*action = simpleUpdateIn(
-                action,
-                ['payload', 'activity', 'channelData', 'accessToken'],
-                () => user.accessToken
-            );*/
         }
         return next(action);
     }), [user]);
 
-    // When using 'InDirectLine', it is necessary to pass the userID to the 'ReactWebChat' component and 
-    // this is because it does not attach the userID to the token.
-    // See https://github.com/newbienewbie/InDirectLine
     return (
         <>
             {
                 directLine ? 
                 <ReactWebChat 
                 className="webchat" 
-                directLine={directLine} 
-                userID={user.userId.toString()} 
-                userName={user.userName}
+                directLine={directLine}
                 styleOptions={styleOptions}
                 store={store}
                 /> 
