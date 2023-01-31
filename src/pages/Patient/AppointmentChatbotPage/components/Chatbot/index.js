@@ -9,6 +9,7 @@ const Chatbot = () => {
     const [directLine, setDirectLine] = useState(null);
     const user = getLocalUser();
     const styleOptions = {
+		showAvatarInGroup: false,
         botAvatarImage: require('img/bot.png'),
         botAvatarInitials: 'BF',
         userAvatarImage: require('img/user.png'),
