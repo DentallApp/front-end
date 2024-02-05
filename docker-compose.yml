@@ -10,4 +10,7 @@ services:
 
 volumes:
   dental_services_images:
+    # The docker-compose.yml of the backend project creates this volume
     name: 'dental_services'
+    # Indicates that the volume was created outside of the service(frontend)
+    external: true
