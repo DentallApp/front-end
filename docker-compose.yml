@@ -1,0 +1,13 @@
+version: '3.9'
+
+services:
+  frontend:
+    build: .
+    volumes:
+      - dental_services_images:/usr/share/nginx/html/img/dental-services
+    ports:
+      - 80:80
+
+volumes:
+  dental_services_images:
+    name: 'dental_services'
