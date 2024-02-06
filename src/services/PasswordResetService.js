@@ -1,7 +1,7 @@
 import api from './Api';
 
 export const sendUserEmail =(email) => {
-    return api.post('/password-reset/send', {email})        
+    return api.post('/user/password-reset/send', {email})        
     .then(res => {
                 if(res.data.success === true) {
                     return {
@@ -23,7 +23,7 @@ export const sendUserEmail =(email) => {
 }
 
 export const resetPassword = (newPassword, token) => {
-    return api.post('/password-reset', {token, newPassword})
+    return api.post('/user/password-reset', {token, newPassword})
             .then(res => {
                 return {
                     status: res.status,

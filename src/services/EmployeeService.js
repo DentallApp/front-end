@@ -1,11 +1,11 @@
 import api from './Api';
 
 export const getEmployee = async () => {
-    return await api.get('/employee');
+    return await api.get('/employee/edit');
 }
 
 export const createEmployee = (data) => {
-    return api.post('/register/employee', {
+    return api.post('/employee', {
         document: data.document,
         names: data.names,
         lastNames: data.lastNames,

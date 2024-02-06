@@ -3,7 +3,7 @@ import { setLocalUser } from './UserService';
 import { setLocalAccessToken, setLocalRefreshToken } from './TokenService';
 
 export const emailVerification = (token) => {
-    return api.post('/email-verification', { token })
+    return api.post('/user/email-verification', { token })
             .then(res => {
                 if(res.data.success) {
                     setLocalAccessToken(res.data.data.accessToken);
