@@ -13,11 +13,11 @@ import {
 } from './TokenService';
 
 const apiPublicRoutes = [
-    "/login", 
-    "/register/basic-user", 
-    "/password-reset", 
-    "/password-reset/send",
-    "/email-verification",
+    "/user/login", 
+    "/user", 
+    "/user/password-reset", 
+    "/user/password-reset/send",
+    "/user/email-verification",
     "/gender",
     "/general-treatment/:id"
 ];
