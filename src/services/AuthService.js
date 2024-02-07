@@ -10,7 +10,7 @@ import {
 
 export const login = ({ userName, password }) => {
     
-    return api.post('/login', {
+    return api.post('/user/login', {
         userName,
         password
     }).then(res => {

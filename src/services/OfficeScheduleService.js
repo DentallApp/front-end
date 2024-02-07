@@ -1,7 +1,7 @@
 import api from './Api';
 
 export const getAllSchedules = async() => {
-    return await api.get('/office-schedule');
+    return await api.get('/office/overview');
 }
 
 export const getScheduleByOfficeId = async(officeId) => {
@@ -60,5 +60,5 @@ export const updateSchedule = (data) => {
 }
 
 export const getOfficeHomePage = async() => {
-    return await api.get('/office-schedule/home-page');
+    return await api.get('/office/home-page');
 }

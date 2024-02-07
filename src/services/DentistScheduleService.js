@@ -64,5 +64,5 @@ export const updateSchedule = (data) => {
 }
 
 export const getAllSchedule = async() => {
-    return await api.get('/employee-schedule');
+    return await api.get('/employee/overview');
 }

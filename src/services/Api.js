@@ -13,11 +13,11 @@ import {
 } from './TokenService';
 
 const apiPublicRoutes = [
-    "/login", 
-    "/register/basic-user", 
-    "/password-reset", 
-    "/password-reset/send",
-    "/email-verification",
+    "/user/login", 
+    "/user", 
+    "/user/password-reset", 
+    "/user/password-reset/send",
+    "/user/email-verification",
     "/gender",
     "/general-treatment/:id"
 ];
@@ -87,15 +87,15 @@ instance.interceptors.request.use(
   
       return new Promise(function (resolve, reject) {
         instance.post("/token/refresh", {
-          accessToken: getLocalAccessToken(),
-          refreshToken: getLocalRefreshToken()
+          oldAccessToken: getLocalAccessToken(),
+          oldRefreshToken: getLocalRefreshToken()
         })
           .then(res => {
-            updateLocalAccessToken(res.data.data.accessToken);
-            updateLocalRefreshToken(res.data.data.refreshToken);
-            instance.defaults.headers.common['Authorization'] = 'Bearer ' + res.data.data.accessToken;
-            originalRequest.headers['Authorization'] = 'Bearer ' + res.data.data.accessToken;
-            processQueue(null, res.data.data.token);
+            updateLocalAccessToken(res.data.data.newAccessToken);
+            updateLocalRefreshToken(res.data.data.newRefreshToken);
+            instance.defaults.headers.common['Authorization'] = 'Bearer ' + res.data.data.newAccessToken;
+            originalRequest.headers['Authorization'] = 'Bearer ' + res.data.data.newAccessToken;
+            processQueue(null, res.data.data.newAccessToken);
             resolve(axios(originalRequest));
           })
           .catch((err) => {

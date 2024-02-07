@@ -14,7 +14,7 @@ export const removeLocalUser = () => {
 }
 
 export const registerBasicUser = (data) => {
-    return api.post('/register/basic-user', {
+    return api.post('/user', {
         ...data
     })
     .then(res => {

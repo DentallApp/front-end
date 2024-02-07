@@ -1,7 +1,7 @@
 import api from './Api';
 
 export const getOffices = async() => {
-    return await api.get('/office');
+    return await api.get('/office/name?status=true');
 }
 
 export const getAllOffices = async() => {
@@ -60,5 +60,5 @@ export const updateOffice = (data) => {
 }
 
 export const getOfficesActiveAndInactive = async() => {
-    return await api.get('/office/all');
+    return await api.get('/office/name');
 }
