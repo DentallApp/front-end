@@ -62,7 +62,8 @@ const Filters = ({
 
         if(
             getLocalUser().roles.includes(ROLES.ADMIN) || 
-            getLocalUser().roles.includes(ROLES.SECRETARY) 
+            getLocalUser().roles.includes(ROLES.SECRETARY) ||
+            getLocalUser().roles.includes(ROLES.DENTIST)
         ) { 
             
             setValue('officeId', getLocalUser().officeId, true);
