@@ -1,11 +1,16 @@
-FROM node:18-alpine AS build
+#
+# Build stage/image
+#
+FROM node:14.17.0-alpine AS build
 WORKDIR /app
 COPY package*.json .
 RUN npm install
 COPY . .
 RUN npm run build
 
+#
 # Final stage/image
+#
 FROM nginx:1.19.0
 WORKDIR /usr/share/nginx/html
 
