@@ -34,61 +34,73 @@ The language of the pages are in Spanish. The app is intended for a dental offic
 
 <details>
 <summary>Home</summary>
+
 ![Home](https://github.com/DentallApp/front-end/blob/dev/screenshots/home.png)
 </details>
 
 <details>
 <summary>Services</summary>
+
 ![Services](https://github.com/DentallApp/front-end/blob/dev/screenshots/services.png)
 </details>
 
 <details>
 <summary>Service</summary>
+
 ![Service](https://github.com/DentallApp/front-end/blob/dev/screenshots/service.png)
 </details>
 
 <details>
 <summary>Offices</summary>
+
 ![Offices](https://github.com/DentallApp/front-end/blob/dev/screenshots/offices.png)
 </details>
 
 <details>
 <summary>Login</summary>
+
 ![Login](https://github.com/DentallApp/front-end/blob/dev/screenshots/login.png)
 </details>
 
 <details>
 <summary>Signup</summary>
+
 ![Signup](https://github.com/DentallApp/front-end/blob/dev/screenshots/register.png)
 </details>
 
 <details>
 <summary>Reset password</summary>
+
 ![Reset password](https://github.com/DentallApp/front-end/blob/dev/screenshots/reset-password.png)
 </details>
 
 <details>
 <summary>Basic user panel</summary>
+
 ![Basic user panel](https://github.com/DentallApp/front-end/blob/dev/screenshots/user-panel.png)
 </details>
 
 <details>
 <summary>ChatBot - part 1</summary>
+
 ![ChatBot part 1](https://github.com/DentallApp/front-end/blob/dev/screenshots/chatbot-part1.png)
 </details>
 
 <details>
 <summary>ChatBot - part 2</summary>
+
 ![ChatBot part 2](https://github.com/DentallApp/front-end/blob/dev/screenshots/chatbot-part2.png)
 </details>
 
 <details>
 <summary>ChatBot - part 3</summary>
+
 ![ChatBot part 3](https://github.com/DentallApp/front-end/blob/dev/screenshots/chatbot-part3.png)
 </details>
 
 <details>
 <summary>Appointment history</summary>
+
 ![Appointment history](https://github.com/DentallApp/front-end/blob/dev/screenshots/appointment-history.png)
 </details>
 
