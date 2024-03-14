@@ -2,7 +2,7 @@
 
 DentallApp is a web application with chatbot for appointment management, reminders and sending appointment cancellation messages for the dental office called [World Dental CO](https://www.tiktok.com/@worlddentalco).
 
-> The maintainer of this repository is [Guillermo Rivera](https://github.com/Guiller1999). Guillermo no longer maintains this repository.
+> The original maintainer of this repository is [Guillermo Rivera](https://github.com/Guiller1999). Guillermo no longer maintains this repository.
 > 
 > This project has not been improved much since its [first alpha version](https://github.com/DentallApp/front-end/tree/v0.1.0).
 
