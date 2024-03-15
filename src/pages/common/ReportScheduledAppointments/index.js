@@ -55,8 +55,8 @@ const ReportScheduledAppointments = () => {
         data.officeId = parseInt(data.officeId);
 
         getScheduledAppointments(data).then(res => {
-            setAppointments(res.data);
-            setFilterAppointments(res.data);
+            setAppointments(res.data.data);
+            setFilterAppointments(res.data.data);
             setIsLoading({success: true});
         })
         .catch(err => handleErrorLoading(err, setErrorLoading));

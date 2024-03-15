@@ -58,8 +58,8 @@ const ReportDentalService = () => {
         data.officeId = parseInt(data.officeId);
 
         getRankingDentalService(data).then(res => {
-            setServices(res.data);
-            setFilterServices(res.data);
+            setServices(res.data.data);
+            setFilterServices(res.data.data);
             setIsLoading({success: true});
         })
         .catch(err => handleErrorLoading(err, setErrorLoading));

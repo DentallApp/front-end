@@ -53,7 +53,7 @@ const ReportAppointmentsPage = () => {
         data.dentistId = parseInt(data.dentistId);
 
         getReportAppointments(data).then(res => {
-            setAppointments(res.data);
+            setAppointments(res.data.data);
             setIsLoading({success: true});
         })
         .catch(err => handleErrorLoading(err, setErrorLoading));

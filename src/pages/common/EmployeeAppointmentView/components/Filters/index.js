@@ -71,7 +71,7 @@ const Filters = ({
             setSelectDentist(0);
 
             getDentistByOffice(getLocalUser().officeId, null)
-                .then(res => setDentists(res.data))
+                .then(res => setDentists(res.data.data))
                 .catch(err => err);
         }
 
@@ -104,7 +104,7 @@ const Filters = ({
                 selectDentistRef.current.setValue({value: 0, label: 'Todos'});
             }
             
-            getDentistByOffice(selectOffice, null).then(res => setDentists(res.data))
+            getDentistByOffice(selectOffice, null).then(res => setDentists(res.data.data))
                 .catch(err => err);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps  

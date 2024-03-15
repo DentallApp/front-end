@@ -35,7 +35,7 @@ const ScheduleManagementPage = () => {
     const [isLoading, setIsLoading] = useState(null);
 
     useEffect(() => {
-        getDentistByOffice(getLocalUser().officeId, null).then(res => setDentists(res.data))
+        getDentistByOffice(getLocalUser().officeId, null).then(res => setDentists(res.data.data))
             .catch(err => err);
             
         getAllSchedule().then(res => setAllSchedules(res.data))
