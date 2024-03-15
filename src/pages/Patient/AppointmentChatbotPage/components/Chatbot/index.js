@@ -31,7 +31,8 @@ const Chatbot = () => {
 
     useEffect(() => {
         async function fetchDirectLineToken() {
-            const { data: { token } } = await getDirectLineToken();
+            const response = await getDirectLineToken();
+            const token = response.data.data.token;
             const directLineObject = createDirectLine({
                 domain:`${process.env.REACT_APP_DIRECTLINE_URL}v3/directline`, 
                 token: token, 
